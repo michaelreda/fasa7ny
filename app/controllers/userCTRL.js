@@ -256,7 +256,16 @@ deleteMyProfile: function(req,res){
 
 
   }
-
+,viewHistoryBookings:function(req,res){
+  Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
+    if(err){
+      res.send(err);
+    }
+    else {
+      res.render("viewHistoryBookings",bookings);
+    }
+  })
+}
 }
 
 module.exports=userCTRL;
