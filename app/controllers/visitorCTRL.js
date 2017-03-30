@@ -11,6 +11,17 @@ shareOnSocialMedia:function(req, res){
 	case 'google': res.redirect("https://plus.google.com/share?url="+req.params.query);break;
 }
 },
+//1.5 As a visitor, I can search for activities either by name to find certain activities directly
+//note search by type or date is still missing
+searchForActivities:function(req,res){
+  Activity.find({title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},function(err, activities){
+
+    if(err)
+    res.send(err.message);
+    else
+    res.send(activities);
+  })
+},
 //1.2
 viewAllServiceProviders:function(req, res){
 
