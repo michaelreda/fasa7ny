@@ -10,7 +10,7 @@ password:{
   required:true
 },
 type:{
-  type:Number,
+  type:Number, //user 0 SP 1
   required:true
 },
 email:{

@@ -5,6 +5,10 @@ title:{
   type:String,
   required:true
 },
+serviceProviderAccountId:{
+  type:String
+},
+
 description:{
   type:String,
   required:true

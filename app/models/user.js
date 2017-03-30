@@ -9,6 +9,10 @@ lastName:{
   type:String,
   required:true
 },
+userAccountId:{
+  type:String,
+},
+
 birthDate:{
   type:Date,
   required:true

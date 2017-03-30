@@ -41,6 +41,13 @@ Router.post('/user_Login', passport.authenticate('login', {
     failureFlash : true
   }));
 
+//2.1.3 log out
+Router.get('/logout', function(req, res){
+    req.logout();
+    req.session.regenerate(function(err){});
+    res.redirect('/');
+  });
+
 ////////////youssef///////////////////
 
 

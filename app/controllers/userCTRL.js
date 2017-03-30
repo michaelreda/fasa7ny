@@ -1,7 +1,9 @@
 let account = require('../models/account.js');
+let account = require('../models/serviceProvider.js');
 
 
 
+//routing not yet
 
 let userCTRL = {
 
@@ -41,8 +43,26 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
-}
-,
+},
+
+changePassword: function(req,res){
+  var thisUser=req.session.loggedInUser.userAccountId;
+  account.findOne({'_id':thisUser},
+      function(err, userInstance){
+        if(err){
+          return (err);
+        }
+        else{
+          //account.update.......update password
+        }
+      }
+)
+},
+
+//From Tweety recover password
+
+
+
 subscribe: function(req,res){
   var serviceProviderID=req.session.serviceProviderID._id;
   var loggedInUser= req.session.loggedInUser._id;
