@@ -2,7 +2,11 @@
 var express= require('express');
 var Router = express.Router();
 var mongoose = require('mongoose');
+
+var visitorCTRL= require('./controllers/visitorCTRL');
+var userCTRL= require('./controllers/userCTRL');
 var activityCTRL = require('./controllers/activityCTRL');
+
 
 // router configuration
 Router.get('/',function(req,res){
@@ -30,7 +34,7 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////sherrie///////////////////
-
+Router.get('/user_Login',userCTRL.login );
 
 ////////////youssef///////////////////
 
@@ -42,6 +46,7 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////kareem///////////////////
+
 
 //exporting to be used in server.js
 module.exports = Router;
