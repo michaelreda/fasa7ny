@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 
 var reviewSchema = mongoose.Schema({
-time:{
-  type:Date,
-  required:true
-},
+time:{ type: Date, default: Date.now },
 userId:{
   type:mongoose.Schema.Types.ObjectId,ref:'user',
   required:true
