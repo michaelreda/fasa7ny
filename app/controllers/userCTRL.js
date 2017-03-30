@@ -1,5 +1,5 @@
 let account = require('../models/account.js');
-
+let user = require('../models/user.js');
 
 
 
@@ -40,20 +40,19 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
+},
+//2.11 As a logged in user I can change my privacy to control who sees my information
+changePrivacy: function(req,res){
+  if(req.body.privacy<0 || req.body.privacy>2)
+    res.send("privacy should be 0,1 or 2");
+  user.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err){
+    if(err){
+      res.send(err)
+    }else{
+      res.send("privacy changed succesfully");
+    }
+  })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 module.exports=userCTRL;
