@@ -24,4 +24,4 @@ review:{
 
 var Review = mongoose.model("interest", reviewSchema);
 
-module.exports = review;
+module.exports = Review;

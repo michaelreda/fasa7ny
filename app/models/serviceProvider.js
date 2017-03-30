@@ -56,4 +56,4 @@ banned:{
 
 var ServiceProvider = mongoose.model("serviceProvider", serviceProviderSchema);
 
-module.exports = serviceProvider;
+module.exports = ServiceProvider;
