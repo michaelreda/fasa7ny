@@ -1,6 +1,6 @@
-let account = require('../models/account.js');
-let user = require('../models/user.js');
-
+let Account = require('../models/account.js');
+let User = require('../models/user.js');
+let ServiceProvider = require('../models/serviceProvider.js');
 
 
 let userCTRL = {
@@ -17,7 +17,7 @@ passport.use('login', new LocalStrategy({
   },
   function(req, userName, password, done) {
 
-    account.findOne({ 'userName' :  userName },
+    Account.findOne({ 'userName' :  userName },
       function(err, user) {
 
         if (err)
@@ -46,7 +46,7 @@ passport.use('login', new LocalStrategy({
 changePrivacy: function(req,res){
   if(req.body.privacy<0 || req.body.privacy>2)
     res.send("privacy should be 0,1 or 2");
-  user.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err){
+  User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err){
     if(err){
       res.send(err)
     }else{
@@ -58,7 +58,7 @@ subscribe: function(req,res){
   var serviceProviderID=req.session.serviceProviderID._id;
   var loggedInUser= req.session.loggedInUser._id;
 
-  serviceProvider.findOne({ '_id' : serviceProviderID},
+  ServiceProvider.findOne({ '_id' : serviceProviderID},
     function(err, providerInstance){
       if (err){
         return (err);
@@ -76,6 +76,44 @@ subscribe: function(req,res){
       }
     }
 )
+},
+//2.2 As a logged in user I can view
+viewMyProfile: function(req,res){
+  User.findOne({_id:req.session._id}).exec(function(err,user){
+    if(err){
+      res.send(err);
+    }
+    else {
+      res.send(user);
+    }
+  })
+},
+//2.2 As a logged in user I can update my personal info
+//password to be done later
+updateMyProfile: function(req,res){
+
+    User.update({_id:req.session.user._id})).exec(function(err){
+      if(err){
+        res.send(err);
+      }
+      else {
+        res.send("profile updated successfully");
+      }
+    })
+
+},
+//2.2.1 As a logged in user I can delete my account
+deleteMyProfile: function(req,res){
+
+    User.findOne({_id:req.session.user._id})).remove().exec(function(err){
+      if(err){
+        res.send(err);
+      }
+      else {
+        res.send("profile deleted successfully");
+      }
+    })
+
 }
 
 }
