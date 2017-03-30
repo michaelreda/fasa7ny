@@ -36,22 +36,36 @@ passport.use('login', new LocalStrategy({
         }
         // User and password both match, return user from
         // done method which will be treated like success
+        req.session.loggedInUser=user;
         return done(null, user);
       }
     );
 }));
 }
+,
+subscribe: function(req,res){
+  var serviceProviderID=req.session.serviceProviderID._id;
+  var loggedInUser= req.session.loggedInUser._id;
 
-
-
-
-
-
-
-
-
-
-
+  serviceProvider.findOne({ '_id' : serviceProviderID},
+    function(err, providerInstance){
+      if (err){
+        return (err);
+      }
+      else{
+        providerInstance.subscribedUsers.push(loggedInUser);
+        providerInstance.save(function(err){
+          if(err){
+            return (err);
+          }
+          else {
+            req.flash('message', 'You are now subscribed to this provider');
+          }
+        })
+      }
+    }
+)
+}
 
 
 }

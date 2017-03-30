@@ -52,7 +52,12 @@ ratingCount:{
 banned:{
   type:Number, default = 0
   required:true
-})
+},
+subscribedUsers:[{
+  type:mongoose.Schema.Types.ObjectId,ref:'user',
+  required:false
+}]
+)
 
 var ServiceProvider = mongoose.model("serviceProvider", serviceProviderSchema);
 
