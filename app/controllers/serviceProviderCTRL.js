@@ -1,6 +1,25 @@
 let Activity = require('../models/activity.js');
+let ServiceProvider = require('../models/serviceProvider');
 
-let ServiceProviderCTRL = {
+let serviceProviderCTRL = {
+
+
+   createServiceProvider:function(req, res){
+        let serviceProvider = new ServiceProvider(req.body);
+        
+        
+        serviceProvider.save(function(err, serviceProvider){
+            if(err){
+                res.send(err.message);
+            }
+            else{
+
+                res.send(200);
+            }
+        });
+    }
+
+,
 
 addActivity : function(req,res){
 if(!req.body.title|!req.body.type|!req.body.prices|!req.body.duration|!req.body.timings|!req.body.minClientNumber|!req.body.maxClientNumber){
