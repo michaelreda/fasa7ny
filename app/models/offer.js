@@ -27,4 +27,4 @@ isActive:{
 
 var Offer = mongoose.model("offer", offerSchema);
 
-module.exports = offer;
+module.exports = Offer;

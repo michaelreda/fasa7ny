@@ -22,4 +22,4 @@ email:{
 
 var Account = mongoose.model("account", accountSchema);
 
-module.exports = accountSchema;
+module.exports = Account;

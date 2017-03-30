@@ -20,4 +20,4 @@ errorMessage:{
 
 var Log = mongoose.model("interest", logSchema);
 
-module.exports = log;
+module.exports = Log;
