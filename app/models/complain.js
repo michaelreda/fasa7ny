@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
 
 var complainSchema = mongoose.Schema({
-issuerId:{
+userId:{
   type:mongoose.Schema.Types.ObjectId,ref:'user',
   required:true
 },
-intendedId:{
+providerId:{
   type:mongoose.Schema.Types.ObjectId,ref:'serviceProvider',
   required:true
 },
-isType:{
+isUserToProvider:{
   type:Boolean,
   required:true
 },
