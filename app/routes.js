@@ -2,7 +2,11 @@
 var express= require('express');
 var Router = express.Router();
 var mongoose = require('mongoose');
+
+var visitorCTRL= require('./controllers/visitorCTRL');
+var userCTRL= require('./controllers/userCTRL');
 var activityCTRL = require('./controllers/activityCTRL');
+
 
 // router configuration
 Router.get('/',function(req,res){
@@ -12,13 +16,13 @@ Router.get('/',function(req,res){
 
 ////////////waseem///////////////////
 
-//2.6 comparison 
+//2.6 comparison
 Router.post('/comparison', userCTRL.getFirstListOfChoices);
 Router.post('/second_choice', userCTRL.getSecondListOfChoices);
 Router.get('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities', userCTRL.getActivitiesToCompare);
 
-//1.10 apply as a service provider 
+//1.10 apply as a service provider
 Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
@@ -30,7 +34,12 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////sherrie///////////////////
-
+Router.get('/user_Login',userCTRL.login );
+Router.post('/user_Login', passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/',
+    failureFlash : true
+  }));
 
 ////////////youssef///////////////////
 
@@ -42,6 +51,7 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////kareem///////////////////
+
 
 //exporting to be used in server.js
 module.exports = Router;

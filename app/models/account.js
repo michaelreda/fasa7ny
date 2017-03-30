@@ -10,14 +10,16 @@ password:{
   required:true
 },
 type:{
-  type:Char,
+  type:Number,
   required:true
 },
 email:{
   type:String,
   required:true
-})
+}})
+
+
 
 var Account = mongoose.model("account", accountSchema);
 
-module.exports = account;
+module.exports = Account;
