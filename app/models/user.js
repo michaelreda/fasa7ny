@@ -9,6 +9,9 @@ lastName:{
   type:String,
   required:true
 },
+userAccountId:{
+  type:String,
+},
 birthDate:{
   type:Date,
   required:true
@@ -49,7 +52,8 @@ location:[{
   type:mongoose.Schema.Types.String,
 }],
 banned:{
-  type:Number, default :0,
+  type:Number,
+  default: 0,
   required:true
 }})
 

@@ -12,12 +12,13 @@ password:{
   required:true
 },
 type:{
-  type:Number,
+  type:Number,  //user 0, SP 1
   required:true
 },
 email:{
   type:String,
   required:true
+
 },
 
 facebook         : {
@@ -50,7 +51,6 @@ accountSchema.methods.generateHash = function(password) {
 accountSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
-
 
 var Account = mongoose.model("account", accountSchema);
 

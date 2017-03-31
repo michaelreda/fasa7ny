@@ -1,11 +1,111 @@
 let Account = require('../models/account.js');
 let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
-
+let Activity = require('../models/activity');
+let Message=require('../models/message.js');
 
 let userCTRL = {
 
 
+//2.6 comparing activities or service providers
+getActivitiesToCompare:function(req, res){
+
+        Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
+
+            if(err)
+                res.send(err.message);
+            else{
+
+                Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
+                    if(err){
+                        res.send(err.message);
+                    }else {
+                            res.send({activity1,activity2});
+                    }
+                })
+
+
+            }
+        })
+    },
+    //2.6 comparing activities or service providers
+    getServiceProviderToCompare:function(req, res){
+
+        ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
+
+            if(err)
+                res.send(err.message);
+            else{
+
+                ServiceProvider.findOne({_id: req.body.SP2ID},function(err,SP2){
+                    if(err){
+                        res.send(err.message);
+                    }else {
+                            res.send({SP1,SP2});
+                    }
+                })
+
+
+            }
+        })
+    },
+    //2.6 comparing activities or service providers
+    getFirstListOfChoices:function(req, res){
+
+        ServiceProvider.find(function(err,SPs){
+
+            if(err)
+                res.send(err.message);
+            else{
+
+                Activity.find(function(err,ACs){
+                    if(err){
+                        res.send(err.message);
+                    }else {
+                            res.send({SPs,ACs});
+                    }
+                })
+
+
+            }
+        })
+    },
+    //2.6 comparing activities or service providers
+    getSecondListOfChoices:function(req, res){
+      if(isServiceProvider)
+      {
+          ServiceProvider.find(function(err,SPs)
+          {
+
+            if(err)
+            {
+                res.send(err.message);
+            }
+            else
+            {
+                res.send({SPs});
+            }
+          })
+      }
+      else
+      {
+          Activity.find(function(err,ACs)
+          {
+
+            if(err)
+            {
+                res.send(err.message);
+            }
+            else
+            {
+                res.send({ACs});
+            }
+          })
+
+      }
+    },
+
+  
 login: function(req,res){
 
 //var isValidPassword = function(user, password){
@@ -16,6 +116,7 @@ passport.use('login', new LocalStrategy({
     passReqToCallback : true
   },
   function(req, userName, password, done) {
+
 
     Account.findOne({ 'userName' :  userName },
       function(err, user) {
@@ -42,6 +143,27 @@ passport.use('login', new LocalStrategy({
     );
 }));
 },
+
+//2.1.1 user changes password
+changePassword: function(req,res){
+  var thisUser=req.session.loggedInUser.userAccountId;
+  Account.findOne({'_id':thisUser},
+      function(err, userInstance){
+        if(err){
+          return (err);
+        }
+        else{
+          //account.update.......update password
+        }
+      }
+)
+},
+
+//From Tweety recover password
+
+
+//2.4 user subscribes to a service provider
+
 //2.11 As a logged in user I can change my privacy to control who sees my information
 changePrivacy: function(req,res){
   if(req.body.privacy<0 || req.body.privacy>2)
@@ -54,9 +176,11 @@ changePrivacy: function(req,res){
     }
   })
 },
+
 subscribe: function(req,res){
   var serviceProviderID=req.session.serviceProviderID._id;
   var loggedInUser= req.session.loggedInUser._id;
+
 
   ServiceProvider.findOne({ '_id' : serviceProviderID},
     function(err, providerInstance){
@@ -77,6 +201,19 @@ subscribe: function(req,res){
     }
 )
 },
+
+//2.13 user contacts platform
+/*contactPlatform: function (req,res){
+  var logInUser=req.session.loggedInUser._id;
+  let message=new message();
+  message.fromId=logInUser;
+  message.
+  message.isSeen
+
+  message.save()
+}*/
+
+
 //2.2 As a logged in user I can view
 viewMyProfile: function(req,res){
   User.findOne({_id:req.session._id}).exec(function(err,user){

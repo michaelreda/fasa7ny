@@ -13,6 +13,11 @@ var activitySchema = mongoose.Schema({
         required:true,
         unique:false
     },
+    isOffer:{
+        type:Boolean,
+        required:false,
+        unique:false 
+    },
     serviceProviderId:{
         type:String,
         required:true,
@@ -59,8 +64,19 @@ var activitySchema = mongoose.Schema({
     },
     ratingCount:{
         type:Number,
-        required:false,
-        unique:false
+        required:false,  
+        unique:false 
+    },
+    location:{
+        type:String,
+        required:true,  
+        unique:false 
+    },
+    theme:{
+        type:String,
+        required:true,  
+        unique:false 
+
     }
 
 

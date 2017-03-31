@@ -1,3 +1,5 @@
+
+let Log = require('../models/log.js');
 let Complain = require('../models/complain');
 let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
@@ -145,7 +147,32 @@ Message.find(function(err, messages){
 })
 
 },
+//4.5 admin views system logs
+viewSystemLogs: function(req,res){
+  Log.find(function(err, log){
 
+        if(err)
+            res.send(err.message); //display messages
+        else
+            res.render('viewSystemLogs',{"logs":log});
+    })
+},
+
+
+updateLogs: function(req,res){
+// will not be done, delete from SRS
+},
+
+//4.5 admin deletes system logs
+deleteLogs: function(req,res){
+  Log.remove(function(err, log){
+    if(err)
+      res.send(err.message);
+    else {
+       res.render('logPage');
+    }
+  })
+},
 
 viewChatMessages:function(req, res){
 

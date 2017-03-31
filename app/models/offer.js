@@ -23,7 +23,7 @@ activities:[{
 isActive:{
   type:Boolean,
   required:true
-})
+}})
 
 var Offer = mongoose.model("offer", offerSchema);
 

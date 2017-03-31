@@ -16,8 +16,8 @@ time:{
 errorMessage:{
   type:String,
   required:true
-})
+}})
 
-var Log = mongoose.model("interest", logSchema);
+var Log = mongoose.model("log", logSchema);
 
 module.exports = Log;

@@ -8,7 +8,7 @@ firstName:{
 lastName:{
   type:String,
   required:true
-})
+}})
 
 var Admin = mongoose.model("interest", adminSchema);
 
