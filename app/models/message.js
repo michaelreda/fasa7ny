@@ -17,4 +17,4 @@ isSeen:{
 
 var Message = mongoose.model("message", messageSchema);
 
-module.exports = message;
+module.exports = Message;

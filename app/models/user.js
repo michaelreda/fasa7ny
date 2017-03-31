@@ -21,7 +21,7 @@ age:{
   required:true
 },
 gender:{
-  type:Char,
+  type:Number,
   required:true
 },
 privacy:{
@@ -59,4 +59,4 @@ banned:{
 
 var User = mongoose.model("user", userSchema);
 
-module.exports = user;
+module.exports = User;

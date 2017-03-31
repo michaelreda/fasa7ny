@@ -11,4 +11,4 @@ number:{
 }})
 var Interest = mongoose.model("interest", interestSchema);
 
-module.exports = interest;
+module.exports = Interest;

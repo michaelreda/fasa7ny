@@ -24,4 +24,4 @@ isSeen:{
 
 var Complain = mongoose.model("complain", complainSchema);
 
-module.exports = complain;
+module.exports = Complain;

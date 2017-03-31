@@ -1,3 +1,6 @@
+let ServiceProvider = require('../models/serviceProvider');
+let User            = require('../models/user');
+let Booking         = require('../models/booking');
 
 let visitorCTRL={
 //1.9
@@ -172,7 +175,77 @@ shareOnSocialMedia:function(req, res){
 		}
 
 
-	}
+	},
+//1.2
+viewAllServiceProviders:function(req, res){
+
+ServiceProvider.find(	function(err, providers){
+	
+	if(err){
+
+	     res.send(err.message);
+            }else
+              {
+									res.send( providers);
+							}
+})
+
+},
+
+viewServiceProvider:function(req, res){
+
+ServiceProvider.findOne({ _id :req.body.providerId})
+.populate({path: 'activities', options:{sort:{'rating':-1}}})
+.populate({path: 'branches'})
+.populate({path: 'contactMobile'})
+.populate({path: 'media'})
+.populate({path: 'previousClients'})
+.exec( function(err, provider){
+if(err){
+
+	     res.send(err.message);
+            }else
+              {
+								Booking.find({serviceProviderId: req.body.providerId}).sort({'activityId':-1})
+								.limit(1).exec(function(err,booking){
+									
+
+								})
+									res.send(provider);
+							}
+
+})
+
+},
+
+
+viewFAQ:function(req,res){
+
+res.render("viewFAQ", {});
+
+
+},
+
+
+registerAsUser:function(req, res){
+
+let user=new User(req.body);
+user.save(function(err, user){
+
+if(err){
+
+	     res.send(err.message);
+            }else
+              {
+									res.redirect('/');
+							}
+
+
+})
+
+}
+
+
 
 
 }

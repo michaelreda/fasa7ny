@@ -40,8 +40,8 @@ previousClients:[{
   type:mongoose.Schema.Types.ObjectId,ref:'user',
   required:true
 }],
-isApproved:{
-  type:Boolean
+Approved:{
+  type:Number
 },
 isGolden:{
   type:Boolean
