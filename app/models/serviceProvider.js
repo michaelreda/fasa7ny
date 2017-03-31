@@ -50,9 +50,9 @@ ratingCount:{
   type:Number
 },
 banned:{
-  type:Number, default = 0
+  type:Number, default : 0,
   required:true
-})
+}})
 
 var ServiceProvider = mongoose.model("serviceProvider", serviceProviderSchema);
 

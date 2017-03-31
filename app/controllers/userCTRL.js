@@ -92,7 +92,7 @@ viewMyProfile: function(req,res){
 //password to be done later
 updateMyProfile: function(req,res){
 
-    User.update({_id:req.session.user._id})).exec(function(err){
+    User.update({_id:req.session.user._id}).exec(function(err){
       if(err){
         res.send(err);
       }
@@ -105,7 +105,7 @@ updateMyProfile: function(req,res){
 //2.2.1 As a logged in user I can delete my account
 deleteMyProfile: function(req,res){
 
-    User.findOne({_id:req.session.user._id})).remove().exec(function(err){
+    User.findOne({_id:req.session.user._id}).remove().exec(function(err){
       if(err){
         res.send(err);
       }
@@ -127,12 +127,12 @@ deleteMyProfile: function(req,res){
 
     var newRating = (rating*ratingCount + inputRating)/(ratingCount+1);
 
-    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}})).exec(function(err){
+    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
       if(err)
       res.send(err.message);
       else {
         if(req.body.review){
-          Review review= new Review(req.body);
+          var review= new Review(req.body);
           review.rate = inputRating;
           review.save(function(err,project){
             if(err)
@@ -149,7 +149,7 @@ deleteMyProfile: function(req,res){
   //2.3.1 As a logged in user I can change my review
   updateReview: function(req,res){
 
-    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}})).exec(function(err){
+    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err){
       if(err){
         res.send(err);
       }
@@ -170,7 +170,7 @@ deleteMyProfile: function(req,res){
       else {
         res.send("review deleted successfully");
       }
-    }),
+    })},
 
     //2.3.3 As a logged in user I can check/view my review
     viewMyReviews: function(req,res){
@@ -197,12 +197,12 @@ deleteMyProfile: function(req,res){
 
     var newRating = (rating*ratingCount + inputRating)/(ratingCount+1);
 
-    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}})).exec(function(err){
+    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
       if(err)
       res.send(err.message);
       else {
         if(req.body.review){
-          Review review= new Review(req.body);
+          var review= new Review(req.body);
           review.rate = inputRating;
           review.save(function(err,project){
             if(err)
@@ -219,7 +219,7 @@ deleteMyProfile: function(req,res){
   //2.3.1 As a logged in user I can change my review
   updateReview: function(req,res){
 
-    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}})).exec(function(err){
+    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err){
       if(err){
         res.send(err);
       }
@@ -240,7 +240,7 @@ deleteMyProfile: function(req,res){
       else {
         res.send("review deleted successfully");
       }
-    }),
+    })},
 
     //2.3.3 As a logged in user I can check/view my review
     viewMyReviews: function(req,res){
@@ -253,10 +253,8 @@ deleteMyProfile: function(req,res){
           res.send(reviews);
         }
       })
-
-
-  }
-,viewHistoryBookings:function(req,res){
+},
+  viewHistoryBookings: function(req,res){
   Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
     if(err){
       res.send(err);

@@ -11,7 +11,8 @@ let newActivity = new Activity({"title" :req.body.title,"type":req.body.type,"se
 "maxClientNumber":req.body.maxClientNumber,"media":[],"prices":[],"rating":0,"ratingCount":0});
 if(req.files.length>0){
   for (var i = 0; i < req.files.length; i++) {
-      newActivity.media.push({req.body.mediaTypes[i],req.files[i]});
+      let mediaI={"type":req.body.mediaTypes[i],"url":req.files[i].path};
+      newActivity.media.push(mediaI);
   }
 }
 
@@ -35,16 +36,12 @@ newActivity.save(function(err){
     res.send(200);
   }
 
-}
+})
 
 
 }
 
-
-
-
-
 }
-
+}
 
 module.exports = ServiceProviderCTRL;

@@ -2,10 +2,14 @@
 var express= require('express');
 var Router = express.Router();
 var mongoose = require('mongoose');
+var passport = require('passport');
+
+
 
 var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
-var activityCTRL = require('./controllers/activityCTRL');
+var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
+//var activityCTRL = require('./controllers/activityCTRL');
 
 
 // router configuration
@@ -17,14 +21,14 @@ Router.get('/',function(req,res){
 ////////////waseem///////////////////
 
 //2.6 comparison
-Router.post('/comparison', userCTRL.getFirstListOfChoices);
+/*Router.post('/comparison', userCTRL.getFirstListOfChoices);
 Router.post('/second_choice', userCTRL.getSecondListOfChoices);
 Router.get('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities', userCTRL.getActivitiesToCompare);
 
 //1.10 apply as a service provider
 Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
-
+*/
 
 
 ////////////reda///////////////////
