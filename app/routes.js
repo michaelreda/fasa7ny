@@ -1,8 +1,10 @@
 //add dependencies
 var express= require('express');
-var Router = express.Router();
 var mongoose = require('mongoose');
-var passport = require('passport');
+var Router = express.Router();
+
+//exporting to be used in server.js
+module.exports = function(passport){
 
 
 
@@ -17,6 +19,9 @@ Router.get('/',function(req,res){
   res.send("hello world");
 })
 
+Router.get('/test',function(req,res){
+  res.send("bye world");
+})
 
 ////////////waseem///////////////////
 
@@ -38,10 +43,10 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////sherrie///////////////////
-Router.get('/user_Login',userCTRL.login );
-Router.post('/user_Login', passport.authenticate('login', {
+//Router.get('/user_Login',userCTRL.login );
+Router.post('/user_Login', passport.authenticate('local-login', {
     successRedirect: '/',
-    failureRedirect: '/',
+    failureRedirect: '/test',
     failureFlash : true
   }));
 
@@ -57,5 +62,5 @@ Router.post('/user_Login', passport.authenticate('login', {
 ////////////kareem///////////////////
 
 
-//exporting to be used in server.js
-module.exports = Router;
+
+return Router;}
