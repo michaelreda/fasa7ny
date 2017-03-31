@@ -105,7 +105,7 @@ getActivitiesToCompare:function(req, res){
       }
     },
 
-  
+
 login: function(req,res){
 
 //var isValidPassword = function(user, password){
@@ -203,15 +203,39 @@ subscribe: function(req,res){
 },
 
 //2.13 user contacts platform
-/*contactPlatform: function (req,res){
+contactPlatform: function (req,res){
   var logInUser=req.session.loggedInUser._id;
-  let message=new message();
-  message.fromId=logInUser;
-  message.
-  message.isSeen
+  message.findOne({fromId:logInUser}).exec(function(err, msg){
+    if(err){
+      res.send(err);
+    }
+    else{
+      if(!msg){
+        let msg=new message();
+        message.fromId=logInUser;
+        message.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
+        message.isSeen=false;
+      }
+      else{
+        msg.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
+        msg.isSeen=false;
 
-  message.save()
-}*/
+      }
+
+msg.save(function(err){
+  if(err)
+  console.log(err);
+  else {
+    res.send(200);
+  }
+})
+
+
+
+    }
+  })
+
+},
 
 
 //2.2 As a logged in user I can view

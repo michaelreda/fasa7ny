@@ -15,7 +15,7 @@ app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUni
 app.use(passport.initialize());
 app.use(passport.session());
 mongoose.connect(DB_URI);
-require('./app/config/passport')(passport); 
+require('./app/config/passport')(passport);
 
 app.use(require('./app/routes')(passport));
 
