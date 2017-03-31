@@ -13,7 +13,7 @@ message:[{
 isSeen:{
   type:Boolean,
   required:true
-})
+}})
 
 var Message = mongoose.model("message", messageSchema);
 

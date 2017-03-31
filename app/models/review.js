@@ -20,7 +20,7 @@ rate:{
 review:{
   type:String,
   required:true
-})
+}})
 
 var Review = mongoose.model("interest", reviewSchema);
 

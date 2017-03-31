@@ -5,6 +5,9 @@ title:{
   type:String,
   required:true
 },
+serviceProviderAccountId:{
+  type:String
+},
 description:{
   type:String,
   required:true
@@ -50,10 +53,16 @@ ratingCount:{
   type:Number
 },
 banned:{
-  type:Number, default = 0
+  type:Number,
+  default: 0,
   required:true
+},
+subscribedUsers:[{
+  type:mongoose.Schema.Types.ObjectId,ref:'user',
+  required:false
+}]
 })
 
 var ServiceProvider = mongoose.model("serviceProvider", serviceProviderSchema);
 
-module.exports = serviceProvider;
+module.exports = ServiceProvider;
