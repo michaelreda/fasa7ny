@@ -137,7 +137,7 @@ passport.use('login', new LocalStrategy({
 viewAllChats:function(req, res){
 
 Message.find(function(err, messages){
-	
+
 	if(err){
 	     res.send(err.message);
     }else
@@ -177,7 +177,7 @@ deleteLogs: function(req,res){
 viewChatMessages:function(req, res){
 
 Message.findOne({_id: req.body.messageId }, function(err, message){
-	
+
 	if(err){
 	     res.send(err.message);
     }else
@@ -187,6 +187,27 @@ Message.findOne({_id: req.body.messageId }, function(err, message){
 		}
 })
 
+},
+
+updateBanStatus:function(req,res){
+if (!req.body.isBanUser) {
+ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err){
+  if(err)
+      res.send(err.message);
+  else
+      res.send('ban successful');
+
+})
+} else {
+  User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err){
+    if(err)
+        res.send(err.message);
+    else
+        res.send('ban successful');
+
+  })
+
+}
 }
 }
 
