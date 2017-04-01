@@ -10,7 +10,7 @@ module.exports = function(passport){
 var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
-//var activityCTRL = require('./controllers/activityCTRL');
+var adminCTRL= require('./controllers/adminCTRL');
 
 
 // router configuration

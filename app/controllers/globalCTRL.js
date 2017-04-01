@@ -17,8 +17,11 @@ banDecrement:function(){
           }, {
             multi: true
           });
-}
+},
 
+sendNewsletter: function(){
+
+}
 
 }
 

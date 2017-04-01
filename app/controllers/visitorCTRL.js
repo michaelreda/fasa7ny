@@ -3,6 +3,7 @@ let User            = require('../models/user');
 let Booking         = require('../models/booking');
 let Activity        = require('../models/activity');
 let Offer           = require('../models/offer');
+let Account           = require('../models/account');
 
 
 
@@ -191,7 +192,7 @@ if(req.body.page){
 }
 
 ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
-	
+
 	if(err){
 
 	     res.send(err.message);
@@ -229,10 +230,10 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 							else{
 							res.send({provider,bestSelledActivity, hottestOffer});
 							}
-								})				
+								})
 									//res.send({provider,bestSelledActivity});
 								}
-								})	
+								})
 								})
 							}
 })
@@ -258,6 +259,24 @@ if(err){
 			}
 })
 }
+,
+
+signupForNewsletter:function(req,res){
+  let newAccount = new Account();
+  newAccount.userName=newAccount._id;
+  newAccount.password=newAccount._id;
+  newAccount.email=req.body.email;
+  newAccount.type=2;
+  newAccount.save(function(err){
+    if(err)
+    res.send(err);
+    else {
+      res.send(200);
+    }
+  })
+}
+
+
 
 }
 module.exports = visitorCTRL;
