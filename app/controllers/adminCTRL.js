@@ -1,12 +1,46 @@
-
 let Log = require('../models/log.js');
 let Complain = require('../models/complain');
 let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
-let Account = require('../models/account');
+let Account         = require('../models/account');
+let Message         = require('../models/message');
+
+
 
 let adminCTRL={
 
+ viewAllChats:function(req, res){
+
+Message.find(function(err, messages){
+	
+	if(err){
+	     res.send(err.message);
+    }else
+        {
+			res.send(messages);
+		}
+})
+
+},
+
+
+viewChatMessages:function(req, res){
+
+Message.findOne({_id: req.body.messageId }, function(err, message){
+	
+	if(err){
+	     res.send(err.message);
+    }else
+        {
+			message.isSeen=true;
+			res.send(message);
+		}
+})
+
+},
+ 
+ 
+ 
   viewComplains:function(req,res){
     Complain.find(function(err, complain){
 
@@ -60,8 +94,7 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec
 removeComplain:function(req,res){
 Complain.findOne({_id:req.params.complainId},function(err,val){
   if(err){
-
-  }
+ }
   else{
     if(val.isSeen){
   Complain.remove(val).exec(function(err){
@@ -69,9 +102,9 @@ Complain.findOne({_id:req.params.complainId},function(err,val){
         res.send(err.message);
     else
         res.render('complain deleted'.send);
-      }
+      })
     }
-})
+} 
 })
 },
 viewServiceProviderRequests:function(req,res){
@@ -209,6 +242,7 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.b
 
 }
 }
+
 }
 
 module.exports = adminCTRL;

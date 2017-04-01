@@ -55,7 +55,9 @@ banned:{
   type:Number,
   default: 0,
   required:true
-}})
+},
+wishlist:[{type:mongoose.Schema.Types.ObjectId,ref:'activity'}]
+});
 
 var User = mongoose.model("user", userSchema);
 

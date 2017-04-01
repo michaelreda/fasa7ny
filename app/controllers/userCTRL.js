@@ -277,6 +277,18 @@ deleteMyProfile: function(req,res){
 
 }
 ,
+userAddToWishList:function(req,res){
+User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(){
+    res.send('should redirect to userLoggedinHomepage')
+});
+
+},
+
+userDropFromWishList:function(req, res){
+User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity}}).exec(function(){
+    res.send('should redirect to userLoggedinHomepage')
+});
+},
   //2.3 As a logged in user I can rate/review activities after check-in
   //thus in the view we should handle to hide rating ability unless u checked in
   rateReviewActivity: function(req,res){

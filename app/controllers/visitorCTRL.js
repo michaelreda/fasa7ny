@@ -1,6 +1,10 @@
 let ServiceProvider = require('../models/serviceProvider');
 let User            = require('../models/user');
 let Booking         = require('../models/booking');
+let Activity        = require('../models/activity');
+let Offer           = require('../models/offer');
+
+
 
 let visitorCTRL={
 //1.9
@@ -178,16 +182,23 @@ shareOnSocialMedia:function(req, res){
 	},
 //1.2
 viewAllServiceProviders:function(req, res){
+if(!req.session.pageID){
+	req.session.pageID=1;
 
-ServiceProvider.find(	function(err, providers){
+}
+if(req.body.page){
+	req.session.pageID=req.body.page;
+}
+
+ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
 	
 	if(err){
 
 	     res.send(err.message);
             }else
               {
-									res.send( providers);
-							}
+					res.send(providers);
+					}
 })
 
 },
@@ -201,30 +212,37 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 .populate({path: 'media'})
 .populate({path: 'previousClients'})
 .exec( function(err, provider){
-if(err){
-
-	     res.send(err.message);
-            }else
-              {
-								Booking.find({serviceProviderId: req.body.providerId}).sort({'activityId':-1})
-								.limit(1).exec(function(err,booking){
-									
-
-								})
-									res.send(provider);
+  if(err){
+	res.send(err.message);
+     }else   {
+			Booking.find({serviceProviderId: req.body.providerId}).sort({'activityId':-1})
+			.limit(1).exec(function(err,booking){
+			Activity.findOne({_id:booking.activityId},function(err,bestSelledActivity){
+				if(err){
+			    	res.send(err.message);
+					   }
+					else{
+					Offer.find().sort({'_id':-1}).limit(1).populate({path: 'activities'}).exec(function(err, hottestOffer){
+						if(err){
+						res.send(err.message);
 							}
-
+							else{
+							res.send({provider,bestSelledActivity, hottestOffer});
+							}
+								})				
+									//res.send({provider,bestSelledActivity});
+								}
+								})	
+								})
+							}
 })
-
 },
 
 
 viewFAQ:function(req,res){
-
-res.render("viewFAQ", {});
-
-
-},
+	res.render("viewFAQ", {});
+	//viewFAQ is a static HTML page
+	},
 
 
 registerAsUser:function(req, res){
@@ -233,20 +251,13 @@ let user=new User(req.body);
 user.save(function(err, user){
 
 if(err){
-
-	     res.send(err.message);
-            }else
-              {
-									res.redirect('/');
-							}
-
-
+	 res.send(err.message);
+        }else
+            {
+			res.redirect('/');
+			}
 })
-
 }
-
-
-
 
 }
 module.exports = visitorCTRL;
