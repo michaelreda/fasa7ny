@@ -46,6 +46,23 @@ Router.post('/user_Login', passport.authenticate('login', {
 
 ////////////andrea///////////////////
 
+//1.2 view service providers
+Router.get('/view_all_service_providers', visitorCTRL.viewAllServiceProviders);
+Router.post('/view_service_provider', visitorCTRL.viewServiceProvider);
+//1.7 view FAQ
+Router.get('/view_FAQ', visitorCTRL.viewFAQ);
+//1.4 user registration
+
+
+//2.10 user wishlists
+Router.post('/add_to_wishlist', userCTRL.userAddToWishList);
+Router.post('/drop_from_wishlist', userCTRL.userDropFromWishList);
+//4.7 messages
+Router.get('/view_all_chats', adminCTRL.viewAllChats);
+Router.post('/view_chat_history', adminCTRL.viewChatMessages);
+
+
+
 
 ////////////mariam///////////////////
 

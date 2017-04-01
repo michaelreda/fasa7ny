@@ -115,7 +115,20 @@ deleteMyProfile: function(req,res){
     })
 
 }
+,
+userAddToWishList:function(req,res){
+User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(){
+    res.send('should redirect to userLoggedinHomepage')
+});
 
+},
+
+userDropFromWishList:function(req, res){
+User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity}}).exec(function(){
+    res.send('should redirect to userLoggedinHomepage')
+});
+    
+}
 }
 
 module.exports=userCTRL;
