@@ -3,6 +3,7 @@ let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
 let Activity = require('../models/activity');
 let Message=require('../models/message.js');
+let Booking=require('../models/booking.js');
 
 let userCTRL = {
 
@@ -176,6 +177,9 @@ changePrivacy: function(req,res){
     }
   })
 },
+
+
+//2.4 user subscribes to a service provider
 
 subscribe: function(req,res){
   var serviceProviderID=req.session.serviceProviderID._id;
@@ -434,6 +438,53 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
     }
     else {
       res.render("viewHistoryBookings",bookings);
+    }
+  })
+},
+ //2.7 reserve a booking for an activity
+bookActivity:function(req,res){
+  //req. is of type activity
+  let newBooking=new booking();
+  newBooking.userId=req.session.loggedInUser._id;
+  newBooking.serviceProviderId=req.body.serviceProviderId;
+  newBooking.activityId=req.body._id;
+  newBooking.isHolding=true;
+  newBooking.price=req.body.price; //chosen act is with price in the req
+  newBooking.time=req.body.time; //chosen activity is with time from the req.
+
+  res.render("paymentPage", newBooking);
+  // where payment method will be called
+
+  Booking.save(function(err){
+    if(err)
+    console.log(err);
+    else {
+      req.session.bookingIdSession=newBooking;
+      res.send(200);
+
+    }
+
+
+  })
+},
+ //2.7.1 cancel booking
+ //view bookiing method ??
+cancelBooking: function(req,res){
+  Booking.findOne({"_id":req.body._id}, function(err, booking){
+    if(err){
+      res.send(err);
+    }
+    else{
+      if(req.body.time < newDate().getTime()){
+        booking.remove().exec(function(err){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.send("Booking is cancelled");
+          }
+        })
+      }
     }
   })
 }

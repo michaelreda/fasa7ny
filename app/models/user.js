@@ -12,6 +12,10 @@ lastName:{
 userAccountId:{
   type:String,
 },
+numberOfLogins:{
+  type:Number,
+  default:0
+},
 birthDate:{
   type:Date,
   required:true

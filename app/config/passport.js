@@ -2,6 +2,8 @@ var LocalStrategy   = require('passport-local').Strategy;
 
 // load up the user model
 var Account = require('../models/account.js');
+var User=require('../models/user.js');
+
 module.exports = function(passport) {
 
   // used to serialize the user for the session
@@ -68,21 +70,31 @@ module.exports = function(passport) {
 
          // find a user whose email is the same as the forms email
          // we are checking to see if the user trying to login already exists
-         Account.findOne({ 'userName' :  userName }, function(err, user) {
+         Account.findOne({ 'userName' :  userName }, function(err, account) {
              // if there are any errors, return the error before anything else
              if (err)
                  return done(err);
 
              // if no user is found, return the message
-             if (!user)
+             if (!account)
                  return done(null, false); // req.flash is the way to set flashdata using connect-flash
 
              // if the user is found but the password is wrong
-             if (!user.validPassword(password))
+             if (!account.validPassword(password))
                  return done(null, false); // create the loginMessage and save it to session as flashdata
 
              // all is well, return successful user
-             return done(null, user);
+             if(account.type==0){
+               User.update({userAccountId:_id},{$set:{numberOfLogins:numberOfLogins+1}}).exec(function(err){
+                 if(err){
+                   res.send(err);
+                 }
+                 else{
+                   res.send("succcessful LogIn");
+                 }
+               })
+             }
+             return done(null, account);
          });
 
      }));

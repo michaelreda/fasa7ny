@@ -38,7 +38,7 @@ media:[{
 }],
 previousClients:[{
   type:mongoose.Schema.Types.ObjectId,ref:'user',
-  required:true
+  required:true 
 }],
 Approved:{
   type:Number

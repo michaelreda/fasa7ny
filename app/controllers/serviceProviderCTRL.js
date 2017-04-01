@@ -1,6 +1,8 @@
 let Activity = require('../models/activity.js');
 let ServiceProvider = require('../models/serviceProvider');
 let Account = require('../models/account');
+let Booking=require('../models/booking.js');
+let User=require('../models/user.js');
 
 let ServiceProviderCTRL = {
 //As a service provider I shall add activities that my firm provides so that I can schedule them for my clients.
@@ -192,6 +194,44 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
+},
+
+viewBookings:function(req,res){ //false condition
+  Booking.find(function(err,bookings){
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.send(bookings);
+    }
+  })
+},
+
+confirmCheckIn:function(req,res){
+  //req. is a booking
+  Booking.update({_id:req.body._id},{$set:{isConfirmed:true}}).exec(function(err){
+    if(err){
+      res.send(err);
+    }
+    else{
+      ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
+        if(err){
+          res.send(err);
+        }
+        else{
+          User.findOne({"_id":req.body.userId},function(err, user){
+            if(err){
+              res.send(err);
+            }
+            else{
+              sp.previousClients.push(user._id);
+            }
+          })
+        }
+      })
+      res.send("Booking is confirmed");
+    }
+  })
 }
 
 

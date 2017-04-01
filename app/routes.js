@@ -10,6 +10,7 @@ module.exports = function(passport){
 var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
+var adminCTRL=require('./controllers/adminCTRL');
 //var activityCTRL = require('./controllers/activityCTRL');
 
 
@@ -66,6 +67,9 @@ Router.get('/logout', function(req, res){
     req.session.regenerate(function(err){});
     res.redirect('/');
   });
+
+//3.6 confirm checkIns
+Router.post('/bookings', serviceProviderCTRL.viewBookings);
 
 ////////////youssef///////////////////
 
