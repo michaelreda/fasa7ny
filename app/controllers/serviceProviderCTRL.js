@@ -1,6 +1,7 @@
 let Activity = require('../models/activity.js');
 let ServiceProvider = require('../models/serviceProvider');
 let Account = require('../models/account');
+let Offer = require('../models/offer');
 
 let ServiceProviderCTRL = {
 //As a service provider I shall add activities that my firm provides so that I can schedule them for my clients.
@@ -192,12 +193,80 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
-}
+},
 
 
 
 
+//karim and andrea's code
 
+viewAddOffer: function(req,res){
+        ServiceProvider.findOne({_id: req.session.serviceProvider._id})
+        .populate({path: 'activities'})
+        .exec(function(err,provider){
+            
+        })
+
+        res.render('viewAddOffer',provider.activities);
+    },
+    AddOffer:function(req,res){
+        let offer = new Offer(req.body);
+        offer.save(function(err,offer){
+            if(err){
+                res.send(err.message);
+            }else{
+                //ServiceProvider.update({_id: req.session.serviceProvider._id},{$push: {}})
+                res.send('offer added');//same redirection as update
+            }
+        })
+    },
+
+    deleteOffer:function(req,res){
+        Offer.findOne({_id:req.body.offerId},function(err,offer){
+        if(err){
+
+        }else{    
+            Offer.remove(offer).exec(function(err){
+            if(err)
+                res.send(err.message);
+            else
+                res.send('offer deleted');//same redirection as update
+            })
+        }
+        })
+    },
+    updateOffer: function (req, res) {
+        Offer.update({ _id: req.body.offerId }, { $set: { 'title': req.body.title,'description': req.body.description,'discount': req.body.discount,
+        'deadline': req.body.deadline,'activities': req.body.activities,'isActive': req.body.isActive }})
+        .exec(function (err) {
+                if (err)
+                    res.send(err.message);
+                else
+                    res.send('should redirect to service provider logged in page');
+            })
+    },
+
+    viewHoldingReservations:function(req, res){
+
+    Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
+	//when a booking is canceled, isHolding is set to false
+	if(err){
+
+	     res.send(err.message);
+            }else
+              {
+
+									res.send( bookings);
+							}
+    })
+
+    },
+
+    applyToGolden:function(req,res){
+        ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(){
+            res.send('should redirect to serviceProvider home page');
+        });
+    }
 
 
 
