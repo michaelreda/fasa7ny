@@ -8,8 +8,8 @@ firstName:{
 lastName:{
   type:String,
   required:true
-})
+}})
 
 var Admin = mongoose.model("interest", adminSchema);
 
-module.exports = admin;
+module.exports = Admin;

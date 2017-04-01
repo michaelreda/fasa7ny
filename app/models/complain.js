@@ -20,8 +20,8 @@ complain:{
 isSeen:{
   type:Boolean,
   required:true
-})
+}})
 
 var Complain = mongoose.model("complain", complainSchema);
 
-module.exports = complain;
+module.exports = Complain;

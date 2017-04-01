@@ -1,5 +1,6 @@
-let Complain        = require('../models/complain');
-let User            = require('../models/user');
+let Log = require('../models/log.js');
+let Complain = require('../models/complain');
+let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
 let Account         = require('../models/account');
 let Message         = require('../models/message');
@@ -165,6 +166,81 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
+},
+viewAllChats:function(req, res){
+
+Message.find(function(err, messages){
+
+	if(err){
+	     res.send(err.message);
+    }else
+        {
+			res.send(messages);
+		}
+})
+
+},
+//4.5 admin views system logs
+viewSystemLogs: function(req,res){
+  Log.find(function(err, log){
+
+        if(err)
+            res.send(err.message); //display messages
+        else
+            res.render('viewSystemLogs',{"logs":log});
+    })
+},
+
+
+updateLogs: function(req,res){
+// will not be done, delete from SRS
+},
+
+//4.5 admin deletes system logs
+deleteLogs: function(req,res){
+  Log.remove(function(err, log){
+    if(err)
+      res.send(err.message);
+    else {
+       res.render('logPage');
+    }
+  })
+},
+
+viewChatMessages:function(req, res){
+
+Message.findOne({_id: req.body.messageId }, function(err, message){
+
+	if(err){
+	     res.send(err.message);
+    }else
+        {
+			message.isSeen=true;
+			res.send(message);
+		}
+})
+
+},
+
+updateBanStatus:function(req,res){
+if (!req.body.isBanUser) {
+ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err){
+  if(err)
+      res.send(err.message);
+  else
+      res.send('ban successful');
+
+})
+} else {
+  User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err){
+    if(err)
+        res.send(err.message);
+    else
+        res.send('ban successful');
+
+  })
+
+}
 }
 
 }

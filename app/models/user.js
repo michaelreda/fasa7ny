@@ -9,6 +9,9 @@ lastName:{
   type:String,
   required:true
 },
+userAccountId:{
+  type:String,
+},
 birthDate:{
   type:Date,
   required:true
@@ -18,7 +21,7 @@ age:{
   required:true
 },
 gender:{
-  type:Char,
+  type:Number,
   required:true
 },
 privacy:{
@@ -49,12 +52,13 @@ location:[{
   type:mongoose.Schema.Types.String,
 }],
 banned:{
-  type:Number, default = 0
+  type:Number,
+  default: 0,
   required:true
 },
 wishlist:[{type:mongoose.Schema.Types.ObjectId,ref:'activity'}]
-)
+});
 
 var User = mongoose.model("user", userSchema);
 
-module.exports = user;
+module.exports = User;

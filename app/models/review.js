@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 
 var reviewSchema = mongoose.Schema({
-time:{
-  type:Date,
-  required:true
-},
+time:{ type: Date, default: Date.now },
 userId:{
   type:mongoose.Schema.Types.ObjectId,ref:'user',
   required:true
@@ -20,8 +17,8 @@ rate:{
 review:{
   type:String,
   required:true
-})
+}})
 
 var Review = mongoose.model("interest", reviewSchema);
 
-module.exports = review;
+module.exports = Review;

@@ -8,13 +8,13 @@ fromId:{
 message:[{
   isUser:{type:Boolean},
   message:{type:String},
-  time:{type:Date},
+  time:{type:String},
 }],
 isSeen:{
   type:Boolean,
   required:true
-})
+}})
 
 var Message = mongoose.model("message", messageSchema);
 
-module.exports = message;
+module.exports = Message;

@@ -28,8 +28,8 @@ time:{
 isCancelled:{
   type:Boolean,
   required:true
-})
+}})
 
 var Booking = mongoose.model("booking", bookingSchema);
 
-module.exports = booking;
+module.exports = Booking;

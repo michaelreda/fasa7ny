@@ -1,72 +1,82 @@
 var mongoose = require('mongoose');
 
 var activitySchema = mongoose.Schema({
-   
+
 
     title:{
         type:String,
         required:true,
-        unique:false 
+        unique:false
     },
     type:{
         type:String,
         required:true,
+        unique:false
+    },
+    isOffer:{
+        type:Boolean,
+        required:false,
         unique:false 
     },
     serviceProviderId:{
         type:String,
         required:true,
-        unique:false   
+        unique:false
     },
-     media:{
-        type:[{type:String,url:String}],
-        required:false, 
-        unique:false  
-    },
-   prices:{
-        type:[{numberOfClients:Number,price:Number}],
-        required:true,  
-        unique:false 
-    },
+     media:[{type:String,
+            url:String }],
+
+   prices:[{
+        numberOfClients:Number,
+        price:Number,
+    }],
     durationInMinutes:{
         type:Number,
-        required:true,  
-        unique:false 
+        required:true,
+        unique:false
     },
-    timings:{
-        type:[{day:String,startTime:Date}],
-        required:false,  
-        unique:false 
-    },
+    timings:[{day:String,
+      startTime:Date}],
      minAge:{
         type:Number,
-        required:false,  
-        unique:false 
+        required:false,
+        unique:false
     },
     maxAge:{
         type:Number,
-        required:false,  
-        unique:false 
+        required:false,
+        unique:false
     },
     minClientNumber:{
         type:Number,
-        required:true,  
-        unique:false 
+        required:true,
+        unique:false
     },
     maxClientNumber:{
         type:Number,
-        required:true,  
-        unique:false 
+        required:true,
+        unique:false
     },
     rating:{
         type:Number,
-        required:false,  
-        unique:false 
+        required:false,
+        unique:false
     },
     ratingCount:{
         type:Number,
         required:false,  
         unique:false 
+    },
+    location:{
+        type:String,
+        required:true,  
+        unique:false 
+    },
+    theme:{
+        type:String,
+        required:true,  
+        unique:false 
+
     }
 
 
