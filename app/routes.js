@@ -11,7 +11,7 @@ var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
 var adminCTRL= require('./controllers/adminCTRL');
-//var activityCTRL = require('./controllers/activityCTRL');
+
 
 
 // router configuration
