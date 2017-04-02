@@ -8,9 +8,11 @@ var passport = require('passport');
 var schedule = require('node-schedule');
 var globalCTRL = require('./app/controllers/globalCTRL');
 
-//configure app
 
-var job = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
+var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
+var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
+
+//configure app
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({extended:false})); //this line must be on top of app config
