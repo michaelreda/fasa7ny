@@ -5,14 +5,17 @@ let Booking=require('../models/booking.js');
 let User=require('../models/user.js');
 
 let ServiceProviderCTRL = {
-//As a service provider I shall add activities that my firm provides so that I can schedule them for my clients.
+
+
+
+//3.2 As a service provider I shall add activities that my firm provides so that I can schedule them for my clients.
 addActivity : function(req,res){
 if(!req.body.title|!req.body.type|!req.body.prices|!req.body.duration|!req.body.timings|!req.body.minClientNumber|!req.body.maxClientNumber){
   res.send(404);
 }
 else{
-let newActivity = new Activity({"title" :req.body.title,"type":req.body.type,"serviceProviderId":req.session.serviceProviderId,"prices":req.body.prices,"timings":req.body.timings,"durationInMinutes":req.body.duration,"minClientNumber":req.body.minClientNumber,
-"maxClientNumber":req.body.maxClientNumber,"media":[],"prices":[],"rating":0,"ratingCount":0});
+let newActivity = new Activity({"title" :req.body.title,"type":req.body.type,"serviceProviderId":req.session.serviceProviderId, "timings":req.body.timings,"durationInMinutes":req.body.duration,"minClientNumber":req.body.minClientNumber,
+"maxClientNumber":req.body.maxClientNumber,"media":[],"prices":[],"rating":0,"ratingCount":0, "location":req.body.location, "theme":req.body.theme});
 if(req.files.length>0){
   for (var i = 0; i < req.files.length; i++) {
       newActivity.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
@@ -48,7 +51,7 @@ newActivity.save(function(err){
 
 //3.2.1 As a service provider I can update my activities
 updateActivity:function(req,res){
-  Activity.findOne({"_id":req.session.activityID},function(err, activity){
+  Activity.findOne({"_id":req.body.activityID},function(err, activity){
     if(req.body.title){
     activity.title=req.body.title;
     }
@@ -61,9 +64,16 @@ updateActivity:function(req,res){
     if(req.body.maxClientNumber){
     activity.maxClientNumber=req.body.maxClientNumber;
     }
+    if(req.body.location){
+    activity.location=req.body.location;
+    }
+    if(req.body.theme){
+    activity.theme=req.body.theme;
+    }
+
 
     if(req.files.length>0){
-      activity.media=[];
+      activity.media=[]; //assuming that the whole array will be sent again
       for (var i = 0; i < req.files.length; i++) {
           activity.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
       }
@@ -95,7 +105,7 @@ updateActivity:function(req,res){
 },
 //3.2.2 As a service provider I can delete my activities
 deleteActivity: function(req,res){
-    Activity.findOne({"_id":req.session.activityID}).remove().exec(function(err){
+    Activity.findOne({"_id":req.body.activityID}).remove().exec(function(err){
       if(err){
         res.send(err);
       }
@@ -107,7 +117,7 @@ deleteActivity: function(req,res){
 },
 //3.2.3 As a service provider I can reschedule my activities
 rescheduleActivity:function(req,res){
-  Activity.findOne({"_id":req.session.activityID},function(err, activity){
+  Activity.findOne({"_id":req.body.activityID},function(err, activity){
 
     if(req.body.duration){
     activity.durationInMinutes=req.body.duration;
@@ -196,8 +206,8 @@ passport.use('login', new LocalStrategy({
 }));
 },
 
-viewBookings:function(req,res){ //false condition
-  Booking.find(function(err,bookings){
+viewBookings:function(req,res){
+  Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
     if(err){
       res.send(err);
     }
@@ -209,7 +219,7 @@ viewBookings:function(req,res){ //false condition
 
 confirmCheckIn:function(req,res){
   //req. is a booking
-  Booking.update({_id:req.body._id},{$set:{isConfirmed:true}}).exec(function(err){
+  Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err){
     if(err){
       res.send(err);
     }
@@ -219,14 +229,14 @@ confirmCheckIn:function(req,res){
           res.send(err);
         }
         else{
-          User.findOne({"_id":req.body.userId},function(err, user){
-            if(err){
-              res.send(err);
-            }
-            else{
-              sp.previousClients.push(user._id);
-            }
-          })
+              sp.previousClients.push(req.body.userId);
+              sp.save(function(err){
+                if(err)
+                res.send(err);
+                else{
+                  res.send(200);
+                }
+              });
         }
       })
       res.send("Booking is confirmed");

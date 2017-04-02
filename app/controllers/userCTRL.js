@@ -127,10 +127,6 @@ changePassword: function(req,res){
 )
 },
 
-//From Tweety recover password
-
-
-//2.4 user subscribes to a service provider
 
 //2.11 As a logged in user I can change my privacy to control who sees my information
 changePrivacy: function(req,res){
