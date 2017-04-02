@@ -54,12 +54,18 @@ Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
 
 
 ////////////sherrie///////////////////
-//Router.get('/user_Login',userCTRL.login );
+
+//LogIn Passport
+Router.get('/login', function(req, res){
+  res.render('login.ejs', { message: req.flash('loginMessage') });
+});
+
 Router.post('/user_Login', passport.authenticate('local-login', {
     successRedirect: '/',
     failureRedirect: '/test',
     failureFlash : true
   }));
+
 
 //2.1.3 log out
 Router.get('/logout', function(req, res){
@@ -68,11 +74,26 @@ Router.get('/logout', function(req, res){
     res.redirect('/');
   });
 
+
+
+  
+
 //3.6 confirm checkIns
 Router.post('/bookings', serviceProviderCTRL.viewBookings);
 
 ////////////youssef///////////////////
 
+//SignUp passport
+Router.get('/signup', function(req, res){
+		res.render('signup.ejs', { message: req.flash('signupMessage') });
+	});
+
+
+	Router.post('/signup', passport.authenticate('local-signup', {
+		successRedirect: '/',
+		failureRedirect: '/signup',
+		failureFlash: true
+	}));
 
 ////////////andrea///////////////////
 
@@ -97,17 +118,6 @@ Router.post('/view_chat_history', adminCTRL.viewChatMessages);
 ////////////mariam///////////////////
 
 
-// Router.get('/', function(req, res) {
-//     // Display the Login page with any flash message, if any
-//     res.render('loginpage', { message: req.flash('message') });
-//   });
-
-//   /* Handle Login POST */
-//   Router.post('/', passport.authenticate('login', {
-//     successRedirect: '/',
-//     failureRedirect: '/',
-//     failureFlash : true
-//   }));
 
 ////////////kareem///////////////////
 
