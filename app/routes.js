@@ -60,10 +60,14 @@ Router.get('/login', function(req, res){
   res.render('login.ejs', { message: req.flash('loginMessage') });
 });
 
-Router.post('/user_Login', passport.authenticate('local-login', {
-    successRedirect: '/',
+Router.post('/login', passport.authenticate('local-login', {
     failureRedirect: '/test',
     failureFlash : true
+  },function(req,res){
+    if(req.body.type==0)
+    res.redirect('user_login');
+    else
+    res.redirect('serviceProvider_login');
   }));
 
 
@@ -76,7 +80,7 @@ Router.get('/logout', function(req, res){
 
 
 
-  
+
 
 //3.6 confirm checkIns
 Router.post('/bookings', serviceProviderCTRL.viewBookings);
@@ -85,15 +89,19 @@ Router.post('/bookings', serviceProviderCTRL.viewBookings);
 
 //SignUp passport
 Router.get('/signup', function(req, res){
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+		res.render('signup');
 	});
 
 
 	Router.post('/signup', passport.authenticate('local-signup', {
-		successRedirect: '/',
 		failureRedirect: '/signup',
 		failureFlash: true
-	}));
+	},function(req,res){
+    if(req.body.type==0)
+    res.redirect('/user_signup');
+    else
+    res.redirect('/serviceProvider_signup');
+  }));
 
 ////////////andrea///////////////////
 

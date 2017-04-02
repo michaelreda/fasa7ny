@@ -10,7 +10,7 @@ lastName:{
   required:true
 },
 userAccountId:{
-  type:String,
+  type:mongoose.Schema.Types.ObjectId,ref:'account'
 },
 numberOfLogins:{
   type:Number,
