@@ -62,6 +62,39 @@ let ServiceProviderCTRL = {
 
     },
 
+//1.10 a serviceProvider can apply 
+        // createServiceProviderAccount:function(req, res){
+        //       let account = new Account(req.body);
+        //       account.type=1;
+        //       account.save(function(err, account){
+        //           if(err){
+        //               res.send(err.message);
+        //           }
+        //           else{
+        //               req.session.account=account;
+        //               res.send(200);
+        //           }
+        //       });
+        //   },
+     createServiceProvider:function(req, res){
+        let serviceProvider = new ServiceProvider(req.body);
+        serviceProvider.serviceProviderAccountId=req.session.account._id;
+        if(req.files.length>0){
+      serviceProvider.media=[];
+      for (var i = 0; i < req.files.length; i++) {
+          serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+      }
+    }
+        serviceProvider.save(function(err, account){
+            if(err){
+                res.send(err.message);
+            }
+            else{
+                req.session.serviceProviderID=serviceProvider._id;
+                res.send(200);
+            }
+        });
+    },
     //tested
     //3.2.1 As a service provider I can update my activities
     updateActivity:function(req,res){
@@ -158,6 +191,7 @@ let ServiceProviderCTRL = {
         if(req.body.timings&&req.body.timings.length>0){
           activity.timings=req.body.timings;
         }
+
 
         activity.save(function(err){
           if(err){console.log(err);
@@ -315,22 +349,6 @@ let ServiceProviderCTRL = {
           res.send('should redirect to serviceProvider home page');
         });
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
