@@ -22,6 +22,8 @@ require('./app/config/passport')(passport);
 
 app.use(require('./app/routes')(passport));
 
+// app.set('view engine', 'ejs');
+
 
 //start the server
 app.listen(8080,function(){

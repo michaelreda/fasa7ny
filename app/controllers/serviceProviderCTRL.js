@@ -126,23 +126,29 @@ rescheduleActivity:function(req,res){
   });
 },
 
-
-  createServiceProviderAccount:function(req, res){
-        let account = new Account(req.body);
-        account.type=1;
-        account.save(function(err, account){
-            if(err){
-                res.send(err.message);
-            }
-            else{
-                req.session.account=account;
-                res.send(200);
-            }
-        });
-    },
+//1.10 a serviceProvider can apply 
+        // createServiceProviderAccount:function(req, res){
+        //       let account = new Account(req.body);
+        //       account.type=1;
+        //       account.save(function(err, account){
+        //           if(err){
+        //               res.send(err.message);
+        //           }
+        //           else{
+        //               req.session.account=account;
+        //               res.send(200);
+        //           }
+        //       });
+        //   },
      createServiceProvider:function(req, res){
         let serviceProvider = new ServiceProvider(req.body);
         serviceProvider.serviceProviderAccountId=req.session.account._id;
+        if(req.files.length>0){
+      serviceProvider.media=[];
+      for (var i = 0; i < req.files.length; i++) {
+          serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+      }
+    }
         serviceProvider.save(function(err, account){
             if(err){
                 res.send(err.message);
@@ -192,26 +198,7 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+},
 
 
 

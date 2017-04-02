@@ -4,6 +4,8 @@ let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
 let Account         = require('../models/account');
 let Message         = require('../models/message');
+let Booking         = require('../models/booking');
+let Activity         = require('../models/activity');
 
 
 
@@ -241,7 +243,55 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.b
   })
 
 }
-}
+},
+    //4.8 analytics
+    getAnalyticsPage:function(req,res){
+      // finding top activity
+      booking.aggregate(
+    {$group : {_id : "$activityId", "count" : {$sum : 1}}},
+    {$sort : {"count" : -1}},
+    {$limit : 1},function(err,topBooking){
+      if(err)
+      {
+        res.sed(err.message)
+      }else
+      {
+                Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+                  if(err)
+                  {
+                    res.send(err.message)
+                  }
+                  else
+                  {
+                          ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
+                      if(err)
+                      {
+                        res.send(err.message)
+                      }
+                      else
+                      {
+                            User.aggregate(
+                            {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                            {$sort : {"count" : -1}},
+                            {$limit : 1},function(err,topUser){
+                                if(err)
+                                {
+                                  res.send(err.message)
+                                }else{
+                                    res.send({topActivity,topSP,topUser});
+                                }
+
+                            })
+
+                          
+                      }
+                       })
+                  }
+                })
+      }
+    }
+)
+    }
 
 }
 

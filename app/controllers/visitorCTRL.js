@@ -257,6 +257,59 @@ if(err){
 			res.redirect('/');
 			}
 })
+},
+
+//1.1 explore differet activities
+
+    getDifferentActivities:function(req,res){
+  req.session.j=1;
+Acitivity.find().limit(10).exec(function(err,Acs)
+{
+        if(err)
+    {
+         res.send(err.message);
+     }
+ else
+
+ {
+        res.send({ACs});
+    }
+})
+},
+
+getDifferentActivitiesnext:function(req,res){
+  req.session.j++;
+Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+{
+        if(err)
+    {
+         res.send(err.message);
+     }
+ else
+
+ {
+        res.send({ACs});
+    }
+})
+},
+
+getDifferentActivitiesprev:function(req,res){
+  if(req.session.J!=1){
+      req.session.j--;
+  }
+
+Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+{
+        if(err)
+    {
+         res.send(err.message);
+     }
+ else
+
+ {
+        res.send({ACs});
+    }
+})
 }
 
 }

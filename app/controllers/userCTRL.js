@@ -436,7 +436,103 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
       res.render("viewHistoryBookings",bookings);
     }
   })
-}
+},
+
+
+
+//2.8 user Complain serviveprovider
+
+  submitUserComplain:function(req,res){
+    let complain = new Complain(req.body);
+
+    complin.save(function(err,complain){
+      if(err)
+      {
+        res.send(err.message);
+      }else {
+        res.send(200)
+      }
+    })
+  },
+
+  viewStatusOfComplain:function(req,res){
+    complain.findOne({_id: req.body.complainId},function(err,comp){
+      if(err)
+      {
+        res.send(err.message)
+      }else{
+        res.send({comp});
+      }
+           
+      
+
+    })},
+
+   updateComplainBody:function(req, res){
+  
+       complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
+                if(err)
+                {
+                    res.send(err.message);
+                }else
+                {
+                    res.send(200);
+                }
+       })
+    },
+
+
+
+//2.5 user add his interests
+
+      addUserInterest:function(req,res){
+        let interest = new Interest(req.body);
+
+        interest.save(function(err,interest){
+      if(err)
+      {
+        res.send(err.message);
+      }else {
+        res.send(200)
+      }
+    })
+
+      },
+
+      deleteUserInterest:function(req,res){
+
+        interest.remove({_id:req.body._id},function(err,removed){
+          if(err)
+          {
+            res.send(err.message);
+          }
+          else
+          {
+            res.send(200);
+          }
+        })
+      },
+
+      viewAllUserInterest:function(req,res){
+        interest.find(function(err,interest){
+          if(err){
+            res.send(err);
+          }
+          else {
+            res.send({interest});
+          }
+        })
+      },
+      
+
+
+
+
+
+
+
+
+
 }
 
 module.exports=userCTRL;
