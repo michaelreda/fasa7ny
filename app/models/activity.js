@@ -16,7 +16,7 @@ var activitySchema = mongoose.Schema({
     isOffer:{
         type:Boolean,
         required:false,
-        unique:false 
+        unique:false
     },
     serviceProviderId:{
         type:String,
@@ -36,7 +36,7 @@ var activitySchema = mongoose.Schema({
         unique:false
     },
     timings:[{day:String,
-      startTime:Date}],
+      startTime:Number}],
      minAge:{
         type:Number,
         required:false,
@@ -64,18 +64,18 @@ var activitySchema = mongoose.Schema({
     },
     ratingCount:{
         type:Number,
-        required:false,  
-        unique:false 
+        required:false,
+        unique:false
     },
     location:{
         type:String,
-        required:true,  
-        unique:false 
+        required:true,
+        unique:false
     },
     theme:{
         type:String,
-        required:true,  
-        unique:false 
+        required:true,
+        unique:false
 
     }
 

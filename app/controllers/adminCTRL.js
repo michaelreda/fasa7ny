@@ -11,38 +11,7 @@ let Activity         = require('../models/activity');
 
 let adminCTRL={
 
- viewAllChats:function(req, res){
 
-Message.find(function(err, messages){
-	
-	if(err){
-	     res.send(err.message);
-    }else
-        {
-			res.send(messages);
-		}
-})
-
-},
-
-
-viewChatMessages:function(req, res){
-
-Message.findOne({_id: req.body.messageId }, function(err, message){
-	
-	if(err){
-	     res.send(err.message);
-    }else
-        {
-			message.isSeen=true;
-			res.send(message);
-		}
-})
-
-},
- 
- 
- 
   viewComplains:function(req,res){
     Complain.find(function(err, complain){
 
@@ -106,7 +75,7 @@ Complain.findOne({_id:req.params.complainId},function(err,val){
         res.render('complain deleted'.send);
       })
     }
-} 
+}
 })
 },
 viewServiceProviderRequests:function(req,res){

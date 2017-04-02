@@ -19,6 +19,6 @@ review:{
   required:true
 }})
 
-var Review = mongoose.model("interest", reviewSchema);
+var Review = mongoose.model("review", reviewSchema);
 
 module.exports = Review;
