@@ -42,7 +42,7 @@ Router.get('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
 Router.get('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 
 
-//4.8 analytics 
+//4.8 analytics
 Router.get('/get_analysis', adminCTRL.getAnalyticsPage);
 
 
@@ -64,6 +64,10 @@ Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
 Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+
+Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
+Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
+
 ////////////morcus///////////////////
 
 

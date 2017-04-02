@@ -6,7 +6,8 @@ title:{
   required:true
 },
 serviceProviderAccountId:{
-  type:String
+  type:mongoose.Schema.Types.ObjectId,ref:'account',
+  required:true
 },
 description:{
   type:String,

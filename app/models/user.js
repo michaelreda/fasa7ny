@@ -10,7 +10,8 @@ lastName:{
   required:true
 },
 userAccountId:{
-  type:String,
+  type:mongoose.Schema.Types.ObjectId,ref:'account',
+  required:true
 },
 birthDate:{
   type:Date,
