@@ -3,7 +3,7 @@ var express= require('express');
 var app=express();
 var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
-//var DB_URI="mongodb://localhost:27017/protoflio";
+var DB_URI_LOCAL="mongodb://localhost:27017/protoflio";
 var DB_URI =  "mongodb://admin:admin@ds147920.mlab.com:47920/fasa7ny";
 var passport = require('passport');
 var schedule = require('node-schedule');
@@ -20,9 +20,12 @@ app.use(require('cookie-parser')());
 app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-mongoose.connect(DB_URI);
+mongoose.connect(DB_URI,function(err){
+  if(err){
+    mongoose.connect(DB_URI_LOCAL);
+  }
+});
 require('./app/config/passport')(passport);
-
 app.use(require('./app/routes')(passport));
 
 // app.set('view engine', 'ejs');

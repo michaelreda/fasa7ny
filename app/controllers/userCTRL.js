@@ -408,13 +408,13 @@ cancelBooking: function(req,res){
       }else{
         res.send({comp});
       }
-           
-      
+
+
 
     })},
 
    updateComplainBody:function(req, res){
-  
+
        complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
                 if(err)
                 {
@@ -468,7 +468,35 @@ cancelBooking: function(req,res){
           }
         })
       }
-      
+      ,
+      unSubscribe: function(req,res){
+        var serviceProviderID=req.session.serviceProvider._id;
+        var loggedInUser= req.session.loggedInUser._id;
+
+
+        ServiceProvider.findOne({ '_id' : serviceProviderID},
+          function(err, providerInstance){
+            if (err){
+              return (err);
+            }
+            else{
+              var index = providerInstance.subscribedUsers.indexOf(loggedInUser);
+              if(index > -1){
+                providerInstance.subscribedUsers.splice(index,1);
+              providerInstance.save(function(err){
+                if(err){
+                  return (err);
+                }
+                else {
+                  req.flash('message', 'You are now unsubscribed from this provider');
+                }
+              })
+            }
+            }
+          }
+      )
+      }
+
 
 
 }
