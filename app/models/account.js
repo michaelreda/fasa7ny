@@ -12,7 +12,7 @@ password:{
   required:true
 },
 type:{
-  type:Number,  //user 0, SP 1
+  type:Number,  //user 0, SP 1, visitor for newsletter 2
   required:true
 },
 email:{
