@@ -13,7 +13,6 @@ var globalCTRL = require('./app/controllers/globalCTRL');
 //configure app
 app.use(bodyParser.urlencoded({extended:true})); //this line must be on top of app config
 app.use(bodyParser.json());
-var job = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
 app.use(require('serve-static')(__dirname + '/../../public'));
