@@ -15,7 +15,7 @@ activityId:{
 },
 isHolding:{
   type:Boolean,
-  required:true
+  required:true //??
 },
 price:{
   type:Number,
@@ -25,9 +25,15 @@ time:{
   type:Date,
   required:true
 },
+isConfirmed:{
+  type:Boolean,
+  required:true,
+  default:false
+},
 isCancelled:{
   type:Boolean,
-  required:true
+  required:true,
+  default:false
 }})
 
 var Booking = mongoose.model("booking", bookingSchema);

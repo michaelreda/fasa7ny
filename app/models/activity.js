@@ -16,7 +16,7 @@ var activitySchema = mongoose.Schema({
     isOffer:{
         type:Boolean,
         required:false,
-        unique:false
+        default:false
     },
     serviceProviderId:{
         type:String,

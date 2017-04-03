@@ -3,6 +3,7 @@ let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
 let Activity = require('../models/activity');
 let Message=require('../models/message.js');
+let Booking=require('../models/booking.js');
 
 let userCTRL = {
 
@@ -106,63 +107,26 @@ getActivitiesToCompare:function(req, res){
     },
 
 
-login: function(req,res){
-
-//var isValidPassword = function(user, password){
-  //return bCrypt.compareSync(password, user.password);
-//}
-
-passport.use('login', new LocalStrategy({
-    passReqToCallback : true
-  },
-  function(req, userName, password, done) {
-
-
-    Account.findOne({ 'userName' :  userName },
-      function(err, user) {
-
-        if (err)
-          return done(err);  // In case of any error, return using the done method
-
-        if (!user){
-          console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
-          return done(null, false,
-                req.flash('message', 'User Not found.'));
-        }
-
-        if (!isValidPassword(user, password)){
-          console.log('Invalid Password');
-          return done(null, false,
-              req.flash('message', 'Invalid Password'));
-        }
-        // User and password both match, return user from
-        // done method which will be treated like success
-        req.session.loggedInUser=user;
-        return done(null, user);
-      }
-    );
-}));
-},
-
 //2.1.1 user changes password
 changePassword: function(req,res){
   var thisUser=req.session.loggedInUser.userAccountId;
   Account.findOne({'_id':thisUser},
       function(err, userInstance){
-        if(err){
+        if(err|!userInstance){
           return (err);
         }
         else{
-          //account.update.......update password
+          if(userInstance.validPassword(req.body.oldPassword))
+          userInstance.password=req.body.newPassword;
+          userInstance.save(function(err){
+            if(err)
+            res.send(err);
+          });
         }
       }
 )
 },
 
-//From Tweety recover password
-
-
-//2.4 user subscribes to a service provider
 
 //2.11 As a logged in user I can change my privacy to control who sees my information
 changePrivacy: function(req,res){
@@ -177,8 +141,11 @@ changePrivacy: function(req,res){
   })
 },
 
+
+//2.4 user subscribes to a service provider
+
 subscribe: function(req,res){
-  var serviceProviderID=req.session.serviceProviderID._id;
+  var serviceProviderID=req.session.serviceProvider._id;
   var loggedInUser= req.session.loggedInUser._id;
 
 
@@ -334,7 +301,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   },
 
   //2.3.2 As a logged in user I can delete my review
-  updateReview: function(req,res){
+  deleteReview: function(req,res){
 
     Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
       if(err){
@@ -359,74 +326,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 
 
   },
-  //2.3 As a logged in user I can rate/review activities after check-in
-  //thus in the view we should handle to hide rating ability unless u checked in
-  rateReviewActivity: function(req,res){
-    //var ratingCount= parseFloat(req.body.ratingCount)+1;
-    //  var newRating= ((ratingCount-1)*parseFloat(req.body.rating)+parseFloat(req.body.inputRating))/ratingCount;
-    var rating= parseFloat(req.body.rating);
-    var ratingCount = parseFloat(req.body.ratingCount);
-    var inputRating = parseFloat(req.body.inputRating);
 
-    var newRating = (rating*ratingCount + inputRating)/(ratingCount+1);
-
-    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
-      if(err)
-      res.send(err.message);
-      else {
-        if(req.body.review){
-          var review= new Review(req.body);
-          review.rate = inputRating;
-          review.save(function(err,project){
-            if(err)
-            res.send(err.message);
-            else {
-              res.send("review submitted successfully");
-            }
-          })
-        }
-      }
-    })
-
-  },
-  //2.3.1 As a logged in user I can change my review
-  updateReview: function(req,res){
-
-    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err){
-      if(err){
-        res.send(err);
-      }
-      else {
-        res.send("review updated successfully");
-      }
-    })
-
-  },
-
-  //2.3.2 As a logged in user I can delete my review
-  updateReview: function(req,res){
-
-    Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
-      if(err){
-        res.send(err);
-      }
-      else {
-        res.send("review deleted successfully");
-      }
-    })},
-
-    //2.3.3 As a logged in user I can check/view my review
-    viewMyReviews: function(req,res){
-
-      Review.find({userId:req.session._id}).populate('activityId').exec(function(err,reviews){
-        if(err){
-          res.send(err);
-        }
-        else {
-          res.send(reviews);
-        }
-      })
-},
   viewHistoryBookings: function(req,res){
   Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
     if(err){
@@ -437,9 +337,54 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
     }
   })
 },
+ //2.7 reserve a booking for an activity
+bookActivity:function(req,res){
+  //req. is of type activity
+  let newBooking=new booking();
+  newBooking.userId=req.session.loggedInUser._id;
+  newBooking.serviceProviderId=req.body.serviceProviderId;
+  newBooking.activityId=req.body._id;
+  newBooking.isHolding=true;
+  newBooking.price=req.body.price; //chosen act is with price in the req
+  newBooking.time=req.body.time; //chosen activity is with time from the req.
+
+  res.render("paymentPage", newBooking);
+  // where payment method will be called
+
+  Booking.save(function(err){
+    if(err)
+    console.log(err);
+    else {
+      req.session.bookingIdSession=newBooking;
+      res.send(200);
+
+    }
 
 
-
+  })
+},
+ //2.7.1 cancel booking
+ //view bookiing method ??
+cancelBooking: function(req,res){
+  Booking.findOne({"_id":req.body._id}, function(err, booking){
+    if(err){
+      res.send(err);
+    }
+    else{
+      if(req.body.time < newDate().getTime()){
+        booking.remove().exec(function(err){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.send("Booking is cancelled");
+          }
+        })
+      }
+    }
+  })
+}
+,
 //2.8 user Complain serviveprovider
 
   submitUserComplain:function(req,res){
@@ -522,15 +467,8 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
             res.send({interest});
           }
         })
-      },
+      }
       
-
-
-
-
-
-
-
 
 
 }

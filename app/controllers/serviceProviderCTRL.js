@@ -16,8 +16,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.body.serviceProviderId,
-        "prices":req.body.prices,
+        "serviceProviderId":req.session.serviceProviderId,
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -57,12 +56,11 @@ let ServiceProviderCTRL = {
 
         });
 
-
       }
 
     },
 
-//1.10 a serviceProvider can apply 
+//1.10 a serviceProvider can apply
         // createServiceProviderAccount:function(req, res){
         //       let account = new Account(req.body);
         //       account.type=1;
@@ -107,21 +105,10 @@ let ServiceProviderCTRL = {
         if(req.body.title){
           activity.title=req.body.title;
         }
-        if(req.body.rating){
-          activity.rating=req.body.rating;
-        }
-        if(req.body.ratingCount){
-          activity.ratingCount=req.body.ratingCount;
-        }
-        if(req.body.serviceProviderId){
-          activity.serviceProviderId=req.body.serviceProviderId;
-        }
         if(req.body.type){
           activity.type=req.body.type;
         }
-        if(req.body.durationInMinutes){
-          activity.durationInMinutes=req.body.durationInMinutes;
-        }
+
         if(req.body.minClientNumber){
           activity.minClientNumber=req.body.minClientNumber;
         }
@@ -134,9 +121,8 @@ let ServiceProviderCTRL = {
         if(req.body.location){
           activity.location=req.body.location;
         }
-
-        if(req.files && req.files.length>0){
-          activity.media=[];
+         if(req.files && req.files.length>0){
+          activity.media=[];//assuming that the whole array will be sent again
           for (var i = 0; i < req.files.length; i++) {
             activity.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
           }
@@ -179,13 +165,14 @@ let ServiceProviderCTRL = {
       })
 
     },
+       
     //tested
     //3.2.3 As a service provider I can reschedule my activities
     rescheduleActivity:function(req,res){
       Activity.findOne({"_id":req.body.activityID},function(err, activity){
 
-        if(req.body.duration){
-          activity.durationInMinutes=req.body.duration;
+        if(req.body.durationInMinutes){
+          activity.durationInMinutes=req.body.durationInMinutes;
         }
 
         if(req.body.timings&&req.body.timings.length>0){
@@ -199,7 +186,6 @@ let ServiceProviderCTRL = {
           else {
             res.send("rescheduled activity succesfully");
           }
-
         });
       });
     },
@@ -218,23 +204,7 @@ let ServiceProviderCTRL = {
         }
       });
     },
-    //tested
-    //media missing
-    createServiceProvider:function(req, res){
-      let serviceProvider = new ServiceProvider(req.body);
-      serviceProvider.serviceProviderAccountId=req.session.account._id;
-      serviceProvider.save(function(err, account){
-        if(err){
-          res.send(err.message);
-        }
-        else{
-          req.session.serviceProviderID=serviceProvider._id;
-          res.send("sp created succesfully");
-        }
-      });
-    },
-
-
+    
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -348,8 +318,44 @@ let ServiceProviderCTRL = {
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(){
           res.send('should redirect to serviceProvider home page');
         });
-      }
+      },
+      viewBookings:function(req,res){
+        Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.send(bookings);
+          }
+        })
+      },
 
+      confirmCheckIn:function(req,res){
+        //req. is a booking
+        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err){
+          if(err){
+            res.send(err);
+          }
+          else{
+            ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
+              if(err){
+                res.send(err);
+              }
+              else{
+                    sp.previousClients.push(req.body.userId);
+                    sp.save(function(err){
+                      if(err)
+                      res.send(err);
+                      else{
+                        res.send(200);
+                      }
+                    });
+              }
+            })
+            res.send("Booking is confirmed");
+          }
+        })
+      }
 
     }
 
