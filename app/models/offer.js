@@ -6,7 +6,7 @@ title:{
   required:true
 },
 description:{
-  type:Number,
+  type:String,
   required:true
 },
 discount:{
@@ -22,7 +22,8 @@ activities:[{
 }],
 isActive:{
   type:Boolean,
-  required:true
+  required:true,
+  default:0
 }})
 
 var Offer = mongoose.model("offer", offerSchema);

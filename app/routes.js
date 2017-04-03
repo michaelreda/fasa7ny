@@ -3,15 +3,14 @@ var express= require('express');
 var mongoose = require('mongoose');
 
 var Router = express.Router();
-
+//var bodyParser = require('body-parser').json();
 //exporting to be used in server.js
 module.exports = function(passport){
 
 var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
-var adminCTRL=require('./controllers/adminCTRL');
-//var activityCTRL = require('./controllers/activityCTRL');
+var adminCTRL= require('./controllers/adminCTRL');
 
 
 // router configuration
@@ -33,7 +32,8 @@ Router.get('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities', userCTRL.getActivitiesToCompare);
 
 //1.10 apply as a service provider
-Router.post('/apply_sp', serviceProviderCTRL.createServiceProviderAccount);
+// Router.post('/apply_sp', serviceProviderCTRL.createServiceProviderAccount);
+
 Router.post('/continue_sp_creation', serviceProviderCTRL.createServiceProvider);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
@@ -42,13 +42,31 @@ Router.get('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
 Router.get('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 
 
+//4.8 analytics
+Router.get('/get_analysis', adminCTRL.getAnalyticsPage);
 
-Router.post('/apply_sp', serviceProviderCTRL.createServiceProvider);
+
+//2.5 user add his interests
+Router.post('/add_user_interest', userCTRL.addUserInterest);
+Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
+Router.post('/view_user_interest', userCTRL.viewAllUserInterest);
 
 
 
 ////////////reda///////////////////
+Router.post('/add_activity', serviceProviderCTRL.addActivity);
+Router.post('/update_activity', serviceProviderCTRL.updateActivity);
+Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
+Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
+Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
+Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
+Router.post('/add_offer', serviceProviderCTRL.addOffer);
+Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
+Router.post('/update_offer', serviceProviderCTRL.updateOffer);
+Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
+Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
+Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
 
 ////////////morcus///////////////////
 
@@ -124,6 +142,26 @@ Router.post('/view_chat_history', adminCTRL.viewChatMessages);
 
 
 ////////////mariam///////////////////
+
+
+
+
+//1.6 read about the platform through the “about us” option
+Router.get('/about_uspage',function(req,res){
+  res.render("aboutus_page.ejs");
+});
+
+// 1.1 A Visitor can explore different activities
+Router.get('/explore_activities', visitorCTRL.getDifferentActivities);
+Router.get('/explore_activities_next', visitorCTRL.getDifferentActivitiesnext);
+Router.get('/explore_activities_prev', visitorCTRL.getDifferentActivitiesprev);
+
+//2.8 user Complain serviveprovider
+Router.post('/complain', userCTRL.submitUserComplain);
+Router.post('/complain_update', userCTRL.updateComplainBody);
+Router.get('/complain_status', userCTRL.viewStatusOfComplain);
+
+
 
 
 

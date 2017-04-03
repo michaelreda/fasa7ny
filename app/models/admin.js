@@ -10,6 +10,6 @@ lastName:{
   required:true
 }})
 
-var Admin = mongoose.model("interest", adminSchema);
+var Admin = mongoose.model("admin", adminSchema);
 
 module.exports = Admin;

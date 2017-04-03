@@ -4,43 +4,14 @@ let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
 let Account         = require('../models/account');
 let Message         = require('../models/message');
+let Booking         = require('../models/booking');
+let Activity         = require('../models/activity');
 
-
+var ObjectId = require('mongoose').Types.ObjectId;
 
 let adminCTRL={
 
- viewAllChats:function(req, res){
 
-Message.find(function(err, messages){
-	
-	if(err){
-	     res.send(err.message);
-    }else
-        {
-			res.send(messages);
-		}
-})
-
-},
-
-
-viewChatMessages:function(req, res){
-
-Message.findOne({_id: req.body.messageId }, function(err, message){
-	
-	if(err){
-	     res.send(err.message);
-    }else
-        {
-			message.isSeen=true;
-			res.send(message);
-		}
-})
-
-},
- 
- 
- 
   viewComplains:function(req,res){
     Complain.find(function(err, complain){
 
@@ -104,7 +75,7 @@ Complain.findOne({_id:req.params.complainId},function(err,val){
         res.render('complain deleted'.send);
       })
     }
-} 
+}
 })
 },
 viewServiceProviderRequests:function(req,res){
@@ -115,20 +86,86 @@ viewServiceProviderRequests:function(req,res){
           res.render('viewServiceProviderRequests',{serviceProvider});
   })
 },
+//tested
+//link sent to be edited when views are ready
 acceptServiceProviderRequests:function(req,res){
-  ServiceProvider.update({_id:req.body.userId},{$set:{Approved:1}}).exec(function(err){
+  ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:1}}).exec(function(err){
     if(err)
           res.send(err.message);
-      else
-          res.send('approved successfully');
+      else{
+
+
+          var nodemailer = require('nodemailer');
+          var smtpTransport = require('nodemailer-smtp-transport');
+          ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
+            var transporter = nodemailer.createTransport(smtpTransport({
+              service: 'Hotmail',
+              auth: {
+                user: 'fasa7ny@outlook.com', // Your email id
+                pass: 'ITJumoynyoj1' // Your password
+              }
+            }));
+
+            var mailOptions = {
+              from: 'fasa7ny@outlook.com', // sender address
+              to: serviceProvider.serviceProviderAccountId.email, // sp email
+              subject: 'Congratulations..your account is APPROVED!!', // Subject line
+              //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
+              html: '<p>fasa7ny platform is happy to welcome you, next step is to add activities ..</p> <a href="http://localhost:8080/add_activity">click here to add activity </a>'// You can choose to send an HTML body instead
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                console.log(error);
+                res.send(error);
+              }else{
+                console.log('Message sent: ' + info.response);
+                res.send('approved successfully');
+              };
+            });
+          });
+
+        }
   })
 },
+//tested
+//link sent to be edited when views are ready
 rejectServiceProviderRequests:function(req,res){
-  ServiceProvider.update({_id:req.body.userId},{$set:{Approved:-1}}).exec(function(err){
+  ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:-1}}).exec(function(err){
     if(err)
           res.send(err.message);
-      else
-          res.send('request rejected');
+      else{
+
+
+          var nodemailer = require('nodemailer');
+          var smtpTransport = require('nodemailer-smtp-transport');
+          ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
+            var transporter = nodemailer.createTransport(smtpTransport({
+              service: 'Hotmail',
+              auth: {
+                user: 'fasa7ny@outlook.com', // Your email id
+                pass: 'ITJumoynyoj1' // Your password
+              }
+            }));
+
+            var mailOptions = {
+              from: 'fasa7ny@outlook.com', // sender address
+              to: serviceProvider.serviceProviderAccountId.email, // sp email
+              subject: 'account rejected', // Subject line
+              //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
+              html: '<p>We are sorry that your account was rejected .. still thinking that you are qualified to join fasa7ny ? </p> <a href="#">Contact us</a>'// You can choose to send an HTML body instead
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                console.log(error);
+                res.send(error);
+              }else{
+                console.log('Message sent: ' + info.response);
+                res.send('rejected successfully');
+              };
+            });
+          });
+
+        }
   })
 },
 
@@ -241,7 +278,55 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.b
   })
 
 }
-}
+},
+    //4.8 analytics
+    getAnalyticsPage:function(req,res){
+      // finding top activity
+      booking.aggregate(
+    {$group : {_id : "$activityId", "count" : {$sum : 1}}},
+    {$sort : {"count" : -1}},
+    {$limit : 1},function(err,topBooking){
+      if(err)
+      {
+        res.sed(err.message)
+      }else
+      {
+                Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+                  if(err)
+                  {
+                    res.send(err.message)
+                  }
+                  else
+                  {
+                          ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
+                      if(err)
+                      {
+                        res.send(err.message)
+                      }
+                      else
+                      {
+                            User.aggregate(
+                            {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                            {$sort : {"count" : -1}},
+                            {$limit : 1},function(err,topUser){
+                                if(err)
+                                {
+                                  res.send(err.message)
+                                }else{
+                                    res.send({topActivity,topSP,topUser});
+                                }
+
+                            })
+
+
+                      }
+                       })
+                  }
+                })
+      }
+    }
+)
+    }
 
 }
 

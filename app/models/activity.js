@@ -36,7 +36,7 @@ var activitySchema = mongoose.Schema({
         unique:false
     },
     timings:[{day:String,
-      startTime:Date}],
+      startTime:Number}],
      minAge:{
         type:Number,
         required:false,

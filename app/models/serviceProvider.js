@@ -6,7 +6,8 @@ title:{
   required:true
 },
 serviceProviderAccountId:{
-  type:String
+  type:mongoose.Schema.Types.ObjectId,ref:'account',
+  required:true
 },
 description:{
   type:String,
@@ -41,16 +42,20 @@ previousClients:[{
   required:true 
 }],
 Approved:{
-  type:Number
+  type:Number,
+  default: 0
 },
 isGolden:{
-  type:Boolean
+  type:Boolean,
+  default:0
 },
 rating:{
-  type:Number
+  type:Number,
+  default: -1
 },
 ratingCount:{
-  type:Number
+  type:Number,
+  default: 0
 },
 banned:{
   type:Number,

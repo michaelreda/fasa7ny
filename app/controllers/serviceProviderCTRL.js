@@ -56,7 +56,6 @@ let ServiceProviderCTRL = {
 
         });
 
-
       }
 
     },
@@ -109,6 +108,7 @@ let ServiceProviderCTRL = {
         if(req.body.type){
           activity.type=req.body.type;
         }
+
         if(req.body.minClientNumber){
           activity.minClientNumber=req.body.minClientNumber;
         }
@@ -121,8 +121,7 @@ let ServiceProviderCTRL = {
         if(req.body.location){
           activity.location=req.body.location;
         }
-
-        if(req.files && req.files.length>0){
+         if(req.files && req.files.length>0){
           activity.media=[];//assuming that the whole array will be sent again
           for (var i = 0; i < req.files.length; i++) {
             activity.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
@@ -166,6 +165,7 @@ let ServiceProviderCTRL = {
       })
 
     },
+       
     //tested
     //3.2.3 As a service provider I can reschedule my activities
     rescheduleActivity:function(req,res){
@@ -186,7 +186,6 @@ let ServiceProviderCTRL = {
           else {
             res.send("rescheduled activity succesfully");
           }
-
         });
       });
     },
@@ -205,23 +204,7 @@ let ServiceProviderCTRL = {
         }
       });
     },
-    //tested
-    //media missing
-    createServiceProvider:function(req, res){
-      let serviceProvider = new ServiceProvider(req.body);
-      serviceProvider.serviceProviderAccountId=req.session.account._id;
-      serviceProvider.save(function(err, account){
-        if(err){
-          res.send(err.message);
-        }
-        else{
-          req.session.serviceProviderID=serviceProvider._id;
-          res.send("sp created succesfully");
-        }
-      });
-    },
-
-
+    
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -373,9 +356,6 @@ let ServiceProviderCTRL = {
           }
         })
       }
-
-
-
 
     }
 
