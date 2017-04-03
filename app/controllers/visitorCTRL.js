@@ -204,19 +204,22 @@ ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:
 },
 
 viewServiceProvider:function(req, res){
-
 ServiceProvider.findOne({ _id :req.body.providerId})
 .populate({path: 'activities', options:{sort:{'rating':-1}}})
-.populate({path: 'branches'})
-.populate({path: 'contactMobile'})
-.populate({path: 'media'})
-.populate({path: 'previousClients'})
 .exec( function(err, provider){
   if(err){
 	res.send(err.message);
      }else   {
-			Booking.find({serviceProviderId: req.body.providerId}).sort({'activityId':-1})
-			.limit(1).exec(function(err,booking){
+			Booking.aggregate(
+				{$group: {_id: req.body.activityId, count: {sum:1}}},
+				{$sort: {count:-1}},
+				{$limit: 1},
+				(function(err,booking)
+				{
+				if(err){
+					res.sen(err.message);
+				}
+				else{
 			Activity.findOne({_id:booking.activityId},function(err,bestSelledActivity){
 				if(err){
 			    	res.send(err.message);
@@ -233,8 +236,8 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 									//res.send({provider,bestSelledActivity});
 								}
 								})	
-								})
-							}
+				}	})
+			)}
 })
 },
 
