@@ -343,19 +343,19 @@ bookActivity:function(req,res){
   let newBooking=new booking();
   newBooking.userId=req.session.loggedInUser._id;
   newBooking.serviceProviderId=req.body.serviceProviderId;
-  newBooking.activityId=req.body._id;
+  newBooking.activityId=req.body.activityID;
   newBooking.isHolding=true;
   newBooking.price=req.body.price; //chosen act is with price in the req
   newBooking.time=req.body.time; //chosen activity is with time from the req.
 
-  res.render("paymentPage", newBooking);
+  res.redirect("paymentPage", {"booking":newBooking});
   // where payment method will be called
 
   Booking.save(function(err){
     if(err)
     console.log(err);
     else {
-      req.session.bookingIdSession=newBooking;
+      req.session.bookingSession=newBooking;
       res.send(200);
 
     }
@@ -366,19 +366,21 @@ bookActivity:function(req,res){
  //2.7.1 cancel booking
  //view bookiing method ??
 cancelBooking: function(req,res){
-  Booking.findOne({"_id":req.body._id}, function(err, booking){
+  Booking.findOne({"_id":req.body.bookingID}, function(err, booking){
     if(err){
       res.send(err);
     }
     else{
-      if(req.body.time < newDate().getTime()){
-        booking.remove().exec(function(err){
+      if(Date.pasre(req.body.time).getTime() < newDate().getTime()){
+        booking.isCancelled=true;
+        booking.save(function(err){
           if(err){
             res.send(err);
           }
           else{
             res.send("Booking is cancelled");
           }
+
         })
       }
     }
@@ -408,13 +410,13 @@ cancelBooking: function(req,res){
       }else{
         res.send({comp});
       }
-           
-      
+
+
 
     })},
 
    updateComplainBody:function(req, res){
-  
+
        complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
                 if(err)
                 {
@@ -468,7 +470,45 @@ cancelBooking: function(req,res){
           }
         })
       }
-      
+      ,
+      unSubscribe: function(req,res){
+        var serviceProviderID=req.session.serviceProvider._id;
+        var loggedInUser= req.session.loggedInUser._id;
+
+
+        ServiceProvider.findOne({ '_id' : serviceProviderID},
+          function(err, providerInstance){
+            if (err){
+              return (err);
+            }
+            else{
+              var index = providerInstance.subscribedUsers.indexOf(loggedInUser);
+              if(index > -1){
+                providerInstance.subscribedUsers.splice(index,1);
+              providerInstance.save(function(err){
+                if(err){
+                  return (err);
+                }
+                else {
+                  req.flash('message', 'You are now unsubscribed from this provider');
+                }
+              })
+            }
+            }
+          }
+      )
+    },
+    viewProviderBookings: function(req,res){
+    Booking.find({serviceProviderId:req.session.serviceProviderID,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
+      if(err){
+        res.send(err);
+      }
+      else {
+        res.render("viewHistoryBookings",bookings);
+      }
+    })
+  }
+
 
 
 }

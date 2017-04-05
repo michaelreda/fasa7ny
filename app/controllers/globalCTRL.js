@@ -2,6 +2,7 @@ let User = require('../models/user');
 let ServiceProvider = require('../models/serviceProvider');
 let Offer           = require('../models/offer');
 let Account = require('../models/account.js');
+let Booking = require('../models/booking.js');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
@@ -67,6 +68,17 @@ Account.find({"type":2},'email',function(err, visitorMails){
 
   })
 
+},
+overdueBookings:function(){
+  Booking.update({
+       "time": {'$lte':new Date()},
+       "isCancelled" :false,
+       "isConfirmed" :false
+      }, {
+        $set: { "isCancelled": true }
+      }, {
+        multi: true
+      });
 }
 
 }
