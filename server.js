@@ -15,11 +15,13 @@ app.use(bodyParser.urlencoded({extended:true})); //this line must be on top of a
 app.use(bodyParser.json());
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
+var job3 = schedule.scheduleJob('59 23 * * *', globalCTRL.overdueBookings);
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+//connect to local if failed to connect to mlab
 mongoose.connect(DB_URI,function(err){
   if(err){
     mongoose.connect(DB_URI_LOCAL);
