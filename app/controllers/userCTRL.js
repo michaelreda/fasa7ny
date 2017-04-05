@@ -389,6 +389,20 @@ cancelBooking: function(req,res){
 ,
 //2.8 user Complain serviveprovider
 //tested
+
+viewComplains:function(req,res){
+      Complain.find(function(err,complains){
+        if(err)
+        {
+          res.send(err.message);
+        }
+        else
+        {
+          res.send({complains});
+        }
+      })
+  },
+  
 submitUserComplain:function(req,res){
     let complain = new Complain(req.body);
 
