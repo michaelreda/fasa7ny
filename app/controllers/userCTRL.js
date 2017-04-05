@@ -4,6 +4,8 @@ let ServiceProvider = require('../models/serviceProvider.js');
 let Activity = require('../models/activity');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
+var ObjectId = require('mongoose').Types.ObjectId;
+
 
 let userCTRL = {
 
@@ -340,28 +342,36 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
  //2.7 reserve a booking for an activity
 bookActivity:function(req,res){
   //req. is of type activity
-  let newBooking=new booking();
-  newBooking.userId=req.session.loggedInUser._id;
-  newBooking.serviceProviderId=req.body.serviceProviderId;
-  newBooking.activityId=req.body.activityID;
-  newBooking.isHolding=true;
-  newBooking.price=req.body.price; //chosen act is with price in the req
-  newBooking.time=req.body.time; //chosen activity is with time from the req.
 
-  res.redirect("paymentPage", {"booking":newBooking});
-  // where payment method will be called
+  if(!req.body.userId| !req.body.serviceProviderId| !req.body.activityId| !req.body.price| !req.body.time){
+    res.send("missing fields");
+  }
+  else{
+    let newBooking=new Booking();
+    //newBooking.userId=req.session.loggedInUser._id;
+    newBooking.userId=req.body.userId;
+    newBooking.serviceProviderId=req.body.serviceProviderId;
+    newBooking.activityId=req.body._id;
+    newBooking.isHolding=true;
+    newBooking.price=req.body.price; //chosen act is with price in the req
+    newBooking.time=req.body.time; //chosen activity is with time from the req.
 
-  Booking.save(function(err){
-    if(err)
-    console.log(err);
-    else {
-      req.session.bookingSession=newBooking;
-      res.send(200);
+    //res.redirect("paymentPage", {"booking":newBooking});
+    // where payment method will be called
 
-    }
+    newBooking.save(function(err, newBooking){
+      if(err)
+      console.log(err);
+      else {
+        req.session.bookingSession=newBooking;
+        res.send(200);
+
+      }
 
 
-  })
+    })
+  }
+
 },
  //2.7.1 cancel booking
  //view bookiing method ??

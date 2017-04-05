@@ -16,7 +16,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.session.serviceProviderId,
+        "serviceProviderId":req.session.serviceProviderId, 
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -165,7 +165,7 @@ let ServiceProviderCTRL = {
       })
 
     },
-       
+
     //tested
     //3.2.3 As a service provider I can reschedule my activities
     rescheduleActivity:function(req,res){
@@ -204,7 +204,7 @@ let ServiceProviderCTRL = {
         }
       });
     },
-    
+
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -354,6 +354,16 @@ let ServiceProviderCTRL = {
             })
             res.send("Booking is confirmed");
           }
+        })
+      },
+
+      //required for testing
+      viewActivities:function(req,res){
+        Activity.find(function(err, act){
+          if(err)
+          res.send(err);
+          else
+          res.send(act);
         })
       }
 
