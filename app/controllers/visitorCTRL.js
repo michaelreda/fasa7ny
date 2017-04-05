@@ -264,7 +264,7 @@ if(err){
 },
 
 //1.1 explore differet activities
-
+//tested but not prev and next methods
     getDifferentActivities:function(req,res){
   req.session.j=1;
 Activity.find().limit(10).exec(function(err,ACs)

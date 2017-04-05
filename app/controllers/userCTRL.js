@@ -75,7 +75,7 @@ getActivitiesToCompare:function(req, res){
     },
     //2.6 comparing activities or service providers
     getSecondListOfChoices:function(req, res){
-      if(isServiceProvider)
+      if(req.body.isServiceProvider)
       {
           ServiceProvider.find(function(err,SPs)
           {
@@ -431,8 +431,9 @@ submitUserComplain:function(req,res){
 
 
 //2.5 user add his interests
+// tested 
 
-      addUserInterest:function(req,res){
+     addUserInterest:function(req,res){
         let interest = new Interest(req.body);
 
         interest.save(function(err,interest){
@@ -440,7 +441,7 @@ submitUserComplain:function(req,res){
       {
         res.send(err.message);
       }else {
-        res.send(200)
+        res.send(interest)
       }
     })
 
@@ -448,7 +449,7 @@ submitUserComplain:function(req,res){
 
       deleteUserInterest:function(req,res){
 
-        interest.remove({_id:req.body._id},function(err,removed){
+        Interest.remove({_id:req.body._id},function(err,removed){
           if(err)
           {
             res.send(err.message);
@@ -461,7 +462,7 @@ submitUserComplain:function(req,res){
       },
 
       viewAllUserInterest:function(req,res){
-        interest.find(function(err,interest){
+        Interest.find(function(err,interest){
           if(err){
             res.send(err);
           }
