@@ -4,6 +4,8 @@ let ServiceProvider = require('../models/serviceProvider.js');
 let Activity = require('../models/activity');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
+let Interest=require('../models/interest');
+let Complain=require('../models/complain');
 
 let userCTRL = {
 
@@ -386,22 +388,22 @@ cancelBooking: function(req,res){
 }
 ,
 //2.8 user Complain serviveprovider
-
-  submitUserComplain:function(req,res){
+//tested
+submitUserComplain:function(req,res){
     let complain = new Complain(req.body);
 
-    complin.save(function(err,complain){
+    complain.save(function(err,complain){
       if(err)
       {
         res.send(err.message);
       }else {
-        res.send(200)
+        res.send(complain)
       }
     })
   },
 
   viewStatusOfComplain:function(req,res){
-    complain.findOne({_id: req.body.complainId},function(err,comp){
+    Complain.findOne({_id: req.body._id},function(err,comp){
       if(err)
       {
         res.send(err.message)
@@ -415,13 +417,13 @@ cancelBooking: function(req,res){
 
    updateComplainBody:function(req, res){
   
-       complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
+       Complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
                 if(err)
                 {
                     res.send(err.message);
                 }else
                 {
-                    res.send(200);
+                    res.send(change);
                 }
        })
     },

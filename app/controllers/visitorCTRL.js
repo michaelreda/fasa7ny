@@ -267,7 +267,7 @@ if(err){
 
     getDifferentActivities:function(req,res){
   req.session.j=1;
-Acitivity.find().limit(10).exec(function(err,Acs)
+Activity.find().limit(10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -283,7 +283,7 @@ Acitivity.find().limit(10).exec(function(err,Acs)
 
 getDifferentActivitiesnext:function(req,res){
   req.session.j++;
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -302,7 +302,7 @@ getDifferentActivitiesprev:function(req,res){
       req.session.j--;
   }
 
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 {
         if(err)
     {
