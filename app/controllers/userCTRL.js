@@ -172,24 +172,25 @@ subscribe: function(req,res){
 //2.13 user contacts platform
 contactPlatform: function (req,res){
   var logInUser=req.session.loggedInUser._id;
-  message.findOne({fromId:logInUser}).exec(function(err, msg){
+  Message.findOne({fromId:logInUser}).exec(function(err, message){
     if(err){
       res.send(err);
     }
     else{
-      if(!msg){
-        let msg=new message();
-        message.fromId=logInUser;
-        message.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
-        message.isSeen=false;
-      }
-      else{
+      if(!message){
+        let msg=new Message();
+        msg.fromId=logInUser;
         msg.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
         msg.isSeen=false;
+        message=msg;
+      }
+      else{
+        message.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
+        message.isSeen=false;
 
       }
 
-msg.save(function(err){
+message.save(function(err){
   if(err)
   console.log(err);
   else {
@@ -203,6 +204,8 @@ msg.save(function(err){
   })
 
 },
+
+
 
 
 //2.2 As a logged in user I can view
@@ -408,13 +411,13 @@ cancelBooking: function(req,res){
       }else{
         res.send({comp});
       }
-           
-      
+
+
 
     })},
 
    updateComplainBody:function(req, res){
-  
+
        complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
                 if(err)
                 {
@@ -468,7 +471,7 @@ cancelBooking: function(req,res){
           }
         })
       }
-      
+
 
 
 }

@@ -58,7 +58,7 @@ Router.post('/add_activity', serviceProviderCTRL.addActivity);
 Router.post('/update_activity', serviceProviderCTRL.updateActivity);
 Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
 Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
-Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
+//Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
 Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
@@ -82,10 +82,22 @@ Router.post('/login', passport.authenticate('local-login', {
     failureRedirect: '/test',
     failureFlash : true
   },function(req,res){
-    if(req.body.type==0)
-    res.redirect('user_login');
-    else
-    res.redirect('serviceProvider_login');
+    if(req.body.type==0){
+      res.send(200);
+      res.redirect('user_login');
+    }
+
+    else{
+      if(req.body.type==1){
+        res.send(200);
+        res.redirect('serviceProvider_login');
+      }
+      else{
+        res.send(200);
+        res.redirect('admin_login');
+      }
+
+    }
   }));
 
 
@@ -93,15 +105,31 @@ Router.post('/login', passport.authenticate('local-login', {
 Router.get('/logout', function(req, res){
     req.logout();
     req.session.regenerate(function(err){});
-    res.redirect('/');
+    res.send(200);
+    //res.redirect('/');
   });
 
+  //2.13 contact platform
+  Router.post('/contact_platform', userCTRL.contactPlatform);
+
+  //4.5 view system logs
+  Router.get('/viewSystemLogs',adminCTRL.viewSystemLogs);
+  Router.post('/deleteLogs', adminCTRL.deleteLogs);
 
 
-
+//viewAllActivities
+Router.get('/viewActivities',serviceProviderCTRL.viewAllActivities);
 
 //3.6 confirm checkIns
-Router.post('/bookings', serviceProviderCTRL.viewBookings);
+Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
+Router.get('/bookings', serviceProviderCTRL.viewBookings);
+Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
+
+//4.6 managing bans
+Router.post('/banforever',adminCTRL.banForever);
+
+
+
 
 ////////////youssef///////////////////
 
@@ -115,10 +143,16 @@ Router.get('/signup', function(req, res){
 		failureRedirect: '/signup',
 		failureFlash: true
 	},function(req,res){
-    if(req.body.type==0)
-    res.redirect('/user_signup');
-    else
-    res.redirect('/serviceProvider_signup');
+    if(req.body.type==0){
+      res.send(200);
+      //res.redirect('/user_signup');
+
+    }
+    else{
+      res.send(200);
+      //res.redirect('/serviceProvider_signup');
+
+    }
   }));
 
 ////////////andrea///////////////////

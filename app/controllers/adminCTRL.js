@@ -22,6 +22,7 @@ let adminCTRL={
     })
 },
 
+//4.6 admin manages bans permenantly
 banForever:function(req,res){
 if (req.body.isUserToProvider) {
 ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec(function(err){
@@ -42,6 +43,8 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec
 
 }
 },
+
+//4.6 admin manages bans for a period of time
 ban30Days:function(req,res){
 if (req.body.isUserToProvider) {
 ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec(function(err){
@@ -170,10 +173,8 @@ rejectServiceProviderRequests:function(req,res){
 },
 
 
-adminLogin: function(req,res){
-//var isValidPassword = function(user, password){
-  //return bCrypt.compareSync(password, user.password);
-//}
+/*adminLogin: function(req,res){
+
 passport.use('login', new LocalStrategy({
     passReqToCallback : true
   },
@@ -203,7 +204,8 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
-},
+},*/
+
 viewAllChats:function(req, res){
 
 Message.find(function(err, messages){
@@ -223,8 +225,11 @@ viewSystemLogs: function(req,res){
 
         if(err)
             res.send(err.message); //display messages
-        else
-            res.render('viewSystemLogs',{"logs":log});
+        else{
+          res.send(log);
+         //res.render('viewSystemLogs',{"logs":log});
+        }
+
     })
 },
 
@@ -235,11 +240,12 @@ updateLogs: function(req,res){
 
 //4.5 admin deletes system logs
 deleteLogs: function(req,res){
-  Log.remove(function(err, log){
+  Log.findOne({"_id":req.body.logId}).remove().exec (function(err){
     if(err)
       res.send(err.message);
     else {
-       res.render('logPage');
+       res.send(200);
+       //res.render('logPage');
     }
   })
 },

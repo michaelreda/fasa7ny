@@ -1,8 +1,11 @@
 let Activity = require('../models/activity.js');
-let ServiceProvider = require('../models/serviceProvider');
-let Account = require('../models/account');
-let Offer = require('../models/offer');
+let ServiceProvider = require('../models/serviceProvider.js');
+let Account = require('../models/account.js');
+let Offer = require('../models/offer.js');
+let Booking=require('../models/booking.js');
+let User=require('../models/user.js');
 var ObjectId = require('mongoose').Types.ObjectId;
+
 
 let ServiceProviderCTRL = {
   //tested
@@ -165,7 +168,7 @@ let ServiceProviderCTRL = {
       })
 
     },
-       
+
     //tested
     //3.2.3 As a service provider I can reschedule my activities
     rescheduleActivity:function(req,res){
@@ -190,6 +193,18 @@ let ServiceProviderCTRL = {
       });
     },
 
+    //required for testing
+    viewAllActivities: function(req,res){
+      Activity.find(function(err,act){
+        if(err){
+          res.send(err);
+        }
+        else{
+          res.send(act);
+        }
+      })
+    },
+
     //tested .. missing hashing
     createServiceProviderAccount:function(req, res){
       let account = new Account(req.body);
@@ -204,48 +219,6 @@ let ServiceProviderCTRL = {
         }
       });
     },
-    
-    //3.1 Login as a service Provider
-    //tested .. NOT WORKING
-    serviceProviderLogin: function(req,res){
-
-      //var isValidPassword = function(user, password){
-      //return bCrypt.compareSync(password, user.password);
-      //}
-      var passport = require('passport');
-      var LocalStrategy = require('passport-local').Strategy;
-      passport.use('login', new LocalStrategy({
-        passReqToCallback : true
-      },
-      function(req, userName, password, done) {
-
-        Account.findOne({ 'userName' :  userName },
-        function(err, user) {
-
-          if (err)
-          return done(err);  // In case of any error, return using the done method
-
-          if (!user){
-            console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
-            return done(null, false,
-              req.flash('message', 'User Not found.'));
-            }
-
-            if (!isValidPassword(user, password)){
-              console.log('Invalid Password');
-              return done(null, false,
-                req.flash('message', 'Invalid Password'));
-              }
-              // User and password both match, return user from
-              // done method which will be treated like success
-              req.session.loggedInUser=user;
-              return done(null, user);
-            }
-          );
-        }));
-      },
-
-
 
 
       //karim and andrea's code
@@ -319,6 +292,8 @@ let ServiceProviderCTRL = {
           res.send('should redirect to serviceProvider home page');
         });
       },
+
+      //3.6 confirm checkins
       viewBookings:function(req,res){
         Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
           if(err){
@@ -353,6 +328,18 @@ let ServiceProviderCTRL = {
               }
             })
             res.send("Booking is confirmed");
+          }
+        })
+      },
+
+      //required for testing
+      viewAllUsers:function(req,res){
+        User.find(function(err, users){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.send(users);
           }
         })
       }
