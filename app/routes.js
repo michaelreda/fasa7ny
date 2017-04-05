@@ -3,6 +3,7 @@ var express= require('express');
 var mongoose = require('mongoose');
 
 var Router = express.Router();
+
 //var bodyParser = require('body-parser').json();
 //exporting to be used in server.js
 module.exports = function(passport){
@@ -65,9 +66,17 @@ Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
 Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
+Router.get('/view_sp_requests', adminCTRL.viewServiceProviderRequests);
 Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
 Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
-
+Router.post('/ban_forever', adminCTRL.banForever);
+Router.post('/ban_30_days', adminCTRL.ban30Days);
+Router.post('/ban_30_days', adminCTRL.ban30Days);
+Router.post('/update_ban_status', adminCTRL.updateBanStatus);
+Router.get('/view_complains', adminCTRL.viewComplains);
+Router.post('/remove_complain', adminCTRL.removeComplain);
+Router.get('/view_all_chats', adminCTRL.viewAllChats);
+Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
 ////////////morcus///////////////////
 
 
