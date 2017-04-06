@@ -58,7 +58,7 @@ Router.get('/view_activity', visitorCTRL.viewActivities);
 Router.get('/view_complains', userCTRL.viewComplains);
 Router.get('/view_bookings', adminCTRL.viewBookings);
 Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
-
+Router.get('/view_users', userCTRL.findUsers);
 
 
 
@@ -264,6 +264,7 @@ Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
 Router.post('/cancel_booking', userCTRL.cancelBooking);
 Router.post('/unsubscribe', userCTRL.unSubscribe);
 Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
+Router.post('/ratereview_activity', userCTRL.rateReviewActivity);
 
 
 
