@@ -67,6 +67,7 @@ Router.post('/add_activity', serviceProviderCTRL.addActivity);
 Router.post('/update_activity', serviceProviderCTRL.updateActivity);
 Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
 Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
+
 Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
 Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
 Router.post('/create_sp_acc', serviceProviderCTRL.createServiceProviderAccount);
@@ -99,6 +100,7 @@ Router.get('/login', function(req, res){
   res.render('login.ejs', { message: req.flash('loginMessage') });
 });
 
+
 Router.post('/login', passport.authenticate('local-login'),function(req,res){
     console.log(req.user);
     if(req.body.type==0){
@@ -116,15 +118,37 @@ Router.post('/login', passport.authenticate('local-login'),function(req,res){
 Router.get('/logout', function(req, res){
     req.logout();
     req.session.regenerate(function(err){});
-    res.redirect('/');
+    res.send(200);
+    //res.redirect('/');
   });
+
+  //2.13 contact platform
+  Router.post('/contact_platform', userCTRL.contactPlatform);
+
+  //4.5 view system logs
+  Router.get('/viewSystemLogs',adminCTRL.viewSystemLogs);
+  Router.post('/deleteLogs', adminCTRL.deleteLogs);
+
+
+//viewAllActivities
+Router.get('/viewAllActivities',serviceProviderCTRL.viewAllActivities);
+//for testing
+Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
 
 
 
 
 
 //3.6 confirm checkIns
-Router.post('/bookings', serviceProviderCTRL.viewBookings);
+Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
+Router.get('/bookings', serviceProviderCTRL.viewBookings);
+Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
+
+//4.6 managing bans
+Router.post('/banforever',adminCTRL.banForever);
+
+
+
 
 ////////////youssef///////////////////
 
@@ -132,6 +156,7 @@ Router.post('/bookings', serviceProviderCTRL.viewBookings);
 Router.get('/signup', function(req, res){
 		res.render('signup');
 	});
+
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){

@@ -1,8 +1,11 @@
 let Activity = require('../models/activity.js');
-let ServiceProvider = require('../models/serviceProvider');
-let Account = require('../models/account');
-let Offer = require('../models/offer');
+let ServiceProvider = require('../models/serviceProvider.js');
+let Account = require('../models/account.js');
+let Offer = require('../models/offer.js');
+let Booking=require('../models/booking.js');
+let User=require('../models/user.js');
 var ObjectId = require('mongoose').Types.ObjectId;
+
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
@@ -80,21 +83,6 @@ let ServiceProviderCTRL = {
       }
 
     },
-
-//1.10 a serviceProvider can apply
-        // createServiceProviderAccount:function(req, res){
-        //       let account = new Account(req.body);
-        //       account.type=1;
-        //       account.save(function(err, account){
-        //           if(err){
-        //               res.send(err.message);
-        //           }
-        //           else{
-        //               req.session.account=account;
-        //               res.send(200);
-        //           }
-        //       });
-        //   },
 
         //missing legal proof media
      createServiceProvider:function(req, res){
@@ -274,37 +262,18 @@ let ServiceProviderCTRL = {
       });
     },
 
-    //tested .. missing hashing
-    createServiceProviderAccount:function(req, res){
-      //validating
-      req.checkBody('userName','username is required').notEmpty();
-      req.checkBody('userName','username minimum length is 6').isLength({min:6});
-      req.checkBody('password','password is required').notEmpty();
-      req.checkBody('password','password minimum length is 6').isLength({min:6});
-      req.checkBody('email','email is required').isEmail();
-      var errors = req.validationErrors();
-      if (errors) {
-        res.send(errors);
-        return;
-      }
-      //end validating
-      let account = new Account(req.body);
-      account.type=1;
-      account.save(function(err, account){
+    //required for testing
+    viewAllActivities: function(req,res){
+      Activity.find(function(err,act){
         if(err){
-          if(err.message.includes("duplicate")&& err.message.includes("userName"))
-            res.send("userName already exists");
-          if(err.message.includes("duplicate")&& err.message.includes("email"))
-            res.send("email already exists");
-          res.send(err.message);
+          res.send(err);
         }
         else{
-          req.session.account=account;
-          res.send("sp account created succesfully");
+          res.send(act);
         }
-      });
+      })
     },
-
+   
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -483,6 +452,8 @@ let ServiceProviderCTRL = {
 
         });
       },
+
+      //3.6 confirm checkins
       viewBookings:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
@@ -534,7 +505,18 @@ let ServiceProviderCTRL = {
             res.send("Booking is confirmed");
           }
         })
-      },
+      }, 
+  //required for testing
+      viewAllUsers:function(req,res){
+        User.find(function(err, users){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.send(users);
+          }
+})
+},
       submitServiceProviderComplain:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         //validating
@@ -546,7 +528,6 @@ let ServiceProviderCTRL = {
           return;
         }
         //end validating
-
         let complain = new Complain(req.body);
         complain.providerId= req.session.serviceProviderId._id;
         complain.isUserToProvider= false;
@@ -557,6 +538,14 @@ let ServiceProviderCTRL = {
           }else {
             res.send(200)
           }
+        })
+      },
+    viewActivities:function(req,res){
+        Activity.find(function(err, act){
+          if(err)
+          res.send(err);
+          else
+          res.send(act);
         })
       }
 

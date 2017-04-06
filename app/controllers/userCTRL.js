@@ -231,24 +231,25 @@ contactPlatform: function (req,res){
   }
   //end validating
   var logInUser=req.session.loggedInUser._id;
-  message.findOne({fromId:logInUser}).exec(function(err, msg){
+  Message.findOne({fromId:logInUser}).exec(function(err, message){
     if(err){
       res.send(err);
     }
     else{
-      if(!msg){
-        let msg=new message();
-        message.fromId=logInUser;
-        message.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
-        message.isSeen=false;
+      if(!message){
+        let msg=new Message();
+        msg.fromId=logInUser;
+        msg.message=[{"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}];
+        msg.isSeen=false;
+        message=msg;
       }
       else{
-        msg.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
-        msg.isSeen=false;
+        message.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
+        message.isSeen=false;
 
       }
 
-msg.save(function(err){
+message.save(function(err){
   if(err)
   console.log(err);
   else {
@@ -262,6 +263,8 @@ msg.save(function(err){
   })
 
 },
+
+
 
 
 //2.2 As a logged in user I can view
@@ -572,6 +575,7 @@ viewComplains:function(req,res){
     })},
 
    updateComplainBody:function(req, res){
+
      //validating
      req.checkBody('complainId','complainId is required').isMongoId();
       req.checkBody('complainBody','complainBody is required').notEmpty();
@@ -655,6 +659,7 @@ viewComplains:function(req,res){
           }
         })
       }
+
       ,
       unSubscribe: function(req,res){
         var serviceProviderID=req.session.serviceProvider._id;

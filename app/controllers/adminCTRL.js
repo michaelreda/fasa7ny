@@ -18,6 +18,8 @@ let adminCTRL={
   },
 
 
+
+//4.6 admin manages bans permenantly
 //tested without exception
 banForever:function(req,res){
   adminCTRL.isAdmin(req,res);
@@ -56,6 +58,8 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec
 
 }
 },
+
+//4.6 admin manages bans for a period of time
 //tested without exception
 ban30Days:function(req,res){
   adminCTRL.isAdmin(req,res);
@@ -325,6 +329,7 @@ passport.use('login', new LocalStrategy({
       }
     );
 }));
+
 },
 
 //tested without exception
@@ -346,8 +351,11 @@ viewSystemLogs: function(req,res){
   Log.find(function(err, log){
         if(err)
             res.send(err.message); //display messages
-        else
-            res.render('viewSystemLogs',{"logs":log});
+        else{
+          res.send(log);
+         //res.render('viewSystemLogs',{"logs":log});
+        }
+
     })
 },
 
@@ -360,10 +368,12 @@ updateLogs: function(req,res){
 deleteLogs: function(req,res){
   adminCTRL.isAdmin(req,res);
   Log.remove(function(err, log){
+
     if(err)
       res.send(err.message);
     else {
-       res.render('logPage');
+       res.send(200);
+       //res.render('logPage');
     }
   })
 },
