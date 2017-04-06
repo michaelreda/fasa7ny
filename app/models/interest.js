@@ -7,7 +7,8 @@ name:{
 },
 number:{
   type:Number,
-  required:true
+  required:true,
+  default:0
 }})
 var Interest = mongoose.model("interest", interestSchema);
 

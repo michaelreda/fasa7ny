@@ -10,18 +10,29 @@ let userCTRL = {
 
 //2.6 comparing activities or service providers
 getActivitiesToCompare:function(req, res){
-
+  //validating
+  req.checkBody('activity1ID','activity1ID is required').isMongoId();
+  req.checkBody('activity2ID','activity2ID is required').isMongoId();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
         Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
 
             if(err)
                 res.send(err.message);
             else{
-
+                if(!activity1)
+                  res.send("activity 1 not found");
                 Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
                     if(err){
                         res.send(err.message);
                     }else {
-                            res.send({activity1,activity2});
+                      if(!activity2)
+                        res.send("activity 2 not found");
+                      res.send({activity1,activity2});
                     }
                 })
 
@@ -31,7 +42,15 @@ getActivitiesToCompare:function(req, res){
     },
     //2.6 comparing activities or service providers
     getServiceProviderToCompare:function(req, res){
-
+      //validating
+      req.checkBody('SP1ID','SP1ID is required').isMongoId();
+      req.checkBody('SP2ID','SP2ID is required').isMongoId();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
         ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
 
             if(err)
@@ -73,7 +92,16 @@ getActivitiesToCompare:function(req, res){
     },
     //2.6 comparing activities or service providers
     getSecondListOfChoices:function(req, res){
-      if(isServiceProvider)
+      //validating
+      req.checkBody('isServiceProvider','SP1ID is required').isBoolean();
+      req.sanitize('isServiceProvider').toBoolean(); //converting to boolean in case it's a string
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      if(req.body.isServiceProvider)
       {
           ServiceProvider.find(function(err,SPs)
           {
@@ -84,7 +112,7 @@ getActivitiesToCompare:function(req, res){
             }
             else
             {
-                res.send({SPs});
+                res.send(SPs);
             }
           })
       }
@@ -99,7 +127,7 @@ getActivitiesToCompare:function(req, res){
             }
             else
             {
-                res.send({ACs});
+                res.send(ACs);
             }
           })
 
@@ -109,6 +137,18 @@ getActivitiesToCompare:function(req, res){
 
 //2.1.1 user changes password
 changePassword: function(req,res){
+  //validating
+  req.checkBody('oldPassword','oldPassword is required').notEmpty();
+  req.checkBody('newPassword','newPassword is required').notEmpty();
+  req.checkBody('newPassword','newPassword minimum length is 6').isLength({min:6});
+  req.checkBody('confirmPassword','confirmPassword is required').notEmpty();
+  req.checkBody('confirmPassword','confirmPassword should be equal to the new password').equals(eq.body.newPassword);
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   var thisUser=req.session.loggedInUser.userAccountId;
   Account.findOne({'_id':thisUser},
       function(err, userInstance){
@@ -130,13 +170,22 @@ changePassword: function(req,res){
 
 //2.11 As a logged in user I can change my privacy to control who sees my information
 changePrivacy: function(req,res){
-  if(req.body.privacy<0 || req.body.privacy>2)
-    res.send("privacy should be 0,1 or 2");
-  User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err){
+  //validating
+  req.checkBody('privacy','privacy should be 0,1 or 2').isInt({min:0,max:2});
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+  User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
     if(err){
       res.send(err)
     }else{
-      res.send("privacy changed succesfully");
+      if(status.nModified!=0)
+        res.send("privacy changed succesfully");
+      else
+        res.send('user not found');
     }
   })
 },
@@ -171,6 +220,14 @@ subscribe: function(req,res){
 
 //2.13 user contacts platform
 contactPlatform: function (req,res){
+  //validating
+  req.checkBody('message','message is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   var logInUser=req.session.loggedInUser._id;
   message.findOne({fromId:logInUser}).exec(function(err, msg){
     if(err){
@@ -220,12 +277,16 @@ viewMyProfile: function(req,res){
 //password to be done later
 updateMyProfile: function(req,res){
 
-    User.update({_id:req.session.user._id}).exec(function(err){
+    User.update({_id:req.session.user._id}).exec(function(err,status){
       if(err){
         res.send(err);
       }
       else {
-        res.send("profile updated successfully");
+        if(status.nModified!=0)
+          res.send("profile updated successfully");
+        else
+          res.send('user not found');
+
       }
     })
 
@@ -245,36 +306,53 @@ deleteMyProfile: function(req,res){
 }
 ,
 userAddToWishList:function(req,res){
-User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(){
+User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(err,status){
+  if(status.nModified!=0)
     res.send('should redirect to userLoggedinHomepage')
+  else
+    res.send('user not found');
+
 });
 
 },
 
 userDropFromWishList:function(req, res){
-User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity}}).exec(function(){
+User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity}}).exec(function(err,status){
+  if(status.nModified!=0)
     res.send('should redirect to userLoggedinHomepage')
+  else
+    res.send('user not found');
 });
 },
   //2.3 As a logged in user I can rate/review activities after check-in
   //thus in the view we should handle to hide rating ability unless u checked in
   rateReviewActivity: function(req,res){
-    //var ratingCount= parseFloat(req.body.ratingCount)+1;
-    //  var newRating= ((ratingCount-1)*parseFloat(req.body.rating)+parseFloat(req.body.inputRating))/ratingCount;
+    //validating
+    req.checkBody('rating','rating is required >1 and <5').isDecimal({min:1,max:5});
+    req.checkBody('inputRating','inputRating is required >1 and <5').isInput({min:1,max:5});
+    req.checkBody('ratingCount','ratingCount is required').isInt();
+    req.checkBody('activityId','activityId is required').isMongoId();
+    req.checkBody('review','review is not empty').optional().notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
     var rating= parseFloat(req.body.rating);
     var ratingCount = parseFloat(req.body.ratingCount);
     var inputRating = parseFloat(req.body.inputRating);
 
     var newRating = (rating*ratingCount + inputRating)/(ratingCount+1);
 
-    Activity.update({_id:req.body._id},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
+    Activity.update({_id:req.body.activityId},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
       if(err)
       res.send(err.message);
       else {
         if(req.body.review){
           var review= new Review(req.body);
           review.rate = inputRating;
-          review.save(function(err,project){
+          review.save(function(err,review){
             if(err)
             res.send(err.message);
             else {
@@ -288,13 +366,24 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   },
   //2.3.1 As a logged in user I can change my review
   updateReview: function(req,res){
-
-    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err){
+    //validating
+    req.checkBody('activityId','activityId is required').isMongoId();
+    req.checkBody('review','review is not empty').notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err,status){
       if(err){
         res.send(err);
       }
       else {
-        res.send("review updated successfully");
+        if(status.nModified!=0)
+          res.send("review updated successfully");
+        else
+          res.send('review not found');
       }
     })
 
@@ -302,7 +391,14 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 
   //2.3.2 As a logged in user I can delete my review
   deleteReview: function(req,res){
-
+    //validating
+    req.checkBody('activityId','activityId is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
     Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
       if(err){
         res.send(err);
@@ -339,11 +435,23 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 },
  //2.7 reserve a booking for an activity
 bookActivity:function(req,res){
+  //validating
+  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  req.checkBody('price','price is required').isInt({min:0});
+  req.checkBody('time','time is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+
   //req. is of type activity
   let newBooking=new booking();
   newBooking.userId=req.session.loggedInUser._id;
   newBooking.serviceProviderId=req.body.serviceProviderId;
-  newBooking.activityId=req.body.activityID;
+  newBooking.activityId=req.body.activityId;
   newBooking.isHolding=true;
   newBooking.price=req.body.price; //chosen act is with price in the req
   newBooking.time=req.body.time; //chosen activity is with time from the req.
@@ -366,11 +474,21 @@ bookActivity:function(req,res){
  //2.7.1 cancel booking
  //view bookiing method ??
 cancelBooking: function(req,res){
+  //validating
+  req.checkBody('bookingID','bookingID is required').isMongoId();
+  req.checkBody('time','time is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   Booking.findOne({"_id":req.body.bookingID}, function(err, booking){
     if(err){
       res.send(err);
     }
     else{
+      //checking if activity is still away for more than 24h
       if(Date.pasre(req.body.time).getTime() < newDate().getTime()){
         booking.isCancelled=true;
         booking.save(function(err){
@@ -390,9 +508,21 @@ cancelBooking: function(req,res){
 //2.8 user Complain serviveprovider
 
   submitUserComplain:function(req,res){
-    let complain = new Complain(req.body);
+    //validating
+    req.checkBody('providerId','providerId is required').isMongoId();
+    req.checkBody('isUserToProvider','isUserToProvider is required').isBoolean();
+    req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
+    req.checkBody('complain','complain is required').notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
 
-    complin.save(function(err,complain){
+    let complain = new Complain(req.body);
+    complain.userId= req.session.loggedInUser._id;
+    complain.save(function(err,complain){
       if(err)
       {
         res.send(err.message);
@@ -403,6 +533,14 @@ cancelBooking: function(req,res){
   },
 
   viewStatusOfComplain:function(req,res){
+    //validating
+    req.checkBody('complainId','complainId is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
     complain.findOne({_id: req.body.complainId},function(err,comp){
       if(err)
       {
@@ -416,14 +554,25 @@ cancelBooking: function(req,res){
     })},
 
    updateComplainBody:function(req, res){
-
-       complain.update({_id:req.body._id},{$set:{complain:req.body.complainBody}},function(err,change){
+     //validating
+     req.checkBody('complainId','complainId is required').isMongoId();
+      req.checkBody('complainBody','complainBody is required').notEmpty();
+     var errors = req.validationErrors();
+     if (errors) {
+       res.send(errors);
+       return;
+     }
+     //end validating
+       complain.update({_id:req.body.complainId},{$set:{complain:req.body.complainBody}},function(err,status){
                 if(err)
                 {
                     res.send(err.message);
                 }else
                 {
-                    res.send(200);
+                  if(status.nModified!=0)
+                    res.send("complain updated successfully");
+                  else
+                    res.send('complain not found');
                 }
        })
     },
@@ -433,6 +582,14 @@ cancelBooking: function(req,res){
 //2.5 user add his interests
 
       addUserInterest:function(req,res){
+        //validating
+        req.checkBody('name','name is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
         let interest = new Interest(req.body);
 
         interest.save(function(err,interest){
@@ -447,8 +604,15 @@ cancelBooking: function(req,res){
       },
 
       deleteUserInterest:function(req,res){
-
-        interest.remove({_id:req.body._id},function(err,removed){
+        //validating
+        req.checkBody('interestId','interestId is required').isMongoId();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+        interest.remove({_id:req.body.interestId},function(err,removed){
           if(err)
           {
             res.send(err.message);

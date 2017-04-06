@@ -19,7 +19,8 @@ complain:{
 },
 isSeen:{
   type:Boolean,
-  required:true
+  required:true,
+  default: false
 }})
 
 var Complain = mongoose.model("complain", complainSchema);
