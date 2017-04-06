@@ -11,7 +11,7 @@ let globalCTRL=require('../controllers/globalCTRL.js');
 let userCTRL = {
   //used to test if the user is logged or not
   isUser: function(req,res){
-    if(!req.session.user)
+    if(!req.user)
       res.send("you are not logged in.. you are not authorized to do this function");
   },
 
@@ -159,25 +159,28 @@ changePassword: function(req,res){
   req.checkBody('newPassword','newPassword is required').notEmpty();
   req.checkBody('newPassword','newPassword minimum length is 6').isLength({min:6});
   req.checkBody('confirmPassword','confirmPassword is required').notEmpty();
-  req.checkBody('confirmPassword','confirmPassword should be equal to the new password').equals(eq.body.newPassword);
+  req.checkBody('confirmPassword','confirmPassword should be equal to the new password').equals(req.body.newPassword);
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
     return;
   }
   //end validating
-  var thisUser=req.session.user.userAccountId;
+  var thisUser=req.user._id;
   Account.findOne({'_id':thisUser},
       function(err, userInstance){
         if(err|!userInstance){
-          return (err);
+          console.log(err? err:'not a user');
+          res.send(err? err:'not a user');
         }
         else{
           if(userInstance.validPassword(req.body.oldPassword))
-          userInstance.password=req.body.newPassword;
+          userInstance.password=userInstance.generateHash(req.body.newPassword);
           userInstance.save(function(err){
             if(err)
             res.send(err);
+            else
+            res.send('password change success !');
           });
         }
       }
