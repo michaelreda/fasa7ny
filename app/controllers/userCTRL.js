@@ -238,15 +238,7 @@ subscribe: function(req,res){
             res.send({providerInstance});
           }
         });
-        // providerInstance.save(function(err){
-        //   if(err){
-        //     globalCTRL.addErrorLog(err.message);
-        //     return (err);
-        //   }
-        //   else {
-        //     res.send("You are now subscribed to this provider");
-        //   }
-        // })
+       
       }
     }
 )
@@ -331,7 +323,7 @@ viewMyProfile: function(req,res){
 //password to be done later
 updateMyProfile: function(req,res){
     //userCTRL.isUser(req,res);
-    User.update({_id:"58e695140fb1c32c4d7eaabd"}).exec(function(err,status){
+    User.update({_id:req.session.user._id}).exec(function(err,status){
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err);
