@@ -130,8 +130,8 @@ Router.get('/logout', function(req, res){
   Router.post('/contact_platform', userCTRL.contactPlatform);
 
   //4.5 view system logs
-  Router.get('/viewSystemLogs',adminCTRL.viewSystemLogs);
-  Router.post('/deleteLogs', adminCTRL.deleteLogs);
+  Router.get('/view_system_logs',adminCTRL.viewSystemLogs);
+  Router.get('/delete_logs', adminCTRL.deleteLogs);
 
 
 //viewAllActivities
