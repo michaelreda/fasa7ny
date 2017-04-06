@@ -21,7 +21,8 @@ birthDate:{
   required:true
 },
 age:{
-  type:Number
+  type:Number,
+  $subtract: [ new Date(), "$birthDate" ]
 },
 gender:{
   type:Boolean,
