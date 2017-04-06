@@ -250,7 +250,7 @@ Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
 Router.post('/cancel_booking', userCTRL.cancelBooking);
 Router.post('/unsubscribe', userCTRL.unSubscribe);
 Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
-Router.post('/create_user', userCTRL.createUser);
+
 
 
 
