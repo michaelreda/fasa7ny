@@ -9,10 +9,15 @@ let Complain=require('../models/complain');
 let globalCTRL=require('../controllers/globalCTRL.js');
 
 let userCTRL = {
-
+  //used to test if the user is logged or not
+  isUser: function(req,res){
+    if(!req.session.user)
+      res.send("you are not logged in.. you are not authorized to do this function");
+  },
 
 //2.6 comparing activities or service providers
 getActivitiesToCompare:function(req, res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('activity1ID','activity1ID is required').isMongoId();
   req.checkBody('activity2ID','activity2ID is required').isMongoId();
@@ -148,6 +153,7 @@ getActivitiesToCompare:function(req, res){
 
 //2.1.1 user changes password
 changePassword: function(req,res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('oldPassword','oldPassword is required').notEmpty();
   req.checkBody('newPassword','newPassword is required').notEmpty();
@@ -160,7 +166,7 @@ changePassword: function(req,res){
     return;
   }
   //end validating
-  var thisUser=req.session.loggedInUser.userAccountId;
+  var thisUser=req.session.user.userAccountId;
   Account.findOne({'_id':thisUser},
       function(err, userInstance){
         if(err|!userInstance){
@@ -181,6 +187,7 @@ changePassword: function(req,res){
 
 //2.11 As a logged in user I can change my privacy to control who sees my information
 changePrivacy: function(req,res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('privacy','privacy should be 0,1 or 2').isInt({min:0,max:2});
   var errors = req.validationErrors();
@@ -206,8 +213,9 @@ changePrivacy: function(req,res){
 //2.4 user subscribes to a service provider
 
 subscribe: function(req,res){
-  var serviceProviderID=req.session.serviceProvider._id;
-  var loggedInUser= req.session.loggedInUser._id;
+  userCTRL.isUser(req,res);
+  var serviceProviderID=req.body.serviceProviderId;
+  var loggedInUser= req.session.user._id;
 
 
   ServiceProvider.findOne({ '_id' : serviceProviderID},
@@ -234,6 +242,7 @@ subscribe: function(req,res){
 
 //2.13 user contacts platform
 contactPlatform: function (req,res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('message','message is required').notEmpty();
   var errors = req.validationErrors();
@@ -242,7 +251,7 @@ contactPlatform: function (req,res){
     return;
   }
   //end validating
-  var logInUser=req.session.loggedInUser._id;
+  var logInUser=req.session.user._id;
   Message.findOne({fromId:logInUser}).exec(function(err, message){
     if(err){
       globalCTRL.addErrorLog(err.message);
@@ -283,7 +292,8 @@ message.save(function(err){
 
 //2.2 As a logged in user I can view
 viewMyProfile: function(req,res){
-  User.findOne({_id:req.session._id}).exec(function(err,user){
+  userCTRL.isUser(req,res);
+  User.findOne({_id:req.session.user._id}).exec(function(err,user){
     if(err){
       globalCTRL.addErrorLog(err.message);
       res.send(err);
@@ -296,7 +306,7 @@ viewMyProfile: function(req,res){
 //2.2 As a logged in user I can update my personal info
 //password to be done later
 updateMyProfile: function(req,res){
-
+    userCTRL.isUser(req,res);
     User.update({_id:req.session.user._id}).exec(function(err,status){
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -314,7 +324,7 @@ updateMyProfile: function(req,res){
 },
 //2.2.1 As a logged in user I can delete my account
 deleteMyProfile: function(req,res){
-
+    userCTRL.isUser(req,res);
     User.findOne({_id:req.session.user._id}).remove().exec(function(err){
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -328,6 +338,7 @@ deleteMyProfile: function(req,res){
 }
 ,
 userAddToWishList:function(req,res){
+  userCTRL.isUser(req,res);
 User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(err,status){
   if(status.nModified!=0)
     res.send('should redirect to userLoggedinHomepage')
@@ -339,6 +350,7 @@ User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity
 },
 
 userDropFromWishList:function(req, res){
+  userCTRL.isUser(req,res);
 User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity}}).exec(function(err,status){
   if(status.nModified!=0)
     res.send('should redirect to userLoggedinHomepage')
@@ -349,6 +361,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   //2.3 As a logged in user I can rate/review activities after check-in
   //thus in the view we should handle to hide rating ability unless u checked in
   rateReviewActivity: function(req,res){
+    userCTRL.isUser(req,res);
     //validating
     req.checkBody('rating','rating is required >1 and <5').isDecimal({min:1,max:5});
     req.checkBody('inputRating','inputRating is required >1 and <5').isInput({min:1,max:5});
@@ -388,6 +401,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   },
   //2.3.1 As a logged in user I can change my review
   updateReview: function(req,res){
+    userCTRL.isUser(req,res);
     //validating
     req.checkBody('activityId','activityId is required').isMongoId();
     req.checkBody('review','review is not empty').notEmpty();
@@ -414,6 +428,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 
   //2.3.2 As a logged in user I can delete my review
   deleteReview: function(req,res){
+    userCTRL.isUser(req,res);
     //validating
     req.checkBody('activityId','activityId is required').isMongoId();
     var errors = req.validationErrors();
@@ -434,8 +449,8 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 
     //2.3.3 As a logged in user I can check/view my review
     viewMyReviews: function(req,res){
-
-      Review.find({userId:req.session._id}).populate('activityId').exec(function(err,reviews){
+      userCTRL.isUser(req,res);
+      Review.find({userId:req.session.user._id}).populate('activityId').exec(function(err,reviews){
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err);
@@ -449,6 +464,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   },
 
   viewHistoryBookings: function(req,res){
+    userCTRL.isUser(req,res);
   Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
     if(err){
       globalCTRL.addErrorLog(err.message);
@@ -461,6 +477,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 },
  //2.7 reserve a booking for an activity
 bookActivity:function(req,res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('activityId','activityId is required').isMongoId();
   req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
@@ -475,7 +492,7 @@ bookActivity:function(req,res){
 
   //req. is of type activity
   let newBooking=new Booking();
-  newBooking.userId=req.session.loggedInUser._id;
+  newBooking.userId=req.session.user._id;
   newBooking.serviceProviderId=req.body.serviceProviderId;
   newBooking.activityId=req.body.activityId;
   newBooking.isHolding=true;
@@ -501,6 +518,7 @@ bookActivity:function(req,res){
  //2.7.1 cancel booking
  //view bookiing method ??
 cancelBooking: function(req,res){
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('bookingID','bookingID is required').isMongoId();
   req.checkBody('time','time is required').notEmpty();
@@ -536,9 +554,8 @@ cancelBooking: function(req,res){
 ,
 //2.8 user Complain serviveprovider
 //tested
-
-
 viewComplains:function(req,res){
+  userCTRL.isUser(req,res);
       Complain.find(function(err,complains){
         if(err)
         {
@@ -555,6 +572,7 @@ viewComplains:function(req,res){
 
 
   submitUserComplain:function(req,res){
+    userCTRL.isUser(req,res);
     //validating
     req.checkBody('providerId','providerId is required').isMongoId();
     req.checkBody('complain','complain is required').notEmpty();
@@ -565,7 +583,7 @@ viewComplains:function(req,res){
     }
     //end validating
     let complain = new Complain(req.body);
-    complain.userId= req.session.loggedInUser._id;
+    complain.userId= req.session.user._id;
     complain.isUserToProvider= true;
     complain.save(function(err,complain){
       if(err)
@@ -579,7 +597,7 @@ viewComplains:function(req,res){
   },
 
   viewStatusOfComplain:function(req,res){
-
+    userCTRL.isUser(req,res);
     //validating
     req.checkBody('complainId','complainId is required').isMongoId();
     var errors = req.validationErrors();
@@ -602,7 +620,7 @@ viewComplains:function(req,res){
     })},
 
    updateComplainBody:function(req, res){
-
+     userCTRL.isUser(req,res);
      //validating
      req.checkBody('complainId','complainId is required').isMongoId();
       req.checkBody('complainBody','complainBody is required').notEmpty();
@@ -635,6 +653,7 @@ viewComplains:function(req,res){
 
 
       addUserInterest:function(req,res){
+        userCTRL.isUser(req,res);
         //validating
         req.checkBody('name','name is required').notEmpty();
         var errors = req.validationErrors();
@@ -658,6 +677,7 @@ viewComplains:function(req,res){
       },
 
       deleteUserInterest:function(req,res){
+        userCTRL.isUser(req,res);
         //validating
         req.checkBody('interestId','interestId is required').isMongoId();
         var errors = req.validationErrors();
@@ -680,6 +700,7 @@ viewComplains:function(req,res){
       },
 
       viewAllUserInterest:function(req,res){
+        userCTRL.isUser(req,res);
         Interest.find(function(err,interest){
           if(err){
             globalCTRL.addErrorLog(err.message);
@@ -693,8 +714,9 @@ viewComplains:function(req,res){
 
       ,
       unSubscribe: function(req,res){
-        var serviceProviderID=req.session.serviceProvider._id;
-        var loggedInUser= req.session.loggedInUser._id;
+        userCTRL.isUser(req,res);
+        var serviceProviderID=req.body.serviceProviderId;
+        var loggedInUser= req.session.user._id;
 
 
         ServiceProvider.findOne({ '_id' : serviceProviderID},
@@ -721,52 +743,7 @@ viewComplains:function(req,res){
           }
       )
     },
-    viewProviderBookings: function(req,res){
-    Booking.find({serviceProviderId:req.session.serviceProviderID,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
-      if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err);
-      }
-      else {
-        res.render("viewHistoryBookings",bookings);
-      }
-    })
-  },
 
-  createUser:function(req,res){
-    //validating
-    req.checkBody('firstName','firstName is required').notEmpty();
-    req.checkBody('lastName','lastName is required').notEmpty();
-    req.checkBody('userAccountId','userAccountId is required').isMongoId();
-    req.checkBody('birthDate','birthDate is required').notEmpty();
-    req.checkBody('age','age is a required').notEmpty();
-    req.checkBody('gender','gender is a required').notEmpty();
-    req.checkBody('privacy','privacy is a required').notEmpty();
-    req.checkBody('banned','banned is a required').notEmpty();
-
-    var errors = req.validationErrors();
-    if (errors) {
-      res.send(errors);
-      return;
-    }
-    //end validating
-
-    let user=new User(req.body);
-    user.userAccountId=req.session.account._id;
-
-    user.save(function(err, user){
-      if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err);
-      }
-      else{
-        req.session.loggedInUser=user._id;
-        res.send(200);
-
-      }
-    })
-
-  },
 
   userLoginStep2: function(req,res){
       User.findOne({userAccountId:req.user._id}).exec(function(err,thisUser){
