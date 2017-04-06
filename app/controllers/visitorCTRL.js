@@ -26,6 +26,8 @@ shareOnSocialMedia:function(req, res){
 	case 'google': res.redirect("https://plus.google.com/share?url="+req.body.url);break;
 }
 },
+
+//tested
 // 1.3 filtering activities
 viewActivities:function(req,res){
       Activity.find(function(err,activities){
@@ -40,6 +42,7 @@ viewActivities:function(req,res){
       })
     },
 
+//tested
 //1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
 searchForActivities:function(req,res){
   //validating
@@ -54,7 +57,7 @@ searchForActivities:function(req,res){
     { $or:[
     {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
     {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-    {timings:{$contains : { day:req.body.input , startTime : {$regex : ".*"} } }}
+    {timings:{$elemMatch : { day:req.body.input  } }}
   ]}
     ,function(err, activities){
     if(err){
@@ -65,11 +68,12 @@ searchForActivities:function(req,res){
     res.send(activities);
   })
 },
+//tested
 	filterActivitiesBy:function(req, res){
 		req.session.j=1;
-		if(req.body.filter==price)
+		if(req.body.filter=="price")
 		{
-			Activity.find.limit(10).exec({ price: req.body.value},function(err,activities){
+			Activity.find({ price: req.body.value}).limit(10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -77,9 +81,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		} else 	if(req.body.filter==offer)
+		} else 	if(req.body.filter=="offer")
 		{
-			Activity.find.limit(10).exec({isOffer: req.body.value},function(err,activities){
+			Activity.find({isOffer: req.body.value}).limit(10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -87,20 +91,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		}else 	if(req.body.filter==location)
+		}else 	if(req.body.filter=="location")
 		{
-			Activity.find.limit(10).exec({location: req.body.value},function(err,activities){
-                    if(err){
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message);
-                    }else {
-                            res.send({activities});
-                    }
-                })
-		}
-		else 	if(req.body.filter==theme)
-		{
-			Activity.find.limit(10).exec({theme: req.body.value},function(err,activities){
+			Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -109,9 +102,9 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
-		else 	if(req.body.filter==ratingCount)
+		else 	if(req.body.filter=="theme")
 		{
-			Activity.find.limit(10).exec({ratingCount: req.body.value},function(err,activities){
+			Activity.find({theme: req.body.value}).limit(10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -120,15 +113,28 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
+		else 	if(req.body.filter=="rating")
+		{
+			Activity.find({rating: req.body.value}).limit(10).exec(function(err,activities){
+                    if(err){
+                        globalCTRL.addErrorLog(err.message);
+                        res.send(err.message);
+                    }else {
+                            res.send({activities});
+                    }
+                })
+		}else {
+      res.send("invalid filter");
+    }
 
 
 	},
 
 	filterActivitiesByNext:function(req, res){
 		req.session.j++;
-		if(req.body.filter==price)
+		if(req.body.filter=="price")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({prices: req.body.value},function(err,activities){
+			Activity.find({prices: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -136,9 +142,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		} else 	if(req.body.filter==offer)
+		} else 	if(req.body.filter=="offer")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({isOffer: req.body.value},function(err,activities){
+			Activity.find({isOffer: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -146,20 +152,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		}else 	if(req.body.filter==location)
+		}else 	if(req.body.filter=="location")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({location: req.body.value},function(err,activities){
-                    if(err){
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message);
-                    }else {
-                            res.send({activities});
-                    }
-                })
-		}
-		else 	if(req.body.filter==theme)
-		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({theme: req.body.value},function(err,activities){
+			Activity.find({location: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -168,9 +163,9 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
-		else 	if(req.body.filter==ratingCount)
+		else 	if(req.body.filter=="theme")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({ratingCount: req.body.value},function(err,activities){
+			Activity.find({theme: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -179,6 +174,19 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
+		else 	if(req.body.filter=="count")
+		{
+			Activity.find({count: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
+                    if(err){
+                        globalCTRL.addErrorLog(err.message);
+                        res.send(err.message);
+                    }else {
+                            res.send({activities});
+                    }
+                })
+		}else{
+      res.send("invalid filter")
+    }
 
 
 	},
@@ -188,9 +196,9 @@ searchForActivities:function(req,res){
 	filterActivitiesByPrev:function(req, res){
 		if(req.session.j!=1){
         req.session.j--;}
-		if(req.body.filter==price)
+		if(req.body.filter=="price")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({prices: req.body.value},function(err,activities){
+			Activity.find({prices: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -198,9 +206,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		} else 	if(req.body.filter==offer)
+		} else 	if(req.body.filter=="offer")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({isOffer: req.body.value},function(err,activities){
+			Activity.find({isOffer: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -208,20 +216,9 @@ searchForActivities:function(req,res){
                             res.send({activities});
                     }
                 })
-		}else 	if(req.body.filter==location)
+		}else 	if(req.body.filter=="location")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({location: req.body.value},function(err,activities){
-                    if(err){
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message);
-                    }else {
-                            res.send({activities});
-                    }
-                })
-		}
-		else 	if(req.body.filter==theme)
-		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({theme: req.body.value},function(err,activities){
+			Activity.find({location: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -230,9 +227,9 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
-		else 	if(req.body.filter==ratingCount)
+		else 	if(req.body.filter=="theme")
 		{
-			Activity.find.limit(10).skip((req.session.j-1)*10).exec({ratingCount: req.body.value},function(err,activities){
+			Activity.find({theme: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
                     if(err){
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
@@ -241,10 +238,25 @@ searchForActivities:function(req,res){
                     }
                 })
 		}
+		else 	if(req.body.filter=="count")
+		{
+			Activity.find({count: req.body.value}).limit(10).skip((req.session.j-1)*10).exec(function(err,activities){
+                    if(err){
+                        globalCTRL.addErrorLog(err.message);
+                        res.send(err.message);
+                    }else {
+                            res.send({activities});
+                    }
+                })
+		}else{
+      res.send("invalid filter")
+    }
 
 
 	},
+
 //1.2
+//tested
 viewAllServiceProviders:function(req, res){
 if(!req.session.pageID){
 	req.session.pageID=1;
@@ -254,7 +266,7 @@ if(req.body.page){
 	req.session.pageID=req.body.page;
 }
 
-ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
+ServiceProvider.find({Approved:1}).skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
 
 	if(err){
         globalCTRL.addErrorLog(err.message);
@@ -267,6 +279,8 @@ ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:
 
 },
 
+//tested
+//view service provider with all its activities
 viewServiceProvider:function(req, res){
   //validating
   req.checkBody('providerId','providerId is required').isMongoId();
@@ -276,29 +290,32 @@ viewServiceProvider:function(req, res){
     return;
   }
   //end validating
-ServiceProvider.findOne({ _id :req.body.providerId})
+ServiceProvider.findOne({ _id :req.body.providerId,Approved:1})
 .populate({path: 'activities', options:{sort:{'rating':-1}}})
 .exec( function(err, provider){
   if(err){
   globalCTRL.addErrorLog(err.message);
 	res.send(err.message);
      }else   {
+       //get number of booked users for this service provider
 			Booking.aggregate(
-				{$group: {_id: req.body.activityId, count: {sum:1}}},
+				{$group: {_id: req.body.activityId, count: {$sum:1}}},
 				{$sort: {count:-1}},
 				{$limit: 1},
 				(function(err,booking)
 				{
 				if(err){
-					res.sen(err.message);
+					res.send(err.message);
 				}
 				else{
+          //get best seller activity
 			Activity.findOne({_id:booking.activityId},function(err,bestSelledActivity){
 				if(err){
             globalCTRL.addErrorLog(err.message);
 			    	res.send(err.message);
 					   }
 					else{
+            //get newest offer
 					Offer.find().sort({'_id':-1}).limit(1).populate({path: 'activities'}).exec(function(err, hottestOffer){
 						if(err){
             globalCTRL.addErrorLog(err.message);
@@ -308,7 +325,6 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 							res.send({provider,bestSelledActivity, hottestOffer});
 							}
 								})
-									//res.send({provider,bestSelledActivity});
 								}
 								})
 				}	})
@@ -318,7 +334,7 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 
 
 viewFAQ:function(req,res){
-	res.render("viewFAQ");
+	res.send("viewFAQ is a static HTML page");
 	//viewFAQ is a static HTML page
 	},
 
@@ -353,7 +369,7 @@ if(err){
 },
 
 //1.1 explore differet activities
-//tested but not prev and next methods
+//tested
     getDifferentActivities:function(req,res){
   req.session.j=1;
 Activity.find().limit(10).exec(function(err,ACs)
@@ -408,7 +424,7 @@ Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 })
 }
 ,
-
+//tested
 signupForNewsletter:function(req,res){
   //validating
   req.checkBody('email','valid email is required').isEmail();
@@ -425,7 +441,28 @@ signupForNewsletter:function(req,res){
   newAccount.type=2;
   newAccount.save(function(err){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      if(err.message.includes("duplicate"))
+        res.send("email already signed up");
+        globalCTRL.addErrorLog(err.message);
+    res.send(err);
+  }else {
+      res.send(200);
+    }
+  })
+},
+//tested
+unsubscribeForNewsletter:function(req,res){
+  //validating
+  req.checkBody('email','valid email is required').isEmail();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+  Account.findOne({email:req.body.email}).remove().exec(function(err){
+    if(err){
+        globalCTRL.addErrorLog(err.message);
     res.send(err);
   }else {
       res.send(200);
