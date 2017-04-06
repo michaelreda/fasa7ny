@@ -38,8 +38,7 @@ searchForActivities:function(req,res){
     return;
   }
   //end validating
-  Activity.find({title:{$regex : ".*"+req.body.input+".*",$options : 'i' },{type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},function(err, activities){
-
+  Activity.find({title:{$regex : ".*"+req.body.input+".*",$options : 'i' },type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},function(err, activities){
     if(err)
     res.send(err.message);
     else
@@ -411,7 +410,7 @@ recoverPassword:function(req,res){
           }
         var randomstring = require("randomstring");
         randomPass=randomstring.generate(12);//generating randompass
-         user.password=randomPass;
+         user.password=user.generateHash(randomPass);
          user.save(function(err){
            if(err){
              res.send(err);
@@ -430,7 +429,7 @@ recoverPassword:function(req,res){
                to: user.email, // list of receivers
                subject: 'Change Password', // Subject line
                //text: text //, // plaintext body
-               html: "Your password for now is "+user.password// You can choose to send an HTML body instead
+               html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
              };
              transporter.sendMail(mailOptions, function(error, info){
                if(error){
