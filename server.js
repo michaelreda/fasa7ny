@@ -14,14 +14,14 @@ var expressValidator = require('express-validator');
 app.use(bodyParser.urlencoded({extended:true})); //this line must be on top of app config
 app.use(bodyParser.json());
 app.use(expressValidator({
- customValidators: {
+  customValidators: {
     isArray: function(value) {
-        return Array.isArray(value);
+      return Array.isArray(value);
     },
     gte: function(param, num) {
-        return param >= num;
+      return param >= num;
     }
- }
+  }
 }));
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
@@ -40,8 +40,6 @@ mongoose.connect(DB_URI,function(err){
 });
 require('./app/config/passport')(passport);
 app.use(require('./app/routes')(passport));
-
-// app.set('view engine', 'ejs');
 
 
 //start the server
