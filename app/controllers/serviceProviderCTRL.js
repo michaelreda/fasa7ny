@@ -612,6 +612,70 @@ let ServiceProviderCTRL = {
                 }
 
     }
+    ,
+    
+    viewBirthDayClients:function(req,res){
+        var clients=new Array(req.session.serviceProvider.previousClients);
+        var birthDayClients= new Array();
+        var count=0;
+
+          for(var i=0; i<clients.length; i++){
+          User.findone({_id: clients[i]}, function(err, client){
+            if(err){
+              res.send(err.message);
+            }
+            else{
+              var today=new Date();
+              var birthday= new Date(client.birthDate);
+              
+              var dayToday   = today.getDate();
+              var monthToday = today.getMonth();
+
+              var dayBD   = birthday.getDate();
+              var monthBD = birthday.getMonth();
+
+              if( dayToday==dayBD && monthToday==monthBD ){
+                birthDayClients[count]=client;
+                count++;
+              } 
+          }
+          })
+        }
+        res.send(birthDayClients);
+
+      },
+      
+
+      promoteToHistoryClient:function(req,res){
+        
+              var nodemailer = require('nodemailer');
+              var smtpTransport = require('nodemailer-smtp-transport');
+
+              var transporter = nodemailer.createTransport(smtpTransport({
+              service: 'Hotmail',
+              auth: {
+              user: 'fasa7ny@outlook.com', // Your email id
+              pass: 'ITJumoynyoj1' // Your password
+              }
+            }));
+              var mailOptions = {
+              from: 'fasa7ny@outlook.com', // sender address
+              to: req.body.userAccountId.email,
+              subject: 'HAPPY BIRTHDAY TO YOU', // Subject line
+              html: '<p>It is our pleasure to invite you to join any of our activities on your Birthday </p> '
+            };
+
+              transporter.sendMail(mailOptions, function(error, info){
+              if(error){ 
+                res.send(error);
+              }else{
+                 res.send('promoted succesfully successfully');
+              };
+            });
+
+          }
+          
+          
 
     }
 
