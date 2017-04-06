@@ -4,6 +4,8 @@ let ServiceProvider = require('../models/serviceProvider.js');
 let Activity = require('../models/activity');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
+let Interest=require('../models/interest');
+let Complain=require('../models/complain');
 
 let userCTRL = {
 
@@ -448,7 +450,7 @@ bookActivity:function(req,res){
   //end validating
 
   //req. is of type activity
-  let newBooking=new booking();
+  let newBooking=new Booking();
   newBooking.userId=req.session.loggedInUser._id;
   newBooking.serviceProviderId=req.body.serviceProviderId;
   newBooking.activityId=req.body.activityId;
@@ -459,7 +461,7 @@ bookActivity:function(req,res){
   res.redirect("paymentPage", {"booking":newBooking});
   // where payment method will be called
 
-  Booking.save(function(err){
+  newBooking.save(function(err){
     if(err)
     console.log(err);
     else {
@@ -506,6 +508,23 @@ cancelBooking: function(req,res){
 }
 ,
 //2.8 user Complain serviveprovider
+//tested
+
+
+viewComplains:function(req,res){
+      Complain.find(function(err,complains){
+        if(err)
+        {
+          res.send(err.message);
+        }
+        else
+        {
+          res.send({complains});
+        }
+      })
+  },
+  
+
 
   submitUserComplain:function(req,res){
     //validating
@@ -517,7 +536,6 @@ cancelBooking: function(req,res){
       return;
     }
     //end validating
-
     let complain = new Complain(req.body);
     complain.userId= req.session.loggedInUser._id;
     complain.isUserToProvider= true;
@@ -526,12 +544,13 @@ cancelBooking: function(req,res){
       {
         res.send(err.message);
       }else {
-        res.send(200)
+        res.send(complain)
       }
     })
   },
 
   viewStatusOfComplain:function(req,res){
+
     //validating
     req.checkBody('complainId','complainId is required').isMongoId();
     var errors = req.validationErrors();
@@ -540,7 +559,7 @@ cancelBooking: function(req,res){
       return;
     }
     //end validating
-    complain.findOne({_id: req.body.complainId},function(err,comp){
+    Complain.findOne({_id: req.body.complainId},function(err,comp){
       if(err)
       {
         res.send(err.message)
@@ -562,12 +581,13 @@ cancelBooking: function(req,res){
        return;
      }
      //end validating
-       complain.update({_id:req.body.complainId},{$set:{complain:req.body.complainBody}},function(err,status){
+       Complain.update({_id:req.body.complainId},{$set:{complain:req.body.complainBody}},function(err,status){
                 if(err)
                 {
                     res.send(err.message);
                 }else
                 {
+
                   if(status.nModified!=0)
                     res.send("complain updated successfully");
                   else
@@ -579,6 +599,8 @@ cancelBooking: function(req,res){
 
 
 //2.5 user add his interests
+// tested 
+
 
       addUserInterest:function(req,res){
         //validating
@@ -596,7 +618,7 @@ cancelBooking: function(req,res){
       {
         res.send(err.message);
       }else {
-        res.send(200)
+        res.send(interest)
       }
     })
 
@@ -611,7 +633,7 @@ cancelBooking: function(req,res){
           return;
         }
         //end validating
-        interest.remove({_id:req.body.interestId},function(err,removed){
+                Interest.remove({_id:req.body._id},function(err,removed){
           if(err)
           {
             res.send(err.message);
@@ -624,7 +646,7 @@ cancelBooking: function(req,res){
       },
 
       viewAllUserInterest:function(req,res){
-        interest.find(function(err,interest){
+        Interest.find(function(err,interest){
           if(err){
             res.send(err);
           }

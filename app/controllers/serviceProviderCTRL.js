@@ -129,6 +129,25 @@ let ServiceProviderCTRL = {
             }
         });
     },
+
+
+      getSPbyID:function(req,res){
+        ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
+            if(err)
+            {
+              res.send(err.message);
+            }else
+            {
+              res.send({SP});
+            }
+        })
+
+
+      },
+
+
+
+
     //tested
     //3.2.1 As a service provider I can update my activities
     updateActivity:function(req,res){

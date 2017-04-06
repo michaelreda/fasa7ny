@@ -26,6 +26,18 @@ shareOnSocialMedia:function(req, res){
 	case 'google': res.redirect("https://plus.google.com/share?url="+req.body.url);break;
 }
 },
+// 1.3 filtering activities
+viewActivities:function(req,res){
+      Activity.find(function(err,activities){
+        if(err)
+        {
+            res.send(err.message);
+        }else
+        {
+            res.send({activities})
+        }
+      })
+    },
 
 //1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
 searchForActivities:function(req,res){
@@ -54,7 +66,7 @@ searchForActivities:function(req,res){
 		req.session.j=1;
 		if(req.body.filter==price)
 		{
-			Activity.find.limit(10).exec({prices: req.body.value},function(err,activities){
+			Activity.find.limit(10).exec({ price: req.body.value},function(err,activities){
                     if(err){
                         res.send(err.message);
                     }else {
@@ -319,10 +331,10 @@ if(err){
 },
 
 //1.1 explore differet activities
-
+//tested but not prev and next methods
     getDifferentActivities:function(req,res){
   req.session.j=1;
-Acitivity.find().limit(10).exec(function(err,Acs)
+Activity.find().limit(10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -338,7 +350,7 @@ Acitivity.find().limit(10).exec(function(err,Acs)
 
 getDifferentActivitiesnext:function(req,res){
   req.session.j++;
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -357,7 +369,7 @@ getDifferentActivitiesprev:function(req,res){
       req.session.j--;
   }
 
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 {
         if(err)
     {

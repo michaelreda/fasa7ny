@@ -392,12 +392,14 @@ Message.findOne({_id: req.body.messageId }, function(err, chat){
 
 },
 
-
-//4.8 analytics
+    //4.8 analytics
+    //testing - waiting for bookings to be able to analyze them
+    
 getAnalyticsPage:function(req,res){
       adminCTRL.isAdmin(req,res);
+
       // finding top activity
-      booking.aggregate(
+      Booking.aggregate(
     {$group : {_id : "$activityId", "count" : {$sum : 1}}},
     {$sort : {"count" : -1}},
     {$limit : 1},function(err,topBooking){
@@ -441,6 +443,19 @@ getAnalyticsPage:function(req,res){
       }
     }
 )
+    },
+
+    viewBookings:function(req,res){
+
+      Booking.find(function(err,bookings){
+        if(err)
+        {
+          res.send(err.message);
+        }else
+        {
+          res.send({bookings});
+        }
+      })
     }
 
 }
