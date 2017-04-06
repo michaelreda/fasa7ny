@@ -104,8 +104,13 @@ let ServiceProviderCTRL = {
         let serviceProvider = new ServiceProvider(req.body);
         serviceProvider.serviceProviderAccountId=req.session.account._id;
         if(req.files.length>0){
+          
       serviceProvider.media=[];
       for (var i = 0; i < req.files.length; i++) {
+          if(req.files[i].fieldname=="legalProof"){
+            serviceProvider.legalProof.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+          }
+
           serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
       }
     }
