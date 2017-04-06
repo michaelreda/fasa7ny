@@ -337,7 +337,7 @@ let ServiceProviderCTRL = {
             res.send(provider);
         })
 
-      res.render('viewAddOffer',provider.activities);
+      res.send(provider.activities);
       },
 
 
