@@ -12,6 +12,7 @@ var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
 var adminCTRL= require('./controllers/adminCTRL');
+var globalCTRL= require('./controllers/globalCTRL');
 
 
 // router configuration
@@ -98,9 +99,8 @@ Router.get('/login', function(req, res){
   res.send("login page here");
 });
 
-
 Router.post('/login', passport.authenticate('local-login'),function(req,res){
-  switch (req.body.type) {
+  switch (req.user.type) {
       case 0:
       userCTRL.userLoginStep2(req,res);
           break;
@@ -159,26 +159,39 @@ Router.post('/banforever',adminCTRL.banForever);
 ////////////youssef///////////////////
 
 //SignUp passport
-Router.get('/signup', function(req, res){
+  Router.get('/signup', function(req, res){
 		res.send('signup page here');
 	});
+  Router.get('/signup_user', function(req, res){
+  		res.send('user signup page here');
+  	});
+  Router.get('/signup_sp', function(req, res){
+    		res.send('sp signup page here');
+    	});
+  Router.get('/signup_admin', function(req, res){
+      		res.send('admin signup page here');
+      	});
 
+  Router.post('/signup_user', userCTRL.userSignupStep2);
+  Router.post('/signup_sp', serviceProviderCTRL.serviceProviderSignupStep2);
+  Router.post('/signup_admin', adminCTRL.adminSignupStep2);
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
     if (!req.user) { return res.redirect('/'); }
-    switch (req.body.type) {
+    switch (parseInt(req.body.type)) {
         case 0:
-        userCTRL.userSignupStep2(req,res);
+        res.redirect('signup_user');
             break;
         case 1:
-        serviceProviderCTRL.serviceProviderSignupStep2(req,res);
+        res.redirect('signup_sp');
             break;
         case 3:
-            adminCTRL.adminSignupStep2(req,res);
+        res.redirect('signup_admin');
             break;
         default:
             globalCTRL.addErrorLog('sign up attempt with profile type '+req.body.type);
+            console.log('sign up attempt with profile type '+req.body.type);
             res.redirect('/logout');
             break;
       }
