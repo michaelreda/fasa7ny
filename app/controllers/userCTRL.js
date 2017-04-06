@@ -222,7 +222,7 @@ changePrivacy: function(req,res){
 //tested -notes
 subscribe: function(req,res){
   userCTRL.isUser(req,res);
-  var serviceProviderID=req.session.serviceProvider._id;
+  var serviceProviderID=req.body.serviceProviderId;
   var loggedInUser= req.session.user._id;
 
 
@@ -325,7 +325,7 @@ viewMyProfile: function(req,res){
 //not tested - notes
 //password to be done later
 updateMyProfile: function(req,res){
-    //userCTRL.isUser(req,res);
+    userCTRL.isUser(req,res);
     User.update({_id:req.session.user._id}).exec(function(err,status){
       if(err){
         globalCTRL.addErrorLog(err.message);
