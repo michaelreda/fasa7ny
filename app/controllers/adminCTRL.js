@@ -22,7 +22,7 @@ let adminCTRL={
 banForever:function(req,res){
   adminCTRL.isAdmin(req,res);
   //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').notEmpty();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
   req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
   var errors = req.validationErrors();
   if (errors) {
@@ -60,7 +60,7 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec
 ban30Days:function(req,res){
   adminCTRL.isAdmin(req,res);
   //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').notEmpty();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
   req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
   var errors = req.validationErrors();
   if (errors) {
@@ -98,7 +98,7 @@ ban30Days:function(req,res){
 updateBanStatus:function(req,res){
   adminCTRL.isAdmin(req,res);
   //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').notEmpty();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
   req.checkBody('banDuration','banDuration is required of type int').notEmpty().isInt();
   req.checkBody('isBanUser','isBanUser is required of type Boolean').notEmpty().isBoolean();
   var errors = req.validationErrors();
@@ -185,7 +185,7 @@ viewServiceProviderRequests:function(req,res){
 acceptServiceProviderRequests:function(req,res){
   adminCTRL.isAdmin(req,res);
   //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').notEmpty();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
@@ -235,7 +235,7 @@ acceptServiceProviderRequests:function(req,res){
 rejectServiceProviderRequests:function(req,res){
   adminCTRL.isAdmin(req,res);
   //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').notEmpty();
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
@@ -283,7 +283,6 @@ rejectServiceProviderRequests:function(req,res){
 
 
 adminLogin: function(req,res){
-  adminCTRL.isAdmin(req,res);
 //var isValidPassword = function(user, password){
   //return bCrypt.compareSync(password, user.password);
 //}
