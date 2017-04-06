@@ -239,7 +239,7 @@ contactPlatform: function (req,res){
       if(!message){
         let msg=new Message();
         msg.fromId=logInUser;
-        msg.message.push({"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')});
+        msg.message=[{"isUser":true, "message":req.body.message, "time":new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}];
         msg.isSeen=false;
         message=msg;
       }

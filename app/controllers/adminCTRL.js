@@ -366,7 +366,8 @@ updateLogs: function(req,res){
 
 //4.5 admin deletes system logs
 deleteLogs: function(req,res){
-  Log.findOne({"_id":req.body.logId}).remove().exec (function(err){
+  adminCTRL.isAdmin(req,res);
+  Log.remove(function(err, log){
 
     if(err)
       res.send(err.message);
