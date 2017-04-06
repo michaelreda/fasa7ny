@@ -7,64 +7,156 @@ let Message         = require('../models/message');
 let Booking         = require('../models/booking');
 let Activity         = require('../models/activity');
 
+
 var ObjectId = require('mongoose').Types.ObjectId;
 
 let adminCTRL={
+  //used to test if the user is admin or not
+  isAdmin: function(req,res){
+    if(!req.session.admin)
+      res.send("you are not an admin.. you are not authorized to do this function");
+  },
 
 
-  viewComplains:function(req,res){
-    Complain.find(function(err, complain){
-
-        if(err)
-            res.send(err.message);
-        else
-            res.render('viewComplains',{complain});
-    })
-},
-
+//tested without exception
 banForever:function(req,res){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
 if (req.body.isUserToProvider) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec(function(err){
+ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec(function(err,status){
   if(err)
       res.send(err.message);
   else
-      res.render('ban successful'.send);
+    if(status.nModified!=0)
+      res.send('ban successful');
+    else
+      res.send('sp not found');
 
 })
 } else {
-  User.update({_id:req.body.userId},{$set:{banned:-1}}).exec(function(err){
+  User.update({_id:req.body.userId},{$set:{banned:-1}}).exec(function(err,status){
     if(err)
         res.send(err.message);
     else
-        res.render('ban successful'.send);
+      if(status.nModified!=0)
+        res.send('ban successful');
+      else
+        res.send('user not found');
 
   })
 
 }
 },
+//tested without exception
 ban30Days:function(req,res){
-if (req.body.isUserToProvider) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec(function(err){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+  req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
+  if (req.body.isUserToProvider) {
+    ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec(function(err,status){
+      if(err)
+        res.send(err.message);
+      else
+        if(status.nModified!=0)
+          res.send('ban successful');
+        else
+          res.send('sp not found');
+
+    })
+  } else {
+    User.update({_id:req.body.userId},{$set:{banned:30}}).exec(function(err,status){
+      if(err)
+        res.send(err.message);
+      else
+        if(status.nModified!=0)
+          res.send('ban successful');
+        else
+          res.send('user not found');
+
+    })
+
+  }
+},
+//tested without exception
+updateBanStatus:function(req,res){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  req.checkBody('banDuration','banDuration is required of type int').notEmpty().isInt();
+  req.checkBody('isBanUser','isBanUser is required of type Boolean').notEmpty().isBoolean();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+  req.sanitize('isBanUser').toBoolean(); //converting to boolean in case it's a string
+if (req.body.isBanUser == false) {
+ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
   if(err)
       res.send(err.message);
   else
-      res.render('ban successful'.send);
+    if(status.nModified!=0)
+      res.send('sp ban status updated successful');
+    else
+      res.send('sp not found');
 
 })
 } else {
-  User.update({_id:req.body.userId},{$set:{banned:30}}).exec(function(err){
+  User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
     if(err)
         res.send(err.message);
     else
-        res.render('ban successful'.send);
+        if(status.nModified!=0)
+          res.send('user ban status updated successful');
+        else
+          res.send('user not found');
 
   })
 
 }
 },
+//tested
+viewComplains:function(req,res){
+  adminCTRL.isAdmin(req,res);
+  Complain.find(function(err, complains){
+    if(err)
+    res.send(err.message);
+    else
+    res.send(complains);
+  })
+},
+//tested without exception
 removeComplain:function(req,res){
-Complain.findOne({_id:req.params.complainId},function(err,val){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('complainId','complainId is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+Complain.findOne({_id:req.body.complainId},function(err,val){
   if(err){
+    console.log(err.message);
  }
   else{
     if(val.isSeen){
@@ -72,23 +164,34 @@ Complain.findOne({_id:req.params.complainId},function(err,val){
     if(err)
         res.send(err.message);
     else
-        res.render('complain deleted'.send);
+        res.send('complain deleted');
       })
     }
 }
 })
 },
+//tested without exception
 viewServiceProviderRequests:function(req,res){
-  ServiceProvider.find({isApproved:0},function(err,val){
+  adminCTRL.isAdmin(req,res);
+  ServiceProvider.find({Approved:0},function(err,serviceProviders){
     if(err)
           res.send(err.message);
       else
-          res.render('viewServiceProviderRequests',{serviceProvider});
+          res.send(serviceProviders);
   })
 },
-//tested
+//tested without exception
 //link sent to be edited when views are ready
 acceptServiceProviderRequests:function(req,res){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:1}}).exec(function(err){
     if(err)
           res.send(err.message);
@@ -127,9 +230,18 @@ acceptServiceProviderRequests:function(req,res){
         }
   })
 },
-//tested
+//tested without exception
 //link sent to be edited when views are ready
 rejectServiceProviderRequests:function(req,res){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:-1}}).exec(function(err){
     if(err)
           res.send(err.message);
@@ -174,6 +286,16 @@ adminLogin: function(req,res){
 //var isValidPassword = function(user, password){
   //return bCrypt.compareSync(password, user.password);
 //}
+
+//validating
+req.checkBody('userName','Username is required').notEmpty();
+req.checkBody('password','Password is required').notEmpty();
+var errors = req.validationErrors();
+if (errors) {
+  res.send(errors);
+  return;
+}
+//end validating
 passport.use('login', new LocalStrategy({
     passReqToCallback : true
   },
@@ -204,14 +326,15 @@ passport.use('login', new LocalStrategy({
     );
 }));
 },
+
+//tested without exception
+
 viewAllChats:function(req, res){
-
+adminCTRL.isAdmin(req,res);
 Message.find(function(err, messages){
-
 	if(err){
 	     res.send(err.message);
-    }else
-        {
+    }else{
 			res.send(messages);
 		}
 })
@@ -219,8 +342,8 @@ Message.find(function(err, messages){
 },
 //4.5 admin views system logs
 viewSystemLogs: function(req,res){
+  adminCTRL.isAdmin(req,res);
   Log.find(function(err, log){
-
         if(err)
             res.send(err.message); //display messages
         else
@@ -235,6 +358,7 @@ updateLogs: function(req,res){
 
 //4.5 admin deletes system logs
 deleteLogs: function(req,res){
+  adminCTRL.isAdmin(req,res);
   Log.remove(function(err, log){
     if(err)
       res.send(err.message);
@@ -244,43 +368,34 @@ deleteLogs: function(req,res){
   })
 },
 
+//tested without exception
 viewChatMessages:function(req, res){
-
-Message.findOne({_id: req.body.messageId }, function(err, message){
+  adminCTRL.isAdmin(req,res);
+  //validating
+  req.checkBody('messageId','messageId is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+Message.findOne({_id: req.body.messageId }, function(err, chat){
 
 	if(err){
-	     res.send(err.message);
-    }else
-        {
-			message.isSeen=true;
-			res.send(message);
+	     console.log(err.message);
+    }else{
+      if(chat)
+			   chat.isSeen=true;
+			res.send(chat);
 		}
 })
 
 },
 
-updateBanStatus:function(req,res){
-if (!req.body.isBanUser) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err){
-  if(err)
-      res.send(err.message);
-  else
-      res.send('ban successful');
 
-})
-} else {
-  User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err){
-    if(err)
-        res.send(err.message);
-    else
-        res.send('ban successful');
-
-  })
-
-}
-},
-    //4.8 analytics
-    getAnalyticsPage:function(req,res){
+//4.8 analytics
+getAnalyticsPage:function(req,res){
+      adminCTRL.isAdmin(req,res);
       // finding top activity
       booking.aggregate(
     {$group : {_id : "$activityId", "count" : {$sum : 1}}},
