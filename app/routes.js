@@ -79,6 +79,8 @@ Router.get('/view_complains', adminCTRL.viewComplains);
 Router.post('/remove_complain', adminCTRL.removeComplain);
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
+
+Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
 ////////////morcus///////////////////
 
 
