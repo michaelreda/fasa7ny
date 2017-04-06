@@ -21,11 +21,10 @@ birthDate:{
   required:true
 },
 age:{
-  type:Number,
-  required:true
+  type:Number
 },
 gender:{
-  type:Number,
+  type:Boolean,
   required:true
 },
 privacy:{

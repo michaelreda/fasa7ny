@@ -27,10 +27,10 @@ Router.get('/test',function(req,res){
 
 //2.6 comparison
 
-Router.post('/comparison', userCTRL.getFirstListOfChoices);
+Router.get('/comparison', userCTRL.getFirstListOfChoices);
 Router.post('/second_choice', userCTRL.getSecondListOfChoices);
-Router.get('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
-Router.get('/compare_activities', userCTRL.getActivitiesToCompare);
+Router.post('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
+Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 
 //1.10 apply as a service provider
 // Router.post('/apply_sp', serviceProviderCTRL.createServiceProviderAccount);
@@ -50,7 +50,15 @@ Router.get('/get_analysis', adminCTRL.getAnalyticsPage);
 //2.5 user add his interests
 Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
-Router.post('/view_user_interest', userCTRL.viewAllUserInterest);
+Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
+
+// view activities _NEEDED_FOR_Testing
+Router.get('/view_activity', visitorCTRL.viewActivities);
+Router.get('/view_complains', userCTRL.viewComplains);
+Router.get('/view_bookings', adminCTRL.viewBookings);
+Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
+
+
 
 
 
@@ -80,6 +88,8 @@ Router.get('/view_complains', adminCTRL.viewComplains);
 Router.post('/remove_complain', adminCTRL.removeComplain);
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
+
+Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
 ////////////morcus///////////////////
 
 
@@ -121,12 +131,13 @@ Router.get('/logout', function(req, res){
 
 
 //viewAllActivities
-Router.get('/viewActivities',serviceProviderCTRL.viewAllActivities);
+Router.get('/viewAllActivities',serviceProviderCTRL.viewAllActivities);
 //for testing
 Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
 
-//book activity
-Router.post('/book_Activity', userCTRL.bookActivity);
+
+
+
 
 //3.6 confirm checkIns
 Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
@@ -188,6 +199,7 @@ Router.post('/view_chat_history', adminCTRL.viewChatMessages);
 
 
 //1.6 read about the platform through the “about us” option
+//tested
 Router.get('/about_uspage',function(req,res){
   res.render("aboutus_page.ejs");
 });
@@ -200,7 +212,7 @@ Router.get('/explore_activities_prev', visitorCTRL.getDifferentActivitiesprev);
 //2.8 user Complain serviveprovider
 Router.post('/complain', userCTRL.submitUserComplain);
 Router.post('/complain_update', userCTRL.updateComplainBody);
-Router.get('/complain_status', userCTRL.viewStatusOfComplain);
+Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 

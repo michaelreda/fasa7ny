@@ -40,7 +40,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.session.serviceProviderId, 
+        "serviceProviderId":req.session.serviceProviderId,
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -84,21 +84,6 @@ let ServiceProviderCTRL = {
 
     },
 
-//1.10 a serviceProvider can apply
-        // createServiceProviderAccount:function(req, res){
-        //       let account = new Account(req.body);
-        //       account.type=1;
-        //       account.save(function(err, account){
-        //           if(err){
-        //               res.send(err.message);
-        //           }
-        //           else{
-        //               req.session.account=account;
-        //               res.send(200);
-        //           }
-        //       });
-        //   },
-
         //missing legal proof media
      createServiceProvider:function(req, res){
        //validating
@@ -132,6 +117,25 @@ let ServiceProviderCTRL = {
             }
         });
     },
+
+
+      getSPbyID:function(req,res){
+        ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
+            if(err)
+            {
+              res.send(err.message);
+            }else
+            {
+              res.send({SP});
+            }
+        })
+
+
+      },
+
+
+
+
     //tested
     //3.2.1 As a service provider I can update my activities
     updateActivity:function(req,res){
@@ -269,38 +273,7 @@ let ServiceProviderCTRL = {
         }
       })
     },
-
-    //tested .. missing hashing
-    createServiceProviderAccount:function(req, res){
-      //validating
-      req.checkBody('userName','username is required').notEmpty();
-      req.checkBody('userName','username minimum length is 6').isLength({min:6});
-      req.checkBody('password','password is required').notEmpty();
-      req.checkBody('password','password minimum length is 6').isLength({min:6});
-      req.checkBody('email','email is required').isEmail();
-      var errors = req.validationErrors();
-      if (errors) {
-        res.send(errors);
-        return;
-      }
-      //end validating
-      let account = new Account(req.body);
-      account.type=1;
-      account.save(function(err, account){
-        if(err){
-          if(err.message.includes("duplicate")&& err.message.includes("userName"))
-            res.send("userName already exists");
-          if(err.message.includes("duplicate")&& err.message.includes("email"))
-            res.send("email already exists");
-          res.send(err.message);
-        }
-        else{
-          req.session.account=account;
-          res.send("sp account created succesfully");
-        }
-      });
-    },
-
+   
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -449,6 +422,7 @@ let ServiceProviderCTRL = {
         })
     },
 
+//session var to be edited
       viewHoldingReservations:function(req, res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
@@ -464,6 +438,7 @@ let ServiceProviderCTRL = {
       },
       //tested
       //missing payment
+      //session var to be edited
       applyToGolden:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
@@ -530,9 +505,8 @@ let ServiceProviderCTRL = {
             res.send("Booking is confirmed");
           }
         })
-      },
-
-      //required for testing
+      }, 
+  //required for testing
       viewAllUsers:function(req,res){
         User.find(function(err, users){
           if(err){
@@ -543,7 +517,30 @@ let ServiceProviderCTRL = {
           }
 })
 },
-      viewActivities:function(req,res){
+      submitServiceProviderComplain:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('providerId','providerId is required').isMongoId();
+        req.checkBody('complain','complain is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+        let complain = new Complain(req.body);
+        complain.providerId= req.session.serviceProviderId._id;
+        complain.isUserToProvider= false;
+        complain.save(function(err,complain){
+          if(err)
+          {
+            res.send(err.message);
+          }else {
+            res.send(200)
+          }
+        })
+      },
+    viewActivities:function(req,res){
         Activity.find(function(err, act){
           if(err)
           res.send(err);

@@ -8,20 +8,65 @@ let Account           = require('../models/account');
 
 
 let visitorCTRL={
+  //tested
 //1.9
 shareOnSocialMedia:function(req, res){
+  //validating
+  req.checkBody('url','url is required').isURL();
+  req.checkBody('socialService','socialService is either facebook, twitter or google').isIn(["facebook","twitter","google"]);
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   switch(req.body.socialService){
 	case 'facebook': res.redirect("https://www.facebook.com/sharer/sharer.php?u="+req.body.url);break;
 	case 'twitter':  res.redirect("https://twitter.com/intent/tweet?text=check out this amazing activity here at "+req.body.url+" &url=YOUR-URL"+req.body.url);break;
-	case 'google': res.redirect("https://plus.google.com/share?url="+req.params.query);break;
+	case 'google': res.redirect("https://plus.google.com/share?url="+req.body.url);break;
 }
 },
+// 1.3 filtering activities
+viewActivities:function(req,res){
+      Activity.find(function(err,activities){
+        if(err)
+        {
+            res.send(err.message);
+        }else
+        {
+            res.send({activities})
+        }
+      })
+    },
 
+//1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
+searchForActivities:function(req,res){
+  //validating
+  req.checkBody('input','input is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
+  Activity.find(
+    { $or:[
+    {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
+    {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
+    {timings:{$contains : { day:req.body.input , startTime : {$regex : ".*"} } }}
+  ]}
+    ,function(err, activities){
+    if(err)
+    res.send(err.message);
+    else
+    res.send(activities);
+  })
+},
 	filterActivitiesBy:function(req, res){
 		req.session.j=1;
 		if(req.body.filter==price)
 		{
-			Activity.find.limit(10).exec({prices: req.body.value},function(err,activities){
+			Activity.find.limit(10).exec({ price: req.body.value},function(err,activities){
                     if(err){
                         res.send(err.message);
                     }else {
@@ -205,6 +250,14 @@ ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:
 },
 
 viewServiceProvider:function(req, res){
+  //validating
+  req.checkBody('providerId','providerId is required').isMongoId();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
 ServiceProvider.findOne({ _id :req.body.providerId})
 .populate({path: 'activities', options:{sort:{'rating':-1}}})
 .exec( function(err, provider){
@@ -236,7 +289,7 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 								})
 									//res.send({provider,bestSelledActivity});
 								}
-								})	
+								})
 				}	})
 			)}
 })
@@ -244,13 +297,27 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 
 
 viewFAQ:function(req,res){
-	res.render("viewFAQ", {});
+	res.render("viewFAQ");
 	//viewFAQ is a static HTML page
 	},
 
 
 registerAsUser:function(req, res){
-
+  //validating
+  req.checkBody('firstName','firstName is required and contain letters only').isAlpha();
+  req.checkBody('lastName','lastName is required and contain letters only').isAlpha();
+  req.checkBody('userAccountId','userAccountId is required').isMongoId();
+  req.checkBody('birthDate','birthDate should be in  valid in the following format: 2017-04-20T00:00:00.000Z').isISO8601(); //check if the string is a valid ISO 8601 date.
+  req.checkBody('age','age should be a postive number').optional().isInt({min:1,max:100});
+  req.checkBody('gender','gender should be a Boolean').isBoolean();
+  req.checkBody('privacy','privacy should be a number').isInt();
+  req.checkBody('mobileNumber','mobileNumber should be numeric').isNumeric();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
 let user=new User(req.body);
 user.save(function(err, user){
 
@@ -264,10 +331,10 @@ if(err){
 },
 
 //1.1 explore differet activities
-
+//tested but not prev and next methods
     getDifferentActivities:function(req,res){
   req.session.j=1;
-Acitivity.find().limit(10).exec(function(err,Acs)
+Activity.find().limit(10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -283,7 +350,7 @@ Acitivity.find().limit(10).exec(function(err,Acs)
 
 getDifferentActivitiesnext:function(req,res){
   req.session.j++;
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,ACs)
 {
         if(err)
     {
@@ -302,7 +369,7 @@ getDifferentActivitiesprev:function(req,res){
       req.session.j--;
   }
 
-Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
+Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 {
         if(err)
     {
@@ -318,8 +385,16 @@ Acitivity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 ,
 
 signupForNewsletter:function(req,res){
+  //validating
+  req.checkBody('email','valid email is required').isEmail();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   let newAccount = new Account();
-  newAccount.userName=newAccount._id;
+  newAccount.userName=newAccount._id;//visitor doesn't need to login to subscribe
   newAccount.password=newAccount._id;
   newAccount.email=req.body.email;
   newAccount.type=2;
@@ -334,13 +409,25 @@ signupForNewsletter:function(req,res){
 
 //2.1.2 recover password
 recoverPassword:function(req,res){
-
+  //validating
+  req.checkBody('userName','userName is required').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send(errors);
+    return;
+  }
+  //end validating
   Account.find({"userName": req.body.userName}, function(err, user){
     if(err){
       res.send(err);
     }
     else{
-         user.password='00000000';
+          if(!user){
+            res.send("no account with this username");
+          }
+        var randomstring = require("randomstring");
+        randomPass=randomstring.generate(12);//generating randompass
+         user.password=user.generateHash(randomPass);
          user.save(function(err){
            if(err){
              res.send(err);
@@ -359,7 +446,7 @@ recoverPassword:function(req,res){
                to: user.email, // list of receivers
                subject: 'Change Password', // Subject line
                //text: text //, // plaintext body
-               html: "Your password for now is 00000000"// You can choose to send an HTML body instead
+               html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
              };
              transporter.sendMail(mailOptions, function(error, info){
                if(error){
