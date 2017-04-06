@@ -13,7 +13,16 @@ var expressValidator = require('express-validator');
 //configure app
 app.use(bodyParser.urlencoded({extended:true})); //this line must be on top of app config
 app.use(bodyParser.json());
-app.use(expressValidator());
+app.use(expressValidator({
+ customValidators: {
+    isArray: function(value) {
+        return Array.isArray(value);
+    },
+    gte: function(param, num) {
+        return param >= num;
+    }
+ }
+}));
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
 var job3 = schedule.scheduleJob('59 23 * * *', globalCTRL.overdueBookings);
