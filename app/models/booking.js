@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var bookingSchema = mongoose.Schema({
+
   userId:{
     type:mongoose.Schema.Types.ObjectId,ref:'user',
     required:true

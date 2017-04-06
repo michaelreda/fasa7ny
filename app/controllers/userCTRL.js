@@ -478,6 +478,8 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
     }
   })
 },
+
+//tested
  //2.7 reserve a booking for an activity
 bookActivity:function(req,res){
   userCTRL.isUser(req,res);

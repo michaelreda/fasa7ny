@@ -5,6 +5,7 @@ let Offer = require('../models/offer.js');
 let Booking=require('../models/booking.js');
 let User=require('../models/user.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
+let Complain=require('../models/complain.js');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 
@@ -94,6 +95,7 @@ let ServiceProviderCTRL = {
        req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
        req.checkBody('branches','branches is a required').notEmpty().isArray();
        req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
+       req.checkBody('legalProof','legalProof is required').notEmpty();
        var errors = req.validationErrors();
        if (errors) {
          res.send(errors);
@@ -125,7 +127,7 @@ let ServiceProviderCTRL = {
         });
     },
 
-
+    //tested
       getSPbyID:function(req,res){
         ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
             if(err)
@@ -275,7 +277,7 @@ let ServiceProviderCTRL = {
       });
     },
 
-    //required for testing
+    //tested
     viewAllActivities: function(req,res){
       Activity.find(function(err,act){
         if(err){
@@ -288,6 +290,7 @@ let ServiceProviderCTRL = {
       })
     },
 
+     //tested
     //3.1 Login as a service Provider
     serviceProviderLoginStep2: function(req,res){
         ServiceProvider.findOne({serviceProviderAccountId:req.user._id}).exec(function(err,thisProvider){
@@ -322,7 +325,7 @@ let ServiceProviderCTRL = {
 
 
       //karim and andrea's code
-      //tested .. session variable to be edited
+      //tested
       viewAddOffer: function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.findOne({_id:req.session.ServiceProvider._id})
@@ -334,8 +337,10 @@ let ServiceProviderCTRL = {
             res.send(provider);
         })
 
-      //  res.render('viewAddOffer',provider.activities);
+      res.render('viewAddOffer',provider.activities);
       },
+
+
       //tested
       addOffer:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -361,11 +366,11 @@ let ServiceProviderCTRL = {
             console.log(err);
             res.send(err.message);
           }else{
-            //ServiceProvider.update({_id: req.session.serviceProvider._id},{$push: {}})
             res.send('offer added');//same redirection as update
           }
         })
       },
+
       //tested
       deleteOffer:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -393,6 +398,7 @@ let ServiceProviderCTRL = {
           }
         })
       },
+
       //tested
       updateOffer: function (req, res) {
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -425,7 +431,8 @@ let ServiceProviderCTRL = {
         })
     },
 
-//session var to be edited
+      //tested
+     //session var to be edited
       viewHoldingReservations:function(req, res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
@@ -440,9 +447,9 @@ let ServiceProviderCTRL = {
         })
 
       },
+
       //tested
       //missing payment
-      //session var to be edited
       applyToGolden:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
@@ -458,6 +465,7 @@ let ServiceProviderCTRL = {
         });
       },
 
+      //tested
       //3.6 confirm checkins
       viewBookings:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -472,6 +480,8 @@ let ServiceProviderCTRL = {
         })
       },
 
+
+     //tested
       confirmCheckIn:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         //validating
@@ -506,16 +516,17 @@ let ServiceProviderCTRL = {
                       res.send(err);
                     }
                       else{
-                        res.send(200);
+                        res.send("Booking is confirmed");
                       }
                     });
               }
             })
           }
-            res.send("Booking is confirmed");
           }
         })
       },
+
+      //tested
   //required for testing
       viewAllUsers:function(req,res){
         User.find(function(err, users){
@@ -528,6 +539,7 @@ let ServiceProviderCTRL = {
           }
 })
 },
+      //tested
       submitServiceProviderComplain:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         //validating
@@ -552,6 +564,8 @@ let ServiceProviderCTRL = {
           }
         })
       },
+
+      //tested
     viewActivities:function(req,res){
         Activity.find(function(err, act){
           if(err){
@@ -562,6 +576,8 @@ let ServiceProviderCTRL = {
           res.send(act);
         })
       },
+
+   //tested
   serviceProviderSignupStep2: function(req,res){
 
         req.checkBody('title','title is required').notEmpty();
@@ -611,8 +627,10 @@ let ServiceProviderCTRL = {
                 }
 
     },
+
+    //tested
     viewProviderBookings: function(req,res){
-      ServiceProviderCTRL.isServiceProvider(req,res);
+    ServiceProviderCTRL.isServiceProvider(req,res);
     Booking.find({serviceProviderId:req.session.serviceProvider._id,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
       if(err){
         globalCTRL.addErrorLog(err.message);
