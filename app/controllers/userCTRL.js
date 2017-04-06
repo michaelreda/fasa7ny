@@ -213,11 +213,10 @@ changePrivacy: function(req,res){
     }
   })
 },
-// user id for testing 58e695140fb1c32c4d7eaabd
-//service provider id for testing 58e0323c244cdb4ebbe85687
+
 
 //2.4 user subscribes to a service provider
-//tested 
+//tested -notes
 subscribe: function(req,res){
   userCTRL.isUser(req,res);
   var serviceProviderID=req.session.serviceProvider._id;
@@ -253,7 +252,11 @@ subscribe: function(req,res){
 )
 },
 
+
+
+
 //2.13 user contacts platform
+//tested
 contactPlatform: function (req,res){
   userCTRL.isUser(req,res);
   //validating
@@ -304,6 +307,7 @@ message.save(function(err){
 
 
 //2.2 As a logged in user I can view
+//tested
 viewMyProfile: function(req,res){
   userCTRL.isUser(req,res);
   User.findOne({_id:req.session.user._id}).exec(function(err,user){
@@ -316,11 +320,18 @@ viewMyProfile: function(req,res){
     }
   })
 },
+
+
+// user id for testing 58e695140fb1c32c4d7eaabd
+//service provider id for testing 58e0323c244cdb4ebbe85687
+
+
 //2.2 As a logged in user I can update my personal info
+//not tested - notes
 //password to be done later
 updateMyProfile: function(req,res){
-    userCTRL.isUser(req,res);
-    User.update({_id:req.session.user._id}).exec(function(err,status){
+    //userCTRL.isUser(req,res);
+    User.update({_id:"58e695140fb1c32c4d7eaabd"}).exec(function(err,status){
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err);
@@ -336,6 +347,7 @@ updateMyProfile: function(req,res){
 
 },
 //2.2.1 As a logged in user I can delete my account
+//will be tested when all is done
 deleteMyProfile: function(req,res){
    userCTRL.isUser(req,res);
     User.findOne({_id:req.session.user._id}).remove().exec(function(err){
@@ -351,6 +363,7 @@ deleteMyProfile: function(req,res){
 }
 ,
 userAddToWishList:function(req,res){
+  //not tested yet
   userCTRL.isUser(req,res);
 User.update({_id: req.session.user._id}, {$push: {'wishlist' : req.body.activity}}).exec(function(err,status){
   if(status.nModified!=0)
