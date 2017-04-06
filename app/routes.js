@@ -24,57 +24,68 @@ Router.get('/test',function(req,res){
   res.send("bye world");
 })
 
-////////////waseem///////////////////
+
+
+
+/////// userCTRL /////////////
 
 //2.6 comparison
-
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
 Router.post('/second_choice', userCTRL.getSecondListOfChoices);
 Router.post('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
 Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 
-//1.10 apply as a service provider
-// Router.post('/apply_sp', serviceProviderCTRL.createServiceProviderAccount);
-
-Router.post('/continue_sp_creation', serviceProviderCTRL.createServiceProvider);
-
-//1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
-Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
-Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
-
-
-//4.8 analytics
-Router.get('/get_analysis', adminCTRL.getAnalyticsPage);
-
-
 //2.5 user add his interests
 Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
-
-// view activities _NEEDED_FOR_Testing
-Router.get('/view_activity', visitorCTRL.viewActivities);
+// for testing
 Router.get('/view_complains', userCTRL.viewComplains);
-Router.get('/view_bookings', adminCTRL.viewBookings);
-Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
 Router.get('/view_users', userCTRL.findUsers);
 
+//2.13 contact platform
+Router.post('/contact_platform', userCTRL.contactPlatform);
+
+//book activity
+ Router.post('/book_Activity', userCTRL.bookActivity);
+
+//user sign up
+ Router.post('/signup_user', userCTRL.userSignupStep2);
+
+//2.10 user wishlists
+Router.post('/add_to_wishlist', userCTRL.userAddToWishList);
+Router.post('/drop_from_wishlist', userCTRL.userDropFromWishList);
+
+Router.post('/change_password', userCTRL.changePassword);
+Router.post('/change_privacy', userCTRL.changePrivacy);
+Router.post('/subscribe', userCTRL.subscribe);
+Router.get('/view_my_profile', userCTRL.viewMyProfile);
+Router.post('/update_my_profile', userCTRL.updateMyProfile);
+Router.post('/delete_my_profile', userCTRL.deleteMyProfile);
+Router.post('/update_review', userCTRL.updateReview);
+Router.post('/delete_review', userCTRL.deleteReview);
+Router.get('/view_my_reviews', userCTRL.viewMyReviews);
+Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
+Router.post('/cancel_booking', userCTRL.cancelBooking);
+Router.post('/unsubscribe', userCTRL.unSubscribe);
+Router.post('/ratereview_activity', userCTRL.rateReviewActivity);
+
+//2.8 user Complain serviveprovider
+Router.post('/complain', userCTRL.submitUserComplain);
+Router.post('/complain_update', userCTRL.updateComplainBody);
+Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 
-////////////reda///////////////////
-Router.post('/add_activity', serviceProviderCTRL.addActivity);
-Router.post('/update_activity', serviceProviderCTRL.updateActivity);
-Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
-Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
 
-Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
-Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
-Router.post('/add_offer', serviceProviderCTRL.addOffer);
-Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
-Router.post('/update_offer', serviceProviderCTRL.updateOffer);
-Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+
+
+
+////////////////////adminCTRL//////////////////
+
+
+// view bookings
+Router.get('/view_bookings', adminCTRL.viewBookings);
 
 Router.get('/view_sp_requests', adminCTRL.viewServiceProviderRequests);
 Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
@@ -88,11 +99,101 @@ Router.post('/remove_complain', adminCTRL.removeComplain);
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
 
+
+//4.8 analytics
+Router.get('/get_analysis', adminCTRL.getAnalyticsPage);
+
+  //4.5 view system logs
+  Router.get('/view_system_logs',adminCTRL.viewSystemLogs);
+  Router.get('/delete_logs', adminCTRL.deleteLogs);
+
+
+//4.6 managing bans
+Router.post('/banforever',adminCTRL.banForever);
+
+//admin sign up
+  Router.post('/signup_admin', adminCTRL.adminSignupStep2);
+
+//4.7 messages
+Router.get('/view_all_chats', adminCTRL.viewAllChats);
+Router.post('/view_chat_history', adminCTRL.viewChatMessages);
+
+
+
+
+
+
+
+
+
+////////////////////serviceProviderCTRL//////////////////
+
+//1.10 apply as a service provider
+Router.post('/continue_sp_creation', serviceProviderCTRL.createServiceProvider);
+
+Router.post('/add_activity', serviceProviderCTRL.addActivity);
+Router.post('/update_activity', serviceProviderCTRL.updateActivity);
+Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
+Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
+
+Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
+Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
+Router.post('/add_offer', serviceProviderCTRL.addOffer);
+Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
+Router.post('/update_offer', serviceProviderCTRL.updateOffer);
+Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+
+Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
+
+//viewAllActivities
+Router.get('/viewAllActivities',serviceProviderCTRL.viewAllActivities);
+
+
+//3.6 confirm checkIns
+Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
+Router.get('/SP_CTRL_bookings', serviceProviderCTRL.viewBookings);
+Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
+
+ Router.post('/signup_sp', serviceProviderCTRL.serviceProviderSignupStep2);
+
+Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations);
+Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
+Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
+
+////////////////////visitorCTRL//////////////////
+
+//1.3  filter activities as a visitor and moving back and forth each 10 activities
+Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
+Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
+Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
+
+// view activities _NEEDED_FOR_Testing
+Router.get('/view_activity', visitorCTRL.viewActivities);
+
 Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
-////////////morcus///////////////////
 
 
-////////////sherrie///////////////////
+//1.2 view service providers
+Router.get('/view_all_service_providers', visitorCTRL.viewAllServiceProviders);
+Router.post('/view_service_provider', visitorCTRL.viewServiceProvider);
+//1.7 view FAQ
+Router.get('/view_FAQ', visitorCTRL.viewFAQ);
+//1.4 user registration
+Router.get('/register_as_user', visitorCTRL.registerAsUser);
+
+Router.post('/search_for_activities', visitorCTRL.searchForActivities);
+Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
+Router.post('/unsubscribe_for_newsletter', visitorCTRL.unsubscribeForNewsletter);
+Router.post('/recover_password', visitorCTRL.recoverPassword);
+
+// 1.1 A Visitor can explore different activities
+Router.get('/explore_activities', visitorCTRL.getDifferentActivities);
+Router.get('/explore_activities_next', visitorCTRL.getDifferentActivitiesnext);
+Router.get('/explore_activities_prev', visitorCTRL.getDifferentActivitiesprev);
+
+
+
+/////////////////////////PASSPORT///////////////////////
 
 //LogIn Passport
 Router.get('/login', function(req, res){
@@ -126,37 +227,7 @@ Router.get('/logout', function(req, res){
     //res.redirect('/');
   });
 
-  //2.13 contact platform
-  Router.post('/contact_platform', userCTRL.contactPlatform);
 
-  //4.5 view system logs
-  Router.get('/view_system_logs',adminCTRL.viewSystemLogs);
-  Router.get('/delete_logs', adminCTRL.deleteLogs);
-
-
-//viewAllActivities
-Router.get('/viewAllActivities',serviceProviderCTRL.viewAllActivities);
-//for testing
-Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
-
-
-
-
-
-//3.6 confirm checkIns
-Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
-Router.get('/SP_CTRL_bookings', serviceProviderCTRL.viewBookings);
-Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
-
-//4.6 managing bans
-Router.post('/banforever',adminCTRL.banForever);
-
-
-//book activity
- Router.post('/book_Activity', userCTRL.bookActivity);
-
-
-////////////youssef///////////////////
 
 //SignUp passport
   Router.get('/signup', function(req, res){
@@ -172,9 +243,7 @@ Router.post('/banforever',adminCTRL.banForever);
       		res.send('admin signup page here');
       	});
 
-  Router.post('/signup_user', userCTRL.userSignupStep2);
-  Router.post('/signup_sp', serviceProviderCTRL.serviceProviderSignupStep2);
-  Router.post('/signup_admin', adminCTRL.adminSignupStep2);
+
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
@@ -198,31 +267,6 @@ Router.post('/banforever',adminCTRL.banForever);
 
 	});
 
-////////////andrea///////////////////
-
-//1.2 view service providers
-Router.get('/view_all_service_providers', visitorCTRL.viewAllServiceProviders);
-Router.post('/view_service_provider', visitorCTRL.viewServiceProvider);
-//1.7 view FAQ
-Router.get('/view_FAQ', visitorCTRL.viewFAQ);
-//1.4 user registration
-Router.get('/register_as_user', visitorCTRL.registerAsUser);
-
-
-//2.10 user wishlists
-Router.post('/add_to_wishlist', userCTRL.userAddToWishList);
-Router.post('/drop_from_wishlist', userCTRL.userDropFromWishList);
-//4.7 messages
-Router.get('/view_all_chats', adminCTRL.viewAllChats);
-Router.post('/view_chat_history', adminCTRL.viewChatMessages);
-
-
-
-
-////////////mariam///////////////////
-
-
-
 
 //1.6 read about the platform through the “about us” option
 //tested
@@ -230,41 +274,13 @@ Router.get('/about_uspage',function(req,res){
   res.render("aboutus_page.ejs");
 });
 
-// 1.1 A Visitor can explore different activities
-Router.get('/explore_activities', visitorCTRL.getDifferentActivities);
-Router.get('/explore_activities_next', visitorCTRL.getDifferentActivitiesnext);
-Router.get('/explore_activities_prev', visitorCTRL.getDifferentActivitiesprev);
-
-//2.8 user Complain serviveprovider
-Router.post('/complain', userCTRL.submitUserComplain);
-Router.post('/complain_update', userCTRL.updateComplainBody);
-Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 
 
 
-////////////kareem///////////////////
-Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations);
-Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
-Router.post('/search_for_activities', visitorCTRL.searchForActivities);
-Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
-Router.post('/unsubscribe_for_newsletter', visitorCTRL.unsubscribeForNewsletter);
-Router.post('/recover_password', visitorCTRL.recoverPassword);
-Router.post('/change_password', userCTRL.changePassword);
-Router.post('/change_privacy', userCTRL.changePrivacy);
-Router.post('/subscribe', userCTRL.subscribe);
-Router.get('/view_my_profile', userCTRL.viewMyProfile);
-Router.post('/update_my_profile', userCTRL.updateMyProfile);
-Router.post('/delete_my_profile', userCTRL.deleteMyProfile);
-Router.post('/update_review', userCTRL.updateReview);
-Router.post('/delete_review', userCTRL.deleteReview);
-Router.get('/view_my_reviews', userCTRL.viewMyReviews);
-Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
-Router.post('/cancel_booking', userCTRL.cancelBooking);
-Router.post('/unsubscribe', userCTRL.unSubscribe);
-Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
-Router.post('/ratereview_activity', userCTRL.rateReviewActivity);
+
+
 
 
 
