@@ -109,11 +109,9 @@ Router.get('/logout', function(req, res){
     res.redirect('/');
   });
 
-//for testing
-Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
 
-//book activity
-Router.post('/book_Activity', userCTRL.bookActivity);
+
+
 
 //3.6 confirm checkIns
 Router.post('/bookings', serviceProviderCTRL.viewBookings);
