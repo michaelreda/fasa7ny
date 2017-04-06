@@ -70,7 +70,6 @@ Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
 
 Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
 Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
-Router.post('/create_sp_acc', serviceProviderCTRL.createServiceProviderAccount);
 Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
@@ -148,6 +147,8 @@ Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
 Router.post('/banforever',adminCTRL.banForever);
 
 
+//book activity
+ Router.post('/book_Activity', userCTRL.bookActivity);
 
 
 ////////////youssef///////////////////
