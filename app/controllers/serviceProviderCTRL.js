@@ -434,6 +434,7 @@ let ServiceProviderCTRL = {
         })
     },
 
+//session var to be edited
       viewHoldingReservations:function(req, res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
@@ -449,6 +450,7 @@ let ServiceProviderCTRL = {
       },
       //tested
       //missing payment
+      //session var to be edited
       applyToGolden:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
@@ -511,6 +513,30 @@ let ServiceProviderCTRL = {
             })
           }
             res.send("Booking is confirmed");
+          }
+        })
+      },
+      submitServiceProviderComplain:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('providerId','providerId is required').isMongoId();
+        req.checkBody('complain','complain is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+
+        let complain = new Complain(req.body);
+        complain.providerId= req.session.serviceProviderId._id;
+        complain.isUserToProvider= false;
+        complain.save(function(err,complain){
+          if(err)
+          {
+            res.send(err.message);
+          }else {
+            res.send(200)
           }
         })
       }

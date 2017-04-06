@@ -510,8 +510,6 @@ cancelBooking: function(req,res){
   submitUserComplain:function(req,res){
     //validating
     req.checkBody('providerId','providerId is required').isMongoId();
-    req.checkBody('isUserToProvider','isUserToProvider is required').isBoolean();
-    req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
     req.checkBody('complain','complain is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
@@ -522,6 +520,7 @@ cancelBooking: function(req,res){
 
     let complain = new Complain(req.body);
     complain.userId= req.session.loggedInUser._id;
+    complain.isUserToProvider= true;
     complain.save(function(err,complain){
       if(err)
       {

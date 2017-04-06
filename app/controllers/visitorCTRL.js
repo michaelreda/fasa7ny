@@ -27,8 +27,7 @@ shareOnSocialMedia:function(req, res){
 }
 },
 
-//1.5 As a visitor, I can search for activities either by name to find certain activities directly
-//note search by date is still missing
+//1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
 searchForActivities:function(req,res){
   //validating
   req.checkBody('input','input is required').notEmpty();
@@ -38,7 +37,13 @@ searchForActivities:function(req,res){
     return;
   }
   //end validating
-  Activity.find({title:{$regex : ".*"+req.body.input+".*",$options : 'i' },type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},function(err, activities){
+  Activity.find(
+    { $or:[
+    {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
+    {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
+    {timings:{$contains : { day:req.body.input , startTime : {$regex : ".*"} } }}
+  ]}
+    ,function(err, activities){
     if(err)
     res.send(err.message);
     else
