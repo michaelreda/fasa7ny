@@ -5,13 +5,10 @@ type:{
   type:String,
   required:true
 },
-userId:{
-  type:mongoose.Schema.Types.ObjectId,ref:'user',
-  required:true
-},
 time:{
   type:Date,
-  required:true
+  required:true,
+  default: Date.now
 },
 errorMessage:{
   type:String,

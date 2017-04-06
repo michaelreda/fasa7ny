@@ -6,6 +6,7 @@ let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
 let Interest=require('../models/interest');
 let Complain=require('../models/complain');
+let globalCTRL=require('../controllers/globalCTRL.js');
 
 let userCTRL = {
 
@@ -23,13 +24,15 @@ getActivitiesToCompare:function(req, res){
   //end validating
         Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
 
-            if(err)
+            if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
-            else{
+            }else{
                 if(!activity1)
                   res.send("activity 1 not found");
                 Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                       if(!activity2)
@@ -55,12 +58,14 @@ getActivitiesToCompare:function(req, res){
       //end validating
         ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
 
-            if(err)
+            if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
-            else{
+            }else{
 
                 ServiceProvider.findOne({_id: req.body.SP2ID},function(err,SP2){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({SP1,SP2});
@@ -76,12 +81,14 @@ getActivitiesToCompare:function(req, res){
 
         ServiceProvider.find(function(err,SPs){
 
-            if(err)
+            if(err){
+              globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
-            else{
+            }else{
 
                 Activity.find(function(err,ACs){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({SPs,ACs});
@@ -110,6 +117,7 @@ getActivitiesToCompare:function(req, res){
 
             if(err)
             {
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
             }
             else
@@ -125,6 +133,7 @@ getActivitiesToCompare:function(req, res){
 
             if(err)
             {
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
             }
             else
@@ -182,6 +191,7 @@ changePrivacy: function(req,res){
   //end validating
   User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err)
     }else{
       if(status.nModified!=0)
@@ -203,12 +213,14 @@ subscribe: function(req,res){
   ServiceProvider.findOne({ '_id' : serviceProviderID},
     function(err, providerInstance){
       if (err){
+        globalCTRL.addErrorLog(err.message);
         return (err);
       }
       else{
         providerInstance.subscribedUsers.push(loggedInUser);
         providerInstance.save(function(err){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             return (err);
           }
           else {
@@ -233,6 +245,7 @@ contactPlatform: function (req,res){
   var logInUser=req.session.loggedInUser._id;
   Message.findOne({fromId:logInUser}).exec(function(err, message){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err);
     }
     else{
@@ -250,9 +263,10 @@ contactPlatform: function (req,res){
       }
 
 message.save(function(err){
-  if(err)
+  if(err){
+    globalCTRL.addErrorLog(err.message);
   console.log(err);
-  else {
+}else {
     res.send(200);
   }
 })
@@ -271,6 +285,7 @@ message.save(function(err){
 viewMyProfile: function(req,res){
   User.findOne({_id:req.session._id}).exec(function(err,user){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err);
     }
     else {
@@ -284,6 +299,7 @@ updateMyProfile: function(req,res){
 
     User.update({_id:req.session.user._id}).exec(function(err,status){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else {
@@ -301,6 +317,7 @@ deleteMyProfile: function(req,res){
 
     User.findOne({_id:req.session.user._id}).remove().exec(function(err){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else {
@@ -382,6 +399,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
     //end validating
     Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err,status){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else {
@@ -406,6 +424,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
     //end validating
     Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else {
@@ -418,6 +437,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
 
       Review.find({userId:req.session._id}).populate('activityId').exec(function(err,reviews){
         if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else {
@@ -431,6 +451,7 @@ User.update({_id: req.session.user._id}, {$pull: {'wishlist' : req.body.activity
   viewHistoryBookings: function(req,res){
   Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err);
     }
     else {
@@ -465,9 +486,10 @@ bookActivity:function(req,res){
   // where payment method will be called
 
   newBooking.save(function(err){
-    if(err)
+    if(err){
+      globalCTRL.addErrorLog(err.message);
     console.log(err);
-    else {
+  }else {
       req.session.bookingSession=newBooking;
       res.send(200);
 
@@ -490,6 +512,7 @@ cancelBooking: function(req,res){
   //end validating
   Booking.findOne({"_id":req.body.bookingID}, function(err, booking){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err);
     }
     else{
@@ -498,6 +521,7 @@ cancelBooking: function(req,res){
         booking.isCancelled=true;
         booking.save(function(err){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -518,6 +542,7 @@ viewComplains:function(req,res){
       Complain.find(function(err,complains){
         if(err)
         {
+          globalCTRL.addErrorLog(err.message);
           res.send(err.message);
         }
         else
@@ -526,7 +551,7 @@ viewComplains:function(req,res){
         }
       })
   },
-  
+
 
 
   submitUserComplain:function(req,res){
@@ -545,6 +570,7 @@ viewComplains:function(req,res){
     complain.save(function(err,complain){
       if(err)
       {
+        globalCTRL.addErrorLog(err.message);
         res.send(err.message);
       }else {
         res.send(complain)
@@ -565,6 +591,7 @@ viewComplains:function(req,res){
     Complain.findOne({_id: req.body.complainId},function(err,comp){
       if(err)
       {
+        globalCTRL.addErrorLog(err.message);
         res.send(err.message)
       }else{
         res.send({comp});
@@ -588,6 +615,7 @@ viewComplains:function(req,res){
        Complain.update({_id:req.body.complainId},{$set:{complain:req.body.complainBody}},function(err,status){
                 if(err)
                 {
+                    globalCTRL.addErrorLog(err.message);
                     res.send(err.message);
                 }else
                 {
@@ -603,7 +631,7 @@ viewComplains:function(req,res){
 
 
 //2.5 user add his interests
-// tested 
+// tested
 
 
       addUserInterest:function(req,res){
@@ -620,6 +648,7 @@ viewComplains:function(req,res){
         interest.save(function(err,interest){
       if(err)
       {
+        globalCTRL.addErrorLog(err.message);
         res.send(err.message);
       }else {
         res.send(interest)
@@ -640,6 +669,7 @@ viewComplains:function(req,res){
                 Interest.remove({_id:req.body._id},function(err,removed){
           if(err)
           {
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }
           else
@@ -652,6 +682,7 @@ viewComplains:function(req,res){
       viewAllUserInterest:function(req,res){
         Interest.find(function(err,interest){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else {
@@ -669,6 +700,7 @@ viewComplains:function(req,res){
         ServiceProvider.findOne({ '_id' : serviceProviderID},
           function(err, providerInstance){
             if (err){
+              globalCTRL.addErrorLog(err.message);
               return (err);
             }
             else{
@@ -677,6 +709,7 @@ viewComplains:function(req,res){
                 providerInstance.subscribedUsers.splice(index,1);
               providerInstance.save(function(err){
                 if(err){
+                  globalCTRL.addErrorLog(err.message);
                   return (err);
                 }
                 else {
@@ -691,6 +724,7 @@ viewComplains:function(req,res){
     viewProviderBookings: function(req,res){
     Booking.find({serviceProviderId:req.session.serviceProviderID,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else {
@@ -722,6 +756,7 @@ viewComplains:function(req,res){
 
     user.save(function(err, user){
       if(err){
+        globalCTRL.addErrorLog(err.message);
         res.send(err);
       }
       else{

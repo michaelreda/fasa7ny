@@ -6,7 +6,7 @@ let Account         = require('../models/account');
 let Message         = require('../models/message');
 let Booking         = require('../models/booking');
 let Activity         = require('../models/activity');
-
+let globalCTRL=require('../controllers/globalCTRL.js');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -160,6 +160,7 @@ removeComplain:function(req,res){
   //end validating
 Complain.findOne({_id:req.body.complainId},function(err,val){
   if(err){
+    globalCTRL.addErrorLog(err.message);
     console.log(err.message);
  }
   else{
@@ -338,6 +339,7 @@ viewAllChats:function(req, res){
 adminCTRL.isAdmin(req,res);
 Message.find(function(err, messages){
 	if(err){
+    globalCTRL.addErrorLog(err.message);
 	     res.send(err.message);
     }else{
 			res.send(messages);
@@ -392,6 +394,7 @@ viewChatMessages:function(req, res){
 Message.findOne({_id: req.body.messageId }, function(err, chat){
 
 	if(err){
+    globalCTRL.addErrorLog(err.message);
 	     console.log(err.message);
     }else{
       if(chat)
@@ -404,7 +407,7 @@ Message.findOne({_id: req.body.messageId }, function(err, chat){
 
     //4.8 analytics
     //testing - waiting for bookings to be able to analyze them
-    
+
 getAnalyticsPage:function(req,res){
       adminCTRL.isAdmin(req,res);
 
@@ -415,12 +418,14 @@ getAnalyticsPage:function(req,res){
     {$limit : 1},function(err,topBooking){
       if(err)
       {
-        res.sed(err.message)
+        globalCTRL.addErrorLog(err.message);
+        res.send(err.message)
       }else
       {
                 Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
                   if(err)
                   {
+                    globalCTRL.addErrorLog(err.message);
                     res.send(err.message)
                   }
                   else
@@ -428,6 +433,7 @@ getAnalyticsPage:function(req,res){
                           ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
                       if(err)
                       {
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message)
                       }
                       else
@@ -438,6 +444,7 @@ getAnalyticsPage:function(req,res){
                             {$limit : 1},function(err,topUser){
                                 if(err)
                                 {
+                                  globalCTRL.addErrorLog(err.message);
                                   res.send(err.message)
                                 }else{
                                     res.send({topActivity,topSP,topUser});
@@ -460,6 +467,7 @@ getAnalyticsPage:function(req,res){
       Booking.find(function(err,bookings){
         if(err)
         {
+          globalCTRL.addErrorLog(err.message);
           res.send(err.message);
         }else
         {

@@ -4,7 +4,7 @@ let Booking         = require('../models/booking');
 let Activity        = require('../models/activity');
 let Offer           = require('../models/offer');
 let Account           = require('../models/account');
-
+let globalCTRL=require('../controllers/globalCTRL.js');
 
 
 let visitorCTRL={
@@ -31,6 +31,7 @@ viewActivities:function(req,res){
       Activity.find(function(err,activities){
         if(err)
         {
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
         }else
         {
@@ -56,8 +57,10 @@ searchForActivities:function(req,res){
     {timings:{$contains : { day:req.body.input , startTime : {$regex : ".*"} } }}
   ]}
     ,function(err, activities){
-    if(err)
-    res.send(err.message);
+    if(err){
+      globalCTRL.addErrorLog(err.message);
+      res.send(err.message);
+  }
     else
     res.send(activities);
   })
@@ -68,6 +71,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).exec({ price: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -77,6 +81,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).exec({isOffer: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -86,6 +91,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).exec({location: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -96,6 +102,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).exec({theme: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -106,6 +113,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).exec({ratingCount: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -122,6 +130,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({prices: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -131,6 +140,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({isOffer: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -140,6 +150,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({location: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -150,6 +161,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({theme: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -160,6 +172,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({ratingCount: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -179,6 +192,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({prices: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -188,6 +202,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({isOffer: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -197,6 +212,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({location: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -207,6 +223,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({theme: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -217,6 +234,7 @@ searchForActivities:function(req,res){
 		{
 			Activity.find.limit(10).skip((req.session.j-1)*10).exec({ratingCount: req.body.value},function(err,activities){
                     if(err){
+                        globalCTRL.addErrorLog(err.message);
                         res.send(err.message);
                     }else {
                             res.send({activities});
@@ -239,7 +257,7 @@ if(req.body.page){
 ServiceProvider.find().skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
 
 	if(err){
-
+        globalCTRL.addErrorLog(err.message);
 	     res.send(err.message);
             }else
               {
@@ -262,6 +280,7 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 .populate({path: 'activities', options:{sort:{'rating':-1}}})
 .exec( function(err, provider){
   if(err){
+  globalCTRL.addErrorLog(err.message);
 	res.send(err.message);
      }else   {
 			Booking.aggregate(
@@ -276,11 +295,13 @@ ServiceProvider.findOne({ _id :req.body.providerId})
 				else{
 			Activity.findOne({_id:booking.activityId},function(err,bestSelledActivity){
 				if(err){
+            globalCTRL.addErrorLog(err.message);
 			    	res.send(err.message);
 					   }
 					else{
 					Offer.find().sort({'_id':-1}).limit(1).populate({path: 'activities'}).exec(function(err, hottestOffer){
 						if(err){
+            globalCTRL.addErrorLog(err.message);
 						res.send(err.message);
 							}
 							else{
@@ -322,6 +343,7 @@ let user=new User(req.body);
 user.save(function(err, user){
 
 if(err){
+    globalCTRL.addErrorLog(err.message);
 	 res.send(err.message);
         }else
             {
@@ -338,6 +360,7 @@ Activity.find().limit(10).exec(function(err,ACs)
 {
         if(err)
     {
+        globalCTRL.addErrorLog(err.message);
          res.send(err.message);
      }
  else
@@ -354,6 +377,7 @@ Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,ACs)
 {
         if(err)
     {
+        globalCTRL.addErrorLog(err.message);
          res.send(err.message);
      }
  else
@@ -373,6 +397,7 @@ Activity.find().limit(10).skip((req.session.j-1)*10).exec(function(err,Acs)
 {
         if(err)
     {
+        globalCTRL.addErrorLog(err.message);
          res.send(err.message);
      }
  else
@@ -399,9 +424,10 @@ signupForNewsletter:function(req,res){
   newAccount.email=req.body.email;
   newAccount.type=2;
   newAccount.save(function(err){
-    if(err)
+    if(err){
+      globalCTRL.addErrorLog(err.message);
     res.send(err);
-    else {
+  }else {
       res.send(200);
     }
   })
@@ -419,6 +445,7 @@ recoverPassword:function(req,res){
   //end validating
   Account.find({"userName": req.body.userName}, function(err, user){
     if(err){
+      globalCTRL.addErrorLog(err.message);
       res.send(err);
     }
     else{
@@ -430,6 +457,7 @@ recoverPassword:function(req,res){
          user.password=user.generateHash(randomPass);
          user.save(function(err){
            if(err){
+             globalCTRL.addErrorLog(err.message);
              res.send(err);
            }
            else{
@@ -450,6 +478,7 @@ recoverPassword:function(req,res){
              };
              transporter.sendMail(mailOptions, function(error, info){
                if(error){
+                 globalCTRL.addErrorLog(error);
                  console.log(error);
                  res.send(error);
                }else{

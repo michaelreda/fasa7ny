@@ -4,6 +4,7 @@ let Account = require('../models/account.js');
 let Offer = require('../models/offer.js');
 let Booking=require('../models/booking.js');
 let User=require('../models/user.js');
+let globalCTRL=require('../controllers/globalCTRL.js');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 
@@ -73,6 +74,7 @@ let ServiceProviderCTRL = {
         newActivity.save(function(err){
           if(err){
             console.log(err);
+            globalCTRL.addErrorLog(err.message);
           }
           else {
             res.send("activity added succesfully");
@@ -109,6 +111,7 @@ let ServiceProviderCTRL = {
     }
         serviceProvider.save(function(err, account){
             if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
             }
             else{
@@ -123,6 +126,7 @@ let ServiceProviderCTRL = {
         ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
             if(err)
             {
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
             }else
             {
@@ -195,7 +199,9 @@ let ServiceProviderCTRL = {
         }
 
         activity.save(function(err){
-          if(err){console.log(err);
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            console.log(err);
           }
           else {
             res.send("activity updated succesfully");
@@ -218,6 +224,7 @@ let ServiceProviderCTRL = {
       //end validating
       Activity.findOne({"_id":new ObjectId(req.body.activityID)}).remove().exec(function(err){
         if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else {
@@ -253,7 +260,9 @@ let ServiceProviderCTRL = {
 
 
         activity.save(function(err){
-          if(err){console.log(err);
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            console.log(err);
           }
           else {
             res.send("rescheduled activity succesfully");
@@ -266,6 +275,7 @@ let ServiceProviderCTRL = {
     viewAllActivities: function(req,res){
       Activity.find(function(err,act){
         if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else{
@@ -273,7 +283,7 @@ let ServiceProviderCTRL = {
         }
       })
     },
-   
+
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
@@ -300,9 +310,10 @@ let ServiceProviderCTRL = {
         Account.findOne({ 'userName' :  userName },
         function(err, user) {
 
-          if (err)
-          return done(err);  // In case of any error, return using the done method
-
+          if (err){
+            globalCTRL.addErrorLog(err.message);
+            return done(err);  // In case of any error, return using the done method
+          }
           if (!user){
             console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
             return done(null, false,
@@ -333,6 +344,9 @@ let ServiceProviderCTRL = {
         ServiceProvider.findOne({_id:req.session.loggedInUser._id})
         .populate({path: 'activities'})
         .exec(function(err,provider){
+            if(err){
+              globalCTRL.addErrorLog(err.message);
+            }
             res.send(provider);
         })
 
@@ -359,6 +373,7 @@ let ServiceProviderCTRL = {
         let offer = new Offer(req.body);
         offer.save(function(err,offer){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             console.log(err);
             res.send(err.message);
           }else{
@@ -380,11 +395,14 @@ let ServiceProviderCTRL = {
         //end validating
         Offer.findOne({_id:req.body.offerId},function(err,offer){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             console.log('err');
           }else{
             Offer.remove(offer).exec(function(err){
-              if(err)
+              if(err){
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
+            }
               else
               res.send('offer deleted');//same redirection as update
             })
@@ -412,9 +430,10 @@ let ServiceProviderCTRL = {
         //end validating
         Offer.update({ _id: new ObjectId(req.body.offerId) },{$set:req.body})
         .exec(function (err,status) {
-          if (err)
+          if (err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err.message);
-          else
+          }else
           if(status.nModified!=0)
             res.send('should redirect to service provider logged in page');
           else
@@ -428,6 +447,7 @@ let ServiceProviderCTRL = {
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
           //when a booking is canceled, isHolding is set to false
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else
           {
@@ -442,9 +462,10 @@ let ServiceProviderCTRL = {
       applyToGolden:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
-          if(err)
+          if(err){
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
-          else
+          }else
             if(status.nModified!=0)
               res.send('should redirect to serviceProvider home page');
             else
@@ -458,6 +479,7 @@ let ServiceProviderCTRL = {
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -480,6 +502,7 @@ let ServiceProviderCTRL = {
         //req. is a booking
         Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -488,13 +511,16 @@ let ServiceProviderCTRL = {
             else{
             ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
               if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err);
               }
               else{
                     sp.previousClients.push(req.body.userId);
                     sp.save(function(err){
-                      if(err)
+                      if(err){
+                      globalCTRL.addErrorLog(err.message);
                       res.send(err);
+                    }
                       else{
                         res.send(200);
                       }
@@ -505,11 +531,12 @@ let ServiceProviderCTRL = {
             res.send("Booking is confirmed");
           }
         })
-      }, 
+      },
   //required for testing
       viewAllUsers:function(req,res){
         User.find(function(err, users){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -534,6 +561,7 @@ let ServiceProviderCTRL = {
         complain.save(function(err,complain){
           if(err)
           {
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
             res.send(200)
@@ -542,8 +570,10 @@ let ServiceProviderCTRL = {
       },
     viewActivities:function(req,res){
         Activity.find(function(err, act){
-          if(err)
+          if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
+        }
           else
           res.send(act);
         })
