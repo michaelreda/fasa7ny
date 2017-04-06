@@ -38,9 +38,9 @@ Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 Router.post('/continue_sp_creation', serviceProviderCTRL.createServiceProvider);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.get('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
-Router.get('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
-Router.get('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
+Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
+Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
+Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 
 
 //4.8 analytics
@@ -236,6 +236,7 @@ Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations)
 Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
 Router.post('/search_for_activities', visitorCTRL.searchForActivities);
 Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
+Router.post('/unsubscribe_for_newsletter', visitorCTRL.unsubscribeForNewsletter);
 Router.post('/recover_password', visitorCTRL.recoverPassword);
 Router.post('/change_password', userCTRL.changePassword);
 Router.post('/change_privacy', userCTRL.changePrivacy);
