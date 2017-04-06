@@ -671,6 +671,40 @@ cancelBooking: function(req,res){
         res.render("viewHistoryBookings",bookings);
       }
     })
+  },
+
+  createUser:function(req,res){
+    //validating
+    req.checkBody('firstName','firstName is required').notEmpty();
+    req.checkBody('lastName','lastName is required').notEmpty();
+    req.checkBody('userAccountId','userAccountId is required').isMongoId();
+    req.checkBody('birthDate','birthDate is required').notEmpty();
+    req.checkBody('age','age is a required').notEmpty();
+    req.checkBody('gender','gender is a required').notEmpty();
+    req.checkBody('privacy','privacy is a required').notEmpty();
+    req.checkBody('banned','banned is a required').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+
+    let user=new User(req.body);
+    user.userAccountId=req.session.account._id;
+
+    user.save(function(err, user){
+      if(err){
+        res.send(err);
+      }
+      else{
+        req.session.loggedInUser=user._id;
+        res.send(200);
+
+      }
+    })
+
   }
 
 

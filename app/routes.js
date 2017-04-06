@@ -91,10 +91,14 @@ Router.get('/login', function(req, res){
 
 Router.post('/login', passport.authenticate('local-login'),function(req,res){
     console.log(req.user);
-    if(req.body.type==0)
-    res.redirect('user_login');
-    else
-    res.redirect('serviceProvider_login');
+    if(req.body.type==0){
+      //res.redirect('user_login');
+      res.send("user is logged in");
+    }
+    else{
+      //res.redirect('serviceProvider_login');
+      res.send("SP is logged in");
+    }
   });
 
 
@@ -122,10 +126,15 @@ Router.get('/signup', function(req, res){
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
     if (!req.user) { return res.redirect('/'); }
-    if(req.body.type==0)
-    res.redirect('/user_signup');
-    else
-    res.redirect('/serviceProvider_signup');
+    if(req.body.type==0){
+      //res.redirect('/user_signup');
+      res.send("User is signed up");
+    }
+
+    else{
+      //res.redirect('/serviceProvider_signup');
+       res.send("SP is signed up");
+    }
 
 	});
 

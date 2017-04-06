@@ -38,7 +38,7 @@ module.exports = function(passport) {
 
             // check to see if theres already a user with that email
             if (account) {
-                return done(null, false);
+                return done("Already a username", false);
             } else {
                 // create the user
                 var newAccount  = new Account();
