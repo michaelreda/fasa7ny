@@ -1,87 +1,84 @@
 var mongoose = require('mongoose');
 
 var activitySchema = mongoose.Schema({
+  title:{
+    type:String,
+    required:true,
+    unique:false
+  },
+  type:{
+    type:String,
+    required:true,
+    unique:false
+  },
+  isOffer:{
+    type:Boolean,
+    required:false,
+    default:false
+  },
+  serviceProviderId:{
+    type:String,
+    required:true,
+    unique:false
+  },
+  media:[{type:String,
+    url:String }],
 
-
-    title:{
-        type:String,
-        required:true,
-        unique:false
-    },
-    type:{
-        type:String,
-        required:true,
-        unique:false
-    },
-    isOffer:{
-        type:Boolean,
-        required:false,
-        default:false
-    },
-    serviceProviderId:{
-        type:String,
-        required:true,
-        unique:false
-    },
-     media:[{type:String,
-            url:String }],
-
-   prices:[{
-        numberOfClients:Number,
-        price:Number,
+    prices:[{
+      numberOfClients:Number,
+      price:Number,
     }],
     durationInMinutes:{
-        type:Number,
-        required:true,
-        unique:false
+      type:Number,
+      required:true,
+      unique:false
     },
     timings:[{day:String,
       startTime:Number}],
-     minAge:{
+      minAge:{
         type:Number,
         required:false,
         unique:false
-    },
-    maxAge:{
+      },
+      maxAge:{
         type:Number,
         required:false,
         unique:false
-    },
-    minClientNumber:{
+      },
+      minClientNumber:{
         type:Number,
         required:true,
         unique:false
-    },
-    maxClientNumber:{
+      },
+      maxClientNumber:{
         type:Number,
         required:true,
         unique:false
-    },
-    rating:{
+      },
+      rating:{
         type:Number,
         required:false,
         unique:false
-    },
-    ratingCount:{
+      },
+      ratingCount:{
         type:Number,
         required:false,
         unique:false
-    },
-    location:{
+      },
+      location:{
         type:String,
         required:true,
         unique:false
-    },
-    theme:{
+      },
+      theme:{
         type:String,
         required:true,
         unique:false
+      }
 
-    }
 
+    });
 
-});
+    var Activity = mongoose.model("activity", activitySchema);
 
-var Activity = mongoose.model("activity", activitySchema);
-
-module.exports = Activity;
+    module.exports = Activity;

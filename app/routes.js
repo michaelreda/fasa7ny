@@ -12,6 +12,7 @@ var visitorCTRL= require('./controllers/visitorCTRL');
 var userCTRL= require('./controllers/userCTRL');
 var serviceProviderCTRL = require('./controllers/serviceProviderCTRL');
 var adminCTRL= require('./controllers/adminCTRL');
+var globalCTRL= require('./controllers/globalCTRL');
 
 
 // router configuration
@@ -38,9 +39,9 @@ Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 Router.post('/continue_sp_creation', serviceProviderCTRL.createServiceProvider);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.get('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
-Router.get('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
-Router.get('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
+Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
+Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
+Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 
 
 //4.8 analytics
@@ -98,9 +99,8 @@ Router.get('/login', function(req, res){
   res.send("login page here");
 });
 
-
 Router.post('/login', passport.authenticate('local-login'),function(req,res){
-  switch (req.body.type) {
+  switch (req.user.type) {
       case 0:
       userCTRL.userLoginStep2(req,res);
           break;
@@ -130,8 +130,8 @@ Router.get('/logout', function(req, res){
   Router.post('/contact_platform', userCTRL.contactPlatform);
 
   //4.5 view system logs
-  Router.get('/viewSystemLogs',adminCTRL.viewSystemLogs);
-  Router.post('/deleteLogs', adminCTRL.deleteLogs);
+  Router.get('/view_system_logs',adminCTRL.viewSystemLogs);
+  Router.get('/delete_logs', adminCTRL.deleteLogs);
 
 
 //viewAllActivities
@@ -159,26 +159,39 @@ Router.post('/banforever',adminCTRL.banForever);
 ////////////youssef///////////////////
 
 //SignUp passport
-Router.get('/signup', function(req, res){
+  Router.get('/signup', function(req, res){
 		res.send('signup page here');
 	});
+  Router.get('/signup_user', function(req, res){
+  		res.send('user signup page here');
+  	});
+  Router.get('/signup_sp', function(req, res){
+    		res.send('sp signup page here');
+    	});
+  Router.get('/signup_admin', function(req, res){
+      		res.send('admin signup page here');
+      	});
 
+  Router.post('/signup_user', userCTRL.userSignupStep2);
+  Router.post('/signup_sp', serviceProviderCTRL.serviceProviderSignupStep2);
+  Router.post('/signup_admin', adminCTRL.adminSignupStep2);
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
     if (!req.user) { return res.redirect('/'); }
-    switch (req.body.type) {
+    switch (parseInt(req.body.type)) {
         case 0:
-        userCTRL.userSignupStep2(req,res);
+        res.redirect('signup_user');
             break;
         case 1:
-        serviceProviderCTRL.serviceProviderSignupStep2(req,res);
+        res.redirect('signup_sp');
             break;
         case 3:
-            adminCTRL.adminSignupStep2(req,res);
+        res.redirect('signup_admin');
             break;
         default:
             globalCTRL.addErrorLog('sign up attempt with profile type '+req.body.type);
+            console.log('sign up attempt with profile type '+req.body.type);
             res.redirect('/logout');
             break;
       }
@@ -236,6 +249,7 @@ Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations)
 Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
 Router.post('/search_for_activities', visitorCTRL.searchForActivities);
 Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
+Router.post('/unsubscribe_for_newsletter', visitorCTRL.unsubscribeForNewsletter);
 Router.post('/recover_password', visitorCTRL.recoverPassword);
 Router.post('/change_password', userCTRL.changePassword);
 Router.post('/change_privacy', userCTRL.changePrivacy);
