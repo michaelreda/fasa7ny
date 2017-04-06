@@ -28,7 +28,7 @@ var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
 var job3 = schedule.scheduleJob('59 23 * * *', globalCTRL.overdueBookings);
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
-app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUninitialized: true }));
+app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUninitialized: true , secure:true, expire:false}));
 app.use(passport.initialize());
 app.use(passport.session());
 //connect to local if failed to connect to mlab
