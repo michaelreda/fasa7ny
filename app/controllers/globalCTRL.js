@@ -3,6 +3,7 @@ let ServiceProvider = require('../models/serviceProvider');
 let Offer           = require('../models/offer');
 let Account = require('../models/account.js');
 let Booking = require('../models/booking.js');
+let Log= require('../models/log.js');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
@@ -79,6 +80,12 @@ overdueBookings:function(){
       }, {
         multi: true
       });
+},
+
+addErrorLog: function(errMsg){
+  let log = new Log();
+  log.errorMessage= "Error: "+errMsg;
+  log.save();
 }
 
 }

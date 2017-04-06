@@ -4,12 +4,14 @@ let Account = require('../models/account.js');
 let Offer = require('../models/offer.js');
 let Booking=require('../models/booking.js');
 let User=require('../models/user.js');
+let globalCTRL=require('../controllers/globalCTRL.js');
+let Complain=require('../models/complain.js');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
-    if(!req.session.serviceProviderID)
+    if(!req.session.serviceProvider)
       res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
@@ -40,7 +42,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.session.serviceProviderId,
+        "serviceProviderId":req.session.serviceProvider._id,
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -73,6 +75,7 @@ let ServiceProviderCTRL = {
         newActivity.save(function(err){
           if(err){
             console.log(err);
+            globalCTRL.addErrorLog(err.message);
           }
           else {
             res.send("activity added succesfully");
@@ -84,7 +87,6 @@ let ServiceProviderCTRL = {
 
     },
 
-        //missing legal proof media
      createServiceProvider:function(req, res){
        //validating
        req.checkBody('title','title is required').notEmpty();
@@ -93,6 +95,7 @@ let ServiceProviderCTRL = {
        req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
        req.checkBody('branches','branches is a required').notEmpty().isArray();
        req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
+       req.checkBody('legalProof','legalProof is required').notEmpty();
        var errors = req.validationErrors();
        if (errors) {
          res.send(errors);
@@ -102,27 +105,34 @@ let ServiceProviderCTRL = {
         let serviceProvider = new ServiceProvider(req.body);
         serviceProvider.serviceProviderAccountId=req.session.account._id;
         if(req.files.length>0){
+
       serviceProvider.media=[];
       for (var i = 0; i < req.files.length; i++) {
+          if(req.files[i].fieldname=="legalProof"){
+            serviceProvider.legalProof.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+          }
+
           serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
       }
     }
         serviceProvider.save(function(err, account){
             if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err.message);
             }
             else{
-                req.session.serviceProviderID=serviceProvider._id;
+                req.session.serviceProvider=serviceProvider._id;
                 res.send(200);
             }
         });
     },
 
-
+    //tested
       getSPbyID:function(req,res){
         ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
             if(err)
             {
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
             }else
             {
@@ -195,7 +205,9 @@ let ServiceProviderCTRL = {
         }
 
         activity.save(function(err){
-          if(err){console.log(err);
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            console.log(err);
           }
           else {
             res.send("activity updated succesfully");
@@ -218,6 +230,7 @@ let ServiceProviderCTRL = {
       //end validating
       Activity.findOne({"_id":new ObjectId(req.body.activityID)}).remove().exec(function(err){
         if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else {
@@ -253,7 +266,9 @@ let ServiceProviderCTRL = {
 
 
         activity.save(function(err){
-          if(err){console.log(err);
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            console.log(err);
           }
           else {
             res.send("rescheduled activity succesfully");
@@ -262,10 +277,11 @@ let ServiceProviderCTRL = {
       });
     },
 
-    //required for testing
+    //tested
     viewAllActivities: function(req,res){
       Activity.find(function(err,act){
         if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else{
@@ -273,71 +289,58 @@ let ServiceProviderCTRL = {
         }
       })
     },
-   
+
+     //tested
     //3.1 Login as a service Provider
-    //tested .. NOT WORKING
-    serviceProviderLogin: function(req,res){
-      //validating
-      req.checkBody('userName','username is required').notEmpty();
-      req.checkBody('password','password is required').notEmpty();
-      var errors = req.validationErrors();
-      if (errors) {
-        res.send(errors);
-        return;
-      }
-      //end validating
-
-      //var isValidPassword = function(user, password){
-      //return bCrypt.compareSync(password, user.password);
-      //}
-      var passport = require('passport');
-      var LocalStrategy = require('passport-local').Strategy;
-      passport.use('login', new LocalStrategy({
-        passReqToCallback : true
-      },
-      function(req, userName, password, done) {
-
-        Account.findOne({ 'userName' :  userName },
-        function(err, user) {
-
-          if (err)
-          return done(err);  // In case of any error, return using the done method
-
-          if (!user){
-            console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
-            return done(null, false,
-              req.flash('message', 'User Not found.'));
+    serviceProviderLoginStep2: function(req,res){
+        ServiceProvider.findOne({serviceProviderAccountId:req.user._id}).exec(function(err,thisProvider){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err);
+          }
+          else {
+            if(!thisProvider){
+            globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
+            res.redirect('/logout');
+          }
+          else {
+            if(thisProvider.banned==0){
+              req.session.serviceProvider=thisProvider;
+              res.send("SP is logged in");
             }
-
-            if (!isValidPassword(user, password)){
-              console.log('Invalid Password');
-              return done(null, false,
-                req.flash('message', 'Invalid Password'));
-              }
-              // User and password both match, return user from
-              // done method which will be treated like success
-              req.session.loggedInUser=user;
-              return done(null, user);
+            else{
+              res.send('Account banned! try again in '+thisProvider.banned+' days');
             }
-          );
-        }));
-      },
+          }
+
+          }
+
+        });
+
+
+
+    },
 
 
 
 
       //karim and andrea's code
-      //tested .. session variable to be edited
+      //tested
       viewAddOffer: function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
-        ServiceProvider.findOne({_id:req.session.loggedInUser._id})
+        ServiceProvider.findOne({_id:req.session.ServiceProvider._id})
         .populate({path: 'activities'})
         .exec(function(err,provider){
+            if(err){
+              globalCTRL.addErrorLog(err.message);
+            }
             res.send(provider);
         })
 
-      //  res.render('viewAddOffer',provider.activities);
+      res.send(provider.activities);
       },
+
+
       //tested
       addOffer:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -359,14 +362,16 @@ let ServiceProviderCTRL = {
         let offer = new Offer(req.body);
         offer.save(function(err,offer){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             console.log(err);
             res.send(err.message);
           }else{
-            //ServiceProvider.update({_id: req.session.serviceProvider._id},{$push: {}})
+            Activity.update({_id:{$in:req.body.activities}},{$set: {'isOffer': true}}).exec();
             res.send('offer added');//same redirection as update
           }
         })
       },
+
       //tested
       deleteOffer:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -378,19 +383,24 @@ let ServiceProviderCTRL = {
           return;
         }
         //end validating
+        Activity.update({_id:{$in:offer.activities}},{$set: {'isOffer': false}}).exec();
         Offer.findOne({_id:req.body.offerId},function(err,offer){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             console.log('err');
           }else{
             Offer.remove(offer).exec(function(err){
-              if(err)
+              if(err){
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
+            }
               else
               res.send('offer deleted');//same redirection as update
             })
           }
         })
       },
+
       //tested
       updateOffer: function (req, res) {
         ServiceProviderCTRL.isServiceProvider(req,res);
@@ -412,9 +422,10 @@ let ServiceProviderCTRL = {
         //end validating
         Offer.update({ _id: new ObjectId(req.body.offerId) },{$set:req.body})
         .exec(function (err,status) {
-          if (err)
+          if (err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err.message);
-          else
+          }else
           if(status.nModified!=0)
             res.send('should redirect to service provider logged in page');
           else
@@ -422,12 +433,14 @@ let ServiceProviderCTRL = {
         })
     },
 
-//session var to be edited
+      //tested
+     //session var to be edited
       viewHoldingReservations:function(req, res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
           //when a booking is canceled, isHolding is set to false
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else
           {
@@ -436,15 +449,16 @@ let ServiceProviderCTRL = {
         })
 
       },
+
       //tested
       //missing payment
-      //session var to be edited
       applyToGolden:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
-          if(err)
+          if(err){
+              globalCTRL.addErrorLog(err.message);
               res.send(err.message);
-          else
+          }else
             if(status.nModified!=0)
               res.send('should redirect to serviceProvider home page');
             else
@@ -453,11 +467,13 @@ let ServiceProviderCTRL = {
         });
       },
 
+      //tested
       //3.6 confirm checkins
       viewBookings:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
-        Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
+        Booking.find({"serviceProviderId":req.session.serviceProvider._id,"isConfirmed":false},function(err,bookings){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -466,6 +482,8 @@ let ServiceProviderCTRL = {
         })
       },
 
+
+     //tested
       confirmCheckIn:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         //validating
@@ -480,6 +498,7 @@ let ServiceProviderCTRL = {
         //req. is a booking
         Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -488,28 +507,33 @@ let ServiceProviderCTRL = {
             else{
             ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
               if(err){
+                globalCTRL.addErrorLog(err.message);
                 res.send(err);
               }
               else{
                     sp.previousClients.push(req.body.userId);
                     sp.save(function(err){
-                      if(err)
+                      if(err){
+                      globalCTRL.addErrorLog(err.message);
                       res.send(err);
+                    }
                       else{
-                        res.send(200);
+                        res.send("Booking is confirmed");
                       }
                     });
               }
             })
           }
-            res.send("Booking is confirmed");
           }
         })
-      }, 
+      },
+
+      //tested
   //required for testing
       viewAllUsers:function(req,res){
         User.find(function(err, users){
           if(err){
+            globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
           else{
@@ -517,6 +541,7 @@ let ServiceProviderCTRL = {
           }
 })
 },
+      //tested
       submitServiceProviderComplain:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
         //validating
@@ -529,25 +554,95 @@ let ServiceProviderCTRL = {
         }
         //end validating
         let complain = new Complain(req.body);
-        complain.providerId= req.session.serviceProviderId._id;
+        complain.providerId= req.session.serviceProvider._id;
         complain.isUserToProvider= false;
         complain.save(function(err,complain){
           if(err)
           {
+            globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
             res.send(200)
           }
         })
       },
+
+      //tested
     viewActivities:function(req,res){
         Activity.find(function(err, act){
-          if(err)
+          if(err){
+          globalCTRL.addErrorLog(err.message);
           res.send(err);
+        }
           else
           res.send(act);
         })
+      },
+
+   //tested
+  serviceProviderSignupStep2: function(req,res){
+
+        req.checkBody('title','title is required').notEmpty();
+        req.checkBody('description','description is required').notEmpty();
+        req.checkBody('legalProof','legalProof is required').notEmpty();
+        req.checkBody('entertainmentType','entertainment Types are required').notEmpty().isArray();
+        req.checkBody('branches','branches are required').notEmpty().isArray();
+        req.checkBody('contactMobile','mobile numbers are required').notEmpty().isArray();
+        req.checkBody('mediaTypes','media Types are required').isArray();
+
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        else {
+                let newSP= new ServiceProvider();
+                newSP.title=req.body.title;
+                newSP.description=req.body.description;
+                newSP.legalProof=req.body.legalProof;
+                newSP.entertainmentType=req.body.entertainmentType;
+                newSP.branches=req.body.branches;
+                newSP.contactMobile=req.body.contactMobile;
+                newSP.serviceProviderAccountId=req.user._id;
+                newSP.activities=[];
+                newSP.media=[];
+                newSP.previousClients=[];
+                newSP.subscribedUsers=[];
+                newSP.banned=0;
+
+                if(req.files && req.files.length>0){
+                  for (var i = 0; i < req.files.length; i++) {
+                    newSP.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+                  }
+                }
+
+                newSP.save(function(err){
+                    if(err){
+                      globalCTRL.addErrorLog(err.message);
+                      res.send(err);
+                    }
+                    else {
+                      res.send('signup step 2 succesfull!!');
+                    }
+
+                  });
+                }
+
+    },
+
+    //tested
+    viewProviderBookings: function(req,res){
+    ServiceProviderCTRL.isServiceProvider(req,res);
+    Booking.find({serviceProviderId:req.session.serviceProvider._id,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err);
       }
+      else {
+        res.send(bookings);
+      }
+    })
+  }
 
     }
 

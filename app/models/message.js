@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var messageSchema = mongoose.Schema({
 fromId:{
-  type: Number,
+  //changed to string from number
+  type: String,
   required: true
 },
 message:[{
