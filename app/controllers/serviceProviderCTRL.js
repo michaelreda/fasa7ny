@@ -261,6 +261,7 @@ let ServiceProviderCTRL = {
       req.checkBody('userName','username is required').notEmpty();
       req.checkBody('userName','username minimum length is 6').isLength({min:6});
       req.checkBody('password','password is required').notEmpty();
+      req.checkBody('password','password minimum length is 6').isLength({min:6});
       req.checkBody('email','email is required').isEmail();
       var errors = req.validationErrors();
       if (errors) {
@@ -485,7 +486,7 @@ let ServiceProviderCTRL = {
         }
         //end validating
         //req. is a booking
-        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err){
+        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
           if(err){
             res.send(err);
           }

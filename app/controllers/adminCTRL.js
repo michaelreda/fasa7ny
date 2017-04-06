@@ -109,7 +109,7 @@ updateBanStatus:function(req,res){
   //end validating
   req.sanitize('isBanUser').toBoolean(); //converting to boolean in case it's a string
 if (req.body.isBanUser == false) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err){
+ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
   if(err)
       res.send(err.message);
   else
