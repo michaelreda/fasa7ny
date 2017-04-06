@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 
 var bookingSchema = mongoose.Schema({
 userId:{
-  type:Number,//mongoose.Schema.Types.ObjectId,ref:'user',
+  type:mongoose.Schema.Types.ObjectId,ref:'user',
   required:true
 },
 serviceProviderId:{
-  type:Number,//mongoose.Schema.Types.ObjectId,ref:'serviceProvider',
+  type:mongoose.Schema.Types.ObjectId,ref:'serviceProvider',
   required:true
 },
 activityId:{
@@ -15,14 +15,14 @@ activityId:{
 },
 isHolding:{
   type:Boolean,
-  //required:true
+  required:true //??
 },
 price:{
   type:Number,
   required:true
 },
 time:{
-  type:Number,//Date,
+  type:Date,
   required:true
 },
 isConfirmed:{

@@ -37,7 +37,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.session.serviceProviderId, 
+        "serviceProviderId":req.session.serviceProviderId,
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -512,16 +512,6 @@ let ServiceProviderCTRL = {
           }
             res.send("Booking is confirmed");
           }
-        })
-      },
-
-      //required for testing
-      viewActivities:function(req,res){
-        Activity.find(function(err, act){
-          if(err)
-          res.send(err);
-          else
-          res.send(act);
         })
       }
 
