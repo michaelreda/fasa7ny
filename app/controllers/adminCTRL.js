@@ -15,281 +15,281 @@ let adminCTRL={
   //used to test if the user is admin or not
   isAdmin: function(req,res){
     if(!req.session.admin)
-      res.send("you are not an admin.. you are not authorized to do this function");
+    res.send("you are not an admin.. you are not authorized to do this function");
   },
 
 
 
-//4.6 admin manages bans permenantly
-//tested without exception
-banForever:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-  req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
-if (req.body.isUserToProvider) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec(function(err,status){
-  if(err)
-      res.send(err.message);
-  else
-    if(status.nModified!=0)
-      res.send('ban successful');
-    else
-      res.send('sp not found');
-
-})
-} else {
-  User.update({_id:req.body.userId},{$set:{banned:-1}}).exec(function(err,status){
-    if(err)
+  //4.6 admin manages bans permenantly
+  //tested without exception
+  banForever:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+    req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
+    if (req.body.isUserToProvider) {
+      ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:-1}}).exec(function(err,status){
+        if(err)
         res.send(err.message);
-    else
-      if(status.nModified!=0)
+        else
+        if(status.nModified!=0)
         res.send('ban successful');
-      else
+        else
+        res.send('sp not found');
+
+      })
+    } else {
+      User.update({_id:req.body.userId},{$set:{banned:-1}}).exec(function(err,status){
+        if(err)
+        res.send(err.message);
+        else
+        if(status.nModified!=0)
+        res.send('ban successful');
+        else
         res.send('user not found');
 
-  })
-
-}
-},
-
-//4.6 admin manages bans for a period of time
-//tested without exception
-ban30Days:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-  req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-  req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
-  if (req.body.isUserToProvider) {
-    ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec(function(err,status){
-      if(err)
-        res.send(err.message);
-      else
-        if(status.nModified!=0)
-          res.send('ban successful');
-        else
-          res.send('sp not found');
-
-    })
-  } else {
-    User.update({_id:req.body.userId},{$set:{banned:30}}).exec(function(err,status){
-      if(err)
-        res.send(err.message);
-      else
-        if(status.nModified!=0)
-          res.send('ban successful');
-        else
-          res.send('user not found');
-
-    })
-
-  }
-},
-//tested without exception
-updateBanStatus:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-  req.checkBody('banDuration','banDuration is required of type int').notEmpty().isInt();
-  req.checkBody('isBanUser','isBanUser is required of type Boolean').notEmpty().isBoolean();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-  req.sanitize('isBanUser').toBoolean(); //converting to boolean in case it's a string
-if (req.body.isBanUser == false) {
-ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
-  if(err)
-      res.send(err.message);
-  else
-    if(status.nModified!=0)
-      res.send('sp ban status updated successful');
-    else
-      res.send('sp not found');
-
-})
-} else {
-  User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
-    if(err)
-        res.send(err.message);
-    else
-        if(status.nModified!=0)
-          res.send('user ban status updated successful');
-        else
-          res.send('user not found');
-
-  })
-
-}
-},
-//tested
-viewComplains:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  Complain.find(function(err, complains){
-    if(err)
-    res.send(err.message);
-    else
-    res.send(complains);
-  })
-},
-//tested without exception
-removeComplain:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('complainId','complainId is required').notEmpty();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-Complain.findOne({_id:req.body.complainId},function(err,val){
-  if(err){
-    globalCTRL.addErrorLog(err.message);
-    console.log(err.message);
- }
-  else{
-    if(val.isSeen){
-  Complain.remove(val).exec(function(err){
-    if(err)
-        res.send(err.message);
-    else
-        res.send('complain deleted');
       })
+
     }
-}
-})
-},
-//tested without exception
-viewServiceProviderRequests:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  ServiceProvider.find({Approved:0},function(err,serviceProviders){
-    if(err)
-          res.send(err.message);
+  },
+
+  //4.6 admin manages bans for a period of time
+  //tested without exception
+  ban30Days:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+    req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    req.sanitize('isUserToProvider').toBoolean(); //converting to boolean in case it's a string
+    if (req.body.isUserToProvider) {
+      ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:30}}).exec(function(err,status){
+        if(err)
+        res.send(err.message);
+        else
+        if(status.nModified!=0)
+        res.send('ban successful');
+        else
+        res.send('sp not found');
+
+      })
+    } else {
+      User.update({_id:req.body.userId},{$set:{banned:30}}).exec(function(err,status){
+        if(err)
+        res.send(err.message);
+        else
+        if(status.nModified!=0)
+        res.send('ban successful');
+        else
+        res.send('user not found');
+
+      })
+
+    }
+  },
+  //tested without exception
+  updateBanStatus:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+    req.checkBody('banDuration','banDuration is required of type int').notEmpty().isInt();
+    req.checkBody('isBanUser','isBanUser is required of type Boolean').notEmpty().isBoolean();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    req.sanitize('isBanUser').toBoolean(); //converting to boolean in case it's a string
+    if (req.body.isBanUser == false) {
+      ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
+        if(err)
+        res.send(err.message);
+        else
+        if(status.nModified!=0)
+        res.send('sp ban status updated successful');
+        else
+        res.send('sp not found');
+
+      })
+    } else {
+      User.update({_id:req.body.userId},{$set:{banned:req.body.banDuration}}).exec(function(err,status){
+        if(err)
+        res.send(err.message);
+        else
+        if(status.nModified!=0)
+        res.send('user ban status updated successful');
+        else
+        res.send('user not found');
+
+      })
+
+    }
+  },
+  //tested
+  viewComplains:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    Complain.find(function(err, complains){
+      if(err)
+      res.send(err.message);
       else
-          res.send(serviceProviders);
-  })
-},
-//tested without exception
-//link sent to be edited when views are ready
-acceptServiceProviderRequests:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-  ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:1}}).exec(function(err){
-    if(err)
-          res.send(err.message);
+      res.send(complains);
+    })
+  },
+  //tested without exception
+  removeComplain:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('complainId','complainId is required').notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    Complain.findOne({_id:req.body.complainId},function(err,val){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        console.log(err.message);
+      }
+      else{
+        if(val.isSeen){
+          Complain.remove(val).exec(function(err){
+            if(err)
+            res.send(err.message);
+            else
+            res.send('complain deleted');
+          })
+        }
+      }
+    })
+  },
+  //tested without exception
+  viewServiceProviderRequests:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    ServiceProvider.find({Approved:0},function(err,serviceProviders){
+      if(err)
+      res.send(err.message);
+      else
+      res.send(serviceProviders);
+    })
+  },
+  //tested without exception
+  //link sent to be edited when views are ready
+  acceptServiceProviderRequests:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:1}}).exec(function(err){
+      if(err)
+      res.send(err.message);
       else{
 
 
-          var nodemailer = require('nodemailer');
-          var smtpTransport = require('nodemailer-smtp-transport');
-          ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
-            var transporter = nodemailer.createTransport(smtpTransport({
-              service: 'Hotmail',
-              auth: {
-                user: 'fasa7ny@outlook.com', // Your email id
-                pass: 'ITJumoynyoj1' // Your password
-              }
-            }));
+        var nodemailer = require('nodemailer');
+        var smtpTransport = require('nodemailer-smtp-transport');
+        ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
+          var transporter = nodemailer.createTransport(smtpTransport({
+            service: 'Hotmail',
+            auth: {
+              user: 'fasa7ny@outlook.com', // Your email id
+              pass: 'ITJumoynyoj1' // Your password
+            }
+          }));
 
-            var mailOptions = {
-              from: 'fasa7ny@outlook.com', // sender address
-              to: serviceProvider.serviceProviderAccountId.email, // sp email
-              subject: 'Congratulations..your account is APPROVED!!', // Subject line
-              //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
-              html: '<p>fasa7ny platform is happy to welcome you, next step is to add activities ..</p> <a href="http://localhost:8080/add_activity">click here to add activity </a>'// You can choose to send an HTML body instead
+          var mailOptions = {
+            from: 'fasa7ny@outlook.com', // sender address
+            to: serviceProvider.serviceProviderAccountId.email, // sp email
+            subject: 'Congratulations..your account is APPROVED!!', // Subject line
+            //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
+            html: '<p>fasa7ny platform is happy to welcome you, next step is to add activities ..</p> <a href="http://localhost:8080/add_activity">click here to add activity </a>'// You can choose to send an HTML body instead
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+              console.log(error);
+              res.send(error);
+            }else{
+              console.log('Message sent: ' + info.response);
+              res.send('approved successfully');
             };
-            transporter.sendMail(mailOptions, function(error, info){
-              if(error){
-                console.log(error);
-                res.send(error);
-              }else{
-                console.log('Message sent: ' + info.response);
-                res.send('approved successfully');
-              };
-            });
           });
+        });
 
-        }
-  })
-},
-//tested without exception
-//link sent to be edited when views are ready
-rejectServiceProviderRequests:function(req,res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-  ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:-1}}).exec(function(err){
-    if(err)
-          res.send(err.message);
+      }
+    })
+  },
+  //tested without exception
+  //link sent to be edited when views are ready
+  rejectServiceProviderRequests:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{Approved:-1}}).exec(function(err){
+      if(err)
+      res.send(err.message);
       else{
 
 
-          var nodemailer = require('nodemailer');
-          var smtpTransport = require('nodemailer-smtp-transport');
-          ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
-            var transporter = nodemailer.createTransport(smtpTransport({
-              service: 'Hotmail',
-              auth: {
-                user: 'fasa7ny@outlook.com', // Your email id
-                pass: 'ITJumoynyoj1' // Your password
-              }
-            }));
+        var nodemailer = require('nodemailer');
+        var smtpTransport = require('nodemailer-smtp-transport');
+        ServiceProvider.findOne({_id:req.body.serviceProviderId}).populate('serviceProviderAccountId').exec(function(err,serviceProvider){
+          var transporter = nodemailer.createTransport(smtpTransport({
+            service: 'Hotmail',
+            auth: {
+              user: 'fasa7ny@outlook.com', // Your email id
+              pass: 'ITJumoynyoj1' // Your password
+            }
+          }));
 
-            var mailOptions = {
-              from: 'fasa7ny@outlook.com', // sender address
-              to: serviceProvider.serviceProviderAccountId.email, // sp email
-              subject: 'account rejected', // Subject line
-              //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
-              html: '<p>We are sorry that your account was rejected .. still thinking that you are qualified to join fasa7ny ? </p> <a href="#">Contact us</a>'// You can choose to send an HTML body instead
+          var mailOptions = {
+            from: 'fasa7ny@outlook.com', // sender address
+            to: serviceProvider.serviceProviderAccountId.email, // sp email
+            subject: 'account rejected', // Subject line
+            //text: "fasa7ny platform is happy to welcome you, next step is to add activities .." //, // plaintext body
+            html: '<p>We are sorry that your account was rejected .. still thinking that you are qualified to join fasa7ny ? </p> <a href="#">Contact us</a>'// You can choose to send an HTML body instead
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+              console.log(error);
+              res.send(error);
+            }else{
+              console.log('Message sent: ' + info.response);
+              res.send('rejected successfully');
             };
-            transporter.sendMail(mailOptions, function(error, info){
-              if(error){
-                console.log(error);
-                res.send(error);
-              }else{
-                console.log('Message sent: ' + info.response);
-                res.send('rejected successfully');
-              };
-            });
           });
+        });
 
-        }
-  })
-},
+      }
+    })
+  },
 
 
-//3.1 Login as a service Provider
-adminLoginStep2: function(req,res){
+  //3.1 Login as a service Provider
+  adminLoginStep2: function(req,res){
     Admin.findOne({adminAccountId:req.user._id}).exec(function(err,thisAdmin){
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -297,18 +297,18 @@ adminLoginStep2: function(req,res){
       }
       else {
         if(!thisAdmin){
-        globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
-        res.redirect('/logout');
-      }
-      else {
-        if(thisAdmin.banned==0){
-          req.session.admin=thisAdmin;
-          res.send("Admin is logged in");
+          globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
+          res.redirect('/logout');
         }
-        else{
-          res.send('Account banned! try again in '+thisAdmin.banned+' days');
+        else {
+          if(thisAdmin.banned==0){
+            req.session.admin=thisAdmin;
+            res.send("Admin is logged in");
+          }
+          else{
+            res.send('Account banned! try again in '+thisAdmin.banned+' days');
+          }
         }
-      }
 
       }
 
@@ -316,134 +316,131 @@ adminLoginStep2: function(req,res){
 
 
 
-},
-//tested without exception
+  },
+  //tested without exception
 
-viewAllChats:function(req, res){
-adminCTRL.isAdmin(req,res);
-Message.find(function(err, messages){
-	if(err){
-    globalCTRL.addErrorLog(err.message);
-	     res.send(err.message);
-    }else{
-			res.send(messages);
-		}
-})
+  viewAllChats:function(req, res){
+    adminCTRL.isAdmin(req,res);
+    Message.find(function(err, messages){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err.message);
+      }else{
+        res.send(messages);
+      }
+    })
 
-},
-//4.5 admin views system logs
-viewSystemLogs: function(req,res){
-  adminCTRL.isAdmin(req,res);
-  Log.find(function(err, log){
-        if(err)
-            res.send(err.message); //display messages
-        else{
-          res.send(log);
-         //res.render('viewSystemLogs',{"logs":log});
-        }
+  },
+
+  //tested
+  //4.5 admin views system logs
+  viewSystemLogs: function(req,res){
+    adminCTRL.isAdmin(req,res);
+    Log.find(function(err, log){
+      if(err)
+      res.send(err.message); //display messages
+      else{
+        res.send(log);
+      }
 
     })
-},
+  },
 
+  //tested
+  //4.5 admin deletes system logs
+  deleteLogs: function(req,res){
+    adminCTRL.isAdmin(req,res);
+    Log.remove(function(err, log){
 
-//4.5 admin deletes system logs
-deleteLogs: function(req,res){
-  adminCTRL.isAdmin(req,res);
-  Log.remove(function(err, log){
-
-    if(err)
-      res.send(err.message);
-    else {
-       res.send(200);
-       //res.render('logPage');
-    }
-  })
-},
-
-//tested without exception
-viewChatMessages:function(req, res){
-  adminCTRL.isAdmin(req,res);
-  //validating
-  req.checkBody('messageId','messageId is required').notEmpty();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-Message.findOne({_id: req.body.messageId }, function(err, chat){
-
-	if(err){
-    globalCTRL.addErrorLog(err.message);
-	     console.log(err.message);
-    }else{
-      if(chat)
-			   chat.isSeen=true;
-			res.send(chat);
-		}
-})
-
-},
-
-    //4.8 analytics
-    //testing - waiting for bookings to be able to analyze them
-
-getAnalyticsPage:function(req,res){
-      adminCTRL.isAdmin(req,res);
-
-      // finding top activity
-      Booking.aggregate(
-    {$group : {_id : "$activityId", "count" : {$sum : 1}}},
-    {$sort : {"count" : -1}},
-    {$limit : 1},function(err,topBooking){
       if(err)
-      {
+      res.send(err.message);
+      else {
+        res.send(200);
+      }
+    })
+  },
+
+  //tested without exception
+  //admin view a certain chat messages by id
+  viewChatMessages:function(req, res){
+    adminCTRL.isAdmin(req,res);
+    //validating
+    req.checkBody('messageId','messageId is required').notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    Message.findOne({_id: req.body.messageId }, function(err, chat){
+
+      if(err){
         globalCTRL.addErrorLog(err.message);
-        res.send(err.message)
-      }else
-      {
-                Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
-                  if(err)
-                  {
-                    globalCTRL.addErrorLog(err.message);
-                    res.send(err.message)
-                  }
-                  else
-                  {
-                          ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
+        console.log(err.message);
+      }else{
+        if(chat)
+        chat.isSeen=true;
+        res.send(chat);
+      }
+    })
+
+  },
+
+  //4.8 analytics
+  //testing - waiting for bookings to be able to analyze them
+  getAnalyticsPage:function(req,res){
+    adminCTRL.isAdmin(req,res);
+    // finding top activity
+    Booking.aggregate(
+      {$group : {_id : "$activityId", "count" : {$sum : 1}}},
+      {$sort : {"count" : -1}},
+      {$limit : 1},function(err,topBooking){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message)
+        }else
+        {
+          Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+            if(err)
+            {
+              globalCTRL.addErrorLog(err.message);
+              res.send(err.message)
+            }
+            else
+            {
+              ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
+                if(err)
+                {
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err.message)
+                }
+                else
+                {
+                  User.aggregate(
+                    {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                    {$sort : {"count" : -1}},
+                    {$limit : 1},function(err,topUser){
                       if(err)
                       {
                         globalCTRL.addErrorLog(err.message);
                         res.send(err.message)
+                      }else{
+                        res.send({topActivity,topSP,topUser});
                       }
-                      else
-                      {
-                            User.aggregate(
-                            {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
-                            {$sort : {"count" : -1}},
-                            {$limit : 1},function(err,topUser){
-                                if(err)
-                                {
-                                  globalCTRL.addErrorLog(err.message);
-                                  res.send(err.message)
-                                }else{
-                                    res.send({topActivity,topSP,topUser});
-                                }
 
-                            })
-
-
-                      }
-                       })
+                    })
                   }
                 })
-      }
-    }
-)
+              }
+            })
+          }
+        }
+      )
     },
-
+    //tested
     viewBookings:function(req,res){
-
+      adminCTRL.isAdmin(req,res);
       Booking.find(function(err,bookings){
         if(err)
         {
@@ -455,35 +452,36 @@ getAnalyticsPage:function(req,res){
         }
       })
     },
+
     adminSignupStep2: function(req,res){
 
       req.checkBody('firstName','first name is required').notEmpty();
       req.checkBody('lastName','last name is required').notEmpty();
-    var errors = req.validationErrors();
+      var errors = req.validationErrors();
       if (errors) {
         res.send(errors);
         return;
       }
       else {
-              let newAdmin= new Admin();
-              newAdmin.firstName=req.body.firstName;
-              newAdmin.lastName=req.body.lastName;
-              newAdmin.adminAccountId=req.user._id;
-            
-              newAdmin.save(function(err){
-                  if(err){
-                    globalCTRL.addErrorLog(err.message);
-                    res.send(err);
-                  }
-                  else {
-                    res.send('signup step 2 succesfull!!');
-                  }
+        let newAdmin= new Admin();
+        newAdmin.firstName=req.body.firstName;
+        newAdmin.lastName=req.body.lastName;
+        newAdmin.adminAccountId=req.user._id;
 
-                });
-              }
+        newAdmin.save(function(err){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err);
+          }
+          else {
+            res.send('signup step 2 succesfull!!');
+          }
+
+        });
+      }
+
+    }
 
   }
 
-}
-
-module.exports = adminCTRL;
+  module.exports = adminCTRL;
