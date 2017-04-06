@@ -31,12 +31,14 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         Account.findOne({ 'userName' :  userName }, function(err, account) {
             // if there are any errors, return the error
+            console.log(err);
+
             if (err)
                 return done(err);
 
             // check to see if theres already a user with that email
             if (account) {
-                return done(null, false, req.flash('signupMessage', 'That username is already taken'));
+                return done("Already a username", false);
             } else {
                 // create the user
                 var newAccount  = new Account();
@@ -46,7 +48,6 @@ module.exports = function(passport) {
                 newAccount.email    = req.body.email;
                 newAccount.type    = req.body.type;
                 newAccount.password = newAccount.generateHash(password);
-
                 // save the user
                 newAccount.save(function(err) {
                     if (err)
@@ -86,12 +87,9 @@ module.exports = function(passport) {
 
              // all is well, return successful user
              if(account.type==0){
-               User.update({userAccountId:_id},{$set:{numberOfLogins:numberOfLogins+1}}).exec(function(err){
+               User.update({userAccountId:account._id},{$set:{numberOfLogins:numberOfLogins+1}}).exec(function(err){
                  if(err){
                    res.send(err);
-                 }
-                 else{
-                   res.send("succcessful LogIn");
                  }
                })
              }

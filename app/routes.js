@@ -3,6 +3,7 @@ var express= require('express');
 var mongoose = require('mongoose');
 
 var Router = express.Router();
+
 //var bodyParser = require('body-parser').json();
 //exporting to be used in server.js
 module.exports = function(passport){
@@ -58,16 +59,27 @@ Router.post('/add_activity', serviceProviderCTRL.addActivity);
 Router.post('/update_activity', serviceProviderCTRL.updateActivity);
 Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
 Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
-//Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
+
+Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
+Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
+Router.post('/create_sp_acc', serviceProviderCTRL.createServiceProviderAccount);
 Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
 Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
+Router.get('/view_sp_requests', adminCTRL.viewServiceProviderRequests);
 Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
 Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
-
+Router.post('/ban_forever', adminCTRL.banForever);
+Router.post('/ban_30_days', adminCTRL.ban30Days);
+Router.post('/ban_30_days', adminCTRL.ban30Days);
+Router.post('/update_ban_status', adminCTRL.updateBanStatus);
+Router.get('/view_complains', adminCTRL.viewComplains);
+Router.post('/remove_complain', adminCTRL.removeComplain);
+Router.get('/view_all_chats', adminCTRL.viewAllChats);
+Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
 ////////////morcus///////////////////
 
 
@@ -78,27 +90,18 @@ Router.get('/login', function(req, res){
   res.render('login.ejs', { message: req.flash('loginMessage') });
 });
 
-Router.post('/login', passport.authenticate('local-login', {
-    failureRedirect: '/test',
-    failureFlash : true
-  },function(req,res){
+
+Router.post('/login', passport.authenticate('local-login'),function(req,res){
+    console.log(req.user);
     if(req.body.type==0){
-      res.send(200);
-      res.redirect('user_login');
+      //res.redirect('user_login');
+      res.send("user is logged in");
     }
-
     else{
-      if(req.body.type==1){
-        res.send(200);
-        res.redirect('serviceProvider_login');
-      }
-      else{
-        res.send(200);
-        res.redirect('admin_login');
-      }
-
+      //res.redirect('serviceProvider_login');
+      res.send("SP is logged in");
     }
-  }));
+  });
 
 
 //2.1.3 log out
@@ -119,6 +122,11 @@ Router.get('/logout', function(req, res){
 
 //viewAllActivities
 Router.get('/viewActivities',serviceProviderCTRL.viewAllActivities);
+//for testing
+Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
+
+//book activity
+Router.post('/book_Activity', userCTRL.bookActivity);
 
 //3.6 confirm checkIns
 Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
@@ -139,21 +147,20 @@ Router.get('/signup', function(req, res){
 	});
 
 
-	Router.post('/signup', passport.authenticate('local-signup', {
-		failureRedirect: '/signup',
-		failureFlash: true
-	},function(req,res){
+
+	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
+    if (!req.user) { return res.redirect('/'); }
     if(req.body.type==0){
-      res.send(200);
       //res.redirect('/user_signup');
-
+      res.send("User is signed up");
     }
+
     else{
-      res.send(200);
       //res.redirect('/serviceProvider_signup');
-
+       res.send("SP is signed up");
     }
-  }));
+
+	});
 
 ////////////andrea///////////////////
 
