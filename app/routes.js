@@ -68,7 +68,6 @@ Router.post('/update_activity', serviceProviderCTRL.updateActivity);
 Router.post('/delete_activity', serviceProviderCTRL.deleteActivity);
 Router.post('/reschedule_activity', serviceProviderCTRL.rescheduleActivity);
 
-Router.post('/sp_login', serviceProviderCTRL.serviceProviderLogin);
 Router.post('/create_sp', serviceProviderCTRL.createServiceProvider);
 Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
@@ -96,19 +95,25 @@ Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
 
 //LogIn Passport
 Router.get('/login', function(req, res){
-  res.render('login.ejs', { message: req.flash('loginMessage') });
+  res.send("login page here");
 });
 
 
 Router.post('/login', passport.authenticate('local-login'),function(req,res){
-    console.log(req.user);
-    if(req.body.type==0){
-      //res.redirect('user_login');
-      res.send("user is logged in");
-    }
-    else{
-      //res.redirect('serviceProvider_login');
-      res.send("SP is logged in");
+  switch (req.body.type) {
+      case 0:
+      userCTRL.userLoginStep2(req,res);
+          break;
+      case 1:
+      serviceProviderCTRL.serviceProviderLoginStep2(req,res);
+          break;
+      case 3:
+          adminCTRL.adminLoginStep2(req,res);
+          break;
+      default:
+          globalCTRL.addErrorLog('login attempt with profile type '+req.body.type);
+          res.redirect('/logout');
+          break;
     }
   });
 
@@ -117,7 +122,7 @@ Router.post('/login', passport.authenticate('local-login'),function(req,res){
 Router.get('/logout', function(req, res){
     req.logout();
     req.session.regenerate(function(err){});
-    res.send(200);
+    res.send('logged out!');
     //res.redirect('/');
   });
 
@@ -155,22 +160,28 @@ Router.post('/banforever',adminCTRL.banForever);
 
 //SignUp passport
 Router.get('/signup', function(req, res){
-		res.render('signup');
+		res.send('signup page here');
 	});
 
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
     if (!req.user) { return res.redirect('/'); }
-    if(req.body.type==0){
-      //res.redirect('/user_signup');
-      res.send("User is signed up");
-    }
-
-    else{
-      //res.redirect('/serviceProvider_signup');
-       res.send("SP is signed up");
-    }
+    switch (req.body.type) {
+        case 0:
+        userCTRL.userSignupStep2(req,res);
+            break;
+        case 1:
+        serviceProviderCTRL.serviceProviderSignupStep2(req,res);
+            break;
+        case 3:
+            adminCTRL.adminSignupStep2(req,res);
+            break;
+        default:
+            globalCTRL.addErrorLog('sign up attempt with profile type '+req.body.type);
+            res.redirect('/logout');
+            break;
+      }
 
 	});
 

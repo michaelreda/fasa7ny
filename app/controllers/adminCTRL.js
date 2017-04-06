@@ -7,6 +7,7 @@ let Message         = require('../models/message');
 let Booking         = require('../models/booking');
 let Activity         = require('../models/activity');
 let globalCTRL=require('../controllers/globalCTRL.js');
+let Admin = require('../models/admin');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -287,52 +288,35 @@ rejectServiceProviderRequests:function(req,res){
 },
 
 
-adminLogin: function(req,res){
-//var isValidPassword = function(user, password){
-  //return bCrypt.compareSync(password, user.password);
-//}
-
-//validating
-req.checkBody('userName','Username is required').notEmpty();
-req.checkBody('password','Password is required').notEmpty();
-var errors = req.validationErrors();
-if (errors) {
-  res.send(errors);
-  return;
-}
-//end validating
-passport.use('login', new LocalStrategy({
-    passReqToCallback : true
-  },
-  function(req, userName, password, done) {
-
-    account.findOne({ 'userName' :  userName },
-      function(err, user) {
-
-        if (err)
-          return done(err);  // In case of any error, return using the done method
-
-        if (!user){
-          console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
-          return done(null, false,
-                req.flash('message', 'user Not found.'));
-        }
-
-        if (!isValidPassword(user, password)){
-          console.log('Invalid Password');
-          return done(null, false,
-              req.flash('message', 'Invalid Password'));
-        }
-        // User and password both match, return user from
-        // done method which will be treated like success
-        req.session.loggedInUser=user;
-        return done(null, user);
+//3.1 Login as a service Provider
+adminLoginStep2: function(req,res){
+    Admin.findOne({adminAccountId:req.user._id}).exec(function(err,thisAdmin){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err);
       }
-    );
-}));
+      else {
+        if(!thisAdmin){
+        globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
+        res.redirect('/logout');
+      }
+      else {
+        if(thisAdmin.banned==0){
+          req.session.admin=thisAdmin;
+          res.send("Admin is logged in");
+        }
+        else{
+          res.send('Account banned! try again in '+thisAdmin.banned+' days');
+        }
+      }
+
+      }
+
+    });
+
+
 
 },
-
 //tested without exception
 
 viewAllChats:function(req, res){
@@ -470,7 +454,35 @@ getAnalyticsPage:function(req,res){
           res.send({bookings});
         }
       })
-    }
+    },
+    adminSignupStep2: function(req,res){
+
+      req.checkBody('firstName','first name is required').notEmpty();
+      req.checkBody('lastName','last name is required').notEmpty();
+    var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      else {
+              let newAdmin= new Admin();
+              newAdmin.firstName=req.body.firstName;
+              newAdmin.lastName=req.body.lastName;
+              newAdmin.adminAccountId=req.user._id;
+            
+              newAdmin.save(function(err){
+                  if(err){
+                    globalCTRL.addErrorLog(err.message);
+                    res.send(err);
+                  }
+                  else {
+                    res.send('signup step 2 succesfull!!');
+                  }
+
+                });
+              }
+
+  }
 
 }
 

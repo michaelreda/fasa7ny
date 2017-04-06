@@ -766,7 +766,91 @@ viewComplains:function(req,res){
       }
     })
 
-  }
+  },
+
+  userLoginStep2: function(req,res){
+      User.findOne({userAccountId:req.user._id}).exec(function(err,thisUser){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else {
+          if(!thisUser){
+          globalCTRL.addErrorLog('Account '+req.user._id+'has no user profile!!');
+          res.redirect('/logout');
+        }
+        else {
+          if(thisUser.banned==0){
+            thisUser.numberOfLogins++;
+            thisUser.save(function(err2){
+              if(err2)
+              globalCTRL.addErrorLog(err.message);
+            })
+            req.session.user=thisUser;
+            res.send("user is logged in");
+          }
+          else{
+            res.send('Account banned! try again in '+thisUser.banned+' days');
+          }
+        }
+
+        }
+
+      });
+
+
+
+  },
+  userSignupStep2: function(req,res){
+
+    req.checkBody('firstName','first name is required').notEmpty();
+    req.checkBody('lastName','last name is required').notEmpty();
+    req.checkBody('birthDate','birth date is required').notEmpty();
+    req.checkBody('gender','gender is required of type boolean').notEmpty().isBoolean();
+    req.checkBody('privacy','privacy is required of type integer').notEmpty().isInt({min:1});
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    else {
+            let newUser= new User();
+            newUser.firstName=req.body.firstName;
+            newUser.lastName=req.body.lastName;
+            newUser.birthDate=req.body.birthDate;
+            newUser.gender=req.body.gender;
+            newUser.privacy=req.body.privacy;
+            newUser.userAccountId=req.user._id;
+            newUser.interests=[];
+            newUser.history=[];
+            newUser.location=[];
+            newUser.banned=0;
+            newUser.wishlist=[];
+
+
+            if(req.body.mobileNumber){
+              newUser.mobileNumber=req.body.mobileNumber;
+            }
+            if(req.files&&req.files.length>0){
+              newUser.profilePicture=req.files[0].path;
+            }
+            if(req.body.profession){
+              newUser.profession=req.body.profession;
+            }
+
+            newUser.save(function(err){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }
+                else {
+                  res.send('signup step 2 succesfull!!');
+                }
+
+              });
+            }
+
+}
 
 
 
