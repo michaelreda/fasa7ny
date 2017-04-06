@@ -5,13 +5,34 @@ let Offer = require('../models/offer');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 let ServiceProviderCTRL = {
+  isServiceProvider: function(req,res){
+    if(!req.session.serviceProviderID)
+      res.send("you are not a Service Provier.. you are not authorized to do this function");
+  },
+
   //tested
   //As a service provider I shall add activities that my firm provides so that I can schedule them for my clients.
   addActivity : function(req,res){
-
-    if(!req.body.title|!req.body.type|!req.body.prices|!req.body.durationInMinutes|!req.body.timings|!req.body.minClientNumber|!req.body.maxClientNumber){
-      res.send("missing fields");
+    ServiceProviderCTRL.isServiceProvider(req,res);
+    //validating
+    req.checkBody('title','title is required').notEmpty();
+    req.checkBody('type','type is required').notEmpty();
+    req.checkBody('prices','prices are required').notEmpty().isArray();
+    req.checkBody('timings','timings is required').notEmpty().isArray();
+    req.checkBody('durationInMinutes','durationInMinutes is required of type int').notEmpty().isInt({min:1});
+    req.checkBody('minClientNumber','minClientNumber is a required of positive number').notEmpty().isInt({min:-1});
+    req.checkBody('maxClientNumber','maxClientNumber is a required of positive number').notEmpty().isInt({min:-1});
+    req.sanitize('minClientNumber').toInt();
+    req.sanitize('maxClientNumber').toInt();
+    req.checkBody('maxClientNumber','maxClientNumber should be greater then or equal minClientNumber').gte(req.body.minClientNumber);
+    req.checkBody('minAge','minClientNumber is a positive number').optional().isInt({min:-1});
+    req.checkBody('maxAge','maxClientNumber is a positive number').optional().isInt({min:-1});
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
     }
+    //end validating
     else{
       let newActivity = new Activity(
         {"title" :req.body.title,
@@ -74,7 +95,22 @@ let ServiceProviderCTRL = {
         //           }
         //       });
         //   },
+
+        //missing legal proof media
      createServiceProvider:function(req, res){
+       //validating
+       req.checkBody('title','title is required').notEmpty();
+       req.checkBody('serviceProviderAccountId','serviceProviderAccountId is required').isMongoId();
+       req.checkBody('description','description are required').notEmpty();
+       req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
+       req.checkBody('branches','branches is a required').notEmpty().isArray();
+       req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
+       var errors = req.validationErrors();
+       if (errors) {
+         res.send(errors);
+         return;
+       }
+       //end validating
         let serviceProvider = new ServiceProvider(req.body);
         serviceProvider.serviceProviderAccountId=req.session.account._id;
         if(req.files.length>0){
@@ -115,12 +151,21 @@ let ServiceProviderCTRL = {
     //tested
     //3.2.1 As a service provider I can update my activities
     updateActivity:function(req,res){
-      //res.send(req.body.activityID);
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('activityID','serviceProviderAccountId is required').isMongoId();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
 
       Activity.findOne({"_id":new ObjectId(req.body.activityID)},function(err,activity){
 
-        // res.send("activity "+activity);
-        // return;
+        if(!activity)
+          res.send("activity not found");
+
         if(req.body.title){
           activity.title=req.body.title;
         }
@@ -174,6 +219,15 @@ let ServiceProviderCTRL = {
     //tested
     //3.2.2 As a service provider I can delete my activities
     deleteActivity: function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('activityID','activityID is required').isMongoId();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
       Activity.findOne({"_id":new ObjectId(req.body.activityID)}).remove().exec(function(err){
         if(err){
           res.send(err);
@@ -184,10 +238,21 @@ let ServiceProviderCTRL = {
       })
 
     },
-       
+
     //tested
     //3.2.3 As a service provider I can reschedule my activities
     rescheduleActivity:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('activityID','activityID is required').isMongoId();
+      req.checkBody('timings','timings is required').notEmpty().isArray();
+      req.checkBody('durationInMinutes','durationInMinutes is required of type int').notEmpty().isInt({min:1});
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
       Activity.findOne({"_id":req.body.activityID},function(err, activity){
 
         if(req.body.durationInMinutes){
@@ -211,10 +276,26 @@ let ServiceProviderCTRL = {
 
     //tested .. missing hashing
     createServiceProviderAccount:function(req, res){
+      //validating
+      req.checkBody('userName','username is required').notEmpty();
+      req.checkBody('userName','username minimum length is 6').isLength({min:6});
+      req.checkBody('password','password is required').notEmpty();
+      req.checkBody('password','password minimum length is 6').isLength({min:6});
+      req.checkBody('email','email is required').isEmail();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
       let account = new Account(req.body);
       account.type=1;
       account.save(function(err, account){
         if(err){
+          if(err.message.includes("duplicate")&& err.message.includes("userName"))
+            res.send("userName already exists");
+          if(err.message.includes("duplicate")&& err.message.includes("email"))
+            res.send("email already exists");
           res.send(err.message);
         }
         else{
@@ -223,10 +304,19 @@ let ServiceProviderCTRL = {
         }
       });
     },
-    
+
     //3.1 Login as a service Provider
     //tested .. NOT WORKING
     serviceProviderLogin: function(req,res){
+      //validating
+      req.checkBody('userName','username is required').notEmpty();
+      req.checkBody('password','password is required').notEmpty();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
 
       //var isValidPassword = function(user, password){
       //return bCrypt.compareSync(password, user.password);
@@ -270,6 +360,7 @@ let ServiceProviderCTRL = {
       //karim and andrea's code
       //tested .. session variable to be edited
       viewAddOffer: function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
         ServiceProvider.findOne({_id:req.session.loggedInUser._id})
         .populate({path: 'activities'})
         .exec(function(err,provider){
@@ -280,6 +371,22 @@ let ServiceProviderCTRL = {
       },
       //tested
       addOffer:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('title','title is required').notEmpty();
+        req.checkBody('description','description are required').notEmpty();
+        req.checkBody('discount','discount is required of type int>=0').isDecimal({min:0});
+        req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').isISO8601(); //check if the string is a valid ISO 8601 date.
+        req.checkBody('deadline','deadline should be in the future').isAfter();
+        req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
+        req.sanitize('isActive').toBoolean();
+        req.checkBody('activities','activities is a required').notEmpty().isArray();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
         let offer = new Offer(req.body);
         offer.save(function(err,offer){
           if(err){
@@ -293,6 +400,15 @@ let ServiceProviderCTRL = {
       },
       //tested
       deleteOffer:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('offerId','title is required').isMongoId();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
         Offer.findOne({_id:req.body.offerId},function(err,offer){
           if(err){
             console.log('err');
@@ -308,24 +424,44 @@ let ServiceProviderCTRL = {
       },
       //tested
       updateOffer: function (req, res) {
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('offerId','offerId is required').isMongoId();
+        req.checkBody('title','title is required').optional().notEmpty();
+        req.checkBody('description','description are required').optional().notEmpty();
+        req.checkBody('discount','discount is required of type int>=0').optional().isDecimal({min:0});
+        req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').optional().isISO8601(); //check if the string is a valid ISO 8601 date.
+        req.checkBody('deadline','deadline should be in the future').optional().isAfter();
+        req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
+        req.sanitize('isActive').toBoolean();
+        req.checkBody('activities','activities is a required').optional().notEmpty().isArray();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
         Offer.update({ _id: new ObjectId(req.body.offerId) },{$set:req.body})
-        .exec(function (err) {
+        .exec(function (err,status) {
           if (err)
           res.send(err.message);
           else
-          res.send('should redirect to service provider logged in page');
+          if(status.nModified!=0)
+            res.send('should redirect to service provider logged in page');
+          else
+            res.send("offer not found");
         })
-      },
+    },
 
+//session var to be edited
       viewHoldingReservations:function(req, res){
-
+        ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
           //when a booking is canceled, isHolding is set to false
           if(err){
             res.send(err.message);
           }else
           {
-
             res.send( bookings);
           }
         })
@@ -333,12 +469,22 @@ let ServiceProviderCTRL = {
       },
       //tested
       //missing payment
+      //session var to be edited
       applyToGolden:function(req,res){
-        ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(){
-          res.send('should redirect to serviceProvider home page');
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
+          if(err)
+              res.send(err.message);
+          else
+            if(status.nModified!=0)
+              res.send('should redirect to serviceProvider home page');
+            else
+              res.send('sp not found');
+
         });
       },
       viewBookings:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
         Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
           if(err){
             res.send(err);
@@ -350,12 +496,25 @@ let ServiceProviderCTRL = {
       },
 
       confirmCheckIn:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('bookingid','bookingid is required').isMongoId();
+        req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
         //req. is a booking
-        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err){
+        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
           if(err){
             res.send(err);
           }
           else{
+            if(status.nModified==0)
+              res.send('booking is not found');
+            else{
             ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
               if(err){
                 res.send(err);
@@ -371,7 +530,32 @@ let ServiceProviderCTRL = {
                     });
               }
             })
+          }
             res.send("Booking is confirmed");
+          }
+        })
+      },
+      submitServiceProviderComplain:function(req,res){
+        ServiceProviderCTRL.isServiceProvider(req,res);
+        //validating
+        req.checkBody('providerId','providerId is required').isMongoId();
+        req.checkBody('complain','complain is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+
+        let complain = new Complain(req.body);
+        complain.providerId= req.session.serviceProviderId._id;
+        complain.isUserToProvider= false;
+        complain.save(function(err,complain){
+          if(err)
+          {
+            res.send(err.message);
+          }else {
+            res.send(200)
           }
         })
       }

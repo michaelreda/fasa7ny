@@ -12,13 +12,13 @@ password:{
   required:true
 },
 type:{
-  type:Number,  //user 0, SP 1, visitor for newsletter 2
+  type:Number,  //user 0, SP 1, visitor for newsletter 2,admin 3
   required:true
 },
 email:{
   type:String,
-  required:true
-
+  required:true,
+  unique:true
 },
 
 facebook         : {
