@@ -51,6 +51,14 @@ Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
 
+// view activities _NEEDED_FOR_Testing
+Router.get('/view_activity', visitorCTRL.viewActivities);
+Router.get('/view_complains', userCTRL.viewComplains);
+Router.get('/view_bookings', adminCTRL.viewBookings);
+Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
+
+
+
 
 
 ////////////reda///////////////////

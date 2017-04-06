@@ -16,12 +16,24 @@ shareOnSocialMedia:function(req, res){
 	case 'google': res.redirect("https://plus.google.com/share?url="+req.params.query);break;
 }
 },
+// 1.3 filtering activities
+viewActivities:function(req,res){
+      Activity.find(function(err,activities){
+        if(err)
+        {
+            res.send(err.message);
+        }else
+        {
+            res.send({activities})
+        }
+      })
+    },
 
 	filterActivitiesBy:function(req, res){
 		req.session.j=1;
 		if(req.body.filter==price)
 		{
-			Activity.find.limit(10).exec({prices: req.body.value},function(err,activities){
+			Activity.find.limit(10).exec({ price: req.body.value},function(err,activities){
                     if(err){
                         res.send(err.message);
                     }else {

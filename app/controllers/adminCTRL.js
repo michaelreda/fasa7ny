@@ -280,9 +280,10 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.b
 }
 },
     //4.8 analytics
+    //testing - waiting for bookings to be able to analyze them
     getAnalyticsPage:function(req,res){
       // finding top activity
-      booking.aggregate(
+      Booking.aggregate(
     {$group : {_id : "$activityId", "count" : {$sum : 1}}},
     {$sort : {"count" : -1}},
     {$limit : 1},function(err,topBooking){
@@ -326,6 +327,19 @@ ServiceProvider.update({_id:req.body.serviceProviderId},{$set:{banned:req.body.b
       }
     }
 )
+    },
+
+    viewBookings:function(req,res){
+
+      Booking.find(function(err,bookings){
+        if(err)
+        {
+          res.send(err.message);
+        }else
+        {
+          res.send({bookings});
+        }
+      })
     }
 
 }
