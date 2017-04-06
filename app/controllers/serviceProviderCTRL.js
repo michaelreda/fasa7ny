@@ -12,7 +12,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
     if(!req.session.serviceProvider)
-      res.send("you are not a Service Provier.. you are not authorized to do this function");
+    res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
   //tested
@@ -74,7 +74,6 @@ let ServiceProviderCTRL = {
 
         newActivity.save(function(err){
           if(err){
-            console.log(err);
             globalCTRL.addErrorLog(err.message);
           }
           else {
@@ -87,61 +86,61 @@ let ServiceProviderCTRL = {
 
     },
 
-     createServiceProvider:function(req, res){
-       //validating
-       req.checkBody('title','title is required').notEmpty();
-       req.checkBody('serviceProviderAccountId','serviceProviderAccountId is required').isMongoId();
-       req.checkBody('description','description are required').notEmpty();
-       req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
-       req.checkBody('branches','branches is a required').notEmpty().isArray();
-       req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
-       req.checkBody('legalProof','legalProof is required').notEmpty();
-       var errors = req.validationErrors();
-       if (errors) {
-         res.send(errors);
-         return;
-       }
-       //end validating
-        let serviceProvider = new ServiceProvider(req.body);
-        serviceProvider.serviceProviderAccountId=req.session.account._id;
-        if(req.files.length>0){
+    createServiceProvider:function(req, res){
+      //validating
+      req.checkBody('title','title is required').notEmpty();
+      req.checkBody('serviceProviderAccountId','serviceProviderAccountId is required').isMongoId();
+      req.checkBody('description','description are required').notEmpty();
+      req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
+      req.checkBody('branches','branches is a required').notEmpty().isArray();
+      req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
+      req.checkBody('legalProof','legalProof is required').notEmpty();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      let serviceProvider = new ServiceProvider(req.body);
+      serviceProvider.serviceProviderAccountId=req.session.account._id;
+      if(req.files.length>0){
 
-      serviceProvider.media=[];
-      for (var i = 0; i < req.files.length; i++) {
+        serviceProvider.media=[];
+        for (var i = 0; i < req.files.length; i++) {
           if(req.files[i].fieldname=="legalProof"){
             serviceProvider.legalProof.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
           }
 
           serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+        }
       }
-    }
-        serviceProvider.save(function(err, account){
-            if(err){
-                globalCTRL.addErrorLog(err.message);
-                res.send(err.message);
-            }
-            else{
-                req.session.serviceProvider=serviceProvider._id;
-                res.send(200);
-            }
-        });
+      serviceProvider.save(function(err, account){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }
+        else{
+          req.session.serviceProvider=serviceProvider._id;
+          res.send(200);
+        }
+      });
     },
 
     //tested
-      getSPbyID:function(req,res){
-        ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
-            if(err)
-            {
-              globalCTRL.addErrorLog(err.message);
-              res.send(err.message);
-            }else
-            {
-              res.send({SP});
-            }
-        })
+    getSPbyID:function(req,res){
+      ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else
+        {
+          res.send({SP});
+        }
+      })
 
 
-      },
+    },
 
 
 
@@ -162,7 +161,7 @@ let ServiceProviderCTRL = {
       Activity.findOne({"_id":new ObjectId(req.body.activityID)},function(err,activity){
 
         if(!activity)
-          res.send("activity not found");
+        res.send("activity not found");
 
         if(req.body.title){
           activity.title=req.body.title;
@@ -183,7 +182,7 @@ let ServiceProviderCTRL = {
         if(req.body.location){
           activity.location=req.body.location;
         }
-         if(req.files && req.files.length>0){
+        if(req.files && req.files.length>0){
           activity.media=[];//assuming that the whole array will be sent again
           for (var i = 0; i < req.files.length; i++) {
             activity.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
@@ -207,7 +206,6 @@ let ServiceProviderCTRL = {
         activity.save(function(err){
           if(err){
             globalCTRL.addErrorLog(err.message);
-            console.log(err);
           }
           else {
             res.send("activity updated succesfully");
@@ -268,7 +266,6 @@ let ServiceProviderCTRL = {
         activity.save(function(err){
           if(err){
             globalCTRL.addErrorLog(err.message);
-            console.log(err);
           }
           else {
             res.send("rescheduled activity succesfully");
@@ -290,16 +287,16 @@ let ServiceProviderCTRL = {
       })
     },
 
-     //tested
+    //tested
     //3.1 Login as a service Provider
     serviceProviderLoginStep2: function(req,res){
-        ServiceProvider.findOne({serviceProviderAccountId:req.user._id}).exec(function(err,thisProvider){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err);
-          }
-          else {
-            if(!thisProvider){
+      ServiceProvider.findOne({serviceProviderAccountId:req.user._id}).exec(function(err,thisProvider){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else {
+          if(!thisProvider){
             globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
             res.redirect('/logout');
           }
@@ -313,9 +310,9 @@ let ServiceProviderCTRL = {
             }
           }
 
-          }
+        }
 
-        });
+      });
 
 
 
@@ -324,326 +321,324 @@ let ServiceProviderCTRL = {
 
 
 
-      //karim and andrea's code
-      //tested
-      viewAddOffer: function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        ServiceProvider.findOne({_id:req.session.ServiceProvider._id})
-        .populate({path: 'activities'})
-        .exec(function(err,provider){
-            if(err){
-              globalCTRL.addErrorLog(err.message);
-            }
-            res.send(provider);
-        })
+    //karim and andrea's code
+    //tested
+    viewAddOffer: function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      ServiceProvider.findOne({_id:req.session.ServiceProvider._id})
+      .populate({path: 'activities'})
+      .exec(function(err,provider){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+        }
+        res.send(provider);
+      })
 
       res.send(provider.activities);
-      },
+    },
 
 
-      //tested
-      addOffer:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        //validating
-        req.checkBody('title','title is required').notEmpty();
-        req.checkBody('description','description are required').notEmpty();
-        req.checkBody('discount','discount is required of type int>=0').isDecimal({min:0});
-        req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').isISO8601(); //check if the string is a valid ISO 8601 date.
-        req.checkBody('deadline','deadline should be in the future').isAfter();
-        req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
-        req.sanitize('isActive').toBoolean();
-        req.checkBody('activities','activities is a required').notEmpty().isArray();
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
+    //tested
+    addOffer:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('title','title is required').notEmpty();
+      req.checkBody('description','description are required').notEmpty();
+      req.checkBody('discount','discount is required of type int>=0').isDecimal({min:0});
+      req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').isISO8601(); //check if the string is a valid ISO 8601 date.
+      req.checkBody('deadline','deadline should be in the future').isAfter();
+      req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
+      req.sanitize('isActive').toBoolean();
+      req.checkBody('activities','activities is a required').notEmpty().isArray();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      let offer = new Offer(req.body);
+      offer.save(function(err,offer){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else{
+          Activity.update({_id:{$in:req.body.activities}},{$set: {'isOffer': true}}).exec();
+          res.send('offer added');//same redirection as update
         }
-        //end validating
-        let offer = new Offer(req.body);
-        offer.save(function(err,offer){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            console.log(err);
-            res.send(err.message);
-          }else{
-            Activity.update({_id:{$in:req.body.activities}},{$set: {'isOffer': true}}).exec();
-            res.send('offer added');//same redirection as update
-          }
-        })
-      },
+      })
+    },
 
-      //tested
-      deleteOffer:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        //validating
-        req.checkBody('offerId','title is required').isMongoId();
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
-        }
-        //end validating
-        Activity.update({_id:{$in:offer.activities}},{$set: {'isOffer': false}}).exec();
-        Offer.findOne({_id:req.body.offerId},function(err,offer){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            console.log('err');
-          }else{
-            Offer.remove(offer).exec(function(err){
-              if(err){
+    //tested
+    deleteOffer:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('offerId','title is required').isMongoId();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      Activity.update({_id:{$in:offer.activities}},{$set: {'isOffer': false}}).exec();
+      Offer.findOne({_id:req.body.offerId},function(err,offer){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+        }else{
+          Offer.remove(offer).exec(function(err){
+            if(err){
               globalCTRL.addErrorLog(err.message);
               res.send(err.message);
             }
-              else
-              res.send('offer deleted');//same redirection as update
-            })
-          }
-        })
-      },
-
-      //tested
-      updateOffer: function (req, res) {
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        //validating
-        req.checkBody('offerId','offerId is required').isMongoId();
-        req.checkBody('title','title is required').optional().notEmpty();
-        req.checkBody('description','description are required').optional().notEmpty();
-        req.checkBody('discount','discount is required of type int>=0').optional().isDecimal({min:0});
-        req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').optional().isISO8601(); //check if the string is a valid ISO 8601 date.
-        req.checkBody('deadline','deadline should be in the future').optional().isAfter();
-        req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
-        req.sanitize('isActive').toBoolean();
-        req.checkBody('activities','activities is a required').optional().notEmpty().isArray();
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
+            else
+            res.send('offer deleted');//same redirection as update
+          })
         }
-        //end validating
-        Offer.update({ _id: new ObjectId(req.body.offerId) },{$set:req.body})
-        .exec(function (err,status) {
-          if (err){
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
-          }else
-          if(status.nModified!=0)
-            res.send('should redirect to service provider logged in page');
-          else
-            res.send("offer not found");
-        })
+      })
     },
 
-      //tested
-     //session var to be edited
-      viewHoldingReservations:function(req, res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
-          //when a booking is canceled, isHolding is set to false
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err.message);
-          }else
-          {
-            res.send( bookings);
-          }
-        })
+    //tested
+    updateOffer: function (req, res) {
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('offerId','offerId is required').isMongoId();
+      req.checkBody('title','title is required').optional().notEmpty();
+      req.checkBody('description','description are required').optional().notEmpty();
+      req.checkBody('discount','discount is required of type int>=0').optional().isDecimal({min:0});
+      req.checkBody('deadline','deadline is required valid date in the following format: 2017-04-20T00:00:00.000Z').optional().isISO8601(); //check if the string is a valid ISO 8601 date.
+      req.checkBody('deadline','deadline should be in the future').optional().isAfter();
+      req.checkBody('isActive','isActive is a required of type Boolean').optional().isBoolean();
+      req.sanitize('isActive').toBoolean();
+      req.checkBody('activities','activities is a required').optional().notEmpty().isArray();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      Offer.update({ _id: new ObjectId(req.body.offerId) },{$set:req.body})
+      .exec(function (err,status) {
+        if (err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else
+        if(status.nModified!=0)
+        res.send('should redirect to service provider logged in page');
+        else
+        res.send("offer not found");
+      })
+    },
 
-      },
-
-      //tested
-      //missing payment
-      applyToGolden:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
-          if(err){
-              globalCTRL.addErrorLog(err.message);
-              res.send(err.message);
-          }else
-            if(status.nModified!=0)
-              res.send('should redirect to serviceProvider home page');
-            else
-              res.send('sp not found');
-
-        });
-      },
-
-      //tested
-      //3.6 confirm checkins
-      viewBookings:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        Booking.find({"serviceProviderId":req.session.serviceProvider._id,"isConfirmed":false},function(err,bookings){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err);
-          }
-          else{
-            res.send(bookings);
-          }
-        })
-      },
-
-
-     //tested
-      confirmCheckIn:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        //validating
-        req.checkBody('bookingid','bookingid is required').isMongoId();
-        req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
+    //tested
+    //session var to be edited
+    viewHoldingReservations:function(req, res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
+        //when a booking is canceled, isHolding is set to false
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else
+        {
+          res.send( bookings);
         }
-        //end validating
-        //req. is a booking
-        Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err);
-          }
+      })
+
+    },
+
+    //tested
+    //missing payment
+    applyToGolden:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      ServiceProvider.update({_id:req.session.serviceProvider._id},{$set: {'isGolden': true}}).exec(function(err,status){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else
+        if(status.nModified!=0)
+        res.send('should redirect to serviceProvider home page');
+        else
+        res.send('sp not found');
+
+      });
+    },
+
+    //tested
+    //3.6 confirm checkins
+    viewBookings:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      Booking.find({"serviceProviderId":req.session.serviceProvider._id,"isConfirmed":false},function(err,bookings){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else{
+          res.send(bookings);
+        }
+      })
+    },
+
+
+    //tested
+    confirmCheckIn:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('bookingid','bookingid is required').isMongoId();
+      req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      //req. is a booking
+      Booking.update({_id:req.body.bookingid},{$set:{isConfirmed:true}}).exec(function(err,status){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else{
+          if(status.nModified==0)
+          res.send('booking is not found');
           else{
-            if(status.nModified==0)
-              res.send('booking is not found');
-            else{
             ServiceProvider.findOne({"_id":req.body.serviceProviderId}, function(err, sp){
               if(err){
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
               }
               else{
-                    sp.previousClients.push(req.body.userId);
-                    sp.save(function(err){
-                      if(err){
-                      globalCTRL.addErrorLog(err.message);
-                      res.send(err);
-                    }
-                      else{
-                        res.send("Booking is confirmed");
-                      }
-                    });
+                sp.previousClients.push(req.body.userId);
+                sp.save(function(err){
+                  if(err){
+                    globalCTRL.addErrorLog(err.message);
+                    res.send(err);
+                  }
+                  else{
+                    res.send("Booking is confirmed");
+                  }
+                });
               }
             })
           }
-          }
-        })
-      },
+        }
+      })
+    },
 
-      //tested
-  //required for testing
-      viewAllUsers:function(req,res){
-        User.find(function(err, users){
+    //tested
+    //required for testing
+    viewAllUsers:function(req,res){
+      User.find(function(err, users){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else{
+          res.send(users);
+        }
+      })
+    },
+    //tested
+    submitServiceProviderComplain:function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      //validating
+      req.checkBody('providerId','providerId is required').isMongoId();
+      req.checkBody('complain','complain is required').notEmpty();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      let complain = new Complain(req.body);
+      complain.providerId= req.session.serviceProvider._id;
+      complain.isUserToProvider= false;
+      complain.save(function(err,complain){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else {
+          res.send(200)
+        }
+      })
+    },
+
+    //tested
+    viewActivities:function(req,res){
+      Activity.find(function(err, act){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else
+        res.send(act);
+      })
+    },
+
+    //tested
+    serviceProviderSignupStep2: function(req,res){
+
+      req.checkBody('title','title is required').notEmpty();
+      req.checkBody('description','description is required').notEmpty();
+      req.checkBody('legalProof','legalProof is required').notEmpty();
+      req.checkBody('entertainmentType','entertainment Types are required').notEmpty().isArray();
+      req.checkBody('branches','branches are required').notEmpty().isArray();
+      req.checkBody('contactMobile','mobile numbers are required').notEmpty().isArray();
+      req.checkBody('mediaTypes','media Types are required').isArray();
+
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      else {
+        let newSP= new ServiceProvider();
+        newSP.title=req.body.title;
+        newSP.description=req.body.description;
+        newSP.legalProof=req.body.legalProof;
+        newSP.entertainmentType=req.body.entertainmentType;
+        newSP.branches=req.body.branches;
+        newSP.contactMobile=req.body.contactMobile;
+        newSP.serviceProviderAccountId=req.user._id;
+        newSP.activities=[];
+        newSP.media=[];
+        newSP.previousClients=[];
+        newSP.subscribedUsers=[];
+        newSP.banned=0;
+
+        if(req.files && req.files.length>0){
+          for (var i = 0; i < req.files.length; i++) {
+            newSP.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+          }
+        }
+
+        newSP.save(function(err){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err);
           }
-          else{
-            res.send(users);
+          else {
+            res.send('signup step 2 succesfull!!');
           }
-})
-},
-      //tested
-      submitServiceProviderComplain:function(req,res){
-        ServiceProviderCTRL.isServiceProvider(req,res);
-        //validating
-        req.checkBody('providerId','providerId is required').isMongoId();
-        req.checkBody('complain','complain is required').notEmpty();
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
-        }
-        //end validating
-        let complain = new Complain(req.body);
-        complain.providerId= req.session.serviceProvider._id;
-        complain.isUserToProvider= false;
-        complain.save(function(err,complain){
-          if(err)
-          {
-            globalCTRL.addErrorLog(err.message);
-            res.send(err.message);
-          }else {
-            res.send(200)
-          }
-        })
-      },
 
-      //tested
-    viewActivities:function(req,res){
-        Activity.find(function(err, act){
-          if(err){
-          globalCTRL.addErrorLog(err.message);
-          res.send(err);
-        }
-          else
-          res.send(act);
-        })
-      },
-
-   //tested
-  serviceProviderSignupStep2: function(req,res){
-
-        req.checkBody('title','title is required').notEmpty();
-        req.checkBody('description','description is required').notEmpty();
-        req.checkBody('legalProof','legalProof is required').notEmpty();
-        req.checkBody('entertainmentType','entertainment Types are required').notEmpty().isArray();
-        req.checkBody('branches','branches are required').notEmpty().isArray();
-        req.checkBody('contactMobile','mobile numbers are required').notEmpty().isArray();
-        req.checkBody('mediaTypes','media Types are required').isArray();
-
-        var errors = req.validationErrors();
-        if (errors) {
-          res.send(errors);
-          return;
-        }
-        else {
-                let newSP= new ServiceProvider();
-                newSP.title=req.body.title;
-                newSP.description=req.body.description;
-                newSP.legalProof=req.body.legalProof;
-                newSP.entertainmentType=req.body.entertainmentType;
-                newSP.branches=req.body.branches;
-                newSP.contactMobile=req.body.contactMobile;
-                newSP.serviceProviderAccountId=req.user._id;
-                newSP.activities=[];
-                newSP.media=[];
-                newSP.previousClients=[];
-                newSP.subscribedUsers=[];
-                newSP.banned=0;
-
-                if(req.files && req.files.length>0){
-                  for (var i = 0; i < req.files.length; i++) {
-                    newSP.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
-                  }
-                }
-
-                newSP.save(function(err){
-                    if(err){
-                      globalCTRL.addErrorLog(err.message);
-                      res.send(err);
-                    }
-                    else {
-                      res.send('signup step 2 succesfull!!');
-                    }
-
-                  });
-                }
+        });
+      }
 
     },
 
     //tested
     viewProviderBookings: function(req,res){
-    ServiceProviderCTRL.isServiceProvider(req,res);
-    Booking.find({serviceProviderId:req.session.serviceProvider._id,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
-      if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err);
-      }
-      else {
-        res.send(bookings);
-      }
-    })
-  }
-
+      ServiceProviderCTRL.isServiceProvider(req,res);
+      Booking.find({serviceProviderId:req.session.serviceProvider._id,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err);
+        }
+        else {
+          res.send(bookings);
+        }
+      })
     }
 
-    module.exports = ServiceProviderCTRL;
+  }
+
+  module.exports = ServiceProviderCTRL;

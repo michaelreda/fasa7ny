@@ -473,61 +473,59 @@ let visitorCTRL={
               }
             })
           },
-          
-          //2.1.2 recover password
-recoverPassword:function(req,res){
-  //validating
-  req.checkBody('userName','userName is required').notEmpty();
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send(errors);
-    return;
-  }
-  //end validating
-  Account.findOne({"userName": req.body.userName}, function(err, user){
-    if(err){
-      globalCTRL.addErrorLog(err.message);
-      res.send(err);
-    }
-    else{
-          if(!user){
-            res.send("no account with this username");
-          }
-        randomPass=randomstring.generate(12);//generating randompass
-         user.password=user.generateHash(randomPass);
-         user.save(function(err){
-           if(err){
-             globalCTRL.addErrorLog(err.message);
-             res.send(err);
-           }
-           else{
-             var transporter = nodemailer.createTransport(smtpTransport({
-               service: 'Hotmail',
-               auth: {
-                 user: 'fasa7ny@outlook.com', // Your email id
-                 pass: 'ITJumoynyoj1' // Your password
-               }
-             }));
 
-             var mailOptions = {
-               from: 'fasa7ny@outlook.com', // sender address
-               to: user.email, // list of receivers
-               subject: 'Change Password', // Subject line
-               //text: text //, // plaintext body
-               html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
-             };
-             transporter.sendMail(mailOptions, function(error, info){
-               if(error){
-                 globalCTRL.addErrorLog(error);
-                 console.log(error);
-                 res.send(error);
-               }else{
-                 console.log('Message sent: ' + info.response);
-                 res.send(200);
-               };
-             });
-           }
-         })
+          //2.1.2 recover password
+          recoverPassword:function(req,res){
+            //validating
+            req.checkBody('userName','userName is required').notEmpty();
+            var errors = req.validationErrors();
+            if (errors) {
+              res.send(errors);
+              return;
+            }
+            //end validating
+            Account.findOne({"userName": req.body.userName}, function(err, user){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }
+              else{
+                if(!user){
+                  res.send("no account with this username");
+                }
+                randomPass=randomstring.generate(12);//generating randompass
+                user.password=user.generateHash(randomPass);
+                user.save(function(err){
+                  if(err){
+                    globalCTRL.addErrorLog(err.message);
+                    res.send(err);
+                  }
+                  else{
+                    var transporter = nodemailer.createTransport(smtpTransport({
+                      service: 'Hotmail',
+                      auth: {
+                        user: 'fasa7ny@outlook.com', // Your email id
+                        pass: 'ITJumoynyoj1' // Your password
+                      }
+                    }));
+
+                    var mailOptions = {
+                      from: 'fasa7ny@outlook.com', // sender address
+                      to: user.email, // list of receivers
+                      subject: 'Change Password', // Subject line
+                      //text: text //, // plaintext body
+                      html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
+                    };
+                    transporter.sendMail(mailOptions, function(error, info){
+                      if(error){
+                        globalCTRL.addErrorLog(error);
+                        res.send(error);
+                      }else{
+                        res.send('Message sent: ' + info.response);
+                      };
+                    });
+                  }
+                })
 
 
               }
@@ -535,7 +533,5 @@ recoverPassword:function(req,res){
 
           }
 
-
-
-        }
+}
         module.exports = visitorCTRL;
