@@ -145,7 +145,7 @@ Router.get('/viewActivities', serviceProviderCTRL.viewActivities);
 
 //3.6 confirm checkIns
 Router.get('/bookingUsers', serviceProviderCTRL.viewAllUsers);
-Router.get('/bookings', serviceProviderCTRL.viewBookings);
+Router.get('/SP_CTRL_bookings', serviceProviderCTRL.viewBookings);
 Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
 
 //4.6 managing bans

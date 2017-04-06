@@ -15,7 +15,7 @@ activityId:{
 },
 isHolding:{
   type:Boolean,
-  required:true //??
+  required:true
 },
 price:{
   type:Number,
