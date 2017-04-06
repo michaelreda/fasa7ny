@@ -232,7 +232,6 @@ Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 ////////////kareem///////////////////
-Router.post('/admin_login', adminCTRL.adminLogin);
 Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations);
 Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
 Router.post('/search_for_activities', visitorCTRL.searchForActivities);

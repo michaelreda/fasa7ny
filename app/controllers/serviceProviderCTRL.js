@@ -10,7 +10,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
-    if(!req.session.serviceProviderID)
+    if(!req.session.serviceProvider)
       res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
@@ -41,7 +41,7 @@ let ServiceProviderCTRL = {
       let newActivity = new Activity(
         {"title" :req.body.title,
         "type":req.body.type,
-        "serviceProviderId":req.session.serviceProviderId,
+        "serviceProviderId":req.session.serviceProvider._id,
         "timings":req.body.timings,
         "durationInMinutes":req.body.durationInMinutes,
         "minClientNumber":req.body.minClientNumber,
@@ -86,7 +86,6 @@ let ServiceProviderCTRL = {
 
     },
 
-        //missing legal proof media
      createServiceProvider:function(req, res){
        //validating
        req.checkBody('title','title is required').notEmpty();
@@ -104,7 +103,7 @@ let ServiceProviderCTRL = {
         let serviceProvider = new ServiceProvider(req.body);
         serviceProvider.serviceProviderAccountId=req.session.account._id;
         if(req.files.length>0){
-          
+
       serviceProvider.media=[];
       for (var i = 0; i < req.files.length; i++) {
           if(req.files[i].fieldname=="legalProof"){
@@ -120,7 +119,7 @@ let ServiceProviderCTRL = {
                 res.send(err.message);
             }
             else{
-                req.session.serviceProviderID=serviceProvider._id;
+                req.session.serviceProvider=serviceProvider._id;
                 res.send(200);
             }
         });
@@ -326,7 +325,7 @@ let ServiceProviderCTRL = {
       //tested .. session variable to be edited
       viewAddOffer: function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
-        ServiceProvider.findOne({_id:req.session.loggedInUser._id})
+        ServiceProvider.findOne({_id:req.session.ServiceProvider._id})
         .populate({path: 'activities'})
         .exec(function(err,provider){
             if(err){
@@ -462,7 +461,7 @@ let ServiceProviderCTRL = {
       //3.6 confirm checkins
       viewBookings:function(req,res){
         ServiceProviderCTRL.isServiceProvider(req,res);
-        Booking.find({"serviceProviderId":req.session.serviceProviderId,"isConfirmed":false},function(err,bookings){
+        Booking.find({"serviceProviderId":req.session.serviceProvider._id,"isConfirmed":false},function(err,bookings){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err);
@@ -541,7 +540,7 @@ let ServiceProviderCTRL = {
         }
         //end validating
         let complain = new Complain(req.body);
-        complain.providerId= req.session.serviceProviderId._id;
+        complain.providerId= req.session.serviceProvider._id;
         complain.isUserToProvider= false;
         complain.save(function(err,complain){
           if(err)
@@ -611,7 +610,19 @@ let ServiceProviderCTRL = {
                   });
                 }
 
-    }
+    },
+    viewProviderBookings: function(req,res){
+      ServiceProviderCTRL.isServiceProvider(req,res);
+    Booking.find({serviceProviderId:req.session.serviceProvider._id,isCancelled:false,isConfirmed:false}).exec(function(err,bookings){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err);
+      }
+      else {
+        res.send(bookings);
+      }
+    })
+  }
 
     }
 
