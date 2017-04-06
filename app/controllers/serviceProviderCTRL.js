@@ -285,54 +285,34 @@ let ServiceProviderCTRL = {
     },
 
     //3.1 Login as a service Provider
-    //tested .. NOT WORKING
-    serviceProviderLogin: function(req,res){
-      //validating
-      req.checkBody('userName','username is required').notEmpty();
-      req.checkBody('password','password is required').notEmpty();
-      var errors = req.validationErrors();
-      if (errors) {
-        res.send(errors);
-        return;
-      }
-      //end validating
-
-      //var isValidPassword = function(user, password){
-      //return bCrypt.compareSync(password, user.password);
-      //}
-      var passport = require('passport');
-      var LocalStrategy = require('passport-local').Strategy;
-      passport.use('login', new LocalStrategy({
-        passReqToCallback : true
-      },
-      function(req, userName, password, done) {
-
-        Account.findOne({ 'userName' :  userName },
-        function(err, user) {
-
-          if (err){
+    serviceProviderLoginStep2: function(req,res){
+        ServiceProvider.findOne({serviceProviderAccountId:req.user._id}).exec(function(err,thisProvider){
+          if(err){
             globalCTRL.addErrorLog(err.message);
-            return done(err);  // In case of any error, return using the done method
+            res.send(err);
           }
-          if (!user){
-            console.log('User Not Found with userName '+userName); // userName does not exist, log error & redirect back
-            return done(null, false,
-              req.flash('message', 'User Not found.'));
+          else {
+            if(!thisProvider){
+            globalCTRL.addErrorLog('Account '+req.user._id+'has no provider profile!!');
+            res.redirect('/logout');
+          }
+          else {
+            if(thisProvider.banned==0){
+              req.session.serviceProvider=thisProvider;
+              res.send("SP is logged in");
             }
+            else{
+              res.send('Account banned! try again in '+thisProvider.banned+' days');
+            }
+          }
 
-            if (!isValidPassword(user, password)){
-              console.log('Invalid Password');
-              return done(null, false,
-                req.flash('message', 'Invalid Password'));
-              }
-              // User and password both match, return user from
-              // done method which will be treated like success
-              req.session.loggedInUser=user;
-              return done(null, user);
-            }
-          );
-        }));
-      },
+          }
+
+        });
+
+
+
+    },
 
 
 
@@ -577,7 +557,56 @@ let ServiceProviderCTRL = {
           else
           res.send(act);
         })
-      }
+      },
+  serviceProviderSignupStep2: function(req,res){
+
+        req.checkBody('title','title is required').notEmpty();
+        req.checkBody('description','description is required').notEmpty();
+        req.checkBody('legalProof','legalProof is required').notEmpty();
+        req.checkBody('entertainmentType','entertainment Types are required').notEmpty().isArray();
+        req.checkBody('branches','branches are required').notEmpty().isArray();
+        req.checkBody('contactMobile','mobile numbers are required').notEmpty().isArray();
+        req.checkBody('mediaTypes','media Types are required').isArray();
+
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        else {
+                let newSP= new ServiceProvider();
+                newSP.title=req.body.title;
+                newSP.description=req.body.description;
+                newSP.legalProof=req.body.legalProof;
+                newSP.entertainmentType=req.body.entertainmentType;
+                newSP.branches=req.body.branches;
+                newSP.contactMobile=req.body.contactMobile;
+                newSP.serviceProviderAccountId=req.user._id;
+                newSP.activities=[];
+                newSP.media=[];
+                newSP.previousClients=[];
+                newSP.subscribedUsers=[];
+                newSP.banned=0;
+
+                if(req.files && req.files.length>0){
+                  for (var i = 0; i < req.files.length; i++) {
+                    newSP.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+                  }
+                }
+
+                newSP.save(function(err){
+                    if(err){
+                      globalCTRL.addErrorLog(err.message);
+                      res.send(err);
+                    }
+                    else {
+                      res.send('signup step 2 succesfull!!');
+                    }
+
+                  });
+                }
+
+    }
 
     }
 
