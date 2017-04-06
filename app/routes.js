@@ -89,15 +89,13 @@ Router.get('/login', function(req, res){
   res.render('login.ejs', { message: req.flash('loginMessage') });
 });
 
-Router.post('/login', passport.authenticate('local-login', {
-    failureRedirect: '/test',
-    failureFlash : true
-  },function(req,res){
+Router.post('/login', passport.authenticate('local-login'),function(req,res){
+    console.log(req.user);
     if(req.body.type==0)
     res.redirect('user_login');
     else
     res.redirect('serviceProvider_login');
-  }));
+  });
 
 
 //2.1.3 log out
@@ -122,15 +120,14 @@ Router.get('/signup', function(req, res){
 	});
 
 
-	Router.post('/signup', passport.authenticate('local-signup', {
-		failureRedirect: '/signup',
-		failureFlash: true
-	},function(req,res){
+	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
+    if (!req.user) { return res.redirect('/'); }
     if(req.body.type==0)
     res.redirect('/user_signup');
     else
     res.redirect('/serviceProvider_signup');
-  }));
+
+	});
 
 ////////////andrea///////////////////
 
