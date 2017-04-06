@@ -86,65 +86,6 @@ let ServiceProviderCTRL = {
 
     },
 
-    createServiceProvider:function(req, res){
-      //validating
-      req.checkBody('title','title is required').notEmpty();
-      req.checkBody('serviceProviderAccountId','serviceProviderAccountId is required').isMongoId();
-      req.checkBody('description','description are required').notEmpty();
-      req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
-      req.checkBody('branches','branches is a required').notEmpty().isArray();
-      req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
-      req.checkBody('legalProof','legalProof is required').notEmpty();
-      var errors = req.validationErrors();
-      if (errors) {
-        res.send(errors);
-        return;
-      }
-      //end validating
-      let serviceProvider = new ServiceProvider(req.body);
-      serviceProvider.serviceProviderAccountId=req.session.account._id;
-      if(req.files.length>0){
-
-        serviceProvider.media=[];
-        for (var i = 0; i < req.files.length; i++) {
-          if(req.files[i].fieldname=="legalProof"){
-            serviceProvider.legalProof.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
-          }
-
-          serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
-        }
-      }
-      serviceProvider.save(function(err, account){
-        if(err){
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
-        }
-        else{
-          req.session.serviceProvider=serviceProvider._id;
-          res.send(200);
-        }
-      });
-    },
-
-    //tested
-    getSPbyID:function(req,res){
-      ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
-        if(err)
-        {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
-        }else
-        {
-          res.send({SP});
-        }
-      })
-
-
-    },
-
-
-
-
     //tested
     //3.2.1 As a service provider I can update my activities
     updateActivity:function(req,res){
@@ -276,15 +217,72 @@ let ServiceProviderCTRL = {
 
     //tested
     viewAllActivities: function(req,res){
-      Activity.find(function(err,act){
+      Activity.find(function(err,activities){
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err);
         }
         else{
-          res.send(act);
+          res.send(activities);
         }
       })
+    },
+
+
+    createServiceProvider:function(req, res){
+      //validating
+      req.checkBody('title','title is required').notEmpty();
+      req.checkBody('serviceProviderAccountId','serviceProviderAccountId is required').isMongoId();
+      req.checkBody('description','description are required').notEmpty();
+      req.checkBody('entertainmentType','entertainmentType is required').notEmpty().isArray();
+      req.checkBody('branches','branches is a required').notEmpty().isArray();
+      req.checkBody('contactMobile','contactMobile is a required').notEmpty().isArray();
+      req.checkBody('legalProof','legalProof is required').notEmpty();
+      var errors = req.validationErrors();
+      if (errors) {
+        res.send(errors);
+        return;
+      }
+      //end validating
+      let serviceProvider = new ServiceProvider(req.body);
+      serviceProvider.serviceProviderAccountId=req.session.account._id;
+      if(req.files.length>0){
+
+        serviceProvider.media=[];
+        for (var i = 0; i < req.files.length; i++) {
+          if(req.files[i].fieldname=="legalProof"){
+            serviceProvider.legalProof.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+          }
+
+          serviceProvider.media.push({"type":req.body.mediaTypes[i],"url":req.files[i].path});
+        }
+      }
+      serviceProvider.save(function(err, account){
+        if(err){
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }
+        else{
+          req.session.serviceProvider=serviceProvider._id;
+          res.send(200);
+        }
+      });
+    },
+
+    //tested
+    getSPbyID:function(req,res){
+      ServiceProvider.findOne({_id:req.body.spID},function(err,SP){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message);
+        }else
+        {
+          res.send({SP});
+        }
+      })
+
+
     },
 
     //tested
@@ -314,12 +312,7 @@ let ServiceProviderCTRL = {
 
       });
 
-
-
     },
-
-
-
 
     //karim and andrea's code
     //tested
@@ -562,17 +555,6 @@ let ServiceProviderCTRL = {
       })
     },
 
-    //tested
-    viewActivities:function(req,res){
-      Activity.find(function(err, act){
-        if(err){
-          globalCTRL.addErrorLog(err.message);
-          res.send(err);
-        }
-        else
-        res.send(act);
-      })
-    },
 
     //tested
     serviceProviderSignupStep2: function(req,res){

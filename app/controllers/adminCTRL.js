@@ -296,13 +296,9 @@ let adminCTRL={
           res.redirect('/logout');
         }
         else {
-          if(thisAdmin.banned==0){
             req.session.admin=thisAdmin;
             res.send("Admin is logged in");
-          }
-          else{
-            res.send('Account banned! try again in '+thisAdmin.banned+' days');
-          }
+
         }
 
       }
@@ -310,20 +306,6 @@ let adminCTRL={
     });
 
 
-
-  },
-  //tested without exception
-
-  viewAllChats:function(req, res){
-    adminCTRL.isAdmin(req,res);
-    Message.find(function(err, messages){
-      if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
-      }else{
-        res.send(messages);
-      }
-    })
 
   },
 
@@ -354,7 +336,20 @@ let adminCTRL={
       }
     })
   },
+  //tested without exception
 
+  viewAllChats:function(req, res){
+    adminCTRL.isAdmin(req,res);
+    Message.find(function(err, messages){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err.message);
+      }else{
+        res.send(messages);
+      }
+    })
+
+  },
   //tested without exception
   //admin view a certain chat messages by id
   viewChatMessages:function(req, res){

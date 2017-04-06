@@ -246,7 +246,36 @@ subscribe: function(req,res){
 )
 },
 
+unSubscribe: function(req,res){
+  userCTRL.isUser(req,res);
+  var serviceProviderID=req.body.serviceProviderId;
+  var loggedInUser= req.session.user._id;
 
+
+  ServiceProvider.findOne({ '_id' : serviceProviderID},
+  function(err, providerInstance){
+    if (err){
+      globalCTRL.addErrorLog(err.message);
+      return (err);
+    }
+    else{
+      var index = providerInstance.subscribedUsers.indexOf(loggedInUser);
+      if(index > -1){
+        providerInstance.subscribedUsers.splice(index,1);
+        providerInstance.save(function(err){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            return (err);
+          }
+          else {
+            req.flash('message', 'You are now unsubscribed from this provider');
+          }
+        })
+      }
+    }
+  }
+)
+},
 
 
 //2.13 user contacts platform
@@ -476,18 +505,6 @@ deleteReview: function(req,res){
 
   },
 
-  viewHistoryBookings: function(req,res){
-    userCTRL.isUser(req,res);
-    Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
-      if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err);
-      }
-      else {
-        res.render("viewHistoryBookings",bookings);
-      }
-    })
-  },
 
   //tested
   //2.7 reserve a booking for an activity
@@ -564,8 +581,22 @@ deleteReview: function(req,res){
         }
       }
     })
-  }
-  ,
+  },
+  //view user's bookings' history
+  viewHistoryBookings: function(req,res){
+    userCTRL.isUser(req,res);
+    Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+        res.send(err);
+      }
+      else {
+        res.render("viewHistoryBookings",bookings);
+      }
+    })
+  },
+
+
   //2.8 user Complain serviveprovider
   //tested
   viewComplains:function(req,res){
@@ -630,7 +661,7 @@ deleteReview: function(req,res){
 
 
     })},
-
+    //update complain
     updateComplainBody:function(req, res){
       userCTRL.isUser(req,res);
       //validating
@@ -721,36 +752,7 @@ deleteReview: function(req,res){
       })
     },
 
-    unSubscribe: function(req,res){
-      userCTRL.isUser(req,res);
-      var serviceProviderID=req.body.serviceProviderId;
-      var loggedInUser= req.session.user._id;
 
-
-      ServiceProvider.findOne({ '_id' : serviceProviderID},
-      function(err, providerInstance){
-        if (err){
-          globalCTRL.addErrorLog(err.message);
-          return (err);
-        }
-        else{
-          var index = providerInstance.subscribedUsers.indexOf(loggedInUser);
-          if(index > -1){
-            providerInstance.subscribedUsers.splice(index,1);
-            providerInstance.save(function(err){
-              if(err){
-                globalCTRL.addErrorLog(err.message);
-                return (err);
-              }
-              else {
-                req.flash('message', 'You are now unsubscribed from this provider');
-              }
-            })
-          }
-        }
-      }
-    )
-  },
 
 
   userLoginStep2: function(req,res){
