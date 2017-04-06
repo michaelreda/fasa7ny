@@ -162,7 +162,6 @@ let adminCTRL={
     Complain.findOne({_id:req.body.complainId},function(err,val){
       if(err){
         globalCTRL.addErrorLog(err.message);
-        console.log(err.message);
       }
       else{
         if(val.isSeen){
@@ -224,10 +223,8 @@ let adminCTRL={
           };
           transporter.sendMail(mailOptions, function(error, info){
             if(error){
-              console.log(error);
               res.send(error);
             }else{
-              console.log('Message sent: ' + info.response);
               res.send('approved successfully');
             };
           });
@@ -274,10 +271,8 @@ let adminCTRL={
           };
           transporter.sendMail(mailOptions, function(error, info){
             if(error){
-              console.log(error);
               res.send(error);
             }else{
-              console.log('Message sent: ' + info.response);
               res.send('rejected successfully');
             };
           });
@@ -376,7 +371,6 @@ let adminCTRL={
 
       if(err){
         globalCTRL.addErrorLog(err.message);
-        console.log(err.message);
       }else{
         if(chat)
         chat.isSeen=true;
