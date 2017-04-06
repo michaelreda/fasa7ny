@@ -366,6 +366,7 @@ let ServiceProviderCTRL = {
             console.log(err);
             res.send(err.message);
           }else{
+            Activity.update({_id:{$in:req.body.activities}},{$set: {'isOffer': true}}).exec();
             res.send('offer added');//same redirection as update
           }
         })
@@ -382,6 +383,7 @@ let ServiceProviderCTRL = {
           return;
         }
         //end validating
+        Activity.update({_id:{$in:offer.activities}},{$set: {'isOffer': false}}).exec();
         Offer.findOne({_id:req.body.offerId},function(err,offer){
           if(err){
             globalCTRL.addErrorLog(err.message);
