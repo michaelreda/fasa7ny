@@ -16,8 +16,9 @@ let userCTRL = {
   },
 
 //2.6 comparing activities or service providers
+//tested
 getActivitiesToCompare:function(req, res){
-  userCTRL.isUser(req,res);
+ userCTRL.isUser(req,res);
   //validating
   req.checkBody('activity1ID','activity1ID is required').isMongoId();
   req.checkBody('activity2ID','activity2ID is required').isMongoId();
@@ -51,6 +52,7 @@ getActivitiesToCompare:function(req, res){
         })
     },
     //2.6 comparing activities or service providers
+    //tested
     getServiceProviderToCompare:function(req, res){
       //validating
       req.checkBody('SP1ID','SP1ID is required').isMongoId();
@@ -82,6 +84,7 @@ getActivitiesToCompare:function(req, res){
         })
     },
     //2.6 comparing activities or service providers
+    //tested
     getFirstListOfChoices:function(req, res){
 
         ServiceProvider.find(function(err,SPs){
@@ -105,6 +108,7 @@ getActivitiesToCompare:function(req, res){
         })
     },
     //2.6 comparing activities or service providers
+    //tested
     getSecondListOfChoices:function(req, res){
       //validating
       req.checkBody('isServiceProvider','SP1ID is required').isBoolean();
@@ -127,7 +131,7 @@ getActivitiesToCompare:function(req, res){
             }
             else
             {
-                res.send(SPs);
+                res.send({SPs});
             }
           })
       }
@@ -159,7 +163,7 @@ changePassword: function(req,res){
   req.checkBody('newPassword','newPassword is required').notEmpty();
   req.checkBody('newPassword','newPassword minimum length is 6').isLength({min:6});
   req.checkBody('confirmPassword','confirmPassword is required').notEmpty();
-  req.checkBody('confirmPassword','confirmPassword should be equal to the new password').equals(eq.body.newPassword);
+  req.checkBody('confirmPassword','confirmPassword should be equal to the new password').equals(req.body.newPassword);
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
@@ -186,6 +190,7 @@ changePassword: function(req,res){
 
 
 //2.11 As a logged in user I can change my privacy to control who sees my information
+//tested
 changePrivacy: function(req,res){
   userCTRL.isUser(req,res);
   //validating
@@ -208,13 +213,14 @@ changePrivacy: function(req,res){
     }
   })
 },
-
+// user id for testing 58e695140fb1c32c4d7eaabd
+//service provider id for testing 58e0323c244cdb4ebbe85687
 
 //2.4 user subscribes to a service provider
-
+//tested 
 subscribe: function(req,res){
   userCTRL.isUser(req,res);
-  var serviceProviderID=req.body.serviceProviderId;
+  var serviceProviderID=req.session.serviceProvider._id;
   var loggedInUser= req.session.user._id;
 
 
@@ -225,16 +231,23 @@ subscribe: function(req,res){
         return (err);
       }
       else{
-        providerInstance.subscribedUsers.push(loggedInUser);
-        providerInstance.save(function(err){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            return (err);
+        providerInstance.update({_id:req.session.serviceProvider._id},{$push:{'subscribedUsers':loggedInUser}},function(err,change){
+          if(err)
+          {
+            res.send(err.message)
+          }else{
+            res.send({providerInstance});
           }
-          else {
-            req.flash('message', 'You are now subscribed to this provider');
-          }
-        })
+        });
+        // providerInstance.save(function(err){
+        //   if(err){
+        //     globalCTRL.addErrorLog(err.message);
+        //     return (err);
+        //   }
+        //   else {
+        //     res.send("You are now subscribed to this provider");
+        //   }
+        // })
       }
     }
 )
@@ -324,7 +337,7 @@ updateMyProfile: function(req,res){
 },
 //2.2.1 As a logged in user I can delete my account
 deleteMyProfile: function(req,res){
-    userCTRL.isUser(req,res);
+   userCTRL.isUser(req,res);
     User.findOne({_id:req.session.user._id}).remove().exec(function(err){
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -595,7 +608,7 @@ viewComplains:function(req,res){
       }
     })
   },
-
+      //tested 
   viewStatusOfComplain:function(req,res){
     userCTRL.isUser(req,res);
     //validating
@@ -827,6 +840,18 @@ viewComplains:function(req,res){
               });
             }
 
+},
+
+findUsers:function(req,res){
+
+  User.find(function(err,users){
+    if(err)
+    {
+      res.send(err.message)
+    }else{
+      res.send({users})
+    }
+  })
 }
 
 

@@ -57,7 +57,7 @@ Router.get('/view_activity', visitorCTRL.viewActivities);
 Router.get('/view_complains', userCTRL.viewComplains);
 Router.get('/view_bookings', adminCTRL.viewBookings);
 Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
-
+Router.get('/view_users', userCTRL.findUsers);
 
 
 
