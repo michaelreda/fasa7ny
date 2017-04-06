@@ -362,10 +362,6 @@ viewSystemLogs: function(req,res){
 },
 
 
-updateLogs: function(req,res){
-// will not be done, delete from SRS
-},
-
 //4.5 admin deletes system logs
 deleteLogs: function(req,res){
   adminCTRL.isAdmin(req,res);
