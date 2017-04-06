@@ -182,6 +182,7 @@ Router.post('/view_service_provider', visitorCTRL.viewServiceProvider);
 //1.7 view FAQ
 Router.get('/view_FAQ', visitorCTRL.viewFAQ);
 //1.4 user registration
+Router.get('/register_as_user', visitorCTRL.registerAsUser);
 
 
 //2.10 user wishlists
@@ -220,6 +221,26 @@ Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 ////////////kareem///////////////////
+Router.post('/admin_login', adminCTRL.adminLogin);
+Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations);
+Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
+Router.post('/search_for_activities', visitorCTRL.searchForActivities);
+Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
+Router.post('/recover_password', visitorCTRL.recoverPassword);
+Router.post('/change_password', userCTRL.changePassword);
+Router.post('/change_privacy', userCTRL.changePrivacy);
+Router.post('/subscribe', userCTRL.subscribe);
+Router.get('/view_my_profile', userCTRL.viewMyProfile);
+Router.post('/update_my_profile', userCTRL.updateMyProfile);
+Router.post('/delete_my_profile', userCTRL.deleteMyProfile);
+Router.post('/update_review', userCTRL.updateReview);
+Router.post('/delete_review', userCTRL.deleteReview);
+Router.get('/view_my_reviews', userCTRL.viewMyReviews);
+Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
+Router.post('/cancel_booking', userCTRL.cancelBooking);
+Router.post('/unsubscribe', userCTRL.unSubscribe);
+Router.get('/view_provider_bookings', userCTRL.viewProviderBookings);
+Router.post('/create_user', userCTRL.createUser);
 
 
 
