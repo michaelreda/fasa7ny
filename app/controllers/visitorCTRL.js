@@ -49,20 +49,25 @@ let visitorCTRL={
   //1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
   searchForActivities:function(req,res){
     //validating
-    req.checkBody('input','input is required').notEmpty();
+    //req.checkBody('input','input is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
       res.send(errors);
       return;
     }
+    req.params.searchInput=req.params.searchInput=='_'?'':req.params.searchInput;
+    req.params.day=req.params.day=='_'?'':req.params.day;
     //end validating
-    Activity.find(
-      { $or:[
-        {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-        {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-        {timings:{$elemMatch : { day:req.body.input  } }}
-      ]}
-      ,function(err, activities){
+    Activity.$where('(this.title.includes("'+req.params.searchInput+'") ||  this.type.includes("'+req.params.searchInput+'")) && (this.timings.filter(function(timing){return timing.day.includes("'+req.params.day+'")}))').exec(
+    // Activity.find(
+    //   { $and:[
+    //     {timings:{$elemMatch : { day:".*"+req.body.day  } }},
+    //     {$or:[
+    //       {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
+    //       {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }}
+    //     ]}
+    //   ]}
+      function(err, activities){
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
@@ -531,6 +536,31 @@ let visitorCTRL={
               }else {
                 res.send(200);
               }
+            })
+          },
+          getStatistics:function(req,res){
+            Activity.count().exec(function(err,activityCount){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else {
+                ServiceProvider.count({Approved:0}).exec(function(err,SPcount){
+                  if(err){
+                    globalCTRL.addErrorLog(err.message);
+                    res.send(err);
+                  }else {
+                    Booking.count({isCancelled:0}).exec(function(err,BookingsCount){
+                      if(err){
+                        globalCTRL.addErrorLog(err.message);
+                        res.send(err);
+                      }else {
+                        res.send({'activityCount':activityCount,'SPcount':SPcount,'BookingsCount':BookingsCount})
+                      }
+                    })
+                  }
+                })
+              }
+
             })
           }
 

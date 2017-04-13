@@ -11,7 +11,7 @@ var globalCTRL = require('./app/controllers/globalCTRL');
 var expressValidator = require('express-validator');
 
 //configure app
-app.use(bodyParser.urlencoded({extended:true})); //this line must be on top of app config
+app.use(bodyParser.urlencoded({extended:false})); //this line must be on top of app config
 app.use(bodyParser.json());
 app.use(expressValidator({
   customValidators: {
@@ -23,16 +23,24 @@ app.use(expressValidator({
     }
   }
 }));
+
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
 var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
 var job3 = schedule.scheduleJob('59 23 * * *', globalCTRL.overdueBookings);
-app.use(require('serve-static')(__dirname + '/../../public'));
+// view engine setup
+var cons = require('consolidate');
+app.engine('html', cons.swig);//engine will render HTML
+app.set('view engine', 'html');
+
+var path = require('path');
+app.use(require('serve-static')(path.resolve('public')));
+//app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUninitialized: true , secure:true, expire:false}));
 app.use(passport.initialize());
 app.use(passport.session());
 //connect to local if failed to connect to mlab
-mongoose.connect(DB_URI,function(err){
+mongoose.connect("mongodb://localhost:27017/testingDB",function(err){
   if(err){
     mongoose.connect(DB_URI_LOCAL);
     console.log("connecting to local db..");

@@ -1,0 +1,9 @@
+
+<script>
+w3IncludeHTML();
+</script>
+
+<div style="padding-top:75px;padding-bottom:50px">
+  <!-- <activity-box hello  ng-repeat="activity in activities" activity="activity"></activity-box> -->
+  <div ng-include="'components/activityBox/activityBox.template.html'" onload="a = activity" ng-repeat="activity in activities"></div>
+</div>
