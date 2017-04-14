@@ -16,6 +16,18 @@
               <h3 style="margin-top: 5px;font-weight: 700;">{{a.title}}</h3>
               <p style="overflow:hidden; text-overflow: ellipsis;height:60px">{{a.theme}}</p>
               <div class="pi-price"> EGP {{a.prices[0].price}}</div>
+              <center><div class="social_link" style="
+               display: inline-block;
+               width: initial;
+               margin: 0px;
+               padding-left: 10px;
+               padding-right: 10px">
+              <ul class="sociallink_nav">
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u=www.localhost:8080/activity/{{a._id}}" target="_blank" style="padding: 4px 11px;"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://twitter.com/intent/tweet?text=check out this amazing activity here at fasa7ny &url=www.localhost:8080/activity/{{a._id}}" target="_blank" style="padding: 4px 8px;"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://plus.google.com/share?url=www.localhost:8080/activity/{{a._id}}" target="_blank" style="padding: 4px 8px;"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+            </div></center>
               <a href="javascript:;" class="btn add2cart">More Info?</a>
               <div ng-if="a.isOffer" class="sticker sticker-new"></div>
             </div>

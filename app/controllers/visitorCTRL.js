@@ -22,10 +22,11 @@ let visitorCTRL={
       res.send(errors);
       return;
     }
+
     //end validating
     switch(req.body.socialService){
       case 'facebook': res.redirect("https://www.facebook.com/sharer/sharer.php?u="+req.body.url);break;
-      case 'twitter':  res.redirect("https://twitter.com/intent/tweet?text=check out this amazing activity here at "+req.body.url+" &url=YOUR-URL"+req.body.url);break;
+      case 'twitter':  res.redirect("https://twitter.com/intent/tweet?text=check out this amazing activity here at "+req.body.url+" &url="+req.body.url);break;
       case 'google': res.redirect("https://plus.google.com/share?url="+req.body.url);break;
     }
   },
