@@ -565,7 +565,7 @@ let visitorCTRL={
             })
           },
           getNearbyActivities:function(req,res){
-            Activity.$where('(Math.abs(parseFloat((this.location.split(","))[0])-parseFloat('+req.body.lat+'))<1) && (Math.abs(parseFloat((this.location.split(","))[1])-parseFloat('+req.body.long+'))<1)').exec(
+            Activity.$where('(Math.abs(parseFloat((this.location.split(","))[0])-parseFloat('+req.body.lat+'))<0.2) && (Math.abs(parseFloat((this.location.split(","))[1])-parseFloat('+req.body.long+'))<0.2)').exec(
               function(err,activities){
                 if(err){
                   globalCTRL.addErrorLog(err.message);

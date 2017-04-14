@@ -3,6 +3,8 @@ angular.module('myapp').
     templateUrl:'components/map/map.template.html',
     controller: function MapController($scope,$state,geolocation,landingPageSRV){
 
+
+
         geolocation.getLocation().then(function(data){
           var activities = [];
           var lat=30.1796;
@@ -23,6 +25,11 @@ angular.module('myapp').
 
             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+            //get coordinates of a click
+            //will be needed when sp chooses activity location
+            // google.maps.event.addListener($scope.map, 'click', function(event) {
+            //   alert(event.latLng);  // in event.latLng  you have the coordinates of click
+            // });
 
             //adding home marker
             var marker = new google.maps.Marker({
