@@ -1,7 +1,7 @@
 angular.module('myapp').
   component('map',{
     templateUrl:'components/map/map.template.html',
-    controller: function MapController($scope,$state){
+    controller: function MapController($scope,$state,geolocation){
         var cities = [
             {
                 city : 'Toronto',
@@ -36,45 +36,70 @@ angular.module('myapp').
         ];
 
 
+        geolocation.getLocation().then(function(data){
+          var lat=30.1796;
+          var long= 31.30756
+
+
+          if(data!=undefined){
+            lat=data.coords.latitude;
+            long=data.coords.longitude;
 
             var mapOptions = {
-                zoom: 9,
-                center: new google.maps.LatLng(30.1796, 31.30756),
+                zoom: 12,
+                center: new google.maps.LatLng(lat, long),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             }
 
             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
             $scope.markers = [];
+            //adding home marker
+            var marker = new google.maps.Marker({
+                map: $scope.map,
+                position: new google.maps.LatLng(lat,long),
+                title: "you are here",
+                icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            });
+            marker.content = '<div class="infoWindowContent">' + "you are here" + '</div>';
+            google.maps.event.addListener(marker, 'click', function(){
+                infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
+                infoWindow.open($scope.map, marker);
+            });
+            $scope.markers.push(marker);
+          }
 
-            var infoWindow = new google.maps.InfoWindow();
+          var infoWindow = new google.maps.InfoWindow();
 
-            var createMarker = function (info){
+          var createMarker = function (info){
 
-                var marker = new google.maps.Marker({
-                    map: $scope.map,
-                    position: new google.maps.LatLng(info.lat, info.long),
-                    title: info.city
-                });
-                marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
+              var marker = new google.maps.Marker({
+                  map: $scope.map,
+                  position: new google.maps.LatLng(info.lat, info.long),
+                  title: info.city
+              });
+              marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
 
-                google.maps.event.addListener(marker, 'click', function(){
-                    infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
-                    infoWindow.open($scope.map, marker);
-                });
+              google.maps.event.addListener(marker, 'click', function(){
+                  infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
+                  infoWindow.open($scope.map, marker);
+              });
 
-                $scope.markers.push(marker);
+              $scope.markers.push(marker);
 
-            }
+          }
 
-            for (i = 0; i < cities.length; i++){
-                createMarker(cities[i]);
-            }
+          for (i = 0; i < cities.length; i++){
+              createMarker(cities[i]);
+          }
 
-            $scope.openInfoWindow = function(e, selectedMarker){
-                e.preventDefault();
-                google.maps.event.trigger(selectedMarker, 'click');
-            }
+          $scope.openInfoWindow = function(e, selectedMarker){
+              e.preventDefault();
+              google.maps.event.trigger(selectedMarker, 'click');
+          }
+
+        });
+
 
     }
 });

@@ -1,4 +1,4 @@
-var myapp= angular.module("myapp", ['ui.router']);
+var myapp= angular.module("myapp", ['ui.router','geolocation']);
 
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
   $stateProvider.state({
