@@ -1,49 +1,19 @@
 angular.module('myapp').
   component('map',{
     templateUrl:'components/map/map.template.html',
-    controller: function MapController($scope,$state,geolocation){
-        var cities = [
-            {
-                city : 'Toronto',
-                desc : 'This is the best city in the world!',
-                lat : 43.7000,
-                long : -79.4000
-            },
-            {
-                city : 'New York',
-                desc : 'This city is aiiiiite!',
-                lat : 40.6700,
-                long : -73.9400
-            },
-            {
-                city : 'Chicago',
-                desc : 'This is the second best city in the world!',
-                lat : 41.8819,
-                long : -87.6278
-            },
-            {
-                city : 'Los Angeles',
-                desc : 'This city is live!',
-                lat : 34.0500,
-                long : -118.2500
-            },
-            {
-                city : 'Las Vegas',
-                desc : 'Sin City...\'nuff said!',
-                lat : 36.0800,
-                long : -115.1522
-            }
-        ];
-
+    controller: function MapController($scope,$state,geolocation,landingPageSRV){
 
         geolocation.getLocation().then(function(data){
+          var activities = [];
           var lat=30.1796;
           var long= 31.30756
 
+          $scope.markers = [];
+          // if(data!=undefined){
 
-          if(data!=undefined){
             lat=data.coords.latitude;
             long=data.coords.longitude;
+            console.log(lat+","+long);
 
             var mapOptions = {
                 zoom: 12,
@@ -53,7 +23,7 @@ angular.module('myapp').
 
             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-            $scope.markers = [];
+
             //adding home marker
             var marker = new google.maps.Marker({
                 map: $scope.map,
@@ -67,18 +37,16 @@ angular.module('myapp').
                 infoWindow.open($scope.map, marker);
             });
             $scope.markers.push(marker);
-          }
-
-          var infoWindow = new google.maps.InfoWindow();
+          // }
 
           var createMarker = function (info){
 
               var marker = new google.maps.Marker({
                   map: $scope.map,
                   position: new google.maps.LatLng(info.lat, info.long),
-                  title: info.city
+                  title: info.title
               });
-              marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
+              marker.content = '<div class="infoWindowContent">' + 'type: '+info.type +'<br>price: EGP '+ info.price+ '</div>';
 
               google.maps.event.addListener(marker, 'click', function(){
                   infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
@@ -88,15 +56,33 @@ angular.module('myapp').
               $scope.markers.push(marker);
 
           }
+          landingPageSRV.getNearbyActivities(lat,long).success(function(data){
+              for(var i=0;i<data.activities.length;i++){
 
-          for (i = 0; i < cities.length; i++){
-              createMarker(cities[i]);
-          }
+                var lat= parseFloat((data.activities[i].location.split(","))[0]);
+                var long= parseFloat((data.activities[i].location.split(","))[1]);
+                activities.push({
+                  title: data.activities[i].title,
+                  type: data.activities[i].type,
+                  price: data.activities[i].prices[0].price,
+                  lat:lat,
+                  long:long
+                });
+
+              }
+              for (i = 0; i < activities.length; i++){
+                  //console.log(activities[i]);
+                  createMarker(activities[i]);
+              }
+          })
+
+
 
           $scope.openInfoWindow = function(e, selectedMarker){
               e.preventDefault();
               google.maps.event.trigger(selectedMarker, 'click');
           }
+            var infoWindow = new google.maps.InfoWindow();
 
         });
 

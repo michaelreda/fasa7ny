@@ -167,6 +167,7 @@ Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev)
 // view activities _NEEDED_FOR_Testing
 Router.get('/view_activity', visitorCTRL.viewActivities);
 
+Router.post('/get_nearby_activities/', visitorCTRL.getNearbyActivities);
 Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
 
 

@@ -563,6 +563,17 @@ let visitorCTRL={
               }
 
             })
+          },
+          getNearbyActivities:function(req,res){
+            Activity.$where('(Math.abs(parseFloat((this.location.split(","))[0])-parseFloat('+req.body.lat+'))<1) && (Math.abs(parseFloat((this.location.split(","))[1])-parseFloat('+req.body.long+'))<1)').exec(
+              function(err,activities){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send({activities});
+                }
+              })
           }
 
 }
