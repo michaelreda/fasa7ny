@@ -17,5 +17,6 @@ angular.module('myapp').
           $state.go("activities", {searchInput:searchInput,day:self.day});
           clearInterval(timer);//stop shuffling images
         };
+
     }
 });
