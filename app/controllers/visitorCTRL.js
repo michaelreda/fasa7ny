@@ -60,21 +60,14 @@ let visitorCTRL={
     req.params.day=req.params.day=='_'?'':req.params.day;
     //end validating
     Activity.$where('(this.title.includes("'+req.params.searchInput+'") ||  this.type.includes("'+req.params.searchInput+'")) && (this.timings.filter(function(timing){return timing.day.includes("'+req.params.day+'")}))').exec(
-    // Activity.find(
-    //   { $and:[
-    //     {timings:{$elemMatch : { day:".*"+req.body.day  } }},
-    //     {$or:[
-    //       {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-    //       {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }}
-    //     ]}
-    //   ]}
       function(err, activities){
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
         }
-        else
-        res.send(activities);
+        else{
+          res.send(activities);
+        }
       })
     },
     //tested

@@ -44,6 +44,8 @@ mongoose.connect("DB_URI",function(err){
   if(err){
     mongoose.connect(DB_URI_LOCAL);
     console.log("connecting to local db..");
+  }else{
+    console.log("connecting to global db..");
   }
 });
 require('./app/config/passport')(passport);
