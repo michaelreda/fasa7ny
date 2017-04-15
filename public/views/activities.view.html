@@ -2,11 +2,12 @@
 <script>
 w3IncludeHTML();
 </script>
-
+<center>
 <div style="padding-top:75px;padding-bottom:50px">
   <center><div class="panel panel-warning  wow fadeInDown" data-wow-delay="0.2s" data-wow-duration="2s" style="width:500px" ng-if="activities.length == 0">
     <div class="panel-heading">Sorry, no activities with these settings are available at the moment..</div>
   </div></center>
   <!-- <activity-box hello  ng-repeat="activity in activities" activity="activity"></activity-box> -->
-  <div ng-include="'components/activityBox/activityBox.template.html'" onload="a = activity" ng-repeat="activity in activities"></div>
+  <div style="display:inline-block;width:400px" ng-include="'components/activityBox/activityBox.template.html'" onload="a = activity" ng-repeat="activity in activities"></div>
 </div>
+</center>

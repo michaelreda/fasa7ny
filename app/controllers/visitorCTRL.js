@@ -538,7 +538,7 @@ let visitorCTRL={
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
               }else {
-                ServiceProvider.count({Approved:0}).exec(function(err,SPcount){
+                ServiceProvider.count({approved:0}).exec(function(err,SPcount){
                   if(err){
                     globalCTRL.addErrorLog(err.message);
                     res.send(err);
@@ -567,6 +567,16 @@ let visitorCTRL={
                   res.send({activities});
                 }
               })
+          },
+          getActivityById:function(req,res){
+            Activity.findOne({_id:req.params.activityID},function(err,activity){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                res.send({activity});
+              }
+            })
           }
 
 }
