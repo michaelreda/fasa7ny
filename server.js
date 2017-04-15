@@ -40,7 +40,7 @@ app.use(require('express-session')({ secret: 'kotomotoos', resave: true, saveUni
 app.use(passport.initialize());
 app.use(passport.session());
 //connect to local if failed to connect to mlab
-mongoose.connect("mongodb://localhost:27017/testingDB",function(err){
+mongoose.connect("DB_URI",function(err){
   if(err){
     mongoose.connect(DB_URI_LOCAL);
     console.log("connecting to local db..");
