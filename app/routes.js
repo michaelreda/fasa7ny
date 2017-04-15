@@ -158,6 +158,7 @@ Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 ////////////////////visitorCTRL//////////////////
 
 Router.get('/get_statistics', visitorCTRL.getStatistics);
+Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
 Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);

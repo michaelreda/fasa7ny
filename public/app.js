@@ -9,6 +9,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'activity',
+    url:'/activity/:activityID',
+    templateUrl:'views/activity.view.html',
+    controller:'ActivityController'
+  });
+
+  $stateProvider.state({
     name:'home',
     url:'/',
     templateUrl:'views/home.view.html'
