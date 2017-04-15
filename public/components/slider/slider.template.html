@@ -3,19 +3,18 @@
 <br>
 <br>
  <ul class="slides">
-
-  <div ng-repeat="m in media">
+  <div ng-repeat="m in media track by $index">
     {{m}}
-    <input type="radio" name="radio-btn" id="img"  />
+    <input type="radio" name="radio-btn" id="img-{{$index}}"  />
 
     <li class="slide-container">
 		<div class="slide">
-			<img src="img/ag1.jpg" />
+			<img src="img/{{m}}" />
     </div>
 
 		<div class="nav">
-			<label for="img" class="prev">&#x2039;</label>
-			<label for="img" class="next">&#x203a;</label>
+			<label for="img-{{($index%media.length)-1}}" class="prev">&#x2039;</label>
+			<label for="img-{{($index%media.length)+1}}" class="next">&#x203a;</label>
 		</div>
     </li>
 </div>
