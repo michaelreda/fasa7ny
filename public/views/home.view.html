@@ -68,8 +68,7 @@
 </div>
 
 
-<!-- recent views section-->
-
+<!-- recent reviews section-->
 <div class="contatiner">
   <div class="col-lg-12 col-md-12 col-sm-12">
     <div class="client_title" style="padding: 50px 100px 30px 100px">
@@ -78,5 +77,17 @@
       <h3>Curious what others think? We have {{reviewsCount}} verified reviews written by real guests..</h3>
     </div>
     <review-box data="review" ng-repeat="review in reviews"></review-box>
+  </div>
+</div>
+
+<!-- top rated activities section-->
+<div class="contatiner">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="client_title" style="padding: 50px 100px 30px 100px">
+      <hr>
+      <h2>Still deciding where to go?</h2>
+      <h4>Let us make your decision easier! With over {{reviewsCount}} verified reviews, we can help you find the perfect place to go..</h4>
+    </div>
+    <activity-box data="activity" ng-repeat="activity in activities"></activity-box>
   </div>
 </div>
