@@ -70,6 +70,43 @@
       </div><!--/.nav-collapse -->
     </div>
   </nav>
+
+  <script>
+  function checkScroll(){
+    var startY = $('.navbar').height() * 2; //The point where the navbar changes in px
+
+    if($(window).scrollTop() > startY){
+      $('.navbar').addClass("scrolled");
+    }else{
+      $('.navbar').removeClass("scrolled");
+    }
+  }
+
+
+  if($('.navbar').length > 0){
+    $(window).on("scroll load resize", function(){
+      checkScroll();
+    });
+  }
+  </script>
+
+  <style>
+  /*Add the below transitions to allow a smooth color change similar to lyft*/
+  .navbar {
+    -webkit-transition: all 0.6s ease-out;
+    -moz-transition: all 0.6s ease-out;
+    -o-transition: all 0.6s ease-out;
+    -ms-transition: all 0.6s ease-out;
+    transition: all 0.6s ease-out;
+    background-color:rgba(255,255,255,0.1);
+  }
+
+  .navbar.scrolled {
+    background-color:rgba(255,255,255,1);
+  }
+
+
+  </style>
   <!-- End navbar -->
 
   <!-- start slider section -->
@@ -176,6 +213,7 @@
 
   <script src="app.js"></script>
   <!-- importing controllers -->
+  <script src="controllers/HomeController.js"></script>
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
   <!-- importing components -->
@@ -183,6 +221,7 @@
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
   <script src="components/statistics/statistics.component.js"></script>
   <script src="components/activityBox/activityBox.component.js"></script>
+    <script src="components/reviewBox/reviewBox.component.js"></script>
   <script src="components/map/map.component.js"></script>
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
@@ -206,7 +245,8 @@
   <script src="https://maps.googleapis.com/maps/api/js"></script>
   <script src="js/jquery.ui.map.js"></script>
 
-
+  <!--time ago script -->
+  <script src="js/angular-timeago.js"></script>
   <!--needed scripts for counting animation-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>

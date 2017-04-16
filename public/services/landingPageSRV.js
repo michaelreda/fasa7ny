@@ -5,6 +5,12 @@ myapp.factory('landingPageSRV', function($http) {
     },
       getNearbyActivities: function(lat,long) {
         return $http.post('/get_nearby_activities',{'lat':lat,'long':long});
+    },
+      getLatest6Reviews: function() {
+      return $http.get('/get_latest_6_reviews');
+    },
+      getTopRatedActivities: function() {
+      return $http.get('/get_top_rated_activities');
     }
   };
 });

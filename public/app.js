@@ -1,4 +1,4 @@
-var myapp= angular.module("myapp", ['ui.router','geolocation']);
+var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago']);
 
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
   $stateProvider.state({
@@ -18,7 +18,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'home',
     url:'/',
-    templateUrl:'views/home.view.html'
+    templateUrl:'views/home.view.html',
+    controller:'HomeController'
   });
 
   $urlRouterProvider.when('','/');

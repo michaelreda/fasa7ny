@@ -4,6 +4,7 @@ let Booking         = require('../models/booking');
 let Activity        = require('../models/activity');
 let Offer           = require('../models/offer');
 let Account           = require('../models/account');
+let Review           = require('../models/review');
 let globalCTRL=require('../controllers/globalCTRL.js');
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
@@ -575,6 +576,42 @@ let visitorCTRL={
                 res.send(err);
               }else{
                 res.send({activity});
+              }
+            })
+          },
+          getLatest6Reviews:function(req,res){
+            Review.$where('this.rate>=4')
+            .sort({reviewTime: -1})
+            .limit(6)
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  Review.count().exec(function(err,reviewsCount){
+                    if(err){
+                      globalCTRL.addErrorLog(err.message);
+                      res.send(err);
+                    }else{
+                      res.send({reviews,reviewsCount});
+                    }
+                  })
+                }
+              })
+          },
+          getTopRatedActivities:function(req,res){
+            Activity.find().sort([['rating', -1], ['ratingCount', -1]])
+            .limit(6)
+            .exec(function(err,activities){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                res.send({activities});
               }
             })
           }

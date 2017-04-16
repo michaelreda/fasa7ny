@@ -24,7 +24,7 @@ var userSchema = mongoose.Schema({
     type:Number,
     $subtract: [ new Date(), "$birthDate" ]
   },
-  gender:{
+  gender:{// true -> male
     type:Boolean,
     required:true
   },
