@@ -22,6 +22,7 @@ angular.module('myapp').
             var mapOptions = {
                 zoom: 12,
                 center: new google.maps.LatLng(lat, long),
+                scrollwheel: false,
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             }
 
