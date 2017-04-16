@@ -581,7 +581,7 @@ let visitorCTRL={
           },
           getLatest6Reviews:function(req,res){
             Review.$where('this.rate>=4')
-            .sort({reviewTime: -1})
+            .sort({time: -1})
             .limit(6)
           //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
             .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
