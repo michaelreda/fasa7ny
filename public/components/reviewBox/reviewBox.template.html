@@ -25,7 +25,7 @@
               <span class="glyphicon glyphicon-star"  ng-if="i<=$ctrl.data.rate"></span>
               <span class="glyphicon glyphicon-star-empty"  ng-if="i>$ctrl.data.rate"></span>
           </div>
-          <span class="text-muted pull-right"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ $ctrl.data.time }}</span>
+          <span class="text-muted pull-right"><i class="fa fa-clock-o" aria-hidden="true"></i> <time-ago from-time='{{$ctrl.data.reviewTime}}'></time-ago></span>
         </div>
         <div class="panel-body">
           {{$ctrl.data.review}}
