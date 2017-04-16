@@ -15,15 +15,10 @@ var adminCTRL= require('./controllers/adminCTRL');
 var globalCTRL= require('./controllers/globalCTRL');
 
 
-// router configuration
 Router.get('/',function(req,res){
-  res.send("hello world");
+  var path = require('path');
+  res.sendFile(path.resolve('public/index.html'));
 })
-
-Router.get('/test',function(req,res){
-  res.send("bye world");
-})
-
 
 
 
@@ -162,6 +157,11 @@ Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 
 ////////////////////visitorCTRL//////////////////
 
+Router.get('/get_latest_6_reviews',visitorCTRL.getLatest6Reviews);
+Router.get('/get_top_rated_activities',visitorCTRL.getTopRatedActivities);
+Router.get('/get_statistics', visitorCTRL.getStatistics);
+Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
+
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
 Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
 Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
@@ -170,6 +170,7 @@ Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev)
 // view activities _NEEDED_FOR_Testing
 Router.get('/view_activity', visitorCTRL.viewActivities);
 
+Router.post('/get_nearby_activities/', visitorCTRL.getNearbyActivities);
 Router.post('/share_on_social_media/', visitorCTRL.shareOnSocialMedia);
 
 
@@ -181,7 +182,7 @@ Router.get('/view_FAQ', visitorCTRL.viewFAQ);
 //1.4 user registration
 Router.get('/register_as_user', visitorCTRL.registerAsUser);
 
-Router.post('/search_for_activities', visitorCTRL.searchForActivities);
+Router.get('/search_for_activities/:searchInput/:day', visitorCTRL.searchForActivities);
 Router.post('/signup_for_newsletter', visitorCTRL.signupForNewsletter);
 Router.post('/unsubscribe_for_newsletter', visitorCTRL.unsubscribeForNewsletter);
 Router.post('/recover_password', visitorCTRL.recoverPassword);

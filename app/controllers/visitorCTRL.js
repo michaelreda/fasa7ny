@@ -4,6 +4,7 @@ let Booking         = require('../models/booking');
 let Activity        = require('../models/activity');
 let Offer           = require('../models/offer');
 let Account           = require('../models/account');
+let Review           = require('../models/review');
 let globalCTRL=require('../controllers/globalCTRL.js');
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
@@ -22,10 +23,11 @@ let visitorCTRL={
       res.send(errors);
       return;
     }
+
     //end validating
     switch(req.body.socialService){
       case 'facebook': res.redirect("https://www.facebook.com/sharer/sharer.php?u="+req.body.url);break;
-      case 'twitter':  res.redirect("https://twitter.com/intent/tweet?text=check out this amazing activity here at "+req.body.url+" &url=YOUR-URL"+req.body.url);break;
+      case 'twitter':  res.redirect("https://twitter.com/intent/tweet?text=check out this amazing activity here at "+req.body.url+" &url="+req.body.url);break;
       case 'google': res.redirect("https://plus.google.com/share?url="+req.body.url);break;
     }
   },
@@ -49,26 +51,24 @@ let visitorCTRL={
   //1.5 As a visitor, I can search for activities either by name or type or day to find certain activities directly
   searchForActivities:function(req,res){
     //validating
-    req.checkBody('input','input is required').notEmpty();
+    //req.checkBody('input','input is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
       res.send(errors);
       return;
     }
+    req.params.searchInput=req.params.searchInput=='_'?'':req.params.searchInput;
+    req.params.day=req.params.day=='_'?'':req.params.day;
     //end validating
-    Activity.find(
-      { $or:[
-        {title:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-        {type:{$regex : ".*"+req.body.input+".*",$options : 'i' }},
-        {timings:{$elemMatch : { day:req.body.input  } }}
-      ]}
-      ,function(err, activities){
+    Activity.$where('(this.title.includes("'+req.params.searchInput+'") ||  this.type.includes("'+req.params.searchInput+'")) && (this.timings.filter(function(timing){return timing.day.includes("'+req.params.day+'")}))').exec(
+      function(err, activities){
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
         }
-        else
-        res.send(activities);
+        else{
+          res.send(activities);
+        }
       })
     },
     //tested
@@ -530,6 +530,88 @@ let visitorCTRL={
                 res.send(err);
               }else {
                 res.send(200);
+              }
+            })
+          },
+          getStatistics:function(req,res){
+            Activity.count().exec(function(err,activityCount){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else {
+                ServiceProvider.count({approved:0}).exec(function(err,SPcount){
+                  if(err){
+                    globalCTRL.addErrorLog(err.message);
+                    res.send(err);
+                  }else {
+                    Booking.count({isCancelled:0}).exec(function(err,BookingsCount){
+                      if(err){
+                        globalCTRL.addErrorLog(err.message);
+                        res.send(err);
+                      }else {
+                        res.send({'activityCount':activityCount,'SPcount':SPcount,'BookingsCount':BookingsCount})
+                      }
+                    })
+                  }
+                })
+              }
+
+            })
+          },
+          getNearbyActivities:function(req,res){
+            Activity.$where('(Math.abs(parseFloat((this.location.split(","))[0])-parseFloat('+req.body.lat+'))<0.2) && (Math.abs(parseFloat((this.location.split(","))[1])-parseFloat('+req.body.long+'))<0.2)').exec(
+              function(err,activities){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send({activities});
+                }
+              })
+          },
+          getActivityById:function(req,res){
+            Activity.findOne({_id:req.params.activityID},function(err,activity){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                res.send({activity});
+              }
+            })
+          },
+          getLatest6Reviews:function(req,res){
+            Review.$where('this.rate>=4')
+            .sort({reviewTime: -1})
+            .limit(6)
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  Review.count().exec(function(err,reviewsCount){
+                    if(err){
+                      globalCTRL.addErrorLog(err.message);
+                      res.send(err);
+                    }else{
+                      res.send({reviews,reviewsCount});
+                    }
+                  })
+                }
+              })
+          },
+          getTopRatedActivities:function(req,res){
+            Activity.find().sort([['rating', -1], ['ratingCount', -1]])
+            .limit(6)
+            .exec(function(err,activities){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                res.send({activities});
               }
             })
           }
