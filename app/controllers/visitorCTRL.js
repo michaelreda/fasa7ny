@@ -592,7 +592,14 @@ let visitorCTRL={
                   globalCTRL.addErrorLog(err.message);
                   res.send(err);
                 }else{
-                  res.send({reviews});
+                  Review.count().exec(function(err,reviewsCount){
+                    if(err){
+                      globalCTRL.addErrorLog(err.message);
+                      res.send(err);
+                    }else{
+                      res.send({reviews,reviewsCount});
+                    }
+                  })
                 }
               })
           }
