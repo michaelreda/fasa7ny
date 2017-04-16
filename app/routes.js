@@ -157,6 +157,7 @@ Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 
 ////////////////////visitorCTRL//////////////////
 
+Router.get('/get_latest_6_reviews',visitorCTRL.getLatest6Reviews)
 Router.get('/get_statistics', visitorCTRL.getStatistics);
 Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
 

@@ -4,6 +4,7 @@ let Booking         = require('../models/booking');
 let Activity        = require('../models/activity');
 let Offer           = require('../models/offer');
 let Account           = require('../models/account');
+let Review           = require('../models/review');
 let globalCTRL=require('../controllers/globalCTRL.js');
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
@@ -577,6 +578,21 @@ let visitorCTRL={
                 res.send({activity});
               }
             })
+          },
+          getLatest6Reviews:function(req,res){
+            Activity.$where('this.rating>=4')
+            .limit(6)
+            .populate('userId', { firstName: 1, lastName: 1,profilePicture: 1})//get only this attributes from the populate
+            .populate('activityId',{_id:1, title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send({reviews});
+                }
+              })
           }
 
 }
