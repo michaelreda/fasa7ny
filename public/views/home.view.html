@@ -66,3 +66,17 @@
     <map></map>
   </div>
 </div>
+
+
+<!-- recent views section-->
+
+<div class="contatiner">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="client_title" style="padding: 50px 100px 30px 100px">
+      <hr>
+      <h2>Recent reviews</h2>
+      <h3>Curious what others think? We have {{reviewsCount}} verified reviews written by real guests..</h3>
+    </div>
+    <review-box data="review" ng-repeat="review in reviews"></review-box>
+  </div>
+</div>
