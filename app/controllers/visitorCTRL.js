@@ -602,6 +602,18 @@ let visitorCTRL={
                   })
                 }
               })
+          },
+          getTopRatedActivities:function(req,res){
+            Activity.find().sort([['rating', -1], ['ratingCount', -1]])
+            .limit(6)
+            .exec(function(err,activities){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                res.send({activities});
+              }
+            })
           }
 
 }
