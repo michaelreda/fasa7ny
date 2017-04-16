@@ -580,10 +580,12 @@ let visitorCTRL={
             })
           },
           getLatest6Reviews:function(req,res){
-            Activity.$where('this.rating>=4')
+            Review.$where('this.rate>=4')
+            .sort({createdAt: -1})
             .limit(6)
-            .populate('userId', { firstName: 1, lastName: 1,profilePicture: 1})//get only this attributes from the populate
-            .populate('activityId',{_id:1, title:1})
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
             .exec(
               function(err,reviews){
                 if(err){
