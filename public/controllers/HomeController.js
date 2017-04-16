@@ -5,4 +5,10 @@ myapp.controller('HomeController', function($scope,landingPageSRV) {
       $scope.reviewsCount=data.reviewsCount;
       console.log($scope.reviews);
     })
+
+    landingPageSRV.getTopRatedActivities().success(function(data){
+      $scope.activities=data.activities;
+      console.log($scope.activities);
+    })
+
 });

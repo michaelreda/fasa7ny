@@ -8,6 +8,9 @@ myapp.factory('landingPageSRV', function($http) {
     },
       getLatest6Reviews: function() {
       return $http.get('/get_latest_6_reviews');
+    },
+      getTopRatedActivities: function() {
+      return $http.get('/get_top_rated_activities');
     }
   };
 });
