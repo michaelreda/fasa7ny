@@ -11,6 +11,9 @@ myapp.factory('landingPageSRV', function($http) {
     },
       getTopRatedActivities: function() {
       return $http.get('/get_top_rated_activities');
-    }
+    },
+      getFeaturedActivities:function(){
+        return $http.get('/get_featured_activities');
+      }
   };
 });
