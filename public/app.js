@@ -1,4 +1,4 @@
-var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago']);
+var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago','angular-flexslider']);
 
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
   $stateProvider.state({
