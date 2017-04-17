@@ -614,6 +614,21 @@ let visitorCTRL={
                 res.send({activities});
               }
             })
+          },
+          getFeaturedActivities: function(req,res){
+            ServiceProvider.$where('this.isGolden==true').populate('activities').exec(function(err,serviceProviders){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                let activities=[];
+                for(var i=0;i<8;i++){
+                  let randomServiceProvider= serviceProviders[Math.floor(Math.random() * serviceProviders.length)];//getting random golden sp
+                  activities.push(randomServiceProvider.activities[Math.floor(Math.random() * randomServiceProvider.activities.length)]);// getting random activity from this sp
+                }
+                res.send({activities});
+              }
+            })
           }
 
 }
