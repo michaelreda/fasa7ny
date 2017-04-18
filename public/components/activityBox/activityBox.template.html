@@ -11,10 +11,14 @@ display: inline-block;width: 83%;"> -->
                   <a href="#" class="btn">Send a Gift</a>
                 </div>
               </div>
-            <center><div ng-repeat="i  in [1, 2, 3, 4,5]" style="display:inline-block; padding-top:5px;padding-left:10px;font-size: xx-large;">
+            <center>
+              <!-- <div ng-repeat="i  in [1, 2, 3, 4,5]" style="display:inline-block; padding-top:5px;padding-left:10px;font-size: xx-large;">
                 <span class="glyphicon glyphicon-star"  ng-if="i<=$ctrl.data.rating"></span>
                 <span class="glyphicon glyphicon-star-empty"  ng-if="i>$ctrl.data.rating"></span>
-            </div></center>
+            </div> -->
+            <!-- label-text="$ctrl.data.rating" label-position="'right'" -->
+            <star-rating-comp rating="$ctrl.data.rating"   show-half-stars="true" show-hover-stars="true" read-only="true" size="'large'"></star-rating-comp>
+          </center>
               <h3 style="margin-top: 5px;font-weight: 700;">{{$ctrl.data.title}}</h3>
               <p style="overflow:hidden; text-overflow: ellipsis;height:60px">{{$ctrl.data.theme}}</p>
               <div class="pi-price"> EGP {{$ctrl.data.prices[0].price}}</div>

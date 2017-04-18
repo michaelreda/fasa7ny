@@ -25,11 +25,14 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <!-- jQuery Library -->
     <script src="js/jquery.min.js"></script>
-
     <!--angular js-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
     <!--angular-ui-router -->
     <script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <!-- slider -->
+    <link rel="stylesheet" type="text/css" href="js/flexslider/flexslider.css">
+    <script src="js/flexslider/jquery.flexslider.js"></script>
+    <script src="js/angular-flexslider/angular-flexslider.js"></script>
     <!--geo location-->
     <script src="js/geolocation.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -109,23 +112,10 @@
   </style>
   <!-- End navbar -->
 
-  <!-- start slider section -->
-    <!-- <slider></slider> -->
-    <!-- End slider section -->
 
     <ui-view></ui-view>
 
-  <!-- start top Landing Page search gifs section -->
-    <!-- <top-search-gif></top-search-gif> -->
-  <!-- End search gifs section -->
 
-  <!-- start statistics section -->
-  <!--needed scripts for counting animation-->
-  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
-
-    <statistics></statistics> -->
-  <!-- End statistics section -->
 
 
 
@@ -251,8 +241,11 @@
   <!--needed scripts for counting animation-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
+  <!--rating system script -->
+  <script src="bower_components/angular1-star-rating/dist/index.js"></script>
 <!-- include html script-->
-      <script src="https://www.w3schools.com/lib/w3data.js"></script>
+      <!-- <script src="https://www.w3schools.com/lib/w3data.js"></script> -->
   <!-- custom js file include -->
   <script src="js/custom.js"></script>
 
