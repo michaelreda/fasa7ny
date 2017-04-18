@@ -21,6 +21,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/home.view.html',
     controller:'HomeController'
   });
+ 
+  $stateProvider.state({
+    name: 'FAQ',
+    url: '/FAQ',
+    templateUrl:'views/FAQ.view.html',
+    controller: 'FAQController'
+  });
 
   $urlRouterProvider.when('','/');
 
