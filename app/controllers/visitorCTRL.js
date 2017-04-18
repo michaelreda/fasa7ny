@@ -581,7 +581,7 @@ let visitorCTRL={
           },
           getLatest6Reviews:function(req,res){
             Review.$where('this.rate>=4')
-            .sort({reviewTime: -1})
+            .sort({time: -1})
             .limit(6)
           //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
             .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
@@ -611,6 +611,21 @@ let visitorCTRL={
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
               }else{
+                res.send({activities});
+              }
+            })
+          },
+          getFeaturedActivities: function(req,res){
+            ServiceProvider.$where('this.isGolden==true').populate('activities').exec(function(err,serviceProviders){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err);
+              }else{
+                let activities=[];
+                for(var i=0;i<8;i++){
+                  let randomServiceProvider= serviceProviders[Math.floor(Math.random() * serviceProviders.length)];//getting random golden sp
+                  activities.push(randomServiceProvider.activities[Math.floor(Math.random() * randomServiceProvider.activities.length)]);// getting random activity from this sp
+                }
                 res.send({activities});
               }
             })

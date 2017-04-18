@@ -11,4 +11,9 @@ myapp.controller('HomeController', function($scope,landingPageSRV) {
       console.log($scope.activities);
     })
 
+    landingPageSRV.getFeaturedActivities().success(function(data){
+      $scope.FeaturedActivities=data.activities;
+      console.log($scope.FeaturedActivities);
+    })
+
 });

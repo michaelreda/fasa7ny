@@ -48,12 +48,29 @@
 
 <!--end steps section-->
 
+<!-- start featured activities section -->
+<div class="contatiner">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="client_title" style="padding: 50px 100px 30px 100px">
+      <hr>
+      <h2>Featured <span>Activities</span></h2>
+    </div>
+    <activities-accordian ng-if="FeaturedActivities" data="FeaturedActivities" ></activities-accordian>
+  </div>
+</div>
+<!-- end featured activities section -->
+
 <!-- start statistics section -->
 <!--needed scripts for counting animation-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
 
-  <statistics></statistics>
+<div class="contatiner">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+        <statistics></statistics>
+  </div>
+</div>
+
 <!-- End statistics section -->
 
 <!-- map secion-->
