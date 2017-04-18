@@ -13,8 +13,9 @@
                         <input id="ratings-hidden" name="rating" type="hidden">
                         <textarea class="form-control animated" ng-model="reviewObj.review" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
 
-                        <div class="text-right">
-                            <div class="stars starrr" id="rate" ng-model="reviewObj.rate"  data-rating="0"></div>
+                        <div class="text-right" style="padding-top: 20px">
+                            <!-- <div class="stars starrr" id="rate" ng-model="reviewObj.rate"  data-rating="0"></div> -->
+														<star-rating-comp  rating="$ctrl.data.rating" on-click="rateChanged($event)" show-hover-stars="true" size="'large'" style="display: -webkit-inline-box;vertical-align: middle"></star-rating-comp>
                             <button class="btn btn-success btn-lg" type="submit">Save</button>
                         </div>
                     </form>
