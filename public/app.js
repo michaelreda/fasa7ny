@@ -1,6 +1,13 @@
-var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago','angular-flexslider','star-rating']);
+var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago','angular-flexslider','star-rating','ui.bootstrap']);
 
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+  $stateProvider.state({
+    name:'home',
+    url:'/',
+    templateUrl:'views/home.view.html',
+    controller:'HomeController'
+  });
+
   $stateProvider.state({
     name:'activities',
     url:'/activities/:searchInput/:day/',
@@ -15,12 +22,6 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivityController'
   });
 
-  $stateProvider.state({
-    name:'home',
-    url:'/',
-    templateUrl:'views/home.view.html',
-    controller:'HomeController'
-  });
 
   $urlRouterProvider.when('','/');
 
