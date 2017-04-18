@@ -22,6 +22,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'HomeController'
   });
 
+  $stateProvider.state({
+    name:'contactPlatform',
+    url:'/contact_platform',
+    templateUrl:'views/contactPlatform.view.html',
+    controller:'contactPlatformController'
+  });
+
   $urlRouterProvider.when('','/');
 
 }]);
