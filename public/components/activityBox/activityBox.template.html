@@ -8,7 +8,7 @@ display: inline-block;width: 83%;"> -->
                 <center><img src="img/{{$ctrl.data.media[0]}}"style="height: 300px;" class="img-responsive" ></center>
                 <div>
                   <a href="#" class="btn">Book Now</a>
-                  <a ng-click="showSendGiftModal()" class="btn">Send a Gift</a>
+                  <a ng-click="showSendGiftModal()" class="btn">Send a Gift  <i class="fa fa-gift" aria-hidden="true"></i></a>
                 </div>
               </div>
             <center>
@@ -44,22 +44,32 @@ display: inline-block;width: 83%;"> -->
 
 <!-- send gift modal -->
 <script type="text/ng-template" id="sendGiftModal.html">
-  <div class="modal-header">
+    <div class="modal-header">
       <h3 class="modal-title">Send a gift for your beloved ones ! <i class="fa fa-gift" aria-hidden="true"></i></h3>
-  </div>
-  <form>
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="usr">Send gift to:</label>
-        <input type="text" class="form-control" ng-model="selectedUsername" placeholder="Username" uib-typeahead="username for username in usernames | filter:$viewValue | limitTo:8">
+    </div>
+    <form>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="usr">Send gift to:</label>
+          <input type="text" class="form-control" ng-model="selectedUsername" placeholder="Username" uib-typeahead="username for username in usernames | filter:$viewValue | limitTo:8">
+        </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" ng-if="usernames | contains:selectedUsername" ng-click="ok()">Send Gift</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-  </form>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-if="usernames | contains:selectedUsername" ng-click="ok()" style="margin-bottom:0px">Send Gift <i class="fa fa-gift" aria-hidden="true"></i></button>
+        <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+      </div>
+    </form>
 </script>
+<style>
+.modal{
+  z-index: 9999999 !important;
+  display: block;
+  background-color: rgba(0,0,0,0.6);
+}
+.modal-dialog{
+  padding-top: 100px;
+}
+</style>
 <!-- end send gift modal -->
 
 <!-- type ahead html template file-->
