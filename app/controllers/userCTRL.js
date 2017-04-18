@@ -849,6 +849,17 @@ deleteReview: function(req,res){
         res.send({users})
       }
     })
+  },
+  //used to find accounts by a part of the username
+  findUsernames: function(req,res){
+    Account.find({type:0}).select('userName').exec(function(err,usernames){
+      if(err)
+      {
+        res.send(err.message)
+      }else{
+        res.send({usernames})
+      }
+    })
   }
 
 
