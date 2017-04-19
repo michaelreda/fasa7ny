@@ -76,7 +76,10 @@ let visitorCTRL={
       req.session.j=1;
       if(req.body.filter=="price")
       {
-        Activity.find({ price: req.body.value}).limit(10).exec(function(err,activities){
+        console.log(req.body.value);
+        req.body.value;
+       
+        Activity.$where('this.prices[0].price <'+req.body.value).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -86,7 +89,7 @@ let visitorCTRL={
         })
       } else 	if(req.body.filter=="offer")
       {
-        Activity.find({isOffer: req.body.value}).limit(10).exec(function(err,activities){
+        Activity.find({isOffer: true}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -94,18 +97,20 @@ let visitorCTRL={
             res.send({activities});
           }
         })
-      }else 	if(req.body.filter=="location")
-      {
-        Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err.message);
-          }else {
-            res.send({activities});
-          }
-        })
-      }
-      else 	if(req.body.filter=="theme")
+      }else 	
+      // if(req.body.filter=="location")
+      // {
+      //   Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
+      //     if(err){
+      //       globalCTRL.addErrorLog(err.message);
+      //       res.send(err.message);
+      //     }else {
+      //       res.send({activities});
+      //     }
+      //   })
+      // }
+      // else 
+      	if(req.body.filter=="theme")
       {
         Activity.find({theme: req.body.value}).limit(10).exec(function(err,activities){
           if(err){
@@ -118,7 +123,7 @@ let visitorCTRL={
       }
       else 	if(req.body.filter=="rating")
       {
-        Activity.find({rating: req.body.value}).limit(10).exec(function(err,activities){
+        Activity.$where('this.rating >' + req.body.value).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
