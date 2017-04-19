@@ -23,17 +23,45 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
-    name:'contactPlatform',
+    name:'register',
     url:'/signup',
     templateUrl:'views/createAccount.view.html',
-    //controller:'contactPlatformController'
+    //controller:'Controller'
   });
 
   $stateProvider.state({
-    name:'createAccount',
-    url:'/',
+    name:'logIn',
+    url:'/login',
+    templateUrl:'views/loginPage.view.html',
+    controller:'logInController'
+  });
+
+  $stateProvider.state({
+    name:'contactPlatform',
+    url:'/contact_platform',
     templateUrl:'views/contactPlatform.view.html',
     controller:'contactPlatformController'
+  });
+
+  $stateProvider.state({
+    name:'userPage',
+    url:'/login',
+    templateUrl:'views/userPage.view.html',
+    controller:'userPageController'
+  });
+
+  $stateProvider.state({
+    name:'spPage',
+    url:'/login',
+    templateUrl:'views/serviceProviderPage.view.html',
+    controller:'serviceProviderPageController'
+  });
+
+  $stateProvider.state({
+    name:'admin',
+    url:'/login',
+    templateUrl:'views/adminPage.view.html',
+    controller:'adminPageController'
   });
 
   $urlRouterProvider.when('','/');

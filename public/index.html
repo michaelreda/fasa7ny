@@ -69,13 +69,17 @@
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
           <li class="active"><a href="index.html">Home</a></li>
-          <li class="active"><a href="/views/loginPage.view.html">Log in</a></li>
-          <li class="active"><a href="/views/createAccount.view.html">Register</a></li>
+          <li class="active"><a href="/#/login">Log in</a></li>
+          <li class="active"><a href="/#/signup">Register</a></li>
+          <li class="active"><a href="/#/contact_platform">Sign up for a weekly newsletter</a></li>
+
+<!--to be moved to logged in user page-->
+          <li class="active"><a href="/#/contact_platform">Contact Platform</a></li>
 
         </ul>
       </div><!--/.nav-collapse -->
 <div>
-  <button type="button" class="active" ng-click="switchView">Contact Platform</button>
+  <!--<button type="button" class="active" ng-click="switchView">Contact Platform</button>-->
 </div>
 
     </div>
@@ -214,6 +218,11 @@
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
   <script src="controllers/contactPlatformController.js"></script>
+  <script src="controllers/logInController.js"></script>
+  <script src="controllers/adminPageController.js"></script>
+  <script src="controllers/serviceProviderPageController.js"></script>
+  <script src="controllers/userPageController.js"></script>
+
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -226,8 +235,9 @@
   <script src="services/loaderSRV.js"></script>
   <script src="services/landingPageSRV.js"></script>
   <script src="services/activitiesSRV.js"></script>
-  <script src="services/activitySRV.js"></script
+  <script src="services/activitySRV.js"></script>
   <script src="services/contactPlatformSRV.js"></script>
+  <script src="services/logInSRV.js"></script>
 
 
   <!-- For content animatin  -->

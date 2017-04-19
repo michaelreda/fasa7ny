@@ -297,7 +297,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send("Admin is logged in");
+            res.send(3);
 
         }
 

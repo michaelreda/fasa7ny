@@ -774,7 +774,7 @@ deleteReview: function(req,res){
               globalCTRL.addErrorLog(err.message);
             })
             req.session.user=thisUser;
-            res.send("user is logged in");
+            res.send(0);
           }
           else{
             res.send('Account banned! try again in '+thisUser.banned+' days');
