@@ -74,12 +74,12 @@ let visitorCTRL={
     //tested
     filterActivitiesBy:function(req, res){
       req.session.j=1;
-      if(req.body.filter=="price")
+      if(req.params.filter=="price")
       {
-        console.log(req.body.value);
-        req.body.value;
+        console.log(req.params.value);
+        
        
-        Activity.$where('this.prices[0].price <'+req.body.value).limit(10).exec(function(err,activities){
+        Activity.$where('this.prices[0].price <'+req.params.value).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -87,7 +87,7 @@ let visitorCTRL={
             res.send({activities});
           }
         })
-      } else 	if(req.body.filter=="offer")
+      } else 	if(req.params.filter=="offer")
       {
         Activity.find({isOffer: true}).limit(10).exec(function(err,activities){
           if(err){
@@ -110,9 +110,9 @@ let visitorCTRL={
       //   })
       // }
       // else 
-      	if(req.body.filter=="theme")
+      	if(req.params.filter=="theme")
       {
-        Activity.find({theme: req.body.value}).limit(10).exec(function(err,activities){
+        Activity.find({theme: req.params.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -121,9 +121,9 @@ let visitorCTRL={
           }
         })
       }
-      else 	if(req.body.filter=="rating")
+      else 	if(req.params.filter=="rating")
       {
-        Activity.$where('this.rating >' + req.body.value).limit(10).exec(function(err,activities){
+        Activity.$where('this.rating >' + req.params.value).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);

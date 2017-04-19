@@ -164,7 +164,7 @@ Router.get('/get_statistics', visitorCTRL.getStatistics);
 Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
+Router.get('/get_filtered_activities/:filter/:value', visitorCTRL.filterActivitiesBy);
 Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
 Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 

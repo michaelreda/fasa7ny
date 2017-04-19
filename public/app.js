@@ -37,6 +37,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'analysisController'
   });
 
+    $stateProvider.state({
+    name:'filter',
+    url:'/activities/:filter/:value/',
+    templateUrl:'views/activities.view.html',
+    controller:'ActivitiesController'
+  });
+
   $urlRouterProvider.when('','/');
 
   
