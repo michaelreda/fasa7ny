@@ -4,6 +4,9 @@ component('activityBox',{
   controller: function ActivityBoxController($scope,$state){
       $scope.openActivity = function(activityID){
         $state.go("activity",{activityID:activityID})
+      },
+      $scope.addToWishList = function(userID){
+        
       }
   },
    bindings: {
