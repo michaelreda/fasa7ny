@@ -45,21 +45,28 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'userPage',
-    url:'/login',
+    url:'/user',
     templateUrl:'views/userPage.view.html',
     controller:'userPageController'
   });
 
   $stateProvider.state({
     name:'spPage',
-    url:'/login',
+    url:'/serviceProvider',
     templateUrl:'views/serviceProviderPage.view.html',
     controller:'serviceProviderPageController'
   });
 
   $stateProvider.state({
     name:'admin',
-    url:'/login',
+    url:'/admin',
+    templateUrl:'views/adminPage.view.html',
+    controller:'adminPageController'
+  });
+
+  $stateProvider.state({
+    name:'systemLogs',
+    url:'/view_system_logs',
     templateUrl:'views/adminPage.view.html',
     controller:'adminPageController'
   });
