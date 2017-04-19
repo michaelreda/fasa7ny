@@ -225,7 +225,7 @@ Router.post('/login', passport.authenticate('local-login'),function(req,res){
 Router.get('/logout', function(req, res){
     req.logout();
     req.session.regenerate(function(err){});
-    res.send('logged out!');
+    res.send({ok:'logged out!'});
     //res.redirect('/');
   });
 

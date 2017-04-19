@@ -22,6 +22,27 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'HomeController'
   });
 
+  $stateProvider.state({
+    name:'contactPlatform',
+    url:'/signup',
+    templateUrl:'views/createAccount.view.html',
+    //controller:'contactPlatformController'
+  });
+
+  $stateProvider.state({
+    name:'createAccount',
+    url:'/',
+    templateUrl:'views/contactPlatform.view.html',
+    controller:'contactPlatformController'
+  });
+
+  $stateProvider.state({
+    name:'signupLocal',
+    url:'/',
+    templateUrl:'views/contactPlatform.view.html',
+    controller:'contactPlatformController'
+  });
+
   $urlRouterProvider.when('','/');
 
 }]);

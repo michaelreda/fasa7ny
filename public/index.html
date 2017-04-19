@@ -54,7 +54,7 @@
   <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
 
   <!-- start navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-default navbar-fixed-top" ng-controller="IndexNavbarController" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -69,6 +69,9 @@
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
           <li class="active"><a href="index.html">Home</a></li>
+          <!-- logout button -->
+          <li class="active"><a href="#" ng-click = "logout()" ng-if = "isLoggedIn() == true" >Logout {{logoutOK}}</a></li>
+          <li class="active"><a href="#" ng-click = "signup()" ng-if = "isLoggedIn() == false" >Signup {{logoutOK}}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -206,6 +209,8 @@
   <script src="controllers/HomeController.js"></script>
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
+  <script src="controllers/IndexNavbarController.js"></script>
+
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
