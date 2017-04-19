@@ -1,11 +1,12 @@
 let Account = require('../models/account.js');
 let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
-let Activity = require('../models/activity');
+let Activity = require('../models/activity.js');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
-let Interest=require('../models/interest');
-let Complain=require('../models/complain');
+let Interest=require('../models/interest.js');
+let Review=require('../models/review.js');
+let Complain=require('../models/complain.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
 
 let userCTRL = {
@@ -491,8 +492,9 @@ deleteReview: function(req,res){
 
   //2.3.3 As a logged in user I can check/view my review
   viewMyReviews: function(req,res){
-    userCTRL.isUser(req,res);
-    Review.find({userId:req.session.user._id}).populate('activityId').exec(function(err,reviews){
+    //userCTRL.isUser(req,res);
+    //{userId:req.session.user._id}
+    Review.find().populate('activityId').exec(function(err,reviews){
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err);
@@ -852,7 +854,7 @@ deleteReview: function(req,res){
   },
   //used to find accounts by a part of the username
   findUsernames: function(req,res){
-    Account.find({type:0}).select('userName').exec(function(err,usernames){
+    Account.find({'type'}).select('userName').exec(function(err,usernames){
       if(err)
       {
         res.send(err.message)
