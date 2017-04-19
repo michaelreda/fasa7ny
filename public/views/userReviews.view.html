@@ -13,11 +13,20 @@
 			<tr ng-repeat="review in reviews">
 				<td>{{$index + 1}}</td>
 				<td>{{review.activityId.title}}</td>
-				<td>{{review.review}}</td>
+				<td style="position:relative;" id="review_{{$index}}">{{review.review}}
+					<div style="position:absolute;bottom:0;right:0;" ng-if="reviewEditable[$index]">
+						<div id="done" class="yellow btn btn-success" uib-tooltip="Done" style="height: 30px;border-radius: 15px;">
+							<i class="fa fa-check" aria-hidden="true"></i>
+						</div>
+						<div id="cancel" class="yellow btn btn-danger" uib-tooltip="Cancel" style="height: 30px;border-radius: 15px;">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</div>
+					</div>
+				</td>
 				<td><star-rating-comp rating="review.rate" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
 				<td style="width: 120px;">
 						<!-- edit button -->
-						<div class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Edit review" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div id="update" ng-click="enableUpdateReview($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Edit review" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 						<!-- delete button -->
 						<div class="yellow btn btn-danger hvr-icon-sink-away" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
