@@ -67,7 +67,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'systemLogs',
     url:'/view_system_logs',
-    templateUrl:'views/adminPage.view.html',
+    templateUrl:'views/systemLogs.view.html',
     controller:'adminPageController'
   });
 
