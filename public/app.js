@@ -8,11 +8,19 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
+  
+
   $stateProvider.state({
     name:'activity',
     url:'/activity/:activityID',
     templateUrl:'views/activity.view.html',
     controller:'ActivityController'
+  });
+
+  $stateProvider.state({
+    name:'aboutUs',
+    url:'/aboutUs',
+    templateUrl:'views/aboutUs.view.html'
   });
 
   $stateProvider.state({
@@ -23,6 +31,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $urlRouterProvider.when('','/');
+
+  
 
 }]);
 
