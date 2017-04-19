@@ -6,6 +6,7 @@
 				<th>Activity</th>
 				<th>Review</th>
 				<th>Rating</th>
+				<th>Date</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -24,6 +25,7 @@
 					</div>
 				</td>
 				<td><star-rating-comp rating="review.rate" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
+				<td style="width: 130px;">{{review.time}} </td>
 				<td style="width: 120px;">
 						<!-- edit button -->
 						<div id="update" ng-click="enableUpdateReview($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Edit review" style="height: 30px;width: 30px;border-radius: 15px;">

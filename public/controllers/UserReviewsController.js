@@ -3,6 +3,10 @@ myapp.controller('UserReviewsController', function($scope,userSRV) {
   userSRV.viewReviews().success(function(data){
     console.log(data);
     $scope.reviewEditable= new Array(data.length).fill(false);
+    for(var i=0;i<data.length;i++){
+      var d = new Date(data[i].time);
+      data[i].time=d.toDateString();
+    }
     $scope.reviews= data;
   });
 
