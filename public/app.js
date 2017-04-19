@@ -30,6 +30,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'HomeController'
   });
 
+  $stateProvider.state({
+    name:'analysis',
+    url:'/adminAnalysis',
+    templateUrl:'views/analysis.view.html',
+    controller:'analysisController'
+  });
+
   $urlRouterProvider.when('','/');
 
   

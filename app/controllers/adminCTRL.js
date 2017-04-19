@@ -378,7 +378,7 @@ let adminCTRL={
   //4.8 analytics
   //testing - waiting for bookings to be able to analyze them
   getAnalyticsPage:function(req,res){
-    adminCTRL.isAdmin(req,res);
+   // adminCTRL.isAdmin(req,res);
     // finding top activity
     Booking.aggregate(
       {$group : {_id : "$activityId", "count" : {$sum : 1}}},
@@ -390,38 +390,52 @@ let adminCTRL={
           res.send(err.message)
         }else
         {
-          Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+          
+          Activity.findOne({_id:topBooking},function(err,topActivity){
             if(err)
             {
+              
               globalCTRL.addErrorLog(err.message);
               res.send(err.message)
             }
             else
             {
-              ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
-                if(err)
-                {
-                  globalCTRL.addErrorLog(err.message);
-                  res.send(err.message)
-                }
-                else
-                {
-                  User.aggregate(
-                    {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
-                    {$sort : {"count" : -1}},
-                    {$limit : 1},function(err,topUser){
-                      if(err)
-                      {
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message)
-                      }else{
-                        res.send({topActivity,topSP,topUser});
-                      }
+              Booking.aggregate(
+      {$group : {_id : "$providerId", "count" : {$sum : 1}}},
+      {$sort : {"count" : -1}},
+      {$limit : 1},function(err,topBooking){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message)
+        }else
+        {
+              console.log(topBooking);
+                            ServiceProvider.findOne({_id:topBooking},function(err,topSP){
+                              if(err)
+                              {
+                                globalCTRL.addErrorLog(err.message);
+                                res.send(err.message)
+                              }
+                              else
+                              {
+                                User.aggregate(
+                                  {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                                  {$sort : {"count" : -1}},
+                                  {$limit : 1},function(err,topUser){
+                                    if(err)
+                                    {
+                                      globalCTRL.addErrorLog(err.message);
+                                      res.send(err.message)
+                                    }else{
+                                      
+                                      res.send({topActivity,topSP,topUser});
+                                    }
 
-                    })
-                  }
-                })
-              }
+                                  })
+                                }
+                              })
+              }})}
             })
           }
         }
