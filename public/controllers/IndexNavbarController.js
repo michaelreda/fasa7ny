@@ -12,7 +12,7 @@ myapp.controller('IndexNavbarController',function($scope,$state,landingPageSRV){
     return 0;
   }
 
-  $scope.signup = function(){
+  $scope.signupStatechange = function(){
     $state.go("signupLocal");
     }
 

@@ -71,7 +71,7 @@
           <li class="active"><a href="index.html">Home</a></li>
           <!-- logout button -->
           <li class="active"><a href="#" ng-click = "logout()" ng-if = "isLoggedIn() == true" >Logout {{logoutOK}}</a></li>
-          <li class="active"><a href="#" ng-click = "signup()" ng-if = "isLoggedIn() == false" >Signup {{logoutOK}}</a></li>
+          <li class="active"><a href="#" ng-click = "signupStatechange()" ng-if = "isLoggedIn() == false" >Signup {{logoutOK}}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -210,7 +210,7 @@
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
   <script src="controllers/IndexNavbarController.js"></script>
-
+  <script src="controllers/signupController.js"></script>
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -219,12 +219,13 @@
   <script src="components/activityBox/activityBox.component.js"></script>
   <script src="components/reviewBox/reviewBox.component.js"></script>
   <script src="components/map/map.component.js"></script>
+  <script src="components/signup/localSignup.component.js"></script>
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
   <script src="services/landingPageSRV.js"></script>
   <script src="services/activitiesSRV.js"></script>
   <script src="services/activitySRV.js"></script>
-
+  <script src="services/signupSRV.js"></script>
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>
   <!-- bootstrap js file -->

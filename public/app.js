@@ -24,7 +24,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'contactPlatform',
-    url:'/signup',
+    url:'/contactPlatform',
     templateUrl:'views/createAccount.view.html',
     //controller:'contactPlatformController'
   });
@@ -38,9 +38,9 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'signupLocal',
-    url:'/',
-    templateUrl:'views/contactPlatform.view.html',
-    controller:'contactPlatformController'
+    url:'/signup',
+    templateUrl:'views/signup.view.html',
+    controller:'localSignupController'
   });
 
   $urlRouterProvider.when('','/');

@@ -1,0 +1,24 @@
+<form submit="signupStepOne()" accept-charset="UTF-8">
+    <div style="padding-top: 20px">
+    <div class="">
+       <input type="text" name="userName" ng-model="userName" placeholder="Enter your username..">
+    </div>
+    <br> <br>
+    <div class="">
+      <input type="password" name="password" ng-model="password" placeholder="Enter your password.." >
+    </div>
+    <br><br>
+      <div class="">
+        <input type="email" name="email" ng-model="email" placeholder="Enter your mail..">
+
+      </div>
+<br><br>
+      <div class="">
+        <input type="radio" name="type" ng-model="type" checked="true"> User </input>
+        <input type="radio" name="type" ng-model="type" > SP </input>
+      </div>
+      <br><br>
+      <input type="reset"class="btn btn-reset btn-lg" value="Clear all">
+        <button class="btn btn-success btn-lg" type="submit">Save</button>
+    </div>
+</form>
