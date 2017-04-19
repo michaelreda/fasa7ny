@@ -71,10 +71,28 @@
           <li class="active"><a href="index.html">Home</a></li>
           <li class="active"><a href="/#/login">Log in</a></li>
           <li class="active"><a href="/#/signup">Register</a></li>
-          <li class="active"><a href="/#/contact_platform">Sign up for a weekly newsletter</a></li>
 
-<!--to be moved to logged in user page-->
-          <li class="active"><a href="/#/contact_platform">Contact Platform</a></li>
+
+<button onclick="myFunction()">Sign up for newsletter</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var mail = prompt("Please enter your email");
+
+    if (mail != null) {
+      //controller not yet
+        document.getElementById("demo").innerHTML =
+        "Hello " + person + "! How are you today?";
+    }
+}
+</script>
+
+
+
+          <!--<li class="active"><a href="/#/contact_platform">Sign up for a weekly newsletter</a></li>-->
+
 
         </ul>
       </div><!--/.nav-collapse -->
