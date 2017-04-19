@@ -24,7 +24,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'contactPlatform',
-    url:'/contact_platform',
+    url:'/signup',
+    templateUrl:'views/createAccount.view.html',
+    //controller:'contactPlatformController'
+  });
+
+  $stateProvider.state({
+    name:'createAccount',
+    url:'/',
     templateUrl:'views/contactPlatform.view.html',
     controller:'contactPlatformController'
   });

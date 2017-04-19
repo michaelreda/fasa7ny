@@ -2,7 +2,16 @@
   <input type="text" name="emptybox" data="emptybox" ng-if="emptybox" value="">
   CONTACT US
 
+  <div class="col-sm-5">
+      <form class="navbar-form" role="search">
+      <div class="input-group">
+          <input type="text" class="form-control" ng-model="message" placeholder="message" name="m">
+          <div class="input-group-btn">
+              <button class="btn btn-default" ng-click="contactPlatform(message)" ng-model="emptybox">Save</button>
+          </div>
+      </div>
+      </form>
+  </div>
 
 
-    <input type="button" ng-click="contactPlatform(message)">
 </div>
