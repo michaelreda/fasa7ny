@@ -22,6 +22,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivityController'
   });
 
+  $stateProvider.state({
+    name:'userReviews',
+    url:'/my_reviews',
+    templateUrl:'views/userReviews.view.html',
+    controller:'UserReviewsController'
+  });
+
 
   $urlRouterProvider.when('','/');
 
