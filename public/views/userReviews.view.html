@@ -1,0 +1,22 @@
+<div class="ui container" style="padding-top:100px">
+	<table class="ui selectable celled table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Activity</th>
+				<th>Review</th>
+				<th>Rating</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="review in reviews">
+				<td>{{$index + 1}}</td>
+				<td>{{review.activityId.title}}</td>
+				<td>{{review.review}}</td>
+				<td><star-rating-comp rating="review.rate" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
