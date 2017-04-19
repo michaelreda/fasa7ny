@@ -1,5 +1,5 @@
 <div class="ui container" style="padding-top:100px">
-	<table class="ui selectable celled table">
+	<table class="ui selectable sortable celled table">
 		<thead>
 			<tr>
 				<th></th>
@@ -15,7 +15,14 @@
 				<td>{{review.activityId.title}}</td>
 				<td>{{review.review}}</td>
 				<td><star-rating-comp rating="review.rate" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
-				<td> </td>
+				<td style="width: 120px;">
+						<!-- edit button -->
+						<div class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Edit review" style="height: 30px;width: 30px;border-radius: 15px;">
+						</div>
+						<!-- delete button -->
+						<div class="yellow btn btn-danger hvr-icon-sink-away" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
+						</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
