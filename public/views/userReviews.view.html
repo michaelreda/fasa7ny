@@ -1,5 +1,8 @@
 <div class="ui container" style="padding-top:100px">
-	<table class="ui selectable sortable celled table">
+	<center><div class="panel panel-warning  wow fadeInDown" data-wow-delay="0.2s" data-wow-duration="2s" style="width:500px" ng-if="reviews.length == 0">
+    <div class="panel-heading">You didn't review any activity yet..</div>
+  </div></center>
+	<table class="ui selectable sortable celled table" ng-if="reviews.length != 0">
 		<thead>
 			<tr>
 				<th></th>
