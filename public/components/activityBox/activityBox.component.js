@@ -6,6 +6,9 @@ component('activityBox',{
         $state.go("activity",{activityID:activityID})
       }
 
+      $scope.openBookingPage= function(activityID){
+        $state.go("booking",{activityID:activityID})
+      }
       $scope.showSendGiftModal = function(){
         $uibModal.open({
           templateUrl: 'sendGiftModal.html',

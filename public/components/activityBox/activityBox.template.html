@@ -7,7 +7,7 @@ display: inline-block;width: 83%;"> -->
                 <!-- <img src="img/works_slider1.jpg"style="height: 300px;" class="img-responsive" > -->
                 <center><img src="img/{{$ctrl.data.media[0]}}"style="height: 300px;" class="img-responsive" ></center>
                 <div>
-                  <a href="#" class="btn">Book Now</a>
+                  <a ng-click="openBookingPage($ctrl.data._id)" class="btn">Book Now</a>
                   <a ng-click="showSendGiftModal()" class="btn">Send a Gift  <i class="fa fa-gift" aria-hidden="true"></i></a>
                 </div>
               </div>

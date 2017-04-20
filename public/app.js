@@ -29,6 +29,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'UserReviewsController'
   });
 
+  $stateProvider.state({
+    name:'booking',
+    url:'/booking/:activityID',
+    templateUrl:'views/booking.view.html',
+    controller:'BookingController'
+  });
+
 
   $urlRouterProvider.when('','/');
 
