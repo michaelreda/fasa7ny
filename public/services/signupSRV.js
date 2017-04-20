@@ -1,7 +1,7 @@
 myapp.factory('signupSRV',function ($http) {
   return{
-    sendAccountDetails:function() {
-      return $http.post('/signup',{});
+    sendAccountDetails:function(userName,password,email,type) {
+      return $http.post('/signup',{'userName':userName,'password':password,'email':email,'type':type});
     },
 
     sendUserProfileDetails:function() {

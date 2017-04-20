@@ -13,12 +13,14 @@
 
       </div>
 <br><br>
+Are you a..
       <div class="">
-        <input type="radio" name="type" ng-model="type" checked="true"> User </input>
-        <input type="radio" name="type" ng-model="type" > SP </input>
+        <input type="radio" name="type" ng-model="type" checked="true" > User </input>
+or a..
+
+        <input type="radio" name="type" ng-model="type" ng-value="1" > SP </input>
       </div>
       <br><br>
-      <h1>{{$ctrl.toot}}</h1>
         <button class="btn btn-success btn-lg" ng-click="$ctrl.signupStepOne()">Save</button>
     </div>
 </div>

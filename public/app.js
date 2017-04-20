@@ -40,7 +40,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     name:'signupLocal',
     url:'/signup',
     templateUrl:'views/signup.view.html',
-    controller:'localSignupController'
+    controller:'signupController'
   });
 
   $urlRouterProvider.when('','/');
