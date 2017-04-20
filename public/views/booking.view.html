@@ -25,8 +25,47 @@
 	</div>
 
 	<!-- step1 -->
-	<div ng-if="active[0].length != 0">
-		 <div id="datepicker" uib-datepicker ng-model="date" class="well well-sm" datepicker-options="dateOptions"></div>
+	<div ng-if="active[0].length != 0" class="well well-sm">
+		<center><div uib-datepicker ng-model="activityDate"  datepicker-options="dateOptions"></div></center>
+		<div ng-if="activityDate">
+			<h2 >Timings available on: {{activityDate | date:'fullDate'}}</h2>
+			<div ng-if="activityDate.getDay()==0">
+				<div  ng-if="timing.day=='Sunday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==1">
+				<div  ng-if="timing.day=='Monday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==2">
+				<div  ng-if="timing.day=='Tuesday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==3">
+				<div  ng-if="timing.day=='Wednesday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==4">
+				<div  ng-if="timing.day=='Thursday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==5">
+				<div  ng-if="timing.day=='Friday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+			<div ng-if="activityDate.getDay()==6">
+				<div  ng-if="timing.day=='Saturday'" class="radio" ng-repeat="timing in activity.timings">
+					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+				</div>
+			</div>
+
+		</div>
 	</div>
 	<style>
   .full button span {
@@ -45,6 +84,10 @@
 	.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default{
 		background-color: #31b0d5;
 border-color: #269abc;
+	}
+	table{
+		width: 700px;
+    height: 300px;
 	}
 </style>
 	<!-- step2 -->

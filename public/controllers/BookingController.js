@@ -1,13 +1,16 @@
 myapp.controller('BookingController', function($scope,$stateParams,activitySRV,$window) {
-
+var self = this;
+$scope.Math=Math;
 //getting activity
   if($stateParams.activityID != undefined){
       activitySRV.getActivityById($stateParams.activityID)
       .success(function(data){
         $scope.activity=data.activity;
-
+        self.activity=data.activity;
       })
   }
+
+
 
   //istantiating variable for views
   $scope.active=new Array(3).fill("");
@@ -32,12 +35,19 @@ myapp.controller('BookingController', function($scope,$stateParams,activitySRV,$
       for(var i=0;i<days.length;i++){
         if(days[i]!=-1){
           result |=  date.getDay() == i;
-          console.log(result);
         }
       }
       result &= mode === 'day';
       return result;
   }
+
+
+$scope.$watch('activityDate',function(newVal, oldVal, scope){
+    if(newVal != oldVal){
+         scope.activityDate = newVal;
+         console.log(newVal.getDay());
+     }
+},true);
 
   // $scope.$watch('activity', function (activity,oldValue) {
   //   if(activity!= undefined){
