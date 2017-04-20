@@ -68,12 +68,19 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
+
           <li class="active"><a href="/">Home</a></li>
-          <!-- logout button -->
+          <!-- logout button -->         
+          <li class="active"><a href="/#/login">Log in</a></li>
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
+
         </ul>
       </div><!--/.nav-collapse -->
+<div>
+  <!--<button type="button" class="active" ng-click="switchView">Contact Platform</button>-->
+</div>
+
     </div>
   </nav>
 
@@ -209,8 +216,14 @@
   <script src="controllers/HomeController.js"></script>
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
+  <script src="controllers/contactPlatformController.js"></script>
+  <script src="controllers/logInController.js"></script>
+  <script src="controllers/adminPageController.js"></script>
+  <script src="controllers/serviceProviderPageController.js"></script>
+  <script src="controllers/userPageController.js"></script>
   <script src="controllers/IndexNavbarController.js"></script>
   <script src="controllers/signupController.js"></script>
+
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -228,6 +241,9 @@
   <script src="services/landingPageSRV.js"></script>
   <script src="services/activitiesSRV.js"></script>
   <script src="services/activitySRV.js"></script>
+  <script src="services/contactPlatformSRV.js"></script>
+  <script src="services/logInSRV.js"></script>
+  <script src="services/adminPageSRV.js"></script>
   <script src="services/signupSRV.js"></script>
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>

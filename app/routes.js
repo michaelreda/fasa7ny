@@ -74,8 +74,6 @@ Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 
 
 
-
-
 ////////////////////adminCTRL//////////////////
 
 

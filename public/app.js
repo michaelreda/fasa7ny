@@ -21,27 +21,55 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/home.view.html',
     controller:'HomeController'
   });
-
-  $stateProvider.state({
-    name:'contactPlatform',
-    url:'/contactPlatform',
-    templateUrl:'views/createAccount.view.html',
-    //controller:'contactPlatformController'
+ $stateProvider.state({
+    name:'logIn',
+    url:'/login',
+    templateUrl:'views/loginPage.view.html',
+    controller:'logInController'
   });
 
   $stateProvider.state({
-    name:'createAccount',
-    url:'/',
+    name:'contactPlatform',
+    url:'/contact_platform',
     templateUrl:'views/contactPlatform.view.html',
     controller:'contactPlatformController'
   });
 
   $stateProvider.state({
+    name:'userPage',
+    url:'/user',
+    templateUrl:'views/userPage.view.html',
+    controller:'userPageController'
+  });
+
+  $stateProvider.state({
+    name:'spPage',
+    url:'/serviceProvider',
+    templateUrl:'views/serviceProviderPage.view.html',
+    controller:'serviceProviderPageController'
+  });
+
+  $stateProvider.state({
+    name:'admin',
+    url:'/admin',
+    templateUrl:'views/adminPage.view.html',
+    controller:'adminPageController'
+  });
+
+  $stateProvider.state({
+    name:'systemLogs',
+    url:'/view_system_logs',
+    templateUrl:'views/systemLogs.view.html',
+    controller:'adminPageController'
+     });
+  
+  $stateProvider.state({
     name:'signupLocal',
     url:'/signup',
     templateUrl:'views/signup.view.html',
     controller:'signupController'
-  });
+ });
+ 
 
   $urlRouterProvider.when('','/');
 

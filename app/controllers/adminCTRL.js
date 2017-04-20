@@ -297,7 +297,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send("Admin is logged in");
+            res.send(3);
 
         }
 
@@ -312,12 +312,12 @@ let adminCTRL={
   //tested
   //4.5 admin views system logs
   viewSystemLogs: function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     Log.find(function(err, log){
       if(err)
       res.send(err.message); //display messages
       else{
-        res.send(log);
+        res.send({log});
       }
 
     })

@@ -301,7 +301,7 @@ let ServiceProviderCTRL = {
           else {
             if(thisProvider.banned==0){
               req.session.serviceProvider=thisProvider;
-              res.send("SP is logged in");
+              res.send(1);
             }
             else{
               res.send('Account banned! try again in '+thisProvider.banned+' days');
