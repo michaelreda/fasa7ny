@@ -69,6 +69,16 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/signup.view.html',
     controller:'signupController'
  });
+
+
+ $stateProvider.state({
+   name:'newsletter',
+   url:'/newsletter',
+   templateUrl:'views/home.view.html',
+   controller:'NewsLetterController'
+ });
+
+
   $stateProvider.state({
     name: 'FAQ',
     url: '/FAQ',
@@ -89,6 +99,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/serviceProvider.view.html',
     controller: 'SPController'
   });
+
 
   $urlRouterProvider.when('','/');
 
