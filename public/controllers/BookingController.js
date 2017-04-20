@@ -74,7 +74,7 @@ $scope.planTitles=["basic","standard","Premium","platinum"];
 $scope.submitPlan = function(plan){
   $scope.plan=plan;
   console.log($scope.plan);
-  toastr.success("plan is selected perfectly.. 1 step to go ;)");
+  toastr.success("plan is selected perfectly..only 1 step to go ;)");
   $scope.completed[1]="completed";
   $scope.active[1]="";
   $scope.active[2]="active";
