@@ -1,0 +1,100 @@
+
+ <br>
+ <br>
+ <br>
+
+ <h1>Choose your First choice from:</h1>
+<div >
+  <select ng-model="$parent.selectedServiceProvider" ng-options="item._id as item.title for item in serviceProviders">
+    <option value="">Select Service Provider</option>
+</select>  
+</div>
+
+ <h1>OR</h1>
+<div  ng-if="selectedServiceProvider== undefined " >
+  <select ng-model="$parent.selectedActivities"  ng-options="item._id as item.title for item in Activities">
+    <option value="">Select Activity</option>
+</select>  
+</div>
+
+<br>
+<br>
+<div>
+<!--<div ng-if="selectedServiceProvider!= undefined ">-->
+ <h1>Compare with:</h1>
+<div >
+  <select ng-model="$parent.selectedServiceProvider2"    ng-options="item._id as item.title for item in serviceProviders">
+    <option value="">Select Service Provider</option>
+</select>  
+<button ng-click="compareServiceProvider(selectedServiceProvider,selectedServiceProvider2)">compare</button> 
+</div>
+</div>
+
+<div>
+ <!--<div ng-if="$parent.selectedActivities!= undefined">-->
+ <h1>Compare with:</h1>
+ 
+<div >
+  <select ng-model="$parent.selectedActivities2"  ng-options="item._id as item.title for item in Activities">
+    <option value="">Select Activity</option>
+</select> 
+<button ng-click="compareActivities(selectedActivities,selectedActivities2)">compare</button> 
+</div>
+</div>
+<br>
+<br>
+
+
+
+
+
+
+<!-- 
+ <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Filter activities by
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" >
+      <li class="dropdown-submenu">
+        <a class="test" ng-click="filterChosen('price')" tabindex="-1">Activities <span class="caret"></span></a>
+        <ul class="dropdown-menu" ng-model="selectedActivities">
+          <li><a  ng-options="item._id as item.title for item in Activities" ng-click="valueChosen(100)"   tabindex="-1" >{{item.title}}</a></li>
+          
+        </ul>
+        <select class="dropdown-menu" ng-model="selectedActivities" ng-options="item._id as item.title for item in Activities">
+    <option value="">Select Activity</option>
+        </select> 
+      </li>
+      <li class="dropdown-submenu">
+        <a class="test" ng-click="filterChosen('theme')" tabindex="-1" >Service Providers <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+         <li><a  ng-click="valueChosen('thriller')" tabindex="-1" >thriller</a></li>
+         
+        </ul>
+      </li>
+     
+
+    </ul>
+  </div>-->
+
+<style>
+
+    .dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+</style>
+
+
+
+
+  <!--<table ng-controller="myCtrl" border="1">
+      <tr ng-repeat>="(x,y) in myObj">
+          <td>{{x}}</td>
+         <td>{{y}}</td>
+      </tr>
+  </table>-->

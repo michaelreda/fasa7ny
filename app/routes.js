@@ -26,9 +26,9 @@ Router.get('/',function(req,res){
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-Router.post('/second_choice', userCTRL.getSecondListOfChoices);
-Router.post('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
-Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
+//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
+Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
+Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
 
 //2.5 user add his interests
 Router.post('/add_user_interest', userCTRL.addUserInterest);

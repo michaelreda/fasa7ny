@@ -51,6 +51,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
+      $stateProvider.state({
+    name:'compare',
+    url:'/comparison',
+    templateUrl:'views/compare.view.html',
+    controller:'compareController'
+  });
+
   $urlRouterProvider.when('','/');
 
 
