@@ -1,6 +1,7 @@
 myapp.controller('BookingController', function($scope,$stateParams,activitySRV,$window) {
 var self = this;
 $scope.Math=Math;
+$scope.today= new Date();
 //getting activity
   if($stateParams.activityID != undefined){
       activitySRV.getActivityById($stateParams.activityID)
@@ -49,8 +50,9 @@ $scope.$watch('activityDate',function(newVal, oldVal, scope){
      }
 },true);
 
-$scope.chosenTime= function(time){
+$scope.chosenTime= function(time,activityDate){
   $scope.time=time;
+  $scope.activityDate=activityDate;
 }
 
 $scope.submitTiming = function(){
@@ -71,8 +73,9 @@ $scope.submitTiming = function(){
 //step2
 $scope.planTitles=["basic","standard","Premium","platinum"];
 
-$scope.submitPlan = function(plan){
+$scope.submitPlan = function(plan,planTitle){
   $scope.plan=plan;
+  $scope.plan.planTitle=planTitle;
   console.log($scope.plan);
   toastr.success("plan is selected perfectly..only 1 step to go ;)");
   $scope.completed[1]="completed";
