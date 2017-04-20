@@ -444,7 +444,7 @@ rateReviewActivity: function(req,res){
 },
 //2.3.1 As a logged in user I can change my review
 updateReview: function(req,res){
-  //userCTRL.isUser(req,res);
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('reviewId','reviewId is required').isMongoId();
   req.checkBody('review','review is not empty').notEmpty();
@@ -471,7 +471,7 @@ updateReview: function(req,res){
 
 //2.3.2 As a logged in user I can delete my review
 deleteReview: function(req,res){
-  //userCTRL.isUser(req,res);
+  userCTRL.isUser(req,res);
   //validating
   req.checkBody('reviewId','reviewId is required').isMongoId();
   var errors = req.validationErrors();
@@ -492,9 +492,8 @@ deleteReview: function(req,res){
 
   //2.3.3 As a logged in user I can check/view my review
   viewMyReviews: function(req,res){
-    //userCTRL.isUser(req,res);
-    //{userId:req.session.user._id}
-    Review.find().populate('activityId').exec(function(err,reviews){
+    userCTRL.isUser(req,res);
+    Review.find({userId:req.session.user._id}).populate('activityId').exec(function(err,reviews){
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err);
