@@ -223,40 +223,40 @@ Router.post('/login', passport.authenticate('local-login'),function(req,res){
 Router.get('/logout', function(req, res){
     req.logout();
     req.session.regenerate(function(err){});
-    res.send('logged out!');
+    res.send({ok:'logged out!'});
     //res.redirect('/');
   });
 
 
 
 //SignUp passport
-  Router.get('/signup', function(req, res){
-		res.send('signup page here');
-	});
-  Router.get('/signup_user', function(req, res){
-  		res.send('user signup page here');
-  	});
-  Router.get('/signup_sp', function(req, res){
-    		res.send('sp signup page here');
-    	});
-  Router.get('/signup_admin', function(req, res){
-      		res.send('admin signup page here');
-      	});
+  // Router.get('/signup', function(req, res){
+	// 	res.send('signup page here');
+	// });
+  // Router.get('/signup_user', function(req, res){
+  // 		res.send('user signup page here');
+  // 	});
+  // Router.get('/signup_sp', function(req, res){
+  //   		res.send('sp signup page here');
+  //   	});
+  // Router.get('/signup_admin', function(req, res){
+  //     		res.send('admin signup page here');
+  //     	});
 
 
 
 
 	Router.post('/signup', passport.authenticate('local-signup'),function(req,res){
-    if (!req.user) { return res.redirect('/'); }
+    if (!req.user) { return res.send({stepOneOK:0}); }
     switch (parseInt(req.body.type)) {
         case 0:
-        res.redirect('signup_user');
+        res.send({stepOneOK:1,userAccount:req.user});
             break;
         case 1:
-        res.redirect('signup_sp');
+        res.send({stepOneOK:1,userAccount:req.user});
             break;
         case 3:
-        res.redirect('signup_admin');
+        res.send({stepOneOK:1,userAccount:req.user});
             break;
         default:
             globalCTRL.addErrorLog('sign up attempt with profile type '+req.body.type);

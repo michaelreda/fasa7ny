@@ -14,6 +14,12 @@ myapp.factory('landingPageSRV', function($http) {
     },
       getFeaturedActivities:function(){
         return $http.get('/get_featured_activities');
+    },
+      logout:function(){
+        return $http.get('/logout');
+    /*},
+      getLoginInfo:function() {
+        return */
       }
   };
 });

@@ -21,15 +21,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/home.view.html',
     controller:'HomeController'
   });
-
-  $stateProvider.state({
-    name:'register',
-    url:'/signup',
-    templateUrl:'views/createAccount.view.html',
-    //controller:'Controller'
-  });
-
-  $stateProvider.state({
+ $stateProvider.state({
     name:'logIn',
     url:'/login',
     templateUrl:'views/loginPage.view.html',
@@ -69,7 +61,15 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     url:'/view_system_logs',
     templateUrl:'views/systemLogs.view.html',
     controller:'adminPageController'
-  });
+     });
+  
+  $stateProvider.state({
+    name:'signupLocal',
+    url:'/signup',
+    templateUrl:'views/signup.view.html',
+    controller:'signupController'
+ });
+ 
 
   $urlRouterProvider.when('','/');
 
