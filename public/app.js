@@ -31,6 +31,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'buttons',
+    url:'/buttons',
+    templateUrl:'views/buttons.view.html',
+    controller:'buttonsController'
+  });
+
+  $stateProvider.state({
     name:'analysis',
     url:'/adminAnalysis',
     templateUrl:'views/analysis.view.html',

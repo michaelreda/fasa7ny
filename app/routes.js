@@ -136,7 +136,7 @@ Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
-Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+Router.get('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
 Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
 

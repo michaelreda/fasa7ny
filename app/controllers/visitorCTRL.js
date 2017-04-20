@@ -87,12 +87,13 @@ let visitorCTRL={
         })
       } else 	if(req.params.filter=="offer")
       {
-        Activity.find({isOffer: true}).limit(10).exec(function(err,activities){
+        console.log("okokokok");
+        Activity.find({isOffer: 1}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
       }else
@@ -115,7 +116,7 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
       }
@@ -126,7 +127,7 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
       }else {

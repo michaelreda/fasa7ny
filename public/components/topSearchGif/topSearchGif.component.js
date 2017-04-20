@@ -31,8 +31,9 @@ angular.module('myapp').
         }
 
           $scope.filterChosen=function(d){
-
           $scope.filter=d;
+          if(d=="offer")
+          $state.go("filteredActivities",{filter:d});
         }
 
 
