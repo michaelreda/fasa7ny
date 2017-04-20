@@ -70,7 +70,7 @@
         <ul class="nav navbar-nav navbar-right custom_nav">
 
           <li class="active"><a href="/">Home</a></li>
-          <!-- logout button -->         
+          <!-- logout button -->
           <li class="active"><a href="/#/login">Log in</a></li>
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
@@ -223,6 +223,8 @@
   <script src="controllers/userPageController.js"></script>
   <script src="controllers/IndexNavbarController.js"></script>
   <script src="controllers/signupController.js"></script>
+  <script src="controllers/NewsLetterController.js"></script>
+
 
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
@@ -245,6 +247,8 @@
   <script src="services/logInSRV.js"></script>
   <script src="services/adminPageSRV.js"></script>
   <script src="services/signupSRV.js"></script>
+  <script src="services/newsLetterSRV.js"></script>
+
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>
   <!-- bootstrap js file -->

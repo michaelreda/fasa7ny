@@ -107,4 +107,25 @@
     </div>
     <activity-box data="activity" ng-repeat="activity in activities"></activity-box>
   </div>
+
+<div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+ <div ng-controller="NewsLetterController" class="col-sm-5">
+     <form class="navbar-form" role="search">
+     <div class="input-group">
+       <h3><strong>Save time, save money!<strong></h3>
+         <h4>Sign up for newsletter</h4>
+         <input type="text" class="form-control" ng-model="mail" placeholder="your e-mail please" name="mail">
+         <div class="input-group-btn">
+             <button class="btn btn-default" ng-click="subscribe(mail)">Subscribe</button>
+         </div>
+     </div>
+     </form>
+ </div>
+</div>
 </div>
