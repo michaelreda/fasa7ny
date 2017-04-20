@@ -57,6 +57,7 @@ $scope.submitTiming = function(){
   if($scope.time== undefined)
     toastr.error("please select a timing to proceed");
   else{
+    toastr.success("timing is selected perfectly.. 2 steps to go ;)");
   console.log($scope.time);
   $scope.completed[0]="completed";
   $scope.active[0]="";
@@ -69,6 +70,16 @@ $scope.submitTiming = function(){
 
 //step2
 $scope.planTitles=["basic","standard","Premium","platinum"];
+
+$scope.submitPlan = function(plan){
+  $scope.plan=plan;
+  console.log($scope.plan);
+  toastr.success("plan is selected perfectly.. 1 step to go ;)");
+  $scope.completed[1]="completed";
+  $scope.active[1]="";
+  $scope.active[2]="active";
+  $scope.disabled[2]="";
+}
 
 
   // $scope.$watch('activity', function (activity,oldValue) {

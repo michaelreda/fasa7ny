@@ -12,7 +12,7 @@
 	    <i class="users icon"></i>
 	    <div class="content">
 	      <div class="title">Plan</div>
-	      <div class="description">Choose a payment plan</div>
+	      <div class="description">Choose a plan for one person or groups</div>
 	    </div>
 	  </div>
 	  <div class="{{disabled[2]}} {{active[2]}} {{completed[2]}} step">
@@ -127,7 +127,7 @@ border-color: #269abc;
 						</ul>
 						<h3>EGP {{plan.price}}</h3>
 						<p>Per Person</p>
-						<a class="get_button">Select this Plan</a>
+						<button class="get_button" ng-click="submitPlan(plan)">Select this Plan</button>
 					</li>
 				</ul>
 			</center>
