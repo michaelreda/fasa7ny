@@ -1,4 +1,5 @@
 <div class="ui container" style="padding-top:100px">
+	<!-- steps -->
 	<div class="ui fluid steps">
 	  <div class="{{disabled[0]}} {{active[0]}} {{completed[0]}} step">
 	    <i class="calendar icon"></i>
@@ -22,4 +23,38 @@
 	    </div>
 	  </div>
 	</div>
+
+	<!-- step1 -->
+	<div ng-if="active[0].length != 0">
+		 <div id="datepicker" uib-datepicker ng-model="date" class="well well-sm" datepicker-options="dateOptions"></div>
+	</div>
+	<style>
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+	.uib-day button, .uib-month button, .uib-year button {
+		background-color: limegreen;
+	}
+	.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default{
+		background-color: #31b0d5;
+border-color: #269abc;
+	}
+</style>
+	<!-- step2 -->
+	<div ng-if="active[1].length != 0">
+		step2
+	</div>
+
+	<!-- step3 -->
+	<div ng-if="active[2].length != 0">
+		step3
+	</div>
+
 </div>
