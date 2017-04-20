@@ -1,7 +1,6 @@
 myapp.controller('UserReviewsController', function($scope,userSRV) {
 
   userSRV.viewReviews().success(function(data){
-    console.log(data);
     $scope.reviewEditable= new Array(data.length).fill(false);
     for(var i=0;i<data.length;i++){
       var d = new Date(data[i].time);
@@ -21,5 +20,14 @@ myapp.controller('UserReviewsController', function($scope,userSRV) {
     var $review_block = $("#review_"+i).html($scope.reviews[i].review);
     $scope.reviewEditable[i]=false;
   };
+
+  $scope.update= function(i){
+    var review = document.getElementById("review_"+i).innerHTML;
+    var id= $scope.reviews[i]._id;
+    userSRV.updateReview(id,review).success(function(){
+      $scope.reviews[i].review=review;
+      $scope.cancelEditing(i);
+    })
+  }
 
 });
