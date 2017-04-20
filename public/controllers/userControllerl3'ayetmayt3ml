@@ -1,0 +1,8 @@
+myapp.controller('userController', function($scope,userSRV) {
+
+  
+
+  $scope.changePrivacy= function(privacyLevel){
+    
+  }
+});
