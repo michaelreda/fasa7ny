@@ -68,10 +68,10 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
-          <li class="active"><a href="index.html">Home</a></li>
+          <li class="active"><a href="/">Home</a></li>
           <!-- logout button -->
-          <li class="active"><a href="#" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout {{logoutOK}}</a></li>
-          <li class="active"><a href="#" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup {{logoutOK}}</a></li>
+          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+          <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -219,7 +219,10 @@
   <script src="components/activityBox/activityBox.component.js"></script>
   <script src="components/reviewBox/reviewBox.component.js"></script>
   <script src="components/map/map.component.js"></script>
-  <script src="components/signup/localsignup.component.js"></script>
+  <script src="components/signup/localSignup.component.js"></script>
+  <script src="components/signup/spSignup.component.js"></script>
+  <script src="components/signup/userSignup.component.js"></script>
+
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
   <script src="services/landingPageSRV.js"></script>

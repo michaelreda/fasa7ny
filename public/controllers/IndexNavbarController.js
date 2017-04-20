@@ -2,13 +2,13 @@ myapp.controller('IndexNavbarController',function($window,$scope,$state,landingP
 
   $scope.logout = function(){
     landingPageSRV.logout().success(function(data){
-      $scope.logoutOK=data.ok;
-       $window.localStorage['userAccount']=undefined;
+       $window.localStorage.clear();
+       $state.go("home");
     })
   }
 
   $scope.isLoggedIn = function() {
-    return $window.localStorage['userAccount']==undefined;
+    return !($window.localStorage['userAccount']==undefined);
   }
 
   $scope.signupStatechange = function(){
