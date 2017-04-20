@@ -41,12 +41,13 @@ module.exports = function(passport) {
                 // create the user
                 var newAccount  = new Account();
 
-
                 newAccount.userName    = userName;
                 newAccount.email    = req.body.email;
                 newAccount.type    = req.body.type;
                 newAccount.password = newAccount.generateHash(password);
                 // save the user
+                console.log(newAccount);
+
                 newAccount.save(function(err) {
                     if (err)
                         throw err;
