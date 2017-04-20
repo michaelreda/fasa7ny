@@ -11,7 +11,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="review in reviews">
+			<tr id="row_{{$index}}" ng-repeat="review in reviews">
 				<td>{{$index + 1}}</td>
 				<td>{{review.activityId.title}}</td>
 				<td style="position:relative;" ><span id="review_{{$index}}" >{{review.review}}</span>
@@ -31,7 +31,7 @@
 						<div id="update" ng-click="enableUpdateReview($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Edit review" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 						<!-- delete button -->
-						<div class="yellow btn btn-danger hvr-icon-sink-away" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div class="yellow btn btn-danger hvr-icon-sink-away" ng-click="delete($index)" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 				</td>
 			</tr>

@@ -444,9 +444,9 @@ rateReviewActivity: function(req,res){
 },
 //2.3.1 As a logged in user I can change my review
 updateReview: function(req,res){
-  userCTRL.isUser(req,res);
+  //userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   req.checkBody('review','review is not empty').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
@@ -454,7 +454,7 @@ updateReview: function(req,res){
     return;
   }
   //end validating
-  Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err,status){
+  Review.update({_id:req.body.reviewId},{$set:{review:req.body.review}}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err.message);
       res.send(err);
@@ -471,16 +471,16 @@ updateReview: function(req,res){
 
 //2.3.2 As a logged in user I can delete my review
 deleteReview: function(req,res){
-  userCTRL.isUser(req,res);
+  //userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
     return;
   }
   //end validating
-  Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
+  Review.findOne({_id:req.body.reviewId}).remove().exec(function(err){
     if(err){
       globalCTRL.addErrorLog(err.message);
       res.send(err);
@@ -854,7 +854,7 @@ deleteReview: function(req,res){
   },
   //used to find accounts by a part of the username
   findUsernames: function(req,res){
-    Account.find({'type'}).select('userName').exec(function(err,usernames){
+    Account.find({type:0}).select('userName').exec(function(err,usernames){
       if(err)
       {
         res.send(err.message)
