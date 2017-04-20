@@ -30,42 +30,64 @@
 		<div ng-if="activityDate">
 			<h2 >Timings available on: {{activityDate | date:'fullDate'}}</h2>
 			<div ng-if="activityDate.getDay()==0">
-				<div  ng-if="timing.day=='Sunday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
-				</div>
+				<form>
+					<div  ng-if="timing.day=='Sunday'" class="radio" ng-repeat="timing in activity.timings">
+						<label><input ng-model="time"  ng-change="chosenTime(timing)" name="time" type="radio" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					</div>
+					<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+				</form>
 			</div>
 			<div ng-if="activityDate.getDay()==1">
-				<div  ng-if="timing.day=='Monday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
-				</div>
+				<form>
+					<div  ng-if="timing.day=='Monday'" class="radio" ng-repeat="timing in activity.timings">
+						<label><input ng-model="time" ng-change="chosenTime(timing)" type="radio" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					</div>
+					<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+				</form>
 			</div>
 			<div ng-if="activityDate.getDay()==2">
+				<form>
 				<div  ng-if="timing.day=='Tuesday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					<label><input ng-model="time" type="radio" ng-change="chosenTime(timing)" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
 				</div>
+				<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+			</form>
 			</div>
 			<div ng-if="activityDate.getDay()==3">
-				<div  ng-if="timing.day=='Wednesday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
-				</div>
+				<form>
+					<div  ng-if="timing.day=='Wednesday'" class="radio" ng-repeat="timing in activity.timings">
+						<label><input ng-model="time" type="radio" ng-change="chosenTime(timing)" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					</div>
+					<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+				</form>
 			</div>
 			<div ng-if="activityDate.getDay()==4">
+				<form>
 				<div  ng-if="timing.day=='Thursday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					<label><input ng-model="time" ng-change="chosenTime(timing)" type="radio" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
 				</div>
+				<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+			</form>
 			</div>
 			<div ng-if="activityDate.getDay()==5">
+				<form>
 				<div  ng-if="timing.day=='Friday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					<label><input ng-model="time" ng-change="chosenTime(timing)"type="radio" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
 				</div>
+				<button class="btn btn-success" class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+			</form>
 			</div>
 			<div ng-if="activityDate.getDay()==6">
+				<form>
 				<div  ng-if="timing.day=='Saturday'" class="radio" ng-repeat="timing in activity.timings">
-					<label><input type="radio">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
+					<label><input ng-model="time" ng-change="chosenTime(timing)" type="radio" name="timing" ng-value="timing">from {{Math.floor(timing.startTime/60)}}:{{timing.startTime%60}} to {{Math.floor((timing.startTime+activity.durationInMinutes)/60)}}:{{(timing.startTime+activity.durationInMinutes)%60}}</label>
 				</div>
+				<button class="btn btn-success"  ng-click="submitTiming()">Choose</button>
+			</form>
 			</div>
 
 		</div>
+
 	</div>
 	<style>
   .full button span {

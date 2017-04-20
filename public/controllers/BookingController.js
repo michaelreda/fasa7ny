@@ -49,6 +49,22 @@ $scope.$watch('activityDate',function(newVal, oldVal, scope){
      }
 },true);
 
+$scope.chosenTime= function(time){
+  $scope.time=time;
+}
+
+$scope.submitTiming = function(){
+  if($scope.time== undefined)
+    toastr.error("please select a timing to proceed");
+  else{
+  console.log($scope.time);
+  $scope.completed[0]="completed";
+  $scope.active[0]="";
+  $scope.active[1]="active";
+  $scope.disabled[1]="";
+}
+}
+
   // $scope.$watch('activity', function (activity,oldValue) {
   //   if(activity!= undefined){
   //     console.log(disabled);
