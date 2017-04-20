@@ -774,7 +774,7 @@ deleteReview: function(req,res){
               globalCTRL.addErrorLog(err.message);
             })
             req.session.user=thisUser;
-            res.send("user is logged in");
+            res.send({'type':0,'userAccount':thisUser});
           }
           else{
             res.send('Account banned! try again in '+thisUser.banned+' days');
@@ -797,7 +797,7 @@ deleteReview: function(req,res){
     req.checkBody('privacy','privacy is required of type integer').notEmpty().isInt({min:1});
     var errors = req.validationErrors();
     if (errors) {
-      res.send(errors);
+      res.send({'stepTwoOK':0,'validationErrors':errors});
       return;
     }
     else {
@@ -824,14 +824,13 @@ deleteReview: function(req,res){
       if(req.body.profession){
         newUser.profession=req.body.profession;
       }
-
       newUser.save(function(err){
         if(err){
           globalCTRL.addErrorLog(err.message);
-          res.send(err);
+          res.send({'stepTwoOK':0,'errors':err});
         }
         else {
-          res.send('signup step 2 succesfull!!');
+          res.send({'stepTwoOK':1,'userProfile':newUser});
         }
 
       });
