@@ -8,7 +8,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
-  
+
 
   $stateProvider.state({
     name:'activity',
@@ -38,15 +38,15 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
     $stateProvider.state({
-    name:'filter',
-    url:'/activities/:filter/:value/',
+    name:'filteredActivities',
+    url:'/filteredActivities/:filter/:value/',
     templateUrl:'views/activities.view.html',
     controller:'ActivitiesController'
   });
 
   $urlRouterProvider.when('','/');
 
-  
+
 
 }]);
 

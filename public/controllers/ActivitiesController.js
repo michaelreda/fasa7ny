@@ -15,13 +15,13 @@ myapp.controller('ActivitiesController', function($scope,$stateParams,$state,act
       activitiesSRV.filter($stateParams.filter,$stateParams.value)
       .success(function(data){
         console.log (data);
-        $scope.activities=data.activities;
+        $scope.activities=data;
         console.log($scope.activities);
         loaderSRV.end();
       })
   }
-  
-  
+
+
 
   $scope.openActivity= function(activityID){
     $state.go("activity", {activityID:activityID});
