@@ -62,8 +62,14 @@ $scope.submitTiming = function(){
   $scope.active[0]="";
   $scope.active[1]="active";
   $scope.disabled[1]="";
-} 
 }
+}
+
+
+
+//step2
+$scope.planTitles=["basic","standard","Premium","platinum"];
+
 
   // $scope.$watch('activity', function (activity,oldValue) {
   //   if(activity!= undefined){

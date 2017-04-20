@@ -118,72 +118,19 @@ border-color: #269abc;
 	<!-- step2 -->
 	<div ng-if="active[1].length != 0">
 		<div class="pricearea">
-			<ul class="price_nav wow bounceIn">
-				<li>
-					<h2 class="price_heading">Basic</h2>
-					<ul class="pfeatured_nav">
-						<li><strong>300MB</strong> Disk Space </li>
-						<li><strong>400MB</strong> Monthly Traffic</li>
-						<li><strong>5</strong> Subdomains</li>
-						<li><strong>10</strong> Email Accounts</li>
-						<li>Webmail Support</li>
-						<li>MySQL Support</li>
-						<li>PHP5 Support</li>
-					</ul>
-					<h3>$30</h3>
-					<p>Per Month</p>
-					<a class="get_button" href="#">Get a quote</a>
-				</li>
-				<!-- Start single Plan -->
-				<li>
-					<h2 class="price_heading">Standard</h2>
-					<ul class="pfeatured_nav">
-						<li><strong>1GB</strong> Disk Space </li>
-						<li><strong>512MB</strong> Monthly Traffic</li>
-						<li><strong>10</strong> Subdomains</li>
-						<li><strong>15</strong> Email Accounts</li>
-						<li>Webmail Support</li>
-						<li>MySQL Support</li>
-						<li>PHP5 Support</li>
-					</ul>
-					<h3>$50</h3>
-					<p>Per Month</p>
-					<a class="get_button" href="#">Get a quote</a>
-				</li>
-				<!-- Start single Plan -->
-				<li>
-					<h2 class="price_heading">Business</h2>
-					<ul class="pfeatured_nav">
-						<li><strong>3GB</strong> Disk Space </li>
-						<li><strong>1.5Gb</strong> Monthly Traffic</li>
-						<li><strong>25</strong> Subdomains</li>
-						<li><strong>200</strong> Email Accounts</li>
-						<li>Webmail Support</li>
-						<li>MySQL Support</li>
-						<li>PHP5 Support</li>
-					</ul>
-					<h3>$90</h3>
-					<p>Per Month</p>
-					<span class="price_badge">Most Popular!</span>
-					<a class="get_button" href="#">Get a quote</a>
-				</li>
-				<!-- Start single Plan -->
-				<li>
-					<h2 class="price_heading">Platinum</h2>
-					<ul class="pfeatured_nav">
-						<li><strong>Unlimited</strong> Disk Space </li>
-						<li><strong>Unlimited</strong> Monthly Traffic</li>
-						<li><strong>Unlimited</strong> Subdomains</li>
-						<li><strong>Unlimited</strong> Email Accounts</li>
-						<li>Webmail Support</li>
-						<li>MySQL Support</li>
-						<li>PHP5 Support</li>
-					</ul>
-					<h3>$130</h3>
-					<p>Per Month</p>
-					<a class="get_button" href="#">Get a quote</a>
-				</li>
-			</ul>
+			<center>
+				<ul class="price_nav wow bounceIn">
+					<li ng-repeat="plan in activity.prices | orderBy:'numberOfClients'">
+						<h2 class="price_heading">{{planTitles[$index]}}</h2>
+						<ul class="pfeatured_nav">
+							<li>For <strong>{{plan.numberOfClients}}</strong> person{{plan.numberOfClients==1?'':'s'}} </li>
+						</ul>
+						<h3>EGP {{plan.price}}</h3>
+						<p>Per Person</p>
+						<a class="get_button">Select this Plan</a>
+					</li>
+				</ul>
+			</center>
 		</div>
 	</div>
 
