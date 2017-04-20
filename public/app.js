@@ -30,6 +30,12 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'userBookings',
+    url:'/my_bookings/:userID',
+    templateUrl:'views/userBookings.view.html',
+    controller:'UserBookingsController'
+  });
+  $stateProvider.state({
     name:'booking',
     url:'/booking/:activityID',
     templateUrl:'views/booking.view.html',
