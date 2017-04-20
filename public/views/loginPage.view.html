@@ -7,11 +7,11 @@
 <div class="col-sm-5">
     <form class="navbar-form">
     <div class="input-group">
-      UserName:  <input type="text" class="form-control"  name="u"><br><br>
-      Password:  <input type="text" class="form-control"  name="p">
+      UserName:  <input type="text" class="form-control"  ng-model="u" name="u"><br><br>
+      Password:  <input type="text" class="form-control"  ng-model="p" name="p">
 
         <div class="input-group-btn">
-            <button class="btn btn-default" ng-model="login" ng-click="logIn(userName, password)">Log In</button>
+            <button class="btn btn-default" ng-model="login" ng-click="logIn()">Log In</button>
         </div>
     </div>
     </form>

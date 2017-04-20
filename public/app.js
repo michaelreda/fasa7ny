@@ -62,14 +62,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/systemLogs.view.html',
     controller:'adminPageController'
      });
-  
+
   $stateProvider.state({
     name:'signupLocal',
     url:'/signup',
     templateUrl:'views/signup.view.html',
     controller:'signupController'
  });
- 
+
 
   $urlRouterProvider.when('','/');
 

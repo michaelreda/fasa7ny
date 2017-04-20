@@ -70,8 +70,8 @@
         <ul class="nav navbar-nav navbar-right custom_nav">
 
           <li class="active"><a href="/">Home</a></li>
-          <!-- logout button -->         
-          <li class="active"><a href="/#/login">Log in</a></li>
+          <!-- logout button -->
+          <li class="active"><a href="/#/login" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
