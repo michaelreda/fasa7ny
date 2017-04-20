@@ -297,7 +297,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send(3);
+            res.send({'type':3,'userAccount':thisAdmin});
 
         }
 

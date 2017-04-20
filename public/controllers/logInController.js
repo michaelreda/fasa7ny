@@ -1,15 +1,22 @@
-myapp.controller('logInController', function($scope,logInSRV, $state){
-  logInSRV.local-login(userName, password).success(function(data){
-    console.log("da5al");
-    if(data==0){
-      $state.go("userPage");
-    }
-    if(data==1){
-      $state.go("spPage");
-    }
-    if(data==3){
-      $state.go("admin");
-    }
-  });
+myapp.controller('logInController', function($window,$scope,logInSRV, $state){
 
+  $scope.logIn = function () {
+    logInSRV.login($scope.u, $scope.p).success(function(data){
+      if(!data.userAccount){
+        console.log('Not logged in :((  look at logincontroller');
+      }
+      else {
+        $window.localStorage['userAccount'] = angular.toJson(data.userAccount);
+      if(data.type==0){
+        $state.go("userPage");
+      }
+      if(data.type==1){
+        $state.go("spPage");
+      }
+      if(data.type==3){
+        $state.go("admin");
+      }
+    }
+    });
+  }
 });

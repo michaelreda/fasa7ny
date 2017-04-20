@@ -70,12 +70,35 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'signupController'
  });
 
+
  $stateProvider.state({
    name:'newsletter',
    url:'/newsletter',
    templateUrl:'views/home.view.html',
    controller:'NewsLetterController'
  });
+
+
+  $stateProvider.state({
+    name: 'FAQ',
+    url: '/FAQ',
+    templateUrl:'views/FAQ.view.html',
+    controller: 'FAQController'
+  });
+
+  $stateProvider.state({
+    name: 'service providers',
+    url: '/serviceProviders',
+    templateUrl:'views/serviceProviders.view.html',
+    controller: 'SPsController'
+  });
+
+  $stateProvider.state({
+    name: 'service provider',
+    url: '/serviceProvider',
+    templateUrl:'views/serviceProvider.view.html',
+    controller: 'SPController'
+  });
 
 
   $urlRouterProvider.when('','/');

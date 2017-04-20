@@ -71,7 +71,8 @@
 
           <li class="active"><a href="/">Home</a></li>
           <!-- logout button -->
-          <li class="active"><a href="/#/login">Log in</a></li>
+
+          <li class="active"><a href="/#/login" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
@@ -202,6 +203,7 @@
             </div>
             <div class="developer">
               <p>Designed By Tweety</p>
+              <a href="/#/FAQ" >FAQ</a>
             </div>
           </div>
         </div>
@@ -223,8 +225,12 @@
   <script src="controllers/userPageController.js"></script>
   <script src="controllers/IndexNavbarController.js"></script>
   <script src="controllers/signupController.js"></script>
+
   <script src="controllers/NewsLetterController.js"></script>
 
+
+
+  <script src="controllers/serviceProviderController.js"></script>
 
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
@@ -247,7 +253,11 @@
   <script src="services/logInSRV.js"></script>
   <script src="services/adminPageSRV.js"></script>
   <script src="services/signupSRV.js"></script>
+
   <script src="services/newsLetterSRV.js"></script>
+
+  <script src="services/userSRV.js"></script>
+
 
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>
