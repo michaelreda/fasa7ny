@@ -19,7 +19,7 @@ display: inline-block;width: 83%;"> -->
             <!-- label-text="$ctrl.data.rating" label-position="'right'" -->
             <star-rating-comp rating="$ctrl.data.rating"   show-half-stars="true" show-hover-stars="false" read-only="true" size="'large'"></star-rating-comp>
           </center>
-              <h3 style="margin-top: 5px;font-weight: 700;">{{$ctrl.data.title}}</h3>
+              <center><h2 style="margin-top: 5px;font-weight: 700;">{{$ctrl.data.title}}</h2></center>
               <p style="overflow:hidden; text-overflow: ellipsis;height:60px">{{$ctrl.data.theme}}</p>
               <div class="pi-price"> EGP {{$ctrl.data.prices[0].price}}</div>
               <center><div class="social_link" style="
@@ -52,7 +52,7 @@ display: inline-block;width: 83%;"> -->
       <div class="modal-body">
         <div class="form-group">
           <label for="usr">Send gift to:</label>
-          <input type="text" class="form-control" ng-model="selectedUsername" placeholder="Username" 
+          <input type="text" class="form-control" ng-model="selectedUsername" placeholder="Username"
           uib-typeahead="username for username in usernames | filter:$viewValue | limitTo:8">
         </div>
       </div>
