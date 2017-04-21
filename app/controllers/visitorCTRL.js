@@ -603,6 +603,22 @@ let visitorCTRL={
                 }
               })
           },
+          getActivityReviews:function(req,res){
+            Review.find({activityId:req.body.activityID})
+            .sort({time: -1})
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send(reviews);
+                }
+              })
+          },
           getTopRatedActivities:function(req,res){
             Activity.find().sort([['rating', -1], ['ratingCount', -1]])
             .limit(6)
