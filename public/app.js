@@ -22,8 +22,29 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'HomeController'
   });
 
-  $urlRouterProvider.when('','/');
+   $stateProvider.state({
+    name:'chats',
+    url:'/chats',
+    templateUrl:'views/chat.view.html',
+    controller:'ChatController'
+  });
 
+  $stateProvider.state({
+    name:'message',
+    url:'/message/:messageId',
+    templateUrl:'views/message.view.html',
+    controller:'MessageController'
+  });
+
+    $stateProvider.state({
+    name:'offers',
+    url:'/offers',
+    templateUrl:'views/offers.view.html',
+    controller:'OffersController'
+  });
+
+  $urlRouterProvider.when('','/');
+ 
 }]);
 
 // myapp.config(function($routeProvider) {

@@ -339,21 +339,21 @@ let adminCTRL={
   //tested without exception
 
   viewAllChats:function(req, res){
-    adminCTRL.isAdmin(req,res);
+   
     Message.find(function(err, messages){
       if(err){
         globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
+        //res.send(err.message);
       }else{
         res.send(messages);
       }
     })
-
+    
   },
   //tested without exception
   //admin view a certain chat messages by id
   viewChatMessages:function(req, res){
-    adminCTRL.isAdmin(req,res);
+  //  adminCTRL.isAdmin(req,res);
     //validating
     req.checkBody('messageId','messageId is required').notEmpty();
     var errors = req.validationErrors();
@@ -367,7 +367,7 @@ let adminCTRL={
       if(err){
         globalCTRL.addErrorLog(err.message);
       }else{
-        if(chat)
+        
         chat.isSeen=true;
         res.send(chat);
       }
