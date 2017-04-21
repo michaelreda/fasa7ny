@@ -3,6 +3,7 @@ var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-ti
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
   $stateProvider.state({
     name:'home',
+    cache:false,
     url:'/',
     templateUrl:'views/home.view.html',
     controller:'HomeController'
@@ -10,6 +11,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'activities',
+    cache:false,
     url:'/activities/:searchInput/:day/',
     templateUrl:'views/activities.view.html',
     controller:'ActivitiesController'
@@ -17,32 +19,39 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'activity',
+    cache:false,
     url:'/activity/:activityID',
     templateUrl:'views/activity.view.html',
     controller:'ActivityController'
   });
 
   $stateProvider.state({
+
     name:'userReviews',
     url:'/my_reviews',
+    cache:false,
     templateUrl:'views/userReviews.view.html',
     controller:'UserReviewsController'
   });
 
   $stateProvider.state({
     name:'userBookings',
+    cache:false,
     url:'/my_bookings/:userID',
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
   $stateProvider.state({
     name:'booking',
+    cache:false,
     url:'/booking/:activityID',
     templateUrl:'views/booking.view.html',
     controller:'BookingController'
+
   });
  $stateProvider.state({
     name:'logIn',
+    cache:false,
     url:'/login',
     templateUrl:'views/loginPage.view.html',
     controller:'logInController'
@@ -50,6 +59,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'contactPlatform',
+    cache:false,
     url:'/contact_platform',
     templateUrl:'views/contactPlatform.view.html',
     controller:'contactPlatformController'
@@ -57,6 +67,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'userPage',
+    cache:false,
     url:'/user',
     templateUrl:'views/userPage.view.html',
     controller:'userPageController'
@@ -64,6 +75,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'spPage',
+    cache:false,
     url:'/serviceProvider',
     templateUrl:'views/serviceProviderPage.view.html',
     controller:'serviceProviderPageController'
@@ -71,6 +83,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'admin',
+    cache:false,
     url:'/admin',
     templateUrl:'views/adminPage.view.html',
     controller:'adminPageController'
@@ -78,6 +91,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'systemLogs',
+    cache:false,
     url:'/view_system_logs',
     templateUrl:'views/systemLogs.view.html',
     controller:'adminPageController'
@@ -85,6 +99,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'signupLocal',
+    cache:false,
     url:'/signup',
     templateUrl:'views/signup.view.html',
     controller:'signupController'
@@ -93,6 +108,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
  $stateProvider.state({
    name:'newsletter',
+   cache:false,
    url:'/newsletter',
    templateUrl:'views/home.view.html',
    controller:'NewsLetterController'
@@ -101,6 +117,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name: 'FAQ',
+    cache:false,
     url: '/FAQ',
     templateUrl:'views/FAQ.view.html',
     controller: 'FAQController'
@@ -108,6 +125,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name: 'service providers',
+    cache:false,
     url: '/serviceProviders',
     templateUrl:'views/serviceProviders.view.html',
     controller: 'SPsController'
@@ -115,6 +133,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name: 'service provider',
+    cache:false,
     url: '/serviceProvider',
     templateUrl:'views/serviceProvider.view.html',
     controller: 'SPController'
