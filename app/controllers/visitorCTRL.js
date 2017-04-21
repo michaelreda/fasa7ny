@@ -570,7 +570,7 @@ let visitorCTRL={
               })
           },
           getActivityById:function(req,res){
-            Activity.findOne({_id:req.params.activityID},function(err,activity){
+            Activity.findOne({_id:req.params.activityID}).populate('serviceProviderId').exec(function(err,activity){
               if(err){
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
@@ -600,6 +600,22 @@ let visitorCTRL={
                       res.send({reviews,reviewsCount});
                     }
                   })
+                }
+              })
+          },
+          getActivityReviews:function(req,res){
+            Review.find({activityId:req.body.activityID})
+            .sort({time: -1})
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send(reviews);
                 }
               })
           },

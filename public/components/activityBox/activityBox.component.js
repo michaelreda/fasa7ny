@@ -1,14 +1,18 @@
 angular.module('myapp').
 component('activityBox',{
   templateUrl:'components/activityBox/activityBox.template.html',
-  controller: function ActivityBoxController($scope,$state, $uibModal,activitySRV,$window){
+  controller: function ActivityBoxController($scope,$state, $uibModal,activitySRV,userSRV,$window){
       $scope.openActivity = function(activityID){
         $state.go("activity",{activityID:activityID})
       },
       $scope.addToWishList = function(activityId){
-        userSRV.addToWishList(activityId).success(function(){
-          console.log("added to wish list");
-        })
+        if($window.localStorage['userAccount']==undefined){
+          toastr.warning('You need to signup to add this activity to your wishlist');
+        }else{
+          userSRV.addToWishList(activityId).success(function(){
+            toastr.success('Activity added to wish list');
+          })
+        }
       }
 
       $scope.openBookingPage= function(activityID){

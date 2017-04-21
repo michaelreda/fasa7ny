@@ -159,6 +159,7 @@ Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 
 Router.get('/get_featured_activities',visitorCTRL.getFeaturedActivities);
 Router.get('/get_latest_6_reviews',visitorCTRL.getLatest6Reviews);
+Router.post('/get_activity_reviews',visitorCTRL.getActivityReviews);
 Router.get('/get_top_rated_activities',visitorCTRL.getTopRatedActivities);
 Router.get('/get_statistics', visitorCTRL.getStatistics);
 Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
