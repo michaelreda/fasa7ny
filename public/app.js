@@ -30,12 +30,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/aboutUs.view.html'
   });
 
-  $stateProvider.state({
-    name:'home',
-    url:'/',
-    templateUrl:'views/home.view.html',
-    controller:'HomeController'
-  });
+
 
   $stateProvider.state({
     name:'buttons',
@@ -165,12 +160,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller: 'SPsController'
   });
 
-  $stateProvider.state({
-    name: 'service provider',
-    url: '/serviceProvider',
-    templateUrl:'views/serviceProvider.view.html',
-    controller: 'SPController'
-  });
+
 
 
 

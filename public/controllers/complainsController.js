@@ -10,6 +10,7 @@ myapp.controller('complainsController', function($scope,complainsSRV) {
     complainsSRV.deletecomplain(id).success(function(){
       document.getElementById("row_"+i).remove();
       toastr.success('Review deleted succesfully');
+      
     })
   };
 

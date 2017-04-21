@@ -5,6 +5,25 @@
 
 <div>
   <h1>System Logs</h1>
-  <h2 style="margin-top:5px;font-weight: 700;">{{logs}}</h2>
+  
   <!--delete button-->
 </div>
+
+<table class="ui selectable sortable celled table" ng-if="logs.length != 0">
+		<thead>
+			<tr>
+				<th>Type</th>
+				<th>time </th>
+				<th>error message</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="row_{{$index}}" ng-repeat="Log in logs">
+				<td>{{Log.type}}</td>
+				<td><a >{{Log.time}}</a></td>
+                <td style="width: 130px;">{{Log.errorMessage}} </td>
+				
+			</tr>
+		</tbody>
+	</table>

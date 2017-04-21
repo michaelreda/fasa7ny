@@ -8,7 +8,7 @@ let Interest=require('../models/interest.js');
 let Review=require('../models/review.js');
 let Complain=require('../models/complain.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
-let Review=require('../models/review.js');
+
 
 let userCTRL = {
   //used to test if the user is logged or not
@@ -602,7 +602,7 @@ deleteReview: function(req,res){
   submitUserComplain:function(req,res){
     userCTRL.isUser(req,res);
     //validating
-    req.checkBody('providerId','providerId is required').isMongoId();
+   
     req.checkBody('complain','complain is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
@@ -612,6 +612,7 @@ deleteReview: function(req,res){
     //end validating
     let complain = new Complain(req.body);
     complain.userId= req.session.user._id;
+     complain.providerId= req.params.providerId;//this is for kareem to use and put in the URL
     complain.isUserToProvider= true;
     complain.save(function(err,complain){
       if(err)
