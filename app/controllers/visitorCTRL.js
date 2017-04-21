@@ -570,7 +570,7 @@ let visitorCTRL={
               })
           },
           getActivityById:function(req,res){
-            Activity.findOne({_id:req.params.activityID},function(err,activity){
+            Activity.findOne({_id:req.params.activityID}).populate('serviceProviderId').exec(function(err,activity){
               if(err){
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
