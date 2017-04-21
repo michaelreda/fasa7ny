@@ -1,6 +1,13 @@
-var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago','angular-flexslider','star-rating']);
+var myapp= angular.module("myapp", ['ui.router','geolocation','yaru22.angular-timeago','angular-flexslider','star-rating','ui.bootstrap']);
 
 myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+  $stateProvider.state({
+    name:'home',
+    url:'/',
+    templateUrl:'views/home.view.html',
+    controller:'HomeController'
+  });
+
   $stateProvider.state({
     name:'activities',
     url:'/activities/:searchInput/:day/',
@@ -16,10 +23,23 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
-    name:'home',
-    url:'/',
-    templateUrl:'views/home.view.html',
-    controller:'HomeController'
+    name:'userReviews',
+    url:'/my_reviews',
+    templateUrl:'views/userReviews.view.html',
+    controller:'UserReviewsController'
+  });
+
+  $stateProvider.state({
+    name:'userBookings',
+    url:'/my_bookings/:userID',
+    templateUrl:'views/userBookings.view.html',
+    controller:'UserBookingsController'
+  });
+  $stateProvider.state({
+    name:'booking',
+    url:'/booking/:activityID',
+    templateUrl:'views/booking.view.html',
+    controller:'BookingController'
   });
  $stateProvider.state({
     name:'logIn',
@@ -99,6 +119,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/serviceProvider.view.html',
     controller: 'SPController'
   });
+
 
 
   $urlRouterProvider.when('','/');
