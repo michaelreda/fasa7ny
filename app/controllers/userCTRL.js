@@ -8,7 +8,6 @@ let Interest=require('../models/interest.js');
 let Review=require('../models/review.js');
 let Complain=require('../models/complain.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
-let Review=require('../models/review.js');
 
 let userCTRL = {
   //used to test if the user is logged or not
@@ -20,8 +19,17 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getActivitiesToCompare:function(req, res){
-    //userCTRL.isUser(req,res);
-    Activity.findOne({_id: req.params.activity1ID},function(err,activity1){
+    userCTRL.isUser(req,res);
+    //validating
+    req.checkBody('activity1ID','activity1ID is required').isMongoId();
+    req.checkBody('activity2ID','activity2ID is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
 
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -29,7 +37,7 @@ let userCTRL = {
       }else{
         if(!activity1)
         res.send("activity 1 not found");
-        Activity.findOne({_id: req.params.activity2ID},function(err,activity2){
+        Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -47,15 +55,23 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getServiceProviderToCompare:function(req, res){
-  
-    ServiceProvider.findOne({_id: req.params.SP1ID},function(err,SP1){
+    //validating
+    req.checkBody('SP1ID','SP1ID is required').isMongoId();
+    req.checkBody('SP2ID','SP2ID is required').isMongoId();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
 
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err.message);
       }else{
 
-        ServiceProvider.findOne({_id: req.params.SP2ID},function(err,SP2){
+        ServiceProvider.findOne({_id: req.body.SP2ID},function(err,SP2){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);

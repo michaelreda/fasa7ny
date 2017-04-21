@@ -74,60 +74,56 @@ let visitorCTRL={
     //tested
     filterActivitiesBy:function(req, res){
       req.session.j=1;
-      if(req.params.filter=="price")
+      if(req.body.filter=="price")
       {
-        console.log(req.params.value);
-        Activity.$where('this.prices[0].price > parseInt('+req.params.value+')').limit(10).exec(function(err,activities){
+        Activity.find({ price: req.body.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            res.send({activities});
           }
         })
-      } else 	if(req.params.filter=="offer")
+      } else 	if(req.body.filter=="offer")
       {
-        console.log("okokokok");
-        Activity.find({isOffer: 1}).limit(10).exec(function(err,activities){
+        Activity.find({isOffer: req.body.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            res.send({activities});
           }
         })
-      }else
-      // if(req.body.filter=="location")
-      // {
-      //   Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
-      //     if(err){
-      //       globalCTRL.addErrorLog(err.message);
-      //       res.send(err.message);
-      //     }else {
-      //       res.send({activities});
-      //     }
-      //   })
-      // }
-      // else
-      	if(req.params.filter=="theme")
+      }else 	if(req.body.filter=="location")
       {
-        Activity.find({theme: req.params.value}).limit(10).exec(function(err,activities){
+        Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            res.send({activities});
           }
         })
       }
-      else 	if(req.params.filter=="rating")
+      else 	if(req.body.filter=="theme")
       {
-        Activity.$where('this.rating >' + req.params.value).limit(10).exec(function(err,activities){
+        Activity.find({theme: req.body.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            res.send({activities});
+          }
+        })
+      }
+      else 	if(req.body.filter=="rating")
+      {
+        Activity.find({rating: req.body.value}).limit(10).exec(function(err,activities){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
+          }else {
+            res.send({activities});
           }
         })
       }else {
