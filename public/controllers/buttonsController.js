@@ -6,7 +6,19 @@ myapp.controller('buttonsController', function($scope,ButtonsSRV) {
         ButtonsSRV.applyGoldenSp().success(function(data){
       console.log(data);
     })
-  }
+  },
+
+$scope.viewAnalytics = function(){
+   ButtonsSRV.getAnalysis().success(function(data){
+      console.log(data.topU)
+        $scope.topActivity=data.topActivity;
+        $scope.topSP=data.topSP;
+        $scope.topU=data.topU;
+    })
+}       
+
+
+  
 
    
 

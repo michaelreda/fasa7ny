@@ -80,6 +80,7 @@ Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 ////////////////////adminCTRL//////////////////
 
 
+
 // view bookings
 Router.get('/view_bookings', adminCTRL.viewBookings);
 

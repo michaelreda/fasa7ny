@@ -54,16 +54,124 @@
 
 <div ng-if="(activity1!= undefined) || (serviceProvider1!= undefined) ">
     <h1>comparison</h1>
+    <br>
     <div ng-if="activity1!= undefined">
     <h2>Activities</h2>
-    <h3 style="margin-top: 5px;font-weight: 700;">{{activity1}}</h3>
-    <h3 style="margin-top: 5px;font-weight: 700;">{{activity2}}</h3>
+
+<!--First activity -->
+    <div>
+		<div>
+			<center>
+				<ul class="price_nav wow bounceIn">
+					<li >
+						<h2 class="price_heading">{{activity1.title}}</h2>
+						<h3>Type: {{activity1.type}}</h3>	
+            <h3>Duration in Minutes: {{activity1.durationInMinutes}}</h3>	
+            <h3>Maximum Age: {{activity1.maxAge}}</h3>	
+            <h3>Minimum number of clients: {{activity1.minClientNumber}}</h3>	
+            <h3>Maximum number of clients: {{activity1.maxClientNumber}}</h3>	
+            <h3>Rating: {{activity1.rating}}</h3>	
+            <h3>Location: {{activity1.location}}</h3>	
+            <h3>Theme: {{activity1.theme}}</h3>	
+            
+					</li>
+				</ul>
+			</center>
+
+<!--Second activity -->
+ 
+		
+			<center>
+				<ul class="price_nav wow bounceIn">
+					<li >
+						<h2 class="price_heading">{{activity2.title}}</h2>
+						<h3>Type: {{activity1.type}}</h3>	
+            <h3>Duration in Minutes: {{activity2.durationInMinutes}}</h3>	
+            <h3>Maximum Age: {{activity2.maxAge}}</h3>	
+            <h3>Minimum number of clients: {{activity2.minClientNumber}}</h3>	
+            <h3>Maximum number of clients: {{activity2.maxClientNumber}}</h3>	
+            <h3>Rating: {{activity2.rating}}</h3>	
+            <h3>Location: {{activity2.location}}</h3>	
+            <h3>Theme: {{activity2.theme}}</h3>	
+					</li>
+				</ul>
+			</center>
+		</div>
+	</div>
+
+
+
+
+
+
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div ng-if="serviceProvider1!= undefined">
     <h2>Service providers</h2>
-    <h3 style="margin-top: 5px;font-weight: 700;">{{serviceProvider1}}</h3>
-    <h3 style="margin-top: 5px;font-weight: 700;">{{serviceProvider2}}</h3>
-    </div>
+  
+    
+
+    <!--First activity -->
+    <div>
+		<div>
+			<center>
+				<ul class="price_nav wow bounceIn">
+					<li >
+						<h2 class="price_heading">{{serviceProvider1.title}}</h2>
+						<h3>Description: {{serviceProvider1.description}}</h3>	
+            <h3>Type of Entertainment: {{serviceProvider1.entertainmentType}}</h3>	
+            <h3>Main Branch: {{serviceProvider1.branches[0]}}</h3>	
+            <h3>Mobile Number: {{serviceProvider1.contactMobile[0]}}</h3>	
+            <h3>Golden Status: {{serviceProvider1.isGolden}}</h3>	
+            <h3>Rating: {{serviceProvider1.rating}}</h3>	
+           
+					</li>
+				</ul>
+			</center>
+
+<!--Second activity -->
+ 
+		
+			<center>
+				<ul class="price_nav wow bounceIn">
+					<li >
+						<h2 class="price_heading">{{serviceProvider2.title}}</h2>
+						<h3>Description: {{serviceProvider2.description}}</h3>	
+            <h3>Type of Entertainment: {{serviceProvider2.entertainmentType}}</h3>	
+            <h3>Main Branch: {{serviceProvider2.branches[0]}}</h3>	
+            <h3>Mobile Number: {{serviceProvider2.contactMobile[0]}}</h3>	
+            <h3>Golden Status: {{serviceProvider2.isGolden}}</h3>	
+            <h3>Rating: {{serviceProvider2.rating}}</h3>	
+           
+					</li>
+				</ul>
+			</center>
+
+
+
+      
+		</div>
+	</div>
+  </div>
+
+
+
+
+
 </div>
 
 <br>

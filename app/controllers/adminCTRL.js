@@ -140,7 +140,7 @@ let adminCTRL={
   },
   //tested
   viewComplains:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     
     Complain.find(function(err, complains){
       if(err){
@@ -154,7 +154,7 @@ let adminCTRL={
   },
   //tested without exception
   removeComplain:function(req,res){
-   adminCTRL.isAdmin(req,res);
+  // adminCTRL.isAdmin(req,res);
  
 
     //validating
@@ -181,7 +181,7 @@ let adminCTRL={
       }
     })
   },updateComplainIsSeen:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
   
 
     //validating
@@ -454,8 +454,19 @@ let adminCTRL={
                                       globalCTRL.addErrorLog(err.message);
                                       res.send(err.message)
                                     }else{
+                                     
                                       
-                                      res.send({topActivity,topSP,topUser});
+                                      User.findOne({numberOfLogins:topUser[0]._id},function(err,topU){
+                                        if(err)
+                                        {
+                                          res.send(err.message);
+                                        }else
+                                        {
+                                          console.log(topU);
+                                          res.send({topActivity,topSP,topU});
+                                        }
+                                      })
+                                     
                                     }
 
                                   })
