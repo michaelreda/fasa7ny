@@ -54,7 +54,7 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
     $uibModalInstance.close();
   };
 
-  $scope.cancel = function () {
+  $scope.cancelLogin = function () {
     $uibModalInstance.dismiss('cancel');
   };
 })
