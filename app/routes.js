@@ -26,17 +26,17 @@ Router.get('/',function(req,res){
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
-Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
-Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
+Router.post('/second_choice', userCTRL.getSecondListOfChoices);
+Router.post('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
+Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 
 //2.5 user add his interests
 Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
 // for testing
-
-
+Router.get('/view_complains', userCTRL.viewComplains);
+Router.get('/view_users', userCTRL.findUsers);
 
 Router.get('/view_usernames', userCTRL.findUsernames);
 
@@ -61,7 +61,6 @@ Router.post('/update_my_profile', userCTRL.updateMyProfile);
 Router.post('/delete_my_profile', userCTRL.deleteMyProfile);
 Router.post('/update_review', userCTRL.updateReview);
 Router.post('/delete_review', userCTRL.deleteReview);
-
 Router.get('/view_my_reviews', userCTRL.viewMyReviews);
 Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
 Router.post('/cancel_booking', userCTRL.cancelBooking);
@@ -80,7 +79,6 @@ Router.post('/complain_status', userCTRL.viewStatusOfComplain);
 ////////////////////adminCTRL//////////////////
 
 
-
 // view bookings
 Router.get('/view_bookings', adminCTRL.viewBookings);
 
@@ -91,12 +89,8 @@ Router.post('/ban_forever', adminCTRL.banForever);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/update_ban_status', adminCTRL.updateBanStatus);
-
 Router.get('/view_complains', adminCTRL.viewComplains);
 Router.post('/remove_complain', adminCTRL.removeComplain);
-Router.post('/update_isSeen', adminCTRL.updateComplainIsSeen);
-
-
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
 
@@ -142,7 +136,7 @@ Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
-Router.get('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
 Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
 
@@ -170,7 +164,7 @@ Router.get('/get_statistics', visitorCTRL.getStatistics);
 Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.get('/get_filtered_activities/:filter/:value', visitorCTRL.filterActivitiesBy);
+Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
 Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
 Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 

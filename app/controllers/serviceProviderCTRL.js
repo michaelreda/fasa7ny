@@ -446,8 +446,11 @@ let ServiceProviderCTRL = {
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
-        }else       
+        }else
+        if(status.nModified!=0)
         res.send('should redirect to serviceProvider home page');
+        else
+        res.send('sp not found');
 
       });
     },
