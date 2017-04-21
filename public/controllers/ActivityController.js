@@ -8,6 +8,11 @@ myapp.controller('ActivityController', function($scope,$stateParams,activitySRV)
         console.log($scope.activity);
         $scope.media=data.activity.media;
       })
+
+      activitySRV.getActivityReviews($stateParams.activityID)
+      .success(function(data){
+        $scope.reviews=data;
+      })
   }
 
   var rate=0;

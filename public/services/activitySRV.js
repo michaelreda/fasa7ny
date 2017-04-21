@@ -5,6 +5,9 @@ myapp.factory('activitySRV', function($http) {
     },
     getUsernames:function(){
       return $http.get('/view_usernames');
+    },
+    getActivityReviews:function(activityID){
+      return $http.post('/get_activity_reviews',{activityID});
     }
   };
 });
