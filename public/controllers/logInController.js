@@ -1,5 +1,5 @@
 myapp.controller('logInController', function($window,$scope,logInSRV, $state,$uibModal){
-
+  //$scope.logIn not used now
   $scope.logIn = function () {
     logInSRV.login($scope.u, $scope.p).success(function(data){
       if(!data.userAccount){
@@ -26,7 +26,7 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
   $scope.loginModal = function(){
     $uibModal.open({
       templateUrl: 'loginModal.html',
-      controller: 'loginModalController',
+      controller: 'loginModalController'
     })
     .result.then(
       function () {
@@ -40,18 +40,23 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
 
 })
 
-.controller("loginModalController", function ($uibModalInstance,$window,$scope,logInSRV, $state,activitySRV) {
-  $scope.selectedUsername = undefined;
-  activitySRV.getUsernames().success(function(data){
-      $scope.usernames =[];
-      for(var i=0;i<data.usernames.length;i++){
-        $scope.usernames[i] = data.usernames[i].userName;
+.controller("loginModalController", function ($uibModalInstance,$window,$scope,logInSRV, $state) {
+
+  $scope.login = function () {
+    logInSRV.login($scope.username, $scope.password).success(function(data){
+      if(!data.userAccount){
+        console.log('Not logged in :((  look at logincontroller');
+        toastr.error('please try again', {timeOut: 500000});
       }
-      console.log($scope.usernames);
-  })
-  $scope.ok = function () {
-    alert($scope.selectedUsername);
-    $uibModalInstance.close();
+      else {
+        $window.localStorage['userAccount'] = angular.toJson(data.userAccount);
+        toastr.success('logged in successfully');
+        $state.go("userPage");
+        $window.localStorage['userProfile'] = angular.toJson(data.userProfile);
+        $uibModalInstance.close();
+    }
+    });
+
   };
 
   $scope.cancelLogin = function () {
