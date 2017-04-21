@@ -7,10 +7,10 @@ component('activityBox',{
       },
       $scope.addToWishList = function(activityId){
         if($window.localStorage['userAccount']==undefined){
-          toastr.warning('you need to signup to add this activity to your wishlist');
+          toastr.warning('You need to signup to add this activity to your wishlist');
         }else{
           userSRV.addToWishList(activityId).success(function(){
-            console.log("added to wish list");
+            toastr.success('Activity added to wish list');
           })
         }
       }
