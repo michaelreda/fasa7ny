@@ -51,8 +51,18 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
       else {
         $window.localStorage['userAccount'] = angular.toJson(data.userAccount);
         toastr.success('logged in successfully');
-        $state.go("userPage");
-        $window.localStorage['userProfile'] = angular.toJson(data.userProfile);
+        if(data.type==0){
+          $state.go("userPage");
+          $window.localStorage['userProfile'] = angular.toJson(data.userProfile);
+        }
+        if(data.type==1){
+          $state.go("spPage");
+          $window.localStorage['spProfile'] = angular.toJson(data.spProfile);
+        }
+        if(data.type==3){
+          $state.go("admin");
+          $window.localStorage['adminProfile'] = angular.toJson(data.adminProfile);
+        }
         $uibModalInstance.close();
     }
     });
