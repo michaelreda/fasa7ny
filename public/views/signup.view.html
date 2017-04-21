@@ -1,0 +1,30 @@
+
+<!-- Basic signup info -->
+<div ng-controller= "signupController" class="container">
+	<div class="row" style="margin-top:40px;">
+		<div class="col-md-6">
+    	<div class="well well-sm">
+
+      <!-- first step signup -->
+            <div ng-show="isLoggedIn() == false">
+                <div class="col-md-12">
+                    <local-signup></local-signup>
+                </div>
+            </div>
+      <!-- user second step signup -->
+            <div ng-show="isUser() == true" >
+                <div class="col-md-12">
+                    <user-signup ></user-signup>
+                </div>
+            </div>
+      <!-- sp second step signup -->
+            <div ng-show="isUser() == false">
+                <div class="col-md-12">
+                    <sp-signup ></sp-signup>
+                </div>
+            </div>
+        </div>
+
+		</div>
+	</div>
+</div>

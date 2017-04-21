@@ -1,12 +1,81 @@
 angular.module('myapp').
 component('activityBox',{
   templateUrl:'components/activityBox/activityBox.template.html',
-  controller: function ActivityBoxController($scope,$state){
+  controller: function ActivityBoxController($scope,$state, $uibModal,activitySRV,$window){
       $scope.openActivity = function(activityID){
         $state.go("activity",{activityID:activityID})
+      },
+      $scope.addToWishList = function(activityId){
+        userSRV.addToWishList(activityId).success(function(){
+          console.log("added to wish list");
+        })
       }
+
+      $scope.openBookingPage= function(activityID){
+        activitySRV.getActivityById(activityID)
+        .success(function(data){
+          var days=[0,1,2,3,4,5,6];
+          activity = data.activity;
+          for(var i=0;i<activity.timings.length;i++){
+            switch(activity.timings[i].day.toUpperCase()){
+              case "SUNDAY": days[0]= -1; break;
+              case "MONDAY": days[1]= -1; break;
+              case "TUESDAY": days[2]= -1; break;
+              case "WEDNESDAY": days[3]= -1; break;
+              case "THURSDAY": days[4]= -1; break;
+              case "FRIDAY": days[5]= -1; break;
+              case "SATURDAY": days[6]= -1; break;
+            }
+          }
+          $window.localStorage['days']=days;
+          $state.go("booking",{activityID:activityID})
+        })
+
+      }
+      $scope.showSendGiftModal = function(){
+        $uibModal.open({
+          templateUrl: 'sendGiftModal.html',
+          controller: 'sendGiftModalController',
+        })
+        .result.then(
+          function () {
+          //  alert("OK");
+          },
+          function () {
+          //  alert("Cancel");
+          }
+        );
+      }
+
   },
    bindings: {
      data: '='
    }
 })
+
+.controller("sendGiftModalController", function ($scope, $uibModalInstance,activitySRV) {
+  $scope.selectedUsername = undefined;
+  activitySRV.getUsernames().success(function(data){
+      $scope.usernames =[];
+      for(var i=0;i<data.usernames.length;i++){
+        $scope.usernames[i] = data.usernames[i].userName;
+      }
+      console.log($scope.usernames);
+  })
+  $scope.ok = function () {
+    alert($scope.selectedUsername);
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
+
+.filter('contains', function() { //checks if selected userName is in usernames array
+  return function (array, needle) {
+    if(needle != undefined)
+      return array.indexOf(needle) >= 0;
+    return -1;
+  };
+});
