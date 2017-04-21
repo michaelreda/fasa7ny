@@ -1,11 +1,12 @@
 let Account = require('../models/account.js');
 let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
-let Activity = require('../models/activity');
+let Activity = require('../models/activity.js');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
-let Interest=require('../models/interest');
-let Complain=require('../models/complain');
+let Interest=require('../models/interest.js');
+let Review=require('../models/review.js');
+let Complain=require('../models/complain.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
 
 let userCTRL = {
@@ -445,7 +446,7 @@ rateReviewActivity: function(req,res){
 updateReview: function(req,res){
   userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   req.checkBody('review','review is not empty').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
@@ -453,7 +454,7 @@ updateReview: function(req,res){
     return;
   }
   //end validating
-  Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err,status){
+  Review.update({_id:req.body.reviewId},{$set:{review:req.body.review}}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err);
@@ -472,14 +473,14 @@ updateReview: function(req,res){
 deleteReview: function(req,res){
   userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
     return;
   }
   //end validating
-  Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
+  Review.findOne({_id:req.body.reviewId}).remove().exec(function(err){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err);
@@ -865,6 +866,17 @@ deleteReview: function(req,res){
         res.send(err)
       }else{
         res.send({users})
+      }
+    })
+  },
+  //used to find accounts by a part of the username
+  findUsernames: function(req,res){
+    Account.find({type:0}).select('userName').exec(function(err,usernames){
+      if(err)
+      {
+        res.send(err.message)
+      }else{
+        res.send({usernames})
       }
     })
   }

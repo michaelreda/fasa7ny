@@ -38,6 +38,8 @@ Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
 Router.get('/view_complains', userCTRL.viewComplains);
 Router.get('/view_users', userCTRL.findUsers);
 
+Router.get('/view_usernames', userCTRL.findUsernames);
+
 //2.13 contact platform
 Router.post('/contact_platform', userCTRL.contactPlatform);
 
