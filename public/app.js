@@ -26,7 +26,10 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+<<<<<<< HEAD
 
+=======
+>>>>>>> waseem-and-mariam
     name:'userReviews',
     url:'/my_reviews',
     cache:false,
@@ -49,6 +52,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'BookingController'
 
   });
+<<<<<<< HEAD
  $stateProvider.state({
     name:'logIn',
     cache:false,
@@ -104,8 +108,83 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/signup.view.html',
     controller:'signupController'
  });
+=======
+
+  $stateProvider.state({
+     name:'logIn',
+     cache:false,
+     url:'/login',
+     templateUrl:'views/loginPage.view.html',
+     controller:'logInController'
+   });
+
+   $stateProvider.state({
+     name:'contactPlatform',
+     cache:false,
+     url:'/contact_platform',
+     templateUrl:'views/contactPlatform.view.html',
+     controller:'contactPlatformController'
+   });
+
+   $stateProvider.state({
+     name:'userPage',
+     cache:false,
+     url:'/user',
+     templateUrl:'views/userPage.view.html',
+     controller:'userPageController'
+   });
+
+   $stateProvider.state({
+     name:'spPage',
+     cache:false,
+     url:'/serviceProvider',
+     templateUrl:'views/serviceProviderPage.view.html',
+     controller:'serviceProviderPageController'
+   });
+
+   $stateProvider.state({
+     name:'admin',
+     cache:false,
+     url:'/admin',
+     templateUrl:'views/adminPage.view.html',
+     controller:'adminPageController'
+   });
+
+   $stateProvider.state({
+     name:'systemLogs',
+     cache:false,
+     url:'/view_system_logs',
+     templateUrl:'views/systemLogs.view.html',
+     controller:'systemLogsController'
+      });
+
+   $stateProvider.state({
+     name:'signupLocal',
+     cache:false,
+     url:'/signup',
+     templateUrl:'views/signup.view.html',
+     controller:'signupController'
+  });
 
 
+  $stateProvider.state({
+    name:'newsletter',
+    cache:false,
+    url:'/newsletter',
+    templateUrl:'views/home.view.html',
+    controller:'NewsLetterController'
+  });
+>>>>>>> waseem-and-mariam
+
+   $stateProvider.state({
+     name: 'FAQ',
+     cache:false,
+     url: '/FAQ',
+     templateUrl:'views/FAQ.view.html',
+     controller: 'FAQController'
+   });
+
+<<<<<<< HEAD
  $stateProvider.state({
    name:'newsletter',
    cache:false,
@@ -123,9 +202,35 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     url: '/FAQ',
     templateUrl:'views/FAQ.view.html',
     controller: 'FAQController'
-  });
+=======
+   $stateProvider.state({
+     name: 'service providers',
+     cache:false,
+     url: '/serviceProviders',
+     templateUrl:'views/serviceProviders.view.html',
+     controller: 'SPsController'
+   });
+
+   $stateProvider.state({
+     name: 'service provider',
+     cache:false,
+     url: '/serviceProvider',
+     templateUrl:'views/serviceProvider.view.html',
+     controller: 'SPController'
+   });
 
   $stateProvider.state({
+    name:'aboutUs',
+     cache:false,
+    url:'/aboutUs',
+    templateUrl:'views/aboutUs.view.html'
+>>>>>>> waseem-and-mariam
+  });
+
+
+
+  $stateProvider.state({
+<<<<<<< HEAD
     name: 'service providers',
     cache:false,
     url: '/serviceProviders',
@@ -139,8 +244,46 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     url: '/serviceProvider',
     templateUrl:'views/serviceProvider.view.html',
     controller: 'SPController'
+=======
+    name:'buttons',
+     cache:false,
+    url:'/buttons',
+    templateUrl:'views/buttons.view.html',
+    controller:'buttonsController'
   });
 
+  $stateProvider.state({
+    name:'analysis',
+     cache:false,
+    url:'/adminAnalysis',
+    templateUrl:'views/analysis.view.html',
+    controller:'analysisController'
+  });
+
+    $stateProvider.state({
+    name:'filteredActivities',
+     cache:false,
+    url:'/filteredActivities/:filter/:value/',
+    templateUrl:'views/activities.view.html',
+    controller:'ActivitiesController'
+>>>>>>> waseem-and-mariam
+  });
+
+      $stateProvider.state({
+    name:'compare',
+    url:'/comparison',
+     cache:false,
+    templateUrl:'views/compare.view.html',
+    controller:'compareController'
+  });
+
+   $stateProvider.state({
+    name:'adminComplainPanel',
+    url:'/complains',
+     cache:false,
+    templateUrl:'views/complains.view.html',
+    controller:'complainsController'
+  });
 
 
   $urlRouterProvider.when('','/');
