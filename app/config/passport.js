@@ -1,4 +1,6 @@
 var LocalStrategy   = require('passport-local').Strategy;
+var globalCTRL   = require('../controllers/globalCTRL.js');
+
 
 // load up the user model
 var Account = require('../models/account.js');
@@ -49,8 +51,10 @@ module.exports = function(passport) {
                 console.log(newAccount);
 
                 newAccount.save(function(err) {
-                    if (err)
-                        throw err;
+                    if (err){
+                        globalCTRL.addErrorLog(err);
+                        return done(err);
+                      }
                     return done(null, newAccount);
                     //redirect to different views according to type
                 });

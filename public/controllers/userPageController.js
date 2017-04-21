@@ -1,4 +1,4 @@
-myapp.controller('userPageController', function($scope,logInSRV, $state){
+myapp.controller('userPageController', function($scope, $state){
 
-
+  
 });

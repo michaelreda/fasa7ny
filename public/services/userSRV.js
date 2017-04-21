@@ -11,6 +11,9 @@ myapp.factory('userSRV', function($http) {
     changePrivacy: function(privacyLevel){
       return $http.post('/change_privacy',{privacy:privacyLevel})
     },
+    sumbitInterests: function(interests) {
+      return $http.post('/add_user_interest',{'interests':interests})
+    },
     viewReviews: function() {
       return $http.get('/view_my_reviews');
     },
@@ -23,6 +26,7 @@ myapp.factory('userSRV', function($http) {
     userHistoryBookings:function(){
       return $http.post('/view_history_bookings');
     }
+
   };
 });
 

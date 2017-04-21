@@ -84,8 +84,14 @@ let globalCTRL ={
 
   addErrorLog: function(errMsg){
     let log = new Log();
-    log.errorMessage= "Error: "+errMsg;
-    log.save();
+    log.errorMessage= "Errors: "+errMsg.message;
+    log.type= "Name: "+errMsg.name;
+    log.save(function (err) {
+      if(err)
+      console.log(err);
+      else
+      console.log("log inserted xD");
+    });
   }
 
 }
