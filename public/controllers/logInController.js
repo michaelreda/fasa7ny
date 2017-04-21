@@ -70,6 +70,7 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
   };
   $scope.signupStatechange = function(){
     $state.go("signupLocal");
+    $uibModalInstance.close();
     }
 
   $scope.cancelLogin = function () {
