@@ -87,7 +87,8 @@
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
       <!-- when logged out -->
           <!-- login and signup -->
-          <li class="active"><a href="/#/login" ng-show = "isLoggedIn() == false">Log in</a></li>
+          <!-- href="/#/login" -->
+          <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
         </ul>
@@ -140,6 +141,26 @@
 
     <ui-view></ui-view>
 
+
+    <!-- login modal -->
+    <script type="text/ng-template" id="loginModal.html">
+        <div class="modal-header">
+          <h3 class="modal-title">Send a gift for your beloved ones ! <i class="fa fa-gift" aria-hidden="true"></i></h3>
+        </div>
+        <form>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="usr">Send gift to:</label>
+              <input type="text" class="form-control" ng-model="selectedUsername" placeholder="Username"
+              uib-typeahead="username for username in usernames | filter:$viewValue | limitTo:8">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" ng-if="usernames | contains:selectedUsername" ng-click="ok()" style="margin-bottom:0px">Send Gift <i class="fa fa-gift" aria-hidden="true"></i></button>
+            <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+          </div>
+        </form>
+    </script>
 
 
 

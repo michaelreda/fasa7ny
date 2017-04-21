@@ -1,4 +1,4 @@
-myapp.controller('logInController', function($window,$scope,logInSRV, $state){
+myapp.controller('logInController', function($window,$scope,logInSRV, $state,$uibModal){
 
   $scope.logIn = function () {
     logInSRV.login($scope.u, $scope.p).success(function(data){
@@ -22,4 +22,39 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state){
     }
     });
   }
-});
+
+  $scope.loginModal = function(){
+    $uibModal.open({
+      templateUrl: 'loginModal.html',
+      controller: 'loginModalController',
+    })
+    .result.then(
+      function () {
+      //  alert("OK");
+      },
+      function () {
+      //  alert("Cancel");
+      }
+    );
+  }
+
+})
+
+.controller("loginModalController", function ($uibModalInstance,$window,$scope,logInSRV, $state,activitySRV) {
+  $scope.selectedUsername = undefined;
+  activitySRV.getUsernames().success(function(data){
+      $scope.usernames =[];
+      for(var i=0;i<data.usernames.length;i++){
+        $scope.usernames[i] = data.usernames[i].userName;
+      }
+      console.log($scope.usernames);
+  })
+  $scope.ok = function () {
+    alert($scope.selectedUsername);
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
