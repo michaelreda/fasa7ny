@@ -19,7 +19,7 @@ angular.module('myapp').
             console.log(lat+","+long);
 
             var mapOptions = {
-                zoom: 12,
+                zoom: (self.activity)?8:12,
                 center: new google.maps.LatLng(lat, long),
                 scrollwheel: false,
                 mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -67,7 +67,6 @@ angular.module('myapp').
 
           }
           if(self.activity == undefined){
-            console.log("hi2");
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -88,7 +87,6 @@ angular.module('myapp').
               }
           })
         }else{
-          console.log("hi");
           var lat= parseFloat((self.activity.location.split(","))[0]);
           var long= parseFloat((self.activity.location.split(","))[1]);
           activities.push({
@@ -123,7 +121,7 @@ angular.module('myapp').
           $scope.markers = [];
 
             var mapOptions = {
-                zoom: 12,
+                zoom: (self.activity)?8:12,
                 center: new google.maps.LatLng(lat, long),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             }
