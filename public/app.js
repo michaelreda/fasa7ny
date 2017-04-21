@@ -15,6 +15,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
+
+
   $stateProvider.state({
     name:'activity',
     url:'/activity/:activityID',
@@ -23,6 +25,54 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'aboutUs',
+    url:'/aboutUs',
+    templateUrl:'views/aboutUs.view.html'
+  });
+
+  $stateProvider.state({
+    name:'home',
+    url:'/',
+    templateUrl:'views/home.view.html',
+    controller:'HomeController'
+  });
+
+  $stateProvider.state({
+    name:'buttons',
+    url:'/buttons',
+    templateUrl:'views/buttons.view.html',
+    controller:'buttonsController'
+  });
+
+  $stateProvider.state({
+    name:'analysis',
+    url:'/adminAnalysis',
+    templateUrl:'views/analysis.view.html',
+    controller:'analysisController'
+  });
+
+    $stateProvider.state({
+    name:'filteredActivities',
+    url:'/filteredActivities/:filter/:value/',
+    templateUrl:'views/activities.view.html',
+    controller:'ActivitiesController'
+  });
+
+      $stateProvider.state({
+    name:'compare',
+    url:'/comparison',
+    templateUrl:'views/compare.view.html',
+    controller:'compareController'
+  });
+
+   $stateProvider.state({
+    name:'adminComplainPanel',
+    url:'/complains',
+    templateUrl:'views/complains.view.html',
+    controller:'complainsController'
+  });
+  
+   $stateProvider.state({
     name:'userReviews',
     url:'/my_reviews',
     templateUrl:'views/userReviews.view.html',
@@ -35,12 +85,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
+  
   $stateProvider.state({
     name:'booking',
     url:'/booking/:activityID',
     templateUrl:'views/booking.view.html',
     controller:'BookingController'
   });
+  
  $stateProvider.state({
     name:'logIn',
     url:'/login',
@@ -123,6 +175,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
 
   $urlRouterProvider.when('','/');
+
+
 
 }]);
 
