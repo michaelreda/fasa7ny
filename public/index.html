@@ -68,12 +68,20 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
-
+          <!-- home button -->
           <li class="active"><a href="/">Home</a></li>
+      <!-- when logged in -->
+          <!-- profile management -->
+          <li class="active dropdown"  ng-show = "isLoggedIn() == true"><a href="" >My fasa7ny
+             <span class="caret"></span></a><ul class="dropdown-menu">
+            <!-- go to profile -->
+            <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
+          </ul></li>
           <!-- logout button -->
-
-          <li class="active"><a href="/#/login" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+      <!-- when logged out -->
+          <!-- login and signup -->
+          <li class="active"><a href="/#/login" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
         </ul>
