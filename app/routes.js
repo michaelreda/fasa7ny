@@ -35,8 +35,8 @@ Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
 // for testing
-Router.get('/view_complains', userCTRL.viewComplains);
-Router.get('/view_users', userCTRL.findUsers);
+
+
 
 //2.13 contact platform
 Router.post('/contact_platform', userCTRL.contactPlatform);
@@ -59,6 +59,7 @@ Router.post('/update_my_profile', userCTRL.updateMyProfile);
 Router.post('/delete_my_profile', userCTRL.deleteMyProfile);
 Router.post('/update_review', userCTRL.updateReview);
 Router.post('/delete_review', userCTRL.deleteReview);
+
 Router.get('/view_my_reviews', userCTRL.viewMyReviews);
 Router.get('/view_history_bookings', userCTRL.viewHistoryBookings);
 Router.post('/cancel_booking', userCTRL.cancelBooking);
@@ -89,8 +90,12 @@ Router.post('/ban_forever', adminCTRL.banForever);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/update_ban_status', adminCTRL.updateBanStatus);
+
 Router.get('/view_complains', adminCTRL.viewComplains);
 Router.post('/remove_complain', adminCTRL.removeComplain);
+Router.post('/update_isSeen', adminCTRL.updateComplainIsSeen);
+
+
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_messages', adminCTRL.viewChatMessages);
 

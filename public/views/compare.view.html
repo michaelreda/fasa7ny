@@ -2,15 +2,20 @@
  <br>
  <br>
  <br>
-
+<div ng-if="activity1== undefined && serviceProvider1== undefined " >
  <h1>Choose your First choice from:</h1>
-<div >
+<div ng-if="selectedActivities== undefined ">
   <select ng-model="$parent.selectedServiceProvider" ng-options="item._id as item.title for item in serviceProviders">
     <option value="">Select Service Provider</option>
 </select>  
 </div>
 
+
+<div ng-if="selectedServiceProvider== undefined && selectedActivities== undefined "  >
  <h1>OR</h1>
+</div>
+
+
 <div  ng-if="selectedServiceProvider== undefined " >
   <select ng-model="$parent.selectedActivities"  ng-options="item._id as item.title for item in Activities">
     <option value="">Select Activity</option>
@@ -19,8 +24,8 @@
 
 <br>
 <br>
-<div>
-<!--<div ng-if="selectedServiceProvider!= undefined ">-->
+
+<div ng-if="selectedServiceProvider!= undefined ">
  <h1>Compare with:</h1>
 <div >
   <select ng-model="$parent.selectedServiceProvider2"    ng-options="item._id as item.title for item in serviceProviders">
@@ -30,8 +35,8 @@
 </div>
 </div>
 
-<div>
- <!--<div ng-if="$parent.selectedActivities!= undefined">-->
+
+ <div ng-if="selectedActivities!= undefined">
  <h1>Compare with:</h1>
  
 <div >
@@ -41,6 +46,26 @@
 <button ng-click="compareActivities(selectedActivities,selectedActivities2)">compare</button> 
 </div>
 </div>
+
+</div>
+
+
+
+
+<div ng-if="(activity1!= undefined) || (serviceProvider1!= undefined) ">
+    <h1>comparison</h1>
+    <div ng-if="activity1!= undefined">
+    <h2>Activities</h2>
+    <h3 style="margin-top: 5px;font-weight: 700;">{{activity1}}</h3>
+    <h3 style="margin-top: 5px;font-weight: 700;">{{activity2}}</h3>
+    </div>
+    <div ng-if="serviceProvider1!= undefined">
+    <h2>Service providers</h2>
+    <h3 style="margin-top: 5px;font-weight: 700;">{{serviceProvider1}}</h3>
+    <h3 style="margin-top: 5px;font-weight: 700;">{{serviceProvider2}}</h3>
+    </div>
+</div>
+
 <br>
 <br>
 

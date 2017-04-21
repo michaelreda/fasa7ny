@@ -141,16 +141,22 @@ let adminCTRL={
   //tested
   viewComplains:function(req,res){
     adminCTRL.isAdmin(req,res);
+    
     Complain.find(function(err, complains){
-      if(err)
+      if(err){
       res.send(err.message);
-      else
+      }
+      else{
+        
       res.send(complains);
+      }
     })
   },
   //tested without exception
   removeComplain:function(req,res){
-    adminCTRL.isAdmin(req,res);
+   adminCTRL.isAdmin(req,res);
+ 
+
     //validating
     req.checkBody('complainId','complainId is required').notEmpty();
     var errors = req.validationErrors();
@@ -172,6 +178,26 @@ let adminCTRL={
             res.send('complain deleted');
           })
         }
+      }
+    })
+  },updateComplainIsSeen:function(req,res){
+    adminCTRL.isAdmin(req,res);
+  
+
+    //validating
+    req.checkBody('complainId','complainId is required').notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+      res.send(errors);
+      return;
+    }
+    //end validating
+    Complain.update({_id:req.body.complainId},{$set:{isSeen:true}}).exec(function(err,val){
+      if(err){
+        globalCTRL.addErrorLog(err.message);
+      }
+      else{
+        res.send(val);
       }
     })
   },

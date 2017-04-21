@@ -7,6 +7,7 @@ let Booking=require('../models/booking.js');
 let Interest=require('../models/interest');
 let Complain=require('../models/complain');
 let globalCTRL=require('../controllers/globalCTRL.js');
+let Review=require('../models/review.js');
 
 let userCTRL = {
   //used to test if the user is logged or not
@@ -18,7 +19,7 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getActivitiesToCompare:function(req, res){
-    userCTRL.isUser(req,res);
+    //userCTRL.isUser(req,res);
     Activity.findOne({_id: req.params.activity1ID},function(err,activity1){
 
       if(err){

@@ -15,6 +15,8 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV) {
         // $scope.selectedActivities
         compareSRV.compareActivities(selectedActivities,selectedActivities2).success(function(data){
             console.log(data)
+             $scope.activity1=data.activity1;
+              $scope.activity2=data.activity2;
         })
          console.log(selectedActivities)
          console.log(selectedActivities2)
@@ -28,6 +30,8 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV) {
 
         compareSRV.compareServiceProvider(selectedServiceProvider,selectedServiceProvider2).success(function(data){
             console.log(data)
+            $scope.serviceProvider1=data.SP1;
+              $scope.serviceProvider2=data.SP2;
         })
         console.log(selectedServiceProvider)
          console.log(selectedServiceProvider2)

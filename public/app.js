@@ -58,6 +58,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'compareController'
   });
 
+   $stateProvider.state({
+    name:'adminComplainPanel',
+    url:'/complains',
+    templateUrl:'views/complains.view.html',
+    controller:'complainsController'
+  });
+
   $urlRouterProvider.when('','/');
 
 
