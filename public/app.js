@@ -94,7 +94,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     cache:false,
     url:'/view_system_logs',
     templateUrl:'views/systemLogs.view.html',
-    controller:'adminPageController'
+    controller:'systemLogsController'
      });
 
   $stateProvider.state({
@@ -113,6 +113,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    templateUrl:'views/home.view.html',
    controller:'NewsLetterController'
  });
+
+ 
 
 
   $stateProvider.state({

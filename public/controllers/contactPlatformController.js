@@ -5,7 +5,7 @@ myapp.controller('contactPlatformController', function($scope,contactPlatformSRV
          //message='_'
        console.log("message");
        $state.go("userPage");
-       //toastr.success('Message successfully saved');
+       toastr.success('Message successfully saved');
 
    })
  }
