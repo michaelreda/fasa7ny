@@ -29,10 +29,10 @@ display: inline-block;width: 83%;"> -->
                padding-left: 10px;
                padding-right: 10px">
               <ul class="sociallink_nav">
-                <li><a href="https://www.facebook.com/sharer/sharer.php?u=www.localhost:8080/activity/{{$ctrl.data._id}}" target="_blank" style="padding: 4px 11px;"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="https://twitter.com/intent/tweet?text=check out this amazing activity here at fasa7ny www.localhost:8080/activity/{{$ctrl.data._id}} &url=www.localhost:8080/activity/{{$ctrl.data._id}}" target="_blank" style="padding: 4px 8px;"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="https://plus.google.com/share?url=www.localhost:8080/activity/{{$ctrl.data._id}}" target="_blank" style="padding: 4px 8px;"><i class="fa fa-google-plus"></i></a></li>
-                <li><a ng-click="addToWishList($ctrl.data._id)" style="padding: 4px 6px;background-color:#6ee881"   ><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101501-200.png" style="width: 21px;"></img> </a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u=www.localhost:8080/activity/{{$ctrl.data._id}}" target="_blank" style="padding: 4px 11px;" uib-tooltip="share activity on facebook"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://twitter.com/intent/tweet?text=check out this amazing activity here at fasa7ny www.localhost:8080/activity/{{$ctrl.data._id}} &url=www.localhost:8080/activity/{{$ctrl.data._id}}" uib-tooltip="share activity on twitter" target="_blank" style="padding: 4px 8px;"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://plus.google.com/share?url=www.localhost:8080/activity/{{$ctrl.data._id}}" uib-tooltip="share activity on google plus" target="_blank" style="padding: 4px 8px;"><i class="fa fa-google-plus"></i></a></li>
+                <li><a ng-click="addToWishList($ctrl.data._id)" style="padding: 4px 6px;background-color:#6ee881"  uib-tooltip="add to wishlist" ><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101501-200.png" style="width: 21px;"></img> </a></li>
               </ul>
             </div></center>
             <a ng-click="openActivity($ctrl.data._id)" class="btn add2cart">More Info?</a>
