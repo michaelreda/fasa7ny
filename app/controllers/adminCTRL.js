@@ -140,7 +140,7 @@ let adminCTRL={
   },
   //tested
   viewComplains:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     Complain.find(function(err, complains){
       if(err)
       res.send(err.message);
@@ -150,7 +150,7 @@ let adminCTRL={
   },
   //tested without exception
   removeComplain:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     //validating
     req.checkBody('complainId','complainId is required').notEmpty();
     var errors = req.validationErrors();
@@ -378,7 +378,7 @@ let adminCTRL={
   //4.8 analytics
   //testing - waiting for bookings to be able to analyze them
   getAnalyticsPage:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     // finding top activity
     Booking.aggregate(
       {$group : {_id : "$activityId", "count" : {$sum : 1}}},
@@ -441,7 +441,27 @@ let adminCTRL={
         }
       })
     },
+    updateComplainIsSeen:function(req,res){
+        //adminCTRL.isAdmin(req,res);
 
+
+        //validating
+        req.checkBody('complainId','complainId is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+        Complain.update({_id:req.body.complainId},{$set:{isSeen:true}}).exec(function(err,val){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+          }
+          else{
+            res.send(val);
+          }
+        })
+      },
     adminSignupStep2: function(req,res){
 
       req.checkBody('firstName','first name is required').notEmpty();

@@ -34,10 +34,6 @@ Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
 Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
-// for testing
-Router.get('/view_complains', userCTRL.viewComplains);
-Router.get('/view_users', userCTRL.findUsers);
-
 Router.get('/view_usernames', userCTRL.findUsernames);
 
 //2.13 contact platform
@@ -112,7 +108,7 @@ Router.post('/banforever',adminCTRL.banForever);
 //4.7 messages
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_history', adminCTRL.viewChatMessages);
-
+Router.post('/update_isSeen', adminCTRL.updateComplainIsSeen);
 
 
 
