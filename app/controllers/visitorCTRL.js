@@ -67,7 +67,15 @@ let visitorCTRL={
           res.send(err.message);
         }
         else{
-          res.send(activities);
+          Offer.find().exec(function(err,offers){
+            if(err){
+              globalCTRL.addErrorLog(err.message);
+              res.send(err.message);
+            }
+            else{
+              res.send({activities,offers});
+            }
+          })
         }
       })
     },
