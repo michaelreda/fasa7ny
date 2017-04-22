@@ -19,29 +19,20 @@ let userCTRL = {
 
   //2.6 comparing activities or service providers
   //tested
-  getActivitiesToCompare:function(req, res){
-    userCTRL.isUser(req,res);
-    //validating
-    req.checkBody('activity1ID','activity1ID is required').isMongoId();
-    req.checkBody('activity2ID','activity2ID is required').isMongoId();
-    var errors = req.validationErrors();
-    if (errors) {
-      res.send(errors);
-      return;
-    }
-    //end validating
-    Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
+ getActivitiesToCompare:function(req, res){
+    //userCTRL.isUser(req,res);
+    Activity.findOne({_id: req.params.activity1ID},function(err,activity1){
 
       if(err){
-        globalCTRL.addErrorLog(err);
-        res.send(err);
+        globalCTRL.addErrorLog(err.message);
+        res.send(err.message);
       }else{
         if(!activity1)
         res.send("activity 1 not found");
-        Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
+        Activity.findOne({_id: req.params.activity2ID},function(err,activity2){
           if(err){
-            globalCTRL.addErrorLog(err);
-            res.send(err);
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
           }else {
             if(!activity2)
             res.send("activity 2 not found");
@@ -56,26 +47,18 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getServiceProviderToCompare:function(req, res){
-    //validating
-    req.checkBody('SP1ID','SP1ID is required').isMongoId();
-    req.checkBody('SP2ID','SP2ID is required').isMongoId();
-    var errors = req.validationErrors();
-    if (errors) {
-      res.send(errors);
-      return;
-    }
-    //end validating
-    ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
+  
+    ServiceProvider.findOne({_id: req.params.SP1ID},function(err,SP1){
 
       if(err){
-        globalCTRL.addErrorLog(err);
-        res.send(err);
+        globalCTRL.addErrorLog(err.message);
+        res.send(err.message);
       }else{
 
-        ServiceProvider.findOne({_id: req.body.SP2ID},function(err,SP2){
+        ServiceProvider.findOne({_id: req.params.SP2ID},function(err,SP2){
           if(err){
-            globalCTRL.addErrorLog(err);
-            res.send(err);
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
           }else {
             res.send({SP1,SP2});
           }

@@ -18,5 +18,18 @@ angular.module('myapp').
           clearInterval(timer);//stop shuffling images
         };
 
+           $scope.valueChosen=function(value){
+            console.log($scope.filter +" "+value);
+             $state.go("filteredActivities",
+             {filter:$scope.filter,value:value});
+          //self.value=d;
+        }
+
+          $scope.filterChosen=function(d){
+          $scope.filter=d;
+          if(d=="offer")
+          $state.go("filteredActivities",{filter:d});
+        }
+
     }
 });
