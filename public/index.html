@@ -85,6 +85,8 @@
             <!-- go to profile -->
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
           </ul></li>
+          <li class="active"><a href="/#/serviceProviders">All service providers</a></li>
+
           <!-- logout button -->
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
       <!-- when logged out -->
@@ -332,6 +334,8 @@ box-shadow: inset 0 0 0px black;
   <script src="controllers/complainsController.js"></script>
   <script src="controllers/buttonsController.js"></script>
   <script src="controllers/compareController.js"></script>
+  <script src="controllers/serviceProvidersForUserController.js"></script>
+
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -344,6 +348,7 @@ box-shadow: inset 0 0 0px black;
   <script src="components/signup/spSignup.component.js"></script>
   <script src="components/signup/userSignup.component.js"></script>
   <script src="components/interests/interests.component.js"></script>
+  <script src="components/serviceProviderBox/serviceProviderBox.component.js"></script>
 
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
@@ -361,6 +366,7 @@ box-shadow: inset 0 0 0px black;
   <script src="services/complainsSRV.js"></script>
   <script src="services/ButtonsSRV.js"></script>
   <script src="services/compareSRV.js"></script>
+  <script src="services/serviceProvidersSRV.js"></script>
 
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>

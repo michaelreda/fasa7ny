@@ -264,7 +264,7 @@ let visitorCTRL={
 
       //1.2
       //tested
-      viewAllServiceProviders:function(req, res){
+      viewAllServiceProvidersCommentedByTweety:function(req, res){
         if(!req.session.pageID){
           req.session.pageID=1;
 
@@ -275,6 +275,20 @@ let visitorCTRL={
 
         ServiceProvider.find({Approved:1}).skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
 
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
+          }else
+          {
+            res.send(providers);
+          }
+        })
+
+      },
+
+      viewAllServiceProviders:function(req, res){
+
+        ServiceProvider.$where('this.Approved == 1').exec(function(err, providers){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
