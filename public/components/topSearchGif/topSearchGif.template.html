@@ -21,7 +21,7 @@
         <div class="input-group">
             <input type="text" class="form-control" ng-model="searchInput" placeholder="Search" name="q">
             <div class="input-group-btn">
-                <button class="btn btn-default" ng-click="search(searchInput)"><i class="glyphicon glyphicon-search"></i></button>
+                <button class="btn btn-default" ng-click="search(searchInput)" style="height: 34px;"><i class="glyphicon glyphicon-search"></i></button>
             </div>
         </div>
         </form>
@@ -175,7 +175,7 @@
           function displayNextImage() {
               x = (x === images.length - 1) ? 0 : x + 1;
               if(document.getElementById("gifs")!=null)
-                document.getElementById("gifs").src = images[x]; 
+                document.getElementById("gifs").src = images[x];
           }
 
           function startTimer() {
