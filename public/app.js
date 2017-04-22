@@ -80,7 +80,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     name: 'service providers',
     url: '/serviceProviders',
     templateUrl:'views/serviceProviders.view.html',
-    controller: 'SPsController'
+    controller: 'serviceProvidersForUserController'
   });
 
   $stateProvider.state({
