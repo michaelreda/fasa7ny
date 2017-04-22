@@ -21,7 +21,7 @@ display: inline-block;width: 83%;"> -->
           </center>
               <center><h2 style="margin-top: 5px;font-weight: 700;">{{$ctrl.data.title}}</h2></center>
               <p style="overflow:hidden; text-overflow: ellipsis;height:60px">{{$ctrl.data.theme}}</p>
-              <div class="pi-price"> EGP {{$ctrl.data.prices[0].price}}</div>
+              <div class="pi-price slashed"> EGP {{$ctrl.data.prices[0].price}}</div>
               <center><div class="social_link" style="
                display: inline-block;
                margin: auto;
@@ -132,6 +132,11 @@ display: inline-block;width: 83%;"> -->
 </style>
 
 <style>
+.slashed {
+    display:inline-block;
+    background:url(http://www.pd4pic.com/images800_/flat-line-diagonal-theme-action-icon.png);
+    background-size:100% 100%;
+}
 .product-item {
     padding: 15px;
     background: #fff;
