@@ -120,13 +120,6 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      controller: 'FAQController'
    });
 
-   $stateProvider.state({
-     name: 'service providers',
-     cache:false,
-     url: '/serviceProviders',
-     templateUrl:'views/serviceProviders.view.html',
-     controller: 'SPsController'
-   });
 
    $stateProvider.state({
      name: 'service provider',
@@ -158,8 +151,8 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/analysis.view.html',
     controller:'analysisController'
   });
-  
-  
+
+
     $stateProvider.state({
     name:'filteredActivities',
      cache:false,
