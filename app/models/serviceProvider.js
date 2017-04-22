@@ -33,9 +33,12 @@ var serviceProviderSchema = mongoose.Schema({
     type:String,
     required:true
   }],
-  media:[{
-    type:{type:String},
-    url:{type:String}
+  // media:[{
+  //   type:{type:String},
+  //   url:{type:String}
+  // }],
+  medua:[{
+    type:String
   }],
   previousClients:[{
     type:mongoose.Schema.Types.ObjectId,ref:'user',
