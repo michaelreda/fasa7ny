@@ -14,11 +14,11 @@ display: inline-block;width: 83%;"> -->
                 <span class="glyphicon glyphicon-star-empty"  ng-if="i>$ctrl.data.rating"></span>
             </div> -->
             <!-- label-text="$ctrl.data.rating" label-position="'right'" -->
-            <star-rating-comp rating="$ctrl.data.rating"   show-half-stars="true" show-hover-stars="true" read-only="true" size="'large'"></star-rating-comp>
+            <star-rating-comp rating="$ctrl.data.rating"   show-half-stars="true"  read-only="true" size="'large'"></star-rating-comp>
           </center>
               <h3 style="margin-top: 5px;font-weight: 700;">{{$ctrl.data.title}}</h3>
-              <p style="overflow:hidden; text-overflow: ellipsis;height:60px">{{$ctrl.data.description}}</p>
-              <div class="pi-price"> contact mobile: {{$ctrl.data.contactMobile[0]}}</div>
+              <center><span class="label label-primary" style="margin-right: 10px" ng-repeat="type in $ctrl.data.entertainmentType">{{type}}</span></center>
+              <p style="overflow:hidden; text-overflow: ellipsis;height:60px;margin-top: 10px;">{{$ctrl.data.description}}</p>
               <center><div class="social_link" style="
                display: inline-block;
                width: initial;
