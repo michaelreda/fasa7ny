@@ -140,7 +140,7 @@ let adminCTRL={
   },
   //tested
   viewComplains:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     Complain.find(function(err, complains){
       if(err)
       res.send(err.message);
@@ -150,7 +150,7 @@ let adminCTRL={
   },
   //tested without exception
   removeComplain:function(req,res){
-    adminCTRL.isAdmin(req,res);
+    //adminCTRL.isAdmin(req,res);
     //validating
     req.checkBody('complainId','complainId is required').notEmpty();
     var errors = req.validationErrors();
@@ -297,7 +297,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send({'type':3,'userAccount':thisAdmin});
+            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin});
 
         }
 
@@ -378,7 +378,7 @@ let adminCTRL={
   //4.8 analytics
   //testing - waiting for bookings to be able to analyze them
   getAnalyticsPage:function(req,res){
-    adminCTRL.isAdmin(req,res);
+  // adminCTRL.isAdmin(req,res);
     // finding top activity
     Booking.aggregate(
       {$group : {_id : "$activityId", "count" : {$sum : 1}}},
@@ -390,38 +390,63 @@ let adminCTRL={
           res.send(err.message)
         }else
         {
-          Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+          
+          Activity.findOne({_id:topBooking},function(err,topActivity){
             if(err)
             {
+              
               globalCTRL.addErrorLog(err.message);
               res.send(err.message)
             }
             else
             {
-              ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
-                if(err)
-                {
-                  globalCTRL.addErrorLog(err.message);
-                  res.send(err.message)
-                }
-                else
-                {
-                  User.aggregate(
-                    {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
-                    {$sort : {"count" : -1}},
-                    {$limit : 1},function(err,topUser){
-                      if(err)
-                      {
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message)
-                      }else{
-                        res.send({topActivity,topSP,topUser});
-                      }
+              Booking.aggregate(
+      {$group : {_id : "$providerId", "count" : {$sum : 1}}},
+      {$sort : {"count" : -1}},
+      {$limit : 1},function(err,topBooking){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message)
+        }else
+        {
+              console.log(topBooking);
+                            ServiceProvider.findOne({_id:topBooking},function(err,topSP){
+                              if(err)
+                              {
+                                globalCTRL.addErrorLog(err.message);
+                                res.send(err.message)
+                              }
+                              else
+                              {
+                                User.aggregate(
+                                  {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                                  {$sort : {"count" : -1}},
+                                  {$limit : 1},function(err,topUser){
+                                    if(err)
+                                    {
+                                      globalCTRL.addErrorLog(err.message);
+                                      res.send(err.message)
+                                    }else{
+                                     
+                                      
+                                      User.findOne({numberOfLogins:topUser[0]._id},function(err,topU){
+                                        if(err)
+                                        {
+                                          res.send(err.message);
+                                        }else
+                                        {
+                                          console.log(topU);
+                                          res.send({topActivity,topSP,topU});
+                                        }
+                                      })
+                                     
+                                    }
 
-                    })
-                  }
-                })
-              }
+                                  })
+                                }
+                              })
+              }})}
             })
           }
         }
@@ -441,7 +466,27 @@ let adminCTRL={
         }
       })
     },
+    updateComplainIsSeen:function(req,res){
+        //adminCTRL.isAdmin(req,res);
 
+
+        //validating
+        req.checkBody('complainId','complainId is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+        Complain.update({_id:req.body.complainId},{$set:{isSeen:true}}).exec(function(err,val){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+          }
+          else{
+            res.send(val);
+          }
+        })
+      },
     adminSignupStep2: function(req,res){
 
       req.checkBody('firstName','first name is required').notEmpty();

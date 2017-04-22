@@ -1,0 +1,23 @@
+<div class="ui container" style="padding-top:100px">
+	<table class="ui selectable sortable celled table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Activity</th>
+				<th>Price</th>
+				<th>ServiceProvider</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="row_{{$index}}" ng-repeat="booking in bookings">
+				<td>{{$index + 1}}</td>
+				<td>{{booking.activityId.title}}</td>
+				<td style="position:relative;" ><span id="review_{{$index}}" >{{booking.price}}</span>
+				</td>
+				<td>{{booking.serviceProviderId.title}}</td>
+				<td style="width: 130px;">{{booking.time}} </td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -26,17 +26,15 @@ Router.get('/',function(req,res){
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-Router.post('/second_choice', userCTRL.getSecondListOfChoices);
-Router.post('/compare_serviceProviders', userCTRL.getServiceProviderToCompare);
-Router.post('/compare_activities', userCTRL.getActivitiesToCompare);
+//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
+Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
+Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
 
 //2.5 user add his interests
 Router.post('/add_user_interest', userCTRL.addUserInterest);
 Router.post('/delete_user_interest', userCTRL.deleteUserInterest);
 Router.get('/view_user_interest', userCTRL.viewAllUserInterest);
-// for testing
-Router.get('/view_complains', userCTRL.viewComplains);
-Router.get('/view_users', userCTRL.findUsers);
+Router.get('/view_usernames', userCTRL.findUsernames);
 
 //2.13 contact platform
 Router.post('/contact_platform', userCTRL.contactPlatform);
@@ -110,7 +108,7 @@ Router.post('/banforever',adminCTRL.banForever);
 //4.7 messages
 Router.get('/view_all_chats', adminCTRL.viewAllChats);
 Router.post('/view_chat_history', adminCTRL.viewChatMessages);
-
+Router.post('/update_isSeen', adminCTRL.updateComplainIsSeen);
 
 
 
@@ -134,7 +132,7 @@ Router.post('/view_add_offer', serviceProviderCTRL.viewAddOffer);
 Router.post('/add_offer', serviceProviderCTRL.addOffer);
 Router.post('/delete_offer', serviceProviderCTRL.deleteOffer);
 Router.post('/update_offer', serviceProviderCTRL.updateOffer);
-Router.post('/apply_to_golden', serviceProviderCTRL.applyToGolden);
+Router.get('/apply_to_golden', serviceProviderCTRL.applyToGolden);
 
 Router.post('/get_sp_byid', serviceProviderCTRL.getSPbyID);
 
@@ -157,12 +155,13 @@ Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 
 Router.get('/get_featured_activities',visitorCTRL.getFeaturedActivities);
 Router.get('/get_latest_6_reviews',visitorCTRL.getLatest6Reviews);
+Router.post('/get_activity_reviews',visitorCTRL.getActivityReviews);
 Router.get('/get_top_rated_activities',visitorCTRL.getTopRatedActivities);
 Router.get('/get_statistics', visitorCTRL.getStatistics);
 Router.get('/get_activity_by_id/:activityID', visitorCTRL.getActivityById);
 
 //1.3  filter activities as a visitor and moving back and forth each 10 activities
-Router.post('/get_filtered_activities', visitorCTRL.filterActivitiesBy);
+Router.get('/get_filtered_activities/:filter/:value', visitorCTRL.filterActivitiesBy);
 Router.post('/get_filtered_activities_next', visitorCTRL.filterActivitiesByNext);
 Router.post('/get_filtered_activities_prev', visitorCTRL.filterActivitiesByPrev);
 

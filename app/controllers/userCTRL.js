@@ -1,12 +1,14 @@
 let Account = require('../models/account.js');
 let User = require('../models/user.js');
 let ServiceProvider = require('../models/serviceProvider.js');
-let Activity = require('../models/activity');
+let Activity = require('../models/activity.js');
 let Message=require('../models/message.js');
 let Booking=require('../models/booking.js');
-let Interest=require('../models/interest');
-let Complain=require('../models/complain');
+let Interest=require('../models/interest.js');
+let Review=require('../models/review.js');
+let Complain=require('../models/complain.js');
 let globalCTRL=require('../controllers/globalCTRL.js');
+
 
 let userCTRL = {
   //used to test if the user is logged or not
@@ -17,18 +19,9 @@ let userCTRL = {
 
   //2.6 comparing activities or service providers
   //tested
-  getActivitiesToCompare:function(req, res){
-    userCTRL.isUser(req,res);
-    //validating
-    req.checkBody('activity1ID','activity1ID is required').isMongoId();
-    req.checkBody('activity2ID','activity2ID is required').isMongoId();
-    var errors = req.validationErrors();
-    if (errors) {
-      res.send(errors);
-      return;
-    }
-    //end validating
-    Activity.findOne({_id: req.body.activity1ID},function(err,activity1){
+ getActivitiesToCompare:function(req, res){
+    //userCTRL.isUser(req,res);
+    Activity.findOne({_id: req.params.activity1ID},function(err,activity1){
 
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -36,7 +29,7 @@ let userCTRL = {
       }else{
         if(!activity1)
         res.send("activity 1 not found");
-        Activity.findOne({_id: req.body.activity2ID},function(err,activity2){
+        Activity.findOne({_id: req.params.activity2ID},function(err,activity2){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -54,23 +47,15 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getServiceProviderToCompare:function(req, res){
-    //validating
-    req.checkBody('SP1ID','SP1ID is required').isMongoId();
-    req.checkBody('SP2ID','SP2ID is required').isMongoId();
-    var errors = req.validationErrors();
-    if (errors) {
-      res.send(errors);
-      return;
-    }
-    //end validating
-    ServiceProvider.findOne({_id: req.body.SP1ID},function(err,SP1){
+  
+    ServiceProvider.findOne({_id: req.params.SP1ID},function(err,SP1){
 
       if(err){
         globalCTRL.addErrorLog(err.message);
         res.send(err.message);
       }else{
 
-        ServiceProvider.findOne({_id: req.body.SP2ID},function(err,SP2){
+        ServiceProvider.findOne({_id: req.params.SP2ID},function(err,SP2){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -90,14 +75,14 @@ let userCTRL = {
     ServiceProvider.find(function(err,SPs){
 
       if(err){
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
+        globalCTRL.addErrorLog(err);
+        res.send(err);
       }else{
 
         Activity.find(function(err,ACs){
           if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err.message);
+            globalCTRL.addErrorLog(err);
+            res.send(err);
           }else {
             res.send({SPs,ACs});
           }
@@ -126,8 +111,8 @@ let userCTRL = {
 
         if(err)
         {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
+          globalCTRL.addErrorLog(err);
+          res.send(err);
         }
         else
         {
@@ -142,8 +127,8 @@ let userCTRL = {
 
         if(err)
         {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
+          globalCTRL.addErrorLog(err);
+          res.send(err);
         }
         else
         {
@@ -205,7 +190,7 @@ changePrivacy: function(req,res){
   //end validating
   User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err)
     }else{
       if(status.nModified!=0)
@@ -228,14 +213,14 @@ subscribe: function(req,res){
   ServiceProvider.findOne({ '_id' : serviceProviderID},
   function(err, providerInstance){
     if (err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       return (err);
     }
     else{
       providerInstance.update({_id:req.session.serviceProvider._id},{$push:{'subscribedUsers':loggedInUser}},function(err,change){
         if(err)
         {
-          res.send(err.message)
+          res.send(err)
         }else{
           res.send({providerInstance});
         }
@@ -255,7 +240,7 @@ unSubscribe: function(req,res){
   ServiceProvider.findOne({ '_id' : serviceProviderID},
   function(err, providerInstance){
     if (err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       return (err);
     }
     else{
@@ -264,7 +249,7 @@ unSubscribe: function(req,res){
         providerInstance.subscribedUsers.splice(index,1);
         providerInstance.save(function(err){
           if(err){
-            globalCTRL.addErrorLog(err.message);
+            globalCTRL.addErrorLog(err);
             return (err);
           }
           else {
@@ -293,7 +278,7 @@ contactPlatform: function (req,res){
   var logInUser=req.session.user._id;
   Message.findOne({fromId:logInUser}).exec(function(err, message){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else{
@@ -312,7 +297,7 @@ contactPlatform: function (req,res){
 
       message.save(function(err){
         if(err){
-          globalCTRL.addErrorLog(err.message);
+          globalCTRL.addErrorLog(err);
         }else {
           res.send(200);
         }
@@ -328,7 +313,7 @@ viewMyProfile: function(req,res){
   userCTRL.isUser(req,res);
   User.findOne({_id:req.session.user._id}).exec(function(err,user){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else {
@@ -349,7 +334,7 @@ updateMyProfile: function(req,res){
   userCTRL.isUser(req,res);
   User.update({_id:req.session.user._id}).exec(function(err,status){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else {
@@ -368,7 +353,7 @@ deleteMyProfile: function(req,res){
   userCTRL.isUser(req,res);
   User.findOne({_id:req.session.user._id}).remove().exec(function(err){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else {
@@ -424,14 +409,14 @@ rateReviewActivity: function(req,res){
 
   Activity.update({_id:req.body.activityId},{$set:{'rating':newRating,'ratingCount':ratingCount}}).exec(function(err){
     if(err)
-    res.send(err.message);
+    res.send(err);
     else {
       if(req.body.review){
         var review= new Review(req.body);
         review.rate = inputRating;
         review.save(function(err,review){
           if(err)
-          res.send(err.message);
+          res.send(err);
           else {
             res.send("review submitted successfully");
           }
@@ -445,7 +430,7 @@ rateReviewActivity: function(req,res){
 updateReview: function(req,res){
   userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   req.checkBody('review','review is not empty').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
@@ -453,9 +438,9 @@ updateReview: function(req,res){
     return;
   }
   //end validating
-  Review.update({_id:req.body.activityId},{$set:{review:req.body.review}}).exec(function(err,status){
+  Review.update({_id:req.body.reviewId},{$set:{review:req.body.review}}).exec(function(err,status){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else {
@@ -472,16 +457,16 @@ updateReview: function(req,res){
 deleteReview: function(req,res){
   userCTRL.isUser(req,res);
   //validating
-  req.checkBody('activityId','activityId is required').isMongoId();
+  req.checkBody('reviewId','reviewId is required').isMongoId();
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
     return;
   }
   //end validating
-  Review.findOne({_id:req.body.activityId}).remove().exec(function(err){
+  Review.findOne({_id:req.body.reviewId}).remove().exec(function(err){
     if(err){
-      globalCTRL.addErrorLog(err.message);
+      globalCTRL.addErrorLog(err);
       res.send(err);
     }
     else {
@@ -494,7 +479,7 @@ deleteReview: function(req,res){
     userCTRL.isUser(req,res);
     Review.find({userId:req.session.user._id}).populate('activityId').exec(function(err,reviews){
       if(err){
-        globalCTRL.addErrorLog(err.message);
+        globalCTRL.addErrorLog(err);
         res.send(err);
       }
       else {
@@ -536,7 +521,7 @@ deleteReview: function(req,res){
 
     newBooking.save(function(err){
       if(err){
-        globalCTRL.addErrorLog(err.message);
+        globalCTRL.addErrorLog(err);
       }else {
         req.session.bookingSession=newBooking;
         res.send(200);
@@ -561,7 +546,7 @@ deleteReview: function(req,res){
     //end validating
     Booking.findOne({"_id":req.body.bookingID}, function(err, booking){
       if(err){
-        globalCTRL.addErrorLog(err.message);
+        globalCTRL.addErrorLog(err);
         res.send(err);
       }
       else{
@@ -570,7 +555,7 @@ deleteReview: function(req,res){
           booking.isCancelled=true;
           booking.save(function(err){
             if(err){
-              globalCTRL.addErrorLog(err.message);
+              globalCTRL.addErrorLog(err);
               res.send(err);
             }
             else{
@@ -587,7 +572,7 @@ deleteReview: function(req,res){
     userCTRL.isUser(req,res);
     Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
       if(err){
-        globalCTRL.addErrorLog(err.message);
+        globalCTRL.addErrorLog(err);
         res.send(err);
       }
       else {
@@ -604,8 +589,8 @@ deleteReview: function(req,res){
     Complain.find(function(err,complains){
       if(err)
       {
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
+        globalCTRL.addErrorLog(err);
+        res.send(err);
       }
       else
       {
@@ -617,7 +602,7 @@ deleteReview: function(req,res){
   submitUserComplain:function(req,res){
     userCTRL.isUser(req,res);
     //validating
-    req.checkBody('providerId','providerId is required').isMongoId();
+   
     req.checkBody('complain','complain is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
@@ -627,12 +612,13 @@ deleteReview: function(req,res){
     //end validating
     let complain = new Complain(req.body);
     complain.userId= req.session.user._id;
+     complain.providerId= req.params.providerId;//this is for kareem to use and put in the URL
     complain.isUserToProvider= true;
     complain.save(function(err,complain){
       if(err)
       {
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
+        globalCTRL.addErrorLog(err);
+        res.send(err);
       }else {
         res.send(complain)
       }
@@ -652,8 +638,8 @@ deleteReview: function(req,res){
     Complain.findOne({_id: req.body.complainId},function(err,comp){
       if(err)
       {
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message)
+        globalCTRL.addErrorLog(err);
+        res.send(err)
       }else{
         res.send({comp});
       }
@@ -676,8 +662,8 @@ deleteReview: function(req,res){
       Complain.update({_id:req.body.complainId},{$set:{complain:req.body.complainBody}},function(err,status){
         if(err)
         {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
+          globalCTRL.addErrorLog(err);
+          res.send(err);
         }else
         {
 
@@ -695,24 +681,43 @@ deleteReview: function(req,res){
     addUserInterest:function(req,res){
       userCTRL.isUser(req,res);
       //validating
-      req.checkBody('name','name is required').notEmpty();
+      req.checkBody('interests','interests is required').notEmpty().isArray();
       var errors = req.validationErrors();
       if (errors) {
         res.send(errors);
         return;
       }
       //end validating
-      let interest = new Interest(req.body);
-
-      interest.save(function(err,interest){
+      // let interest = new Interest(req.body);
+      // interest.save(function(err){
+      //   if(err)
+      //     globalCTRL.addErrorLog(err);
+      // })
+      User.findOne({userAccountId:req.user._id},function(err,profile){
         if(err)
-        {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
-        }else {
-          res.send(interest)
+        {globalCTRL.addErrorLog(err);
+          res.send({'succesfull':0,'errors':err});
         }
+        else {
+          var inter=[];
+          for (var i = 0; i < req.body.interests.length; i++) {
+            inter.push(req.body.interests[i]);
+          }
+          profile.interests=inter;
+          profile.save(function(err2) {
+            if(err2)
+            {globalCTRL.addErrorLog(err2);
+              res.send({'succesfull':0,'errors':err2});
+            }
+            else {
+              res.send({'succesfull':1,'userProfile':profile});
+            }
+          });
+
+        }
+
       })
+
 
     },
 
@@ -729,8 +734,8 @@ deleteReview: function(req,res){
       Interest.remove({_id:req.body._id},function(err,removed){
         if(err)
         {
-          globalCTRL.addErrorLog(err.message);
-          res.send(err.message);
+          globalCTRL.addErrorLog(err);
+          res.send(err);
         }
         else
         {
@@ -743,7 +748,7 @@ deleteReview: function(req,res){
       userCTRL.isUser(req,res);
       Interest.find(function(err,interest){
         if(err){
-          globalCTRL.addErrorLog(err.message);
+          globalCTRL.addErrorLog(err);
           res.send(err);
         }
         else {
@@ -758,7 +763,7 @@ deleteReview: function(req,res){
   userLoginStep2: function(req,res){
     User.findOne({userAccountId:req.user._id}).exec(function(err,thisUser){
       if(err){
-        globalCTRL.addErrorLog(err.message);
+        globalCTRL.addErrorLog(err);
         res.send(err);
       }
       else {
@@ -771,10 +776,10 @@ deleteReview: function(req,res){
             thisUser.numberOfLogins++;
             thisUser.save(function(err2){
               if(err2)
-              globalCTRL.addErrorLog(err.message);
+              globalCTRL.addErrorLog(err);
             })
             req.session.user=thisUser;
-            res.send({'type':0,'userAccount':thisUser});
+            res.send({'type':0,'userProfile':thisUser,'userAccount':req.user});
           }
           else{
             res.send('Account banned! try again in '+thisUser.banned+' days');
@@ -826,7 +831,7 @@ deleteReview: function(req,res){
       }
       newUser.save(function(err){
         if(err){
-          globalCTRL.addErrorLog(err.message);
+          globalCTRL.addErrorLog(err);
           res.send({'stepTwoOK':0,'errors':err});
         }
         else {
@@ -843,9 +848,20 @@ deleteReview: function(req,res){
     User.find(function(err,users){
       if(err)
       {
-        res.send(err.message)
+        res.send(err)
       }else{
         res.send({users})
+      }
+    })
+  },
+  //used to find accounts by a part of the username
+  findUsernames: function(req,res){
+    Account.find({type:0}).select('userName').exec(function(err,usernames){
+      if(err)
+      {
+        res.send(err.message)
+      }else{
+        res.send({usernames})
       }
     })
   }

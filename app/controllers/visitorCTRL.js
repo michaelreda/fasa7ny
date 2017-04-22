@@ -72,58 +72,62 @@ let visitorCTRL={
       })
     },
     //tested
-    filterActivitiesBy:function(req, res){
+  filterActivitiesBy:function(req, res){
       req.session.j=1;
-      if(req.body.filter=="price")
+      if(req.params.filter=="price")
       {
-        Activity.find({ price: req.body.value}).limit(10).exec(function(err,activities){
+        console.log(req.params.value);
+        Activity.$where('this.prices[0].price > parseInt('+req.params.value+')').limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
-      } else 	if(req.body.filter=="offer")
+      } else 	if(req.params.filter=="offer")
       {
-        Activity.find({isOffer: req.body.value}).limit(10).exec(function(err,activities){
+        console.log("okokokok");
+        Activity.find({isOffer: 1}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
-      }else 	if(req.body.filter=="location")
+      }else
+      // if(req.body.filter=="location")
+      // {
+      //   Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
+      //     if(err){
+      //       globalCTRL.addErrorLog(err.message);
+      //       res.send(err.message);
+      //     }else {
+      //       res.send({activities});
+      //     }
+      //   })
+      // }
+      // else
+      	if(req.params.filter=="theme")
       {
-        Activity.find({location: req.body.value}).limit(10).exec(function(err,activities){
+        Activity.find({theme: req.params.value}).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
       }
-      else 	if(req.body.filter=="theme")
+      else 	if(req.params.filter=="rating")
       {
-        Activity.find({theme: req.body.value}).limit(10).exec(function(err,activities){
+        Activity.$where('this.rating >' + req.params.value).limit(10).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send({activities});
-          }
-        })
-      }
-      else 	if(req.body.filter=="rating")
-      {
-        Activity.find({rating: req.body.value}).limit(10).exec(function(err,activities){
-          if(err){
-            globalCTRL.addErrorLog(err.message);
-            res.send(err.message);
-          }else {
-            res.send({activities});
+            res.send(activities);
           }
         })
       }else {
@@ -260,7 +264,7 @@ let visitorCTRL={
 
       //1.2
       //tested
-      viewAllServiceProviders:function(req, res){
+      viewAllServiceProvidersCommentedByTweety:function(req, res){
         if(!req.session.pageID){
           req.session.pageID=1;
 
@@ -271,6 +275,20 @@ let visitorCTRL={
 
         ServiceProvider.find({Approved:1}).skip(10*(req.session.pageID-1)).limit(11).populate({path:'activities'}).exec(function(err, providers){
 
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
+          }else
+          {
+            res.send(providers);
+          }
+        })
+
+      },
+
+      viewAllServiceProviders:function(req, res){
+
+        ServiceProvider.$where('this.Approved == 1').exec(function(err, providers){
           if(err){
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
@@ -570,7 +588,7 @@ let visitorCTRL={
               })
           },
           getActivityById:function(req,res){
-            Activity.findOne({_id:req.params.activityID},function(err,activity){
+            Activity.findOne({_id:req.params.activityID}).populate('serviceProviderId').exec(function(err,activity){
               if(err){
                 globalCTRL.addErrorLog(err.message);
                 res.send(err);
@@ -600,6 +618,22 @@ let visitorCTRL={
                       res.send({reviews,reviewsCount});
                     }
                   })
+                }
+              })
+          },
+          getActivityReviews:function(req,res){
+            Review.find({activityId:req.body.activityID})
+            .sort({time: -1})
+          //  .populate([{path:'userId', select:'firstName lastName profilePicture'},{path:'activityId', select:'title'}])
+            .populate('userId', {firstName: 1, lastName: 1,profilePicture: 1,gender :1})//get only this attributes from the populate
+            .populate('activityId',{title:1})
+            .exec(
+              function(err,reviews){
+                if(err){
+                  globalCTRL.addErrorLog(err.message);
+                  res.send(err);
+                }else{
+                  res.send(reviews);
                 }
               })
           },

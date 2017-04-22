@@ -17,7 +17,7 @@ var activitySchema = mongoose.Schema({
     default:false
   },
   serviceProviderId:{
-    type:String,
+    type:mongoose.Schema.Types.ObjectId,ref:'serviceProvider',
     required:true,
     unique:false
   },

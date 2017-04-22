@@ -2,7 +2,7 @@
     <ul>
 		<li ng-repeat="activity in $ctrl.data" >
 			<div class="image_title">
-				<a style="display: inline;"href="#">{{activity.title}}</a>
+				<a style="display: inline;"href="/#/activity/{{activity._id}}">{{activity.title}}</a>
         <div class="pull-right" style="padding-right:20px">
           <div ng-repeat="i  in [1, 2, 3, 4,5]" style="display:inline-block; font-size:large;color:white">
             <span class="glyphicon glyphicon-star"  ng-if="i<=activity.rating"></span>

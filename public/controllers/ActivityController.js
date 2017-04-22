@@ -1,11 +1,17 @@
 myapp.controller('ActivityController', function($scope,$stateParams,activitySRV) {
-
+  $scope.Math= Math;
 //getting activity
   if($stateParams.activityID != undefined){
       activitySRV.getActivityById($stateParams.activityID)
       .success(function(data){
-        $scope.activity=data;
+        $scope.activity=data.activity;
+        console.log($scope.activity);
         $scope.media=data.activity.media;
+      })
+
+      activitySRV.getActivityReviews($stateParams.activityID)
+      .success(function(data){
+        $scope.reviews=data;
       })
   }
 

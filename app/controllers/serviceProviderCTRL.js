@@ -301,7 +301,7 @@ let ServiceProviderCTRL = {
           else {
             if(thisProvider.banned==0){
               req.session.serviceProvider=thisProvider;
-              res.send({'type':1,'userAccount':thisProvider});
+              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider});
             }
             else{
               res.send('Account banned! try again in '+thisProvider.banned+' days');
@@ -446,11 +446,9 @@ let ServiceProviderCTRL = {
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
-        }else
-        if(status.nModified!=0)
+        }else{
         res.send('should redirect to serviceProvider home page');
-        else
-        res.send('sp not found');
+        }
 
       });
     },

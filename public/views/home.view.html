@@ -50,7 +50,7 @@
 
 <!-- start featured activities section -->
 <div class="contatiner">
-  <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="col-lg-12 col-md-12 col-sm-12 wow swing center" data-wow-iteration="2">
     <div class="client_title" style="padding: 50px 100px 30px 100px">
       <hr>
       <h2>Featured <span>Activities</span></h2>
@@ -87,7 +87,7 @@
 
 <!-- recent reviews section-->
 <div class="contatiner">
-  <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" >
     <div class="client_title" style="padding: 50px 100px 30px 100px">
       <hr>
       <h2>Recent reviews</h2>
@@ -99,7 +99,7 @@
 
 <!-- top rated activities section-->
 <div class="contatiner">
-  <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInLeft" data-wow-duration="1s" >
     <div class="client_title" style="padding: 50px 100px 30px 100px">
       <hr>
       <h2>Still deciding where to go?</h2>
@@ -107,4 +107,25 @@
     </div>
     <activity-box data="activity" ng-repeat="activity in activities"></activity-box>
   </div>
+
+<div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+ <div ng-controller="NewsLetterController" class="col-sm-7 wow bounceInDown" data-wow-duration="1s" >
+     <form class="navbar-form" role="search">
+     <div class="input-group">
+       <h1><strong>Save time, save money!</strong></h1>
+       <h4>Signup and we'll send the best deals for you</h4>
+       <div class="row" style="padding-left: 15px;">
+         <input type="text" class="form-control col-sm-4" ng-model="mail" placeholder="your e-mail please" name="mail">
+         <button class="btn btn-success col-sm-3" ng-click="subscribe(mail)">Subscribe</button>
+       </div>
+     </div>
+     </form>
+ </div>
+</div>
 </div>
