@@ -1,5 +1,7 @@
 myapp.controller('ActivitiesController', function($scope,$stateParams,$state,activitiesSRV,loaderSRV) {
 
+  $scope.currentPage=1;
+
   if($stateParams.searchInput != undefined || $stateParams.day != undefined){
       loaderSRV.start();
       activitiesSRV.search($stateParams.searchInput,$stateParams.day)
