@@ -174,7 +174,8 @@
           startTimer();
           function displayNextImage() {
               x = (x === images.length - 1) ? 0 : x + 1;
-              document.getElementById("gifs").src = images[x];
+              if(document.getElementById("gifs")!=null)
+                document.getElementById("gifs").src = images[x]; 
           }
 
           function startTimer() {
