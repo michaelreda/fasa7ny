@@ -183,6 +183,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'complainsController'
   });
 
+  $stateProvider.state({
+    name:'addActivityPage',
+    cache:false,
+    url:'/addActivity',
+    templateUrl:'views/AddActivityPage.view.html',
+    controller:'addActivityController'
+  });
+
 
   $urlRouterProvider.when('','/');
 

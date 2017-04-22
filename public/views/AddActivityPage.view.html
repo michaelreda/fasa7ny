@@ -1,0 +1,158 @@
+<br>
+<br>
+<br>
+<head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.columns {
+  float: left;
+  width: 33.3%;
+  padding: 8px;
+}
+
+.price {
+  list-style-type: none;
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.price:hover {
+  box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
+}
+
+.price .header {
+  background-color: #111;
+  color: white;
+  font-size: 25px;
+}
+
+.price li {
+  border-bottom: 1px solid #eee;
+  padding: 20px;
+  text-align: center;
+}
+
+.price .grey {
+  background-color: #eee;
+  font-size: 20px;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+@media only screen and (max-width: 600px) {
+  .columns {
+      width: 100%;
+  }
+}
+</style>
+</head>
+
+<h1><strong>Add Activity<strong></h1>
+<br>
+  <br>
+<div>
+Title of activity:  <input type="text" ng-model="title" name="title">
+<br>
+<br>
+
+Type:  <input type="text" ng-model="type" name="type">
+ <br>
+ <br>
+
+<!--prices-->
+<br>
+<!--timings-->
+<br>
+Duration in minutes: <input type="text" ng-model="durationInMinutes" name="durationInMinutes">
+<br>
+<br>
+
+Minimum client number: <input type="text" ng-model="minClientNumber" name="minClientNumber">
+Maximum Client number:<input type="text" ng-model="maxClientNumber" name="maxClientNumber">
+<br>
+<br>
+
+Minimum age allowed:<input type="text" ng-model="minAge" name="minAge">
+Maximum age allowed:<input type="text" ng-model="maxAge" name="maxAge">
+<br>
+<br>
+
+<!--media-->
+<!--isOffer-->
+<!--location-->
+Theme: <input type="text" ng-model="theme" name="theme">
+<br>
+<br>
+
+<script type="text/javascript">
+function addElement() {
+    var ni = document.getElementById('myDiv');
+
+   var a = '';
+ for(var i = 1; i <= 3; i++)
+ {
+    a += '<input type="text"  name="TextBox'+i+'" value="TextBox'+i+'" >';
+
+    }
+    ni.innerHTML = a;
+    ni.appendChild(ni);
+}
+</script>
+
+
+<body>
+  <form id="form1" runat="server">
+
+      <div id="myDiv">
+      </div>
+      <input type="button" id="btnOfficial" value="Add Another TextBox" onclick="addElement();" />
+      <input type="hidden" value="1" id="theValue" />
+
+  </form>
+</body>
+
+
+
+<div class="columns">
+  <ul class="price" ng-model="prices">
+    <li class="header">Prices</li>
+    <li>Number Of Clients:<input type="text" name="numberOfClients[]"></li>
+    <li>Price:<input type="text" name="price[]"></li>
+  </ul>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<button class="btn btn-success btn-lg" ng-click="addActivity(title,type,durationInMinutes,
+                minClientNumber,maxClientNumber,minAge,maxAge,theme,prices)">Save</button>
+
+
+
+</div>
+ <br>
+ <br>
+ <br>
+ <br>

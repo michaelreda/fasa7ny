@@ -1,4 +1,4 @@
-myapp.controller('serviceProviderPageController', function($scope,serviceProviderSRV) {
+myapp.controller('serviceProviderPageController', function($scope,serviceProviderSRV, $state) {
 
   $scope.submitComplain = function(){
       var complainBody = $scope.complainBody;
@@ -6,4 +6,9 @@ myapp.controller('serviceProviderPageController', function($scope,serviceProvide
       console.log("subscribed to service provider succesfully");
     })
   }
+
+  
+
+
+
 });
