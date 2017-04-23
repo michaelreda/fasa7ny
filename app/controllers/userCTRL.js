@@ -328,7 +328,6 @@ viewMyProfile: function(req,res){
 
 
 //2.2 As a logged in user I can update my personal info
-//not tested - notes
 //password to be done later
 updateMyProfile: function(req,res){
   userCTRL.isUser(req,res);
