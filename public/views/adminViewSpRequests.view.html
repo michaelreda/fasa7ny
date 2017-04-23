@@ -1,0 +1,40 @@
+<div class="ui container" style="padding-top:100px">
+	<table class="ui selectable sortable celled table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Description</th>
+				<th>Date</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="row_{{$index}}" ng-repeat="review in reviews">
+				<td>{{$index + 1}}</td>
+				<td>{{review.activityId.title}}</td>
+				<td>{{email.serviceProviderAccountId.email}}</td>
+				<td style="position:relative;" ><span id="description_{{$index}}" >{{description.description}}</span>
+					<div  style="position:absolute;bottom:0;right:0;" ng-if="reviewEditable[$index]">
+						<div id="done" ng-click="update($index)" class="yellow btn btn-success" uib-tooltip="Done" style="height: 30px;border-radius: 15px;">
+							<i class="fa fa-check" aria-hidden="true"></i>
+						</div>
+						<div id="cancel" ng-click="cancelEditing($index)" class="yellow btn btn-danger" uib-tooltip="Cancel" style="height: 30px;border-radius: 15px;">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</div>
+					</div>
+				</td>
+				<td style="width: 130px;">{{review.time}} </td>
+				<td style="width: 120px;">
+						<!-- accept button -->
+						<div  ng-click="accept($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Accept" style="height: 30px;width: 30px;border-radius: 15px;">
+						</div>
+						<!-- refuse button -->
+						<div class="yellow btn btn-danger hvr-icon-sink-away" ng-click="refuse($index)" uib-tooltip="rRefuse" style="height: 30px;width: 30px;border-radius: 15px;">
+						</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
