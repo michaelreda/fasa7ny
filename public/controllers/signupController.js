@@ -1,5 +1,8 @@
 myapp.controller('signupController',function ($window,$scope,signupSRV) {
 
+  
+
+
   $scope.isLoggedIn = function() {
     return !($window.localStorage['tempSignup']==undefined);
   }
