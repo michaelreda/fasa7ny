@@ -20,6 +20,9 @@ Router.get('/',function(req,res){
   res.sendFile(path.resolve('public/index.html'));
 })
 
+///////globalCTRL/////////////
+Router.get('/check_user_session',globalCTRL.checkUserSession);
+
 
 
 /////// userCTRL /////////////
@@ -277,6 +280,7 @@ Router.get('/about_uspage',function(req,res){
 });
 
 
+Router.post('/validate', globalCTRL.validateSession);
 
 
 

@@ -17,9 +17,9 @@ myapp.factory('landingPageSRV', function($http) {
     },
       logout:function(){
         return $http.get('/logout');
-    /*},
-      getLoginInfo:function() {
-        return */
+    },
+      validateSession:function(account) {
+        return $http.post('/validate',{'usr':account});
       }
   };
 });

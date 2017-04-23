@@ -84,18 +84,29 @@
              <span class="caret"></span></a><ul class="dropdown-menu">
             <!-- go to profile -->
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
+            <li ><a href="" ng-click = "myReviews()">My reviews</a></li>
+            <!-- about Us button -->
+            <li  ><a href="/#/aboutUs">About Us</a></li>
           </ul></li>
-          <li class="active"><a href="/#/serviceProviders">All service providers</a></li>
-
           <!-- logout button -->
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+
+
       <!-- when logged out -->
+          <li class="active dropdown"  ng-show = "isLoggedIn() == false"><a href="" >Fasa7ny
+              <span class="caret"></span></a><ul class="dropdown-menu">
+                    <!-- Compare button -->
+                      <li ><a href="/#/comparison">Compare</a></li>
+                      <!-- view all SPs -->
+                      <li ><a href="/#/serviceProviders">All service providers</a></li>
+                      <!-- about Us button -->
+                      <li ><a href="/#/aboutUs">About Us</a></li>
+          </ul></li>
+
           <!-- login and signup -->
-          <!-- href="/#/login" -->
           <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
-      <!-- about Us button -->
-      <li class="active" ><a href="/#/aboutUs">About Us</a></li>
+
         </ul>
       </div><!--/.nav-collapse -->
 <div>
@@ -158,7 +169,7 @@
                       Log in</h3>
               </div>
               <div class="panel-body">
-                  <div class="row">
+                  <div class="row" style="display: -webkit-box;">
                       <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
                           <a href="http://www.jquery2dotnet.com" class="btn facebook btn-block" role="button">Log in using Facebook</a>
                           <br />
@@ -182,7 +193,7 @@
                   </div>
               </div>
               <div class="panel-footer">
-                  <div class="row">
+                  <div class="row" style="display: -webkit-box;">
                       <div class="col-xs-6 col-sm-6 col-md-6">
                           <div class="checkbox">
                               <label>
@@ -340,6 +351,7 @@ box-shadow: inset 0 0 0px black;
   <script src="controllers/compareController.js"></script>
   <script src="controllers/serviceProvidersForUserController.js"></script>
   <script src="controllers/holdingReservationsController.js"></script>
+  <script src="controllers/AdminViewSpRequestsController.js"></script>
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -373,12 +385,14 @@ box-shadow: inset 0 0 0px black;
   <script src="services/ButtonsSRV.js"></script>
   <script src="services/compareSRV.js"></script>
   <script src="services/serviceProvidersSRV.js"></script>
-<script src="services/holdingReservationsSRV.js"></script>
+  <script src="services/holdingReservationsSRV.js"></script>
   <script src="services/chatSRV.js"></script>
   <script src="services/messageSRV.js"></script>
   <script src="services/offersSRV.js"></script>
   <script src="services/promotionsSRV.js"></script>
-  
+  <script src="services/adminSRV.js"></script>
+  <script src="services/serviceProviderSRV.js"></script>
+
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>
   <!-- bootstrap js file -->

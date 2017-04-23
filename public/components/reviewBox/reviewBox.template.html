@@ -1,9 +1,10 @@
 <div>
     <div class="col-sm-1">
       <div class="thumbnail">
+        <img ng-if="$ctrl.data.userId.profilePicture== undefined" class="img-responsive user-photo" src="https://www.campsitechatter.com/images/profile/default-male-250.png">
         <img ng-if="$ctrl.data.userId.profilePicture=='-1' && $ctrl.data.userId.gender==true" class="img-responsive user-photo" src="https://www.campsitechatter.com/images/profile/default-male-250.png">
         <img ng-if="$ctrl.data.userId.profilePicture=='-1' && $ctrl.data.userId.gender==false" class="img-responsive user-photo" src="http://www.baylogictech.com/images/default-female-250.jpg">
-        <img ng-if="$ctrl.data.userId.profilePicture!='-1'" class="img-responsive user-photo" src="/img/{{$ctrl.data.userId.profilePicture}}">
+        <img ng-if="$ctrl.data.userId.profilePicture!='-1'" class="img-responsive user-photo" ng-src="img/{{$ctrl.data.userId.profilePicture}}">
       </div><!-- /thumbnail -->
     </div><!-- /col-sm-1 -->
 

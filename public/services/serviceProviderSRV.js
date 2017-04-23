@@ -5,7 +5,9 @@ myapp.factory('serviceProviderSRV',function ($http) {
     },
 
     
-
+    viewServiceProvider:function(serviceProviderId){
+      return $http.post('/view_service_provider',{'providerId':serviceProviderId})
+    }
 
   }
 });

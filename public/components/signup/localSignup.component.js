@@ -6,7 +6,7 @@ angular.module('myapp').
       this.signupStepOne = function() {
        signupSRV.sendAccountDetails($scope.userName,$scope.password,$scope.email,$scope.type==undefined? 0:$scope.type).success(function(data) {
          if(data.stepOneOK){
-         $window.localStorage['userAccount'] = angular.toJson(data.userAccount);
+         $window.localStorage['tempSignup'] = angular.toJson(data.userAccount);
        }
        });
       }

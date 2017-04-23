@@ -1,7 +1,135 @@
+<div style="height:400px">
+<slider data="media"></slider>
+</div>
+<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-4">
+					<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-circle img-thumbnail" style="margin:auto;display:block;width:200px" />
+					<center><h2>{{serviceProvider.title}}</h2>
+					<!--<span class="label label-primary">{{activity.type}}</span></center>-->
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+			<h1>
+				Service Provider Description:
+			</h1>
+			<dl>
+				{{serviceProvider.description}}
+			</dl>
+			<table class="table table-hover table-striped table-bordered" style="width: auto;margin: auto;">
+
+				<tbody>
+					
+					<!--<tr>
+						<td>
+							Minimum age
+						</td>
+						<td>
+							<div ng-if="activity.minAge==-1" style="display:-webkit-inline-box ;">
+								-
+							</div>
+							<div ng-if="activity.minAge!=-1" style="display:-webkit-inline-box">
+							{{activity.minAge}}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Maximum age
+						</td>
+						<td>
+							<div ng-if="activity.maxAge==-1" style="display:-webkit-inline-box ;">
+								-
+							</div>
+							<div ng-if="activity.maxAge!=-1" style="display:-webkit-inline-box">
+							{{activity.maxAge}}
+							</div>
+						</td>
+					</tr>
+					<tr>-->
+						<td>
+							Rating
+						</td>
+						<td>
+							<star-rating-comp rating="serviceProvider.rating" label-text="'Rated by '+serviceProvider.ratingCount+' users'" 
+                            label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
+						</td>
+					</tr>
+					<!--<tr>
+						<td>
+							Number of available timings
+						</td>
+						<td>
+							{{activity.timings.length}}
+						</td>
+					</tr>-->
+				</tbody>
+			</table>
+
+			<!--<div class="contatiner" ng-if="activity!= undefined">
+			  <div class="col-lg-12 col-md-12 col-sm-12">
+			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+			      <hr>
+			      <h2>Activity Location</h2>
+			    </div>
+			    <map activity="activity"></map>
+			  </div>
+			</div>-->
+
+			<div class="contatiner">
+				<div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.contactMobile.length==0" >
+			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+			      <hr>
+			      <h2>Contact Mobile(s)</h2>
+			      <h3>no current contact Mobiles for this service provider </h3>
+			    </div>
+                
+			  </div>
+			  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.contactMobile.length!=0" >
+			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+			      <hr>
+			      <h2>Contact Mobile(s)</h2>
+			      <h3></h3>
+			    </div>
+			    <a> data="mobile" ng-repeat="mobile in contactMobile"></a>
+			  </div>
+			</div>
+
+		</div>
+	</div>
+
 </div></center>
-    <a ng-click="subscribe($ctrl.data._id)" class="btn add2cart" >Subscribe</a>
+    <a ng-click="subscribe(data._id)" class="btn add2cart" >Subscribe</a>
     
  </div>
+<br>
+<br>
+<div class="container">
+	<div class="row" style="margin-top:40px;">
+		<div class="col-md-6">
+    	<div class="well well-sm">
 
+            <div class="row" id="post-review-box" >
+                <div class="col-md-12">
+                    <form ng-submit="submitComplain()" accept-charset="UTF-8">
+                       
+                        <textarea class="form-control animated" ng-model="complainBody" cols="50" id="new-complain" name="comment" placeholder="Enter your complain here..." rows="5"></textarea>
+
+                        <div class="text-right" style="padding-top: 20px">
+                            <!-- <div class="stars starrr" id="rate" ng-model="reviewObj.rate"  data-rating="0"></div> -->
+                            <button class="btn btn-success btn-lg" type="submit">submit complain</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+		</div>
+	</div>
+</div>
 
  
