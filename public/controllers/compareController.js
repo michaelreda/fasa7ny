@@ -1,4 +1,4 @@
-myapp.controller('compareController', function($scope,compareSRV,loaderSRV) {
+myapp.controller('compareController', function($scope,compareSRV,loaderSRV,$window) {
     //getting latest reviews
     loaderSRV.start();
     compareSRV.getFirstList().success(function(data){
@@ -7,9 +7,31 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV) {
         $scope.Activities=data.ACs;
         $scope.serviceProviders=data.SPs;
         loaderSRV.end();
-      
-        
+
+
     });
+
+    $scope.lat= parseInt($window.localStorage['lat']);
+    $scope.long= parseInt($window.localStorage['long'] );
+
+
+    var rad = function(x) {
+      return x * Math.PI / 180;
+    };
+
+    $scope.getDistance = function(lat,long) {
+      var mylat= $scope.lat;
+      var  mylong= $scope.long;
+      var R = 6378137; // Earth’s mean radius in meter
+      var dLat = rad(lat - mylat);
+      var dLong = rad(long - mylong);
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(rad(mylat)) * Math.cos(rad(lat)) *
+      Math.sin(dLong / 2) * Math.sin(dLong / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      return d; // returns the distance in meter
+    };
 
     $scope.compareActivities=  function(selectedActivities,selectedActivities2){
         // $scope.selectedActivities
@@ -37,8 +59,8 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV) {
          console.log(selectedServiceProvider2)
 
     };
-     
 
-    
+
+
 
 });
