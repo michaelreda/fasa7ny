@@ -36,9 +36,16 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'MessageController'
   });
 
+  $stateProvider.state({
+    name:'offers_form',
+    url:'/offers_form',
+    templateUrl:'views/offers_form.view.html',
+    controller: 'OffersController'
+  });
+
     $stateProvider.state({
     name:'offers',
-    url:'/offers',
+    url:'/offers/:title/:description/:deadline/:isActive/:activities',
     templateUrl:'views/offers.view.html',
     controller:'OffersController'
   });

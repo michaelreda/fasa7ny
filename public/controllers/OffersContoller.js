@@ -1,15 +1,13 @@
-myapp.controller('OffersController', function($scope,$stateParams,$state,offersSRV,loaderSRV) {
+myapp.controller('OffersController', function($scope,$stateParams,$state,offersSRV) {
 
   if($stateParams.searchInput != undefined || $stateParams.day != undefined){
-      loaderSRV.start();
-      activitiesSRV.search($stateParams.searchInput,$stateParams.day)
+      
+      offersSRV.add_offer($stateParams.searchInput,$stateParams.day)
       .success(function(data){
         $scope.activities=data;
-        loaderSRV.end();
+       
       })
   }
 
-  $scope.openActivity= function(activityID){
-    $state.go("activity", {activityID:activityID});
-  }
+
 });

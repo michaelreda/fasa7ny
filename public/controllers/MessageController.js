@@ -4,7 +4,8 @@ loaderSRV.start();
       messageSRV.getMessages($stateParams.messageId)
       .success(function(data){
         $scope.messages=data;
-        $scope.contents=data.message;
+        $scope.contents=data.chat.message;
+        $scope.sender=data.sender;
                 loaderSRV.end();
 
            })
