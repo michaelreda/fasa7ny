@@ -218,6 +218,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'PromotionsController'
   });
 
+  $stateProvider.state({
+   name:'viewSPrequests',
+   url:'/view_sp_requests',
+   templateUrl:'views/adminViewSpRequests.view.html',
+   controller:'AdminViewSpRequestsController'
+ });
+
   $urlRouterProvider.when('','/');
 
 }]);
