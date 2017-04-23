@@ -41,7 +41,7 @@ var userSchema = mongoose.Schema({
     required:false
   },
   interests:[{
-    type:mongoose.Schema.Types.ObjectId,ref:'interest',
+    type:String,
     required:false
   }],
 

@@ -2,8 +2,7 @@ angular.module('myapp').
   component('map',{
     templateUrl:'components/map/map.template.html',
     controller: function MapController($scope,$state,geolocation,landingPageSRV){
-
-
+      var self=this;
 
         geolocation.getLocation().then(
           //if access to location is granted..
@@ -20,7 +19,7 @@ angular.module('myapp').
             console.log(lat+","+long);
 
             var mapOptions = {
-                zoom: 12,
+                zoom: (self.activity)?8:12,
                 center: new google.maps.LatLng(lat, long),
                 scrollwheel: false,
                 mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -67,6 +66,7 @@ angular.module('myapp').
               $scope.markers.push(marker);
 
           }
+          if(self.activity == undefined){
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -86,6 +86,21 @@ angular.module('myapp').
                   createMarker(activities[i]);
               }
           })
+        }else{
+          var lat= parseFloat((self.activity.location.split(","))[0]);
+          var long= parseFloat((self.activity.location.split(","))[1]);
+          activities.push({
+            title: self.activity.title,
+            type: self.activity.type,
+            price: self.activity.prices[0].price,
+            lat:lat,
+            long:long
+          });
+          for (i = 0; i < activities.length; i++){
+              //console.log(activities[i]);
+              createMarker(activities[i]);
+          }
+        }
 
 
 
@@ -106,7 +121,7 @@ angular.module('myapp').
           $scope.markers = [];
 
             var mapOptions = {
-                zoom: 12,
+                zoom: (self.activity)?8:12,
                 center: new google.maps.LatLng(lat, long),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             }
@@ -132,6 +147,7 @@ angular.module('myapp').
               $scope.markers.push(marker);
 
           }
+          if(self.activity == undefined){
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -151,6 +167,22 @@ angular.module('myapp').
                   createMarker(activities[i]);
               }
           })
+        }else{
+
+          var lat= parseFloat((self.activity.location.split(","))[0]);
+          var long= parseFloat((self.activity.location.split(","))[1]);
+          activities.push({
+            title: self.activity.title,
+            type: self.activity.type,
+            price: self.activity.prices[0].price,
+            lat:lat,
+            long:long
+          });
+          for (i = 0; i < activities.length; i++){
+              //console.log(activities[i]);
+              createMarker(activities[i]);
+          }
+        }
 
 
 
@@ -163,5 +195,8 @@ angular.module('myapp').
         });
 
 
+    },
+    bindings:{
+      activity:'='
     }
 });

@@ -301,7 +301,7 @@ let ServiceProviderCTRL = {
           else {
             if(thisProvider.banned==0){
               req.session.serviceProvider=thisProvider;
-              res.send("SP is logged in");
+              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider});
             }
             else{
               res.send('Account banned! try again in '+thisProvider.banned+' days');
@@ -446,11 +446,9 @@ let ServiceProviderCTRL = {
         if(err){
           globalCTRL.addErrorLog(err.message);
           res.send(err.message);
-        }else
-        if(status.nModified!=0)
+        }else{
         res.send('should redirect to serviceProvider home page');
-        else
-        res.send('sp not found');
+        }
 
       });
     },
@@ -569,7 +567,7 @@ let ServiceProviderCTRL = {
 
       var errors = req.validationErrors();
       if (errors) {
-        res.send(errors);
+        res.send({'stepTwoOK':0,'validationErrors':errors});
         return;
       }
       else {
@@ -596,10 +594,11 @@ let ServiceProviderCTRL = {
         newSP.save(function(err){
           if(err){
             globalCTRL.addErrorLog(err.message);
-            res.send(err);
-          }
+            res.send({'stepTwoOK':0,'errors':err});
+           }
           else {
-            res.send('signup step 2 succesfull!!');
+            console.log(newSP);
+            res.send({'stepTwoOK':1,'spProfile':newSP});
           }
 
         });

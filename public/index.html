@@ -8,6 +8,10 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!--semantic ui-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet">
+    <!--hover css-->
+    <link href="css/hover.css" rel="stylesheet">
     <!-- for fontawesome icon css file -->
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <!-- for content animate css file -->
@@ -29,6 +33,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
     <!--angular-ui-router -->
     <script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <!--angular ui bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
     <!-- slider -->
     <link rel="stylesheet" type="text/css" href="js/flexslider/flexslider.css">
     <script src="js/flexslider/jquery.flexslider.js"></script>
@@ -54,7 +60,7 @@
   <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
 
   <!-- start navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-default navbar-fixed-top" ng-controller="IndexNavbarController" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -68,9 +74,34 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
-          <li class="active"><a href="index.html">Home</a></li>
+
+
+          <!-- home button -->
+          <li class="active"><a href="/">Home</a></li>
+      <!-- when logged in -->
+          <!-- profile management -->
+          <li class="active dropdown"  ng-show = "isLoggedIn() == true"><a href="" >My fasa7ny
+             <span class="caret"></span></a><ul class="dropdown-menu">
+            <!-- go to profile -->
+            <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
+          </ul></li>
+          <li class="active"><a href="/#/serviceProviders">All service providers</a></li>
+
+          <!-- logout button -->
+          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+      <!-- when logged out -->
+          <!-- login and signup -->
+          <!-- href="/#/login" -->
+          <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
+          <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
+      <!-- about Us button -->
+      <li class="active" ><a href="/#/aboutUs">About Us</a></li>
         </ul>
       </div><!--/.nav-collapse -->
+<div>
+  <!--<button type="button" class="active" ng-click="switchView">Contact Platform</button>-->
+</div>
+
     </div>
   </nav>
 
@@ -115,6 +146,85 @@
 
     <ui-view></ui-view>
 
+
+    <!-- login modal -->
+    <script type="text/ng-template" id="loginModal.html">
+      <div class="container">
+  <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6">
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h3 class="panel-title">
+                      Log in</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                      <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
+                          <a href="http://www.jquery2dotnet.com" class="btn facebook btn-block" role="button">Log in using Facebook</a>
+                          <br />
+                          <a href="http://www.jquery2dotnet.com" class="btn twitter btn-block" role="button">Log in using Twitter</a>
+                      </div>
+                      <div class="col-xs-6 col-sm-6 col-md-6 login-box">
+                          <form role="form">
+                          <div class="input-group">
+                              <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                              <input type="text" class="form-control" ng-model="username" placeholder="Username" required autofocus />
+                          </div>
+                          <div class="input-group">
+                              <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                              <input type="password" class="form-control" ng-model="password" placeholder="Password" required />
+                          </div>
+                          <p>
+                              <a href="http://www.jquery2dotnet.com">Lost your password?</a></p>
+                          Don't have an account? <a href="" ng-click="signupStatechange()">Sign up here</a>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <div class="panel-footer">
+                  <div class="row">
+                      <div class="col-xs-6 col-sm-6 col-md-6">
+                          <div class="checkbox">
+                              <label>
+                                  <input type="checkbox" value="Remember">
+                                  Remember me
+                              </label>
+                          </div>
+                      </div>
+                      <div class="col-xs-6 col-sm-6 col-md-6">
+                          <button type="button" ng-click="login()" class="btn btn-labeled btn-success">
+                              <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>Login</button>
+                          <button type="button" ng-click="cancelLogin()" class="btn btn-labeled btn-danger">
+                              <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Cancel</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<style>
+.btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
+.btn-labeled {padding-top: 0;padding-bottom: 0;}
+.input-group { margin-bottom:10px; }
+.separator { border-right: 1px solid #dfdfe0; }
+.facebook,.twitter { min-width:170px; }
+.facebook { background-color:#354E84;color:#fff; }
+.twitter { background-color:#00A5E3;color:#fff; }
+.facebook:hover,.twitter:hover { color:#fff; }
+.modal-content {
+  background-color: rgba(0,0,0,0);
+border-width: 0px;
+box-shadow: inset 0 0 0px black;
+}
+.modal {
+    z-index: 999999 !important;
+  }
+#toast-container{
+  z-index: 99999999 !important;
+}
+</style>
+    </script>
 
 
 
@@ -188,10 +298,11 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
           <div class="footer_bottom">
             <div class="copyright">
-              <p>All right reserved </p>
+              <p>All rights reserved </p>
             </div>
             <div class="developer">
               <p>Designed By Tweety</p>
+              <a href="/#/FAQ" >FAQ</a>
             </div>
           </div>
         </div>
@@ -206,13 +317,29 @@
   <script src="controllers/HomeController.js"></script>
   <script src="controllers/ActivitiesController.js"></script>
   <script src="controllers/ActivityController.js"></script>
-
   <script src="controllers/ChatController.js"></script>
   <script src="controllers/MessageController.js"></script>
   <script src="controllers/OffersController.js"></script>
   <script src="controllers/PomotionsController.js"></script>
-  
-  
+  <script src="controllers/contactPlatformController.js"></script>
+  <script src="controllers/logInController.js"></script>
+  <script src="controllers/adminPageController.js"></script>
+  <script src="controllers/serviceProviderPageController.js"></script>
+  <script src="controllers/userPageController.js"></script>
+  <script src="controllers/IndexNavbarController.js"></script>
+  <script src="controllers/signupController.js"></script>
+  <script src="controllers/systemLogsController.js"></script>
+  <script src="controllers/NewsLetterController.js"></script>
+  <script src="controllers/serviceProviderController.js"></script>
+  <script src="controllers/buttonsController.js"></script>
+  <script src="controllers/UserReviewsController.js"></script>
+  <script src="controllers/BookingController.js"></script>
+  <script src="controllers/UserBookingsController.js"></script>
+  <script src="controllers/complainsController.js"></script>
+  <script src="controllers/buttonsController.js"></script>
+  <script src="controllers/compareController.js"></script>
+  <script src="controllers/serviceProvidersForUserController.js"></script>
+
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -221,17 +348,31 @@
   <script src="components/activityBox/activityBox.component.js"></script>
   <script src="components/reviewBox/reviewBox.component.js"></script>
   <script src="components/map/map.component.js"></script>
-
   <script src="components/chats/chats.component.js"></script>
   <script src="components/message/message.component.js"></script>
-
-
+  <script src="components/signup/localSignup.component.js"></script>
+  <script src="components/signup/spSignup.component.js"></script>
+  <script src="components/signup/userSignup.component.js"></script>
+  <script src="components/interests/interests.component.js"></script>
+  <script src="components/serviceProviderBox/serviceProviderBox.component.js"></script>
 
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
   <script src="services/landingPageSRV.js"></script>
   <script src="services/activitiesSRV.js"></script>
   <script src="services/activitySRV.js"></script>
+  <script src="services/contactPlatformSRV.js"></script>
+  <script src="services/logInSRV.js"></script>
+  <script src="services/adminPageSRV.js"></script>
+  <script src="services/signupSRV.js"></script>
+  <script src="services/systemLogsSRV.js"></script>
+  <script src="services/newsLetterSRV.js"></script>
+  <script src="services/userSRV.js"></script>
+  <script src="services/ButtonsSRV.js"></script>
+  <script src="services/complainsSRV.js"></script>
+  <script src="services/ButtonsSRV.js"></script>
+  <script src="services/compareSRV.js"></script>
+  <script src="services/serviceProvidersSRV.js"></script>
 
   <script src="services/chatSRV.js"></script>
   <script src="services/messageSRV.js"></script>
@@ -246,7 +387,15 @@
   <script src="js/jquery.easing.1.3.js"></script>
   <script src="js/jquery.animate-enhanced.min.js"></script>
   <script src="js/jquery.superslides.min.js" type="text/javascript" charset="utf-8"></script>
-
+  <!-- toastr js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+  <script>
+  toastr.options={
+    "closeButton": true,
+    "newestOnTop": true,
+  }
+  </script>
   <!-- slick slider js file -->
   <script src="js/slick.min.js"></script>
   <!-- Google map -->
@@ -259,7 +408,8 @@
   <!--needed scripts for counting animation-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
-
+  <!--semantic ui script-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
   <!--rating system script -->
   <script src="bower_components/angular1-star-rating/dist/index.js"></script>
 <!-- include html script-->
