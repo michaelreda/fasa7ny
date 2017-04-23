@@ -1,11 +1,11 @@
 <!-- <div class="container" style="
 display: inline-block;width: 83%;"> -->
     <!-- <div class="row"> -->
-        <div class="col-md-4">
+        <div class="col-md-4" class="position:relative" id="box">
             <div class="product-item hvr-rectangle-out">
               <div class="pi-img-wrapper">
                 <!-- <img src="img/works_slider1.jpg"style="height: 300px;" class="img-responsive" > -->
-                <center><img src="img/{{$ctrl.data.media[0]}}"style="height: 300px;" class="img-responsive" ></center>
+                <center><img ng-src="img/{{$ctrl.data.media[0]}}"style="height: 300px;" class="img-responsive" ></center>
 
               </div>
             <center>
@@ -31,8 +31,9 @@ display: inline-block;width: 83%;"> -->
                 <li><a href="https://plus.google.com/share?url=www.localhost:8080/serviceProvider/{{$ctrl.data._id}}" target="_blank" style="padding: 4px 8px;"><i class="fa fa-google-plus"></i></a></li>
               </ul>
             </div></center>
-            <a ng-click="openServiceProvider($ctrl.data._id)" class="btn add2cart">More Info?</a>
+            <a ng-click="openServiceProvider($ctrl.data._id)" class="btn add2cart">More Info?  </a>
               <!-- <a href="/#/activity/{{a._id}}" class="btn add2cart">More Info?</a> -->
+              <div ng-if="$ctrl.data.isGolden" id="golden" class="golden golden-choice hvr-bob"></div>
             </div>
         </div>
     <!-- </div> -->
@@ -112,6 +113,26 @@ display: inline-block;width: 83%;"> -->
     background-size: 100px;
     height: 100px;
     width: 100px;
+    left: auto;
+    right: 0;
+}
+.golden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 63px;
+    height: 63px;
+}
+.golden-choice {
+  position: absolute;
+    right: -29px!important;
+    top: -58px;
+    -webkit-filter: drop-shadow(5px 5px 5px #222);
+    filter: drop-shadow(5px 5px 5px #222);
+    background: url(img/golden.png) no-repeat;
+    background-size: 200px;
+    height: 200px;
+    width: 172px;
     left: auto;
     right: 0;
 }

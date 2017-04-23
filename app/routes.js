@@ -20,13 +20,16 @@ Router.get('/',function(req,res){
   res.sendFile(path.resolve('public/index.html'));
 })
 
+///////globalCTRL/////////////
+Router.get('/check_user_session',globalCTRL.checkUserSession);
+
 
 
 /////// userCTRL /////////////
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
+//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove
 Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
 
@@ -82,7 +85,6 @@ Router.get('/view_sp_requests', adminCTRL.viewServiceProviderRequests);
 Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
 Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
 Router.post('/ban_forever', adminCTRL.banForever);
-Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/update_ban_status', adminCTRL.updateBanStatus);
 Router.get('/view_complains', adminCTRL.viewComplains);
@@ -150,6 +152,10 @@ Router.post('/bookings', serviceProviderCTRL.confirmCheckIn);
 Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations);
 Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
 Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
+
+Router.get('/view_birthDay_clients', serviceProviderCTRL.viewBirthDayClients);
+Router.post('/promote_to_clients', serviceProviderCTRL.promoteToHistoryClient);
+
 
 ////////////////////visitorCTRL//////////////////
 
@@ -274,6 +280,7 @@ Router.get('/about_uspage',function(req,res){
 });
 
 
+Router.post('/validate', globalCTRL.validateSession);
 
 
 
