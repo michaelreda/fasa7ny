@@ -283,7 +283,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin});
+            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin,'banned':false});
 
         }
 

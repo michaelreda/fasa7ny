@@ -13,7 +13,7 @@ let globalCTRL=require('../controllers/globalCTRL.js');
 let userCTRL = {
   //used to test if the user is logged or not
   isUser: function(req,res){
-    if(!req.session.user)
+    if(!req.user)
     res.send("you are not logged in.. you are not authorized to do this function");
   },
 
@@ -780,10 +780,10 @@ deleteReview: function(req,res){
               globalCTRL.addErrorLog(err);
             })
             req.session.user=thisUser;
-            res.send({'type':0,'userProfile':thisUser,'userAccount':req.user});
+            res.send({'type':0,'userProfile':thisUser,'userAccount':req.user,'banned':false});
           }
           else{
-            res.send('Account banned! try again in '+thisUser.banned+' days');
+            res.send({'banned':thisUser.banned});
           }
         }
 

@@ -19,7 +19,6 @@ myapp.factory('landingPageSRV', function($http) {
         return $http.get('/logout');
     },
       validateSession:function(account) {
-        console.log(account);
         return $http.post('/validate',{'usr':account});
       }
   };
