@@ -211,6 +211,15 @@ myapp.run(function($rootScope,$window,$http){
             })
           }
 
+          if($window.localStorage['adminProfile']){
+            $http.get('/check_admin_session').success(function(data){
+
+              if(data == false){
+                $window.localStorage.removeItem('adminProfile');
+                $window.localStorage.removeItem('userAccount');
+              }
+            })
+          }
 
 
     });
