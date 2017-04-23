@@ -44,7 +44,7 @@
 
 						</div>
 
-				
+
 
 					</div>
 
@@ -60,31 +60,31 @@
                             <div class="row">
                             <div class="col-md-6">
                                 <label><span style="color:red">*</span>First Name</label>
-                                <input type="text" class="form-control"ng-model="firstName" placeholder="First Name" required>
+                                <input type="text" class="form-control"ng-model="firstName" placeholder="First Name" ng-required="true">
                             </div>
                             <div class="col-md-6">
                                 <label><span style="color:red">*</span>Last Name</label>
-                                <input type="text" class="form-control" ng-model="lastName" placeholder="Last Name" required>
+                                <input type="text" class="form-control" ng-model="lastName" placeholder="Last Name" ng-required="true">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label><span style="color:red">*</span>Email address</label>
-                                <input type="email" class="form-control" ng-model="email" placeholder="Email" required>
+                                <input type="email" class="form-control" ng-model="email" placeholder="Email" ng-required="true">
                             </div>
                             <div class="col-md-6">
                                 <label><span style="color:red">*</span>Username</label>
-                                <input type="text" class="form-control" ng-model="username" placeholder="Username" required>
+                                <input type="text" class="form-control" ng-model="username" placeholder="Username" ng-required="true">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label><span style="color:red">*</span>Password</label>
-                                <input type="password" class="form-control" ng-model="password" placeholder="Password" required>
+                                <input type="password" class="form-control" ng-model="password" placeholder="Password" ng-required="true">
                             </div>
 														<div class="col-md-6">
                                 <label><span style="color:red">*</span>Confirm Password</label>
-                                <input type="password" class="form-control" placeholder="Confirm Password" required>
+                                <input type="password" ng-required="true" class="form-control" placeholder="Confirm Password" >
                             </div>
                         </div>
 
@@ -98,6 +98,7 @@
 													<div class="row">
 														<div class="col-md-4 col-xs-3">
 															<label align="right"><stong>Date of birth</stong></label>
+															<div uib-datepicker ng-model="birthDate" ></div>
 														</div>
 													</div>
 
