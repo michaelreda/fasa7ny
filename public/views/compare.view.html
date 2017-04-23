@@ -69,13 +69,13 @@
               <div class="my_planTitle">{{activity1.title}}</div>
               <div class="my_planPrice">EGP{{activity1.prices[0].price}}</div>
               <div class="my_planDuration">per person</div>
-              <a type="button" class="btn btn-default">Book</a>
+              <a type="button" ng-click="openBookingPage(acitivity1._id)" class="btn btn-default">Book</a>
             </div>
             <div class="col-xs-6 my_planHeader my_plan2">
               <div class="my_planTitle">{{activity2.title}}</div>
               <div class="my_planPrice">EGP{{activity2.prices[0].price}}</div>
               <div class="my_planDuration">per person</div>
-              <a type="button" class="btn btn-default">Book</a>
+              <a type="button" ng-click="openBookingPage(acitivity2._id)" class="btn btn-default">Book</a>
             </div>
           </div>
         </div>

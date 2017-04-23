@@ -1,4 +1,4 @@
-myapp.controller('compareController', function($scope,compareSRV,loaderSRV,$window) {
+myapp.controller('compareController', function($scope,compareSRV,loaderSRV,$window,activitySRV) {
     //getting latest reviews
     loaderSRV.start();
     compareSRV.getFirstList().success(function(data){
@@ -61,6 +61,30 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV,$wind
     };
 
 
+    $scope.openBookingPage= function(activityID){
+      if($window.localStorage['userAccount']==undefined){
+        toastr.error("please signup to book this activity");
+        return;
+      }
+      activitySRV.getActivityById(activityID)
+      .success(function(data){
+        var days=[0,1,2,3,4,5,6];
+        activity = data.activity;
+        for(var i=0;i<activity.timings.length;i++){
+          switch(activity.timings[i].day.toUpperCase()){
+            case "SUNDAY": days[0]= -1; break;
+            case "MONDAY": days[1]= -1; break;
+            case "TUESDAY": days[2]= -1; break;
+            case "WEDNESDAY": days[3]= -1; break;
+            case "THURSDAY": days[4]= -1; break;
+            case "FRIDAY": days[5]= -1; break;
+            case "SATURDAY": days[6]= -1; break;
+          }
+        }
+        $window.localStorage['days']=days;
+        $state.go("booking",{activityID:activityID})
+      })
 
+    }
 
 });
