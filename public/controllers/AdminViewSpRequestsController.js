@@ -1,11 +1,7 @@
 myapp.controller('AdminViewSpRequestsController', function($scope,adminSRV) {
   adminSRV.viewServiceProviderRequests().success(function(data){
     $scope.reviewEditable= new Array(data.length).fill(false);
-    for(var i=0;i<data.length;i++){
-      var d = new Date(data[i].time);
-      data[i].time=d.toDateString();
-    }
-    $scope.reviews= data;
+    $scope.requests= data;
   });
 
   $scope.enableUpdateReview = function(i){
