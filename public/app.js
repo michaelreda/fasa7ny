@@ -188,6 +188,21 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
 }]);
 
+myapp.run(function($rootScope,$window,$http){
+        $rootScope.$on('$stateChangeSuccess', function() {
+          if($window.localStorage['userProfile']){
+            $http.get('/check_user_session').success(function(data){
+
+              if(data == false){
+                $window.localStorage.removeItem('userProfile');
+                $window.localStorage.removeItem('userAccount');
+              }
+            })
+          }
+
+    });
+  })
+
 // myapp.config(function($routeProvider) {
 //   $routeProvider
 //   // route for the landingPage page

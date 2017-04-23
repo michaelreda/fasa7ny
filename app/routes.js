@@ -20,13 +20,14 @@ Router.get('/',function(req,res){
   res.sendFile(path.resolve('public/index.html'));
 })
 
-
+///////globalCTRL/////////////
+Router.get('/check_user_session',globalCTRL.checkUserSession);
 
 /////// userCTRL /////////////
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
+//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove
 Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
 
