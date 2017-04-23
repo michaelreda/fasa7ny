@@ -167,10 +167,10 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
-      $stateProvider.state({
+  $stateProvider.state({
     name:'compare',
     url:'/comparison',
-     cache:false,
+    cache:false,
     templateUrl:'views/compare.view.html',
     controller:'compareController'
   });
