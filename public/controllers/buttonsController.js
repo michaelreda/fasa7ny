@@ -14,6 +14,17 @@ $scope.viewAnalytics = function(){
         $scope.topActivity=data.topActivity;
         $scope.topSP=data.topSP;
         $scope.topU=data.topU;
+        $scope.dates=data.dates;
+
+
+
+       
+
+
+
+
+    
+
     })
 }       
 

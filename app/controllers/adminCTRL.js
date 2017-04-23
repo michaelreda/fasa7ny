@@ -436,8 +436,22 @@ let adminCTRL={
                                           res.send(err.message);
                                         }else
                                         {
-                                          console.log(topU);
-                                          res.send({topActivity,topSP,topU});
+                                          
+                                  Booking.aggregate(
+                                  {$group : {_id : "$time", "count" : {$sum : 1}}},
+                                  {$sort : {"_id" : 1}},function(err,dates){
+                                        if(err)
+                                        {
+                                          res.send(err.message)
+                                        }else
+                                        {
+                                          res.send({topActivity,topSP,topU,dates});
+                                        }
+
+                                  })
+                                          
+                                    
+                                          
                                         }
                                       })
                                      
