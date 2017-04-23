@@ -15,7 +15,12 @@ component('activityBox',{
         }
       }
 
+
       $scope.openBookingPage= function(activityID){
+        if($window.localStorage['userAccount']==undefined){
+          toastr.error("please signup to book this activity");
+          return;
+        }
         activitySRV.getActivityById(activityID)
         .success(function(data){
           var days=[0,1,2,3,4,5,6];
@@ -37,6 +42,10 @@ component('activityBox',{
 
       }
       $scope.showSendGiftModal = function(){
+        if($window.localStorage['userAccount']==undefined){
+          toastr.error("please signup to send this activity as a gift");
+          return;
+        }
         $uibModal.open({
           templateUrl: 'sendGiftModal.html',
           controller: 'sendGiftModalController',

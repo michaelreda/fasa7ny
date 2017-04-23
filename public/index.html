@@ -78,6 +78,10 @@
 
           <!-- home button -->
           <li class="active"><a href="/">Home</a></li>
+          <!-- Compare button -->
+          <li class="active"><a href="/#/comparison">Compare</a></li>
+          <!-- about Us button -->
+          <li class="active" ><a href="/#/aboutUs">About Us</a></li>
       <!-- when logged in -->
           <!-- profile management -->
           <li class="active dropdown"  ng-show = "isLoggedIn() == true"><a href="" >My fasa7ny
@@ -86,6 +90,7 @@
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
             <!-- view all SPs -->
             <li ><a href="/#/serviceProviders">All service providers</a></li>
+            <li ><a href="" ng-click = "myReviews()">My reviews</a></li>
           </ul></li>
 
 
@@ -96,8 +101,7 @@
           <!-- href="/#/login" -->
           <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
-      <!-- about Us button -->
-      <li class="active" ><a href="/#/aboutUs">About Us</a></li>
+
         </ul>
       </div><!--/.nav-collapse -->
 <div>
@@ -160,7 +164,7 @@
                       Log in</h3>
               </div>
               <div class="panel-body">
-                  <div class="row">
+                  <div class="row" style="display: -webkit-box;">
                       <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
                           <a href="http://www.jquery2dotnet.com" class="btn facebook btn-block" role="button">Log in using Facebook</a>
                           <br />
@@ -184,7 +188,7 @@
                   </div>
               </div>
               <div class="panel-footer">
-                  <div class="row">
+                  <div class="row" style="display: -webkit-box;">
                       <div class="col-xs-6 col-sm-6 col-md-6">
                           <div class="checkbox">
                               <label>

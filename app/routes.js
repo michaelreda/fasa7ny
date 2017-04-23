@@ -20,6 +20,10 @@ Router.get('/',function(req,res){
   res.sendFile(path.resolve('public/index.html'));
 })
 
+///////globalCTRL/////////////
+Router.get('/check_user_session',globalCTRL.checkUserSession);
+Router.get('/check_sp_session',globalCTRL.checkSPSession);
+Router.get('/check_admin_session',globalCTRL.checkAdminSession);
 
 
 /////// userCTRL /////////////

@@ -13,7 +13,7 @@ let globalCTRL=require('../controllers/globalCTRL.js');
 let userCTRL = {
   //used to test if the user is logged or not
   isUser: function(req,res){
-    if(!req.user)
+    if(!req.session.user)
     res.send("you are not logged in.. you are not authorized to do this function");
   },
 
@@ -391,10 +391,10 @@ rateReviewActivity: function(req,res){
   userCTRL.isUser(req,res);
   //validating
   req.checkBody('rating','rating is required >1 and <5').isDecimal({min:1,max:5});
-  req.checkBody('inputRating','inputRating is required >1 and <5').isInput({min:1,max:5});
+  req.checkBody('inputRating','inputRating is required >1 and <5').isInt({min:1,max:5});
   req.checkBody('ratingCount','ratingCount is required').isInt();
   req.checkBody('activityId','activityId is required').isMongoId();
-  req.checkBody('review','review is not empty').optional().notEmpty();
+  req.checkBody('review','review is not empty');
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
@@ -414,6 +414,7 @@ rateReviewActivity: function(req,res){
       if(req.body.review){
         var review= new Review(req.body);
         review.rate = inputRating;
+        review.userId=req.session.user._id;
         review.save(function(err,review){
           if(err)
           res.send(err);

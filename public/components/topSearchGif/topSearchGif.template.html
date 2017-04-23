@@ -13,79 +13,85 @@
 
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <div class="col-sm-5">
+    <div class="col-sm-5" style="width:36%">
     <h3 style="margin-top: 12px;font-weight: 600;">Start searching for activities! </h3>
   </div>
-    <div class="col-sm-5">
+    <div class="col-sm-5" style="width:auto">
         <form class="navbar-form" role="search">
         <div class="input-group">
             <input type="text" class="form-control" ng-model="searchInput" placeholder="Search" name="q">
             <div class="input-group-btn">
-                <button class="btn btn-default" ng-click="search(searchInput)"><i class="glyphicon glyphicon-search"></i></button>
+                <button class="btn btn-default" ng-click="search(searchInput)" style="height: 34px;"><i class="glyphicon glyphicon-search"></i></button>
             </div>
         </div>
         </form>
     </div>
 
 
-
-    <ul class="nav navbar-nav">
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$ctrl.day=='_'?"Any Day..":$ctrl.day }}<b class="caret"></b></a>
-        <ul class="dropdown-menu" ng-model="day">
-          <li><a href="#" ng-click="dayChosen('_')">Any Day..</a></li>
-          <li><a href="#" ng-click="dayChosen('Friday')">Friday</a></li>
-          <li><a href="#" ng-click="dayChosen('Saturday')">Saturday</a></li>
-          <li><a href="#" ng-click="dayChosen('Sunday')">Sunday</a></li>
-          <li><a href="#" ng-click="dayChosen('Monday')">Monday</a></li>
-          <li ><a href="#"ng-click="dayChosen('Tuesday')">Tuesday</a></li>
-          <li><a href="#" ng-click="dayChosen('Wednesday')">Wednesday</a></li>
-          <li><a href="#" ng-click="dayChosen('Thursday')">Thursday</a></li>
-        </ul>
-      </li>
-    </ul>
-<br>
-<br>
-<br>
-
-    <div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Filter activities by
-    <span class="caret"></span></button>
+    <div class="dropdown" style="
+    display: block;
+    width: 20%;
+    float: right;
+    margin-right: 30px;
+    ">
+    <a id="dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="
+    background: none;
+    border: none;
+    font-size: medium;
+    color: #5e5e5e;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    padding-top: 14px;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+">Filter activities by
+    <span class="caret"></span></a>
     <ul class="dropdown-menu" >
       <li class="dropdown-submenu">
-        <a class="test" ng-click="filterChosen('price')" tabindex="-1">price <span class="caret"></span></a>
+        <a href="#" class="test" href="" ng-click="filterChosen('price')"  tabindex="-1">price <i class="fa fa-caret-right pull-right" aria-hidden="true"></i></a>
         <ul class="dropdown-menu" ng-model="value">
-          <li><a  ng-click="valueChosen(100)"   tabindex="-1" >100+</a></li>
-          <li ><a ng-click="valueChosen(200)"    tabindex="-1" >200+</a></li>
+          <li><a href="" ng-click="valueChosen(100)"   tabindex="-1" >100+</a></li>
+          <li ><a href="" ng-click="valueChosen(200)"    tabindex="-1" >200+</a></li>
            <li><a  ng-click="valueChosen(400)"  tabindex="-1" >400+</a></li>
-          <li><a   ng-click="valueChosen(800)" tabindex="-1" >800+</a></li>
-           <li><a  ng-click="valueChosen(1600)"  tabindex="-1" >1600+</a></li>
-          <li><a   ng-click="valueChosen(3200)"  tabindex="-1" >3200+</a></li>
+          <li><a href=""   ng-click="valueChosen(800)" tabindex="-1" >800+</a></li>
+           <li><a href=""  ng-click="valueChosen(1600)"  tabindex="-1" >1600+</a></li>
+          <li><a href=""   ng-click="valueChosen(3200)"  tabindex="-1" >3200+</a></li>
         </ul>
       </li>
-      <li><a  ng-click="filterChosen('offer')" tabindex="-1">offer</a></li>
+      <li><a href="#"  ng-click="filterChosen('offer')" tabindex="-1">offer</a></li>
       <li class="dropdown-submenu">
-        <a class="test" ng-click="filterChosen('theme')" tabindex="-1" href="#">theme <span class="caret"></span></a>
+        <a class="test" ng-click="filterChosen('theme')" tabindex="-1" href="#">theme <i class="fa fa-caret-right pull-right" aria-hidden="true"></i></a>
         <ul class="dropdown-menu">
-         <li><a  ng-click="valueChosen('thriller')" tabindex="-1" >thriller</a></li>
-          <li><a ng-click="valueChosen('relaxing')"  tabindex="-1" >relaxing</a></li>
-           <li><a ng-click="valueChosen('horror')" tabindex="-1" >horror</a></li>
-          <li><a ng-click="valueChosen('children')" tabindex="-1" >children</a></li>
-           <li><a  ng-click="valueChosen('clubs')" tabindex="-1" >clubs</a></li>
-          <li><a ng-click="valueChosen('educational')" tabindex="-1" >educational</a></li>
+         <li><a href=""  ng-click="valueChosen('thriller')" tabindex="-1" >thriller</a></li>
+          <li><a href="" ng-click="valueChosen('relaxing')"  tabindex="-1" >relaxing</a></li>
+           <li><a href="" ng-click="valueChosen('horror')" tabindex="-1" >horror</a></li>
+          <li><a href="" ng-click="valueChosen('children')" tabindex="-1" >children</a></li>
+           <li><a href=""  ng-click="valueChosen('clubs')" tabindex="-1" >clubs</a></li>
+          <li><a href="" ng-click="valueChosen('educational')" tabindex="-1" >educational</a></li>
         </ul>
       </li>
       <li class="dropdown-submenu">
-        <a class="test" ng-click="filterChosen('rating')" tabindex="-1" href="#">rating <span class="caret"></span></a>
+        <a class="test" ng-click="filterChosen('rating')" tabindex="-1" href="#">rating <i class="fa fa-caret-right pull-right" aria-hidden="true"></i></a>
         <ul class="dropdown-menu">
-         <li><a ng-click="valueChosen('1')" tabindex="-1" >1+</a></li>
-          <li><a ng-click="valueChosen('2')" tabindex="-1" >2+</a></li>
-           <li><a ng-click="valueChosen('3')" tabindex="-1" >3+</a></li>
-          <li><a  ng-click="valueChosen('4')" tabindex="-1" >4+</a></li>
-
+         <li><a href="" ng-click="valueChosen('1')" tabindex="-1" >1+</a></li>
+          <li><a href="" ng-click="valueChosen('2')" tabindex="-1" >2+</a></li>
+           <li><a href="" ng-click="valueChosen('3')" tabindex="-1" >3+</a></li>
+          <li><a href=""  ng-click="valueChosen('4')" tabindex="-1" >4+</a></li>
         </ul>
       </li>
-
+      <li class="dropdown-submenu">
+        <a href="#" class="test" tabindex="-1">Day <i class="fa fa-caret-right pull-right" aria-hidden="true"></i></a>
+        <ul class="dropdown-menu" ng-model="day">
+          <li><a href="" ng-click="dayChosen('Friday')">Friday</a></li>
+          <li><a href="" ng-click="dayChosen('Saturday')">Saturday</a></li>
+          <li><a href="" ng-click="dayChosen('Sunday')">Sunday</a></li>
+          <li><a href="" ng-click="dayChosen('Monday')">Monday</a></li>
+          <li ><a href=""ng-click="dayChosen('Tuesday')">Tuesday</a></li>
+          <li><a href="" ng-click="dayChosen('Wednesday')">Wednesday</a></li>
+          <li><a href="" ng-click="dayChosen('Thursday')">Thursday</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 
@@ -174,7 +180,8 @@
           startTimer();
           function displayNextImage() {
               x = (x === images.length - 1) ? 0 : x + 1;
-              document.getElementById("gifs").src = images[x];
+              if(document.getElementById("gifs")!=null)
+                document.getElementById("gifs").src = images[x];
           }
 
           function startTimer() {
