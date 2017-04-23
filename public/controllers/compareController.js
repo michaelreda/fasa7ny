@@ -51,8 +51,10 @@ myapp.controller('compareController', function($scope,compareSRV,loaderSRV,$wind
         // console.log($scope.selectedActivities)
 
         compareSRV.compareServiceProvider(selectedServiceProvider,selectedServiceProvider2).success(function(data){
-            console.log(data)
+           
             $scope.serviceProvider1=data.SP1;
+             console.log("serviceProvider1")
+            console.log($scope.serviceProvider1)
               $scope.serviceProvider2=data.SP2;
         })
         console.log(selectedServiceProvider)
