@@ -353,28 +353,20 @@ let adminCTRL={
       if(err){
         globalCTRL.addErrorLog(err.message);
       }else{
-        if(chat.message.isUser){
+        
         User.findOne({_id:chat.fromId},function(err,user){
 
       if(err){
         globalCTRL.addErrorLog(err.message);}
         else{
           chat.isSeen=true;
+        
         res.send({chat,sender:user.firstName});
         }
         })
 
-    }
-       else{
-         ServiceProvider.findOne({_id:chat.fromId},function(err,sp){
-           if(err){
-        globalCTRL.addErrorLog(err.message);
-      }else{
-        chat.isSeen=true;
-        res.send({chat,sender:sp.title});
-      }
-         })
-       }
+    
+       
       }
     })
 

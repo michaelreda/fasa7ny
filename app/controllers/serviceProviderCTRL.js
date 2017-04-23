@@ -424,8 +424,12 @@ let ServiceProviderCTRL = {
     //tested
     //session var to be edited
     viewHoldingReservations:function(req, res){
-      ServiceProviderCTRL.isServiceProvider(req,res);
-      Booking.find({serviceProviderID: req.session.serviceProvider._id, isHolding: true},	function(err, bookings){
+     ServiceProvider.findOne({serviceProviderAccountId: req.User._id}, function(err, sp){
+       if(err){
+         res.send(err.message);
+       }
+       else{
+ Booking.find({providerId:sp._id, isHolding: true}).populate({path: "userId"}).exec(function(err, bookings){
         //when a booking is canceled, isHolding is set to false
         if(err){
           globalCTRL.addErrorLog(err.message);
@@ -435,6 +439,11 @@ let ServiceProviderCTRL = {
           res.send( bookings);
         }
       })
+       }
+     })
+     
+     // ServiceProviderCTRL.isServiceProvider(req,res);
+     	
 
     },
 
@@ -627,6 +636,7 @@ let ServiceProviderCTRL = {
         var count=0;
 
           for(var i=0; i<clients.length; i++){
+         console.log(clients[i]);
           User.findone({_id: clients[i]}, function(err, client){
             if(err){
               res.send(err.message);
