@@ -7,31 +7,62 @@
 						<div class="process-row col-md-12">
 							<script>
 								function removeActive(){
-									document.getElementById('accountInfoBtn').removeClass("active");
-									document.getElementById('accountInfoBtn').removeClass("active");
-									document.getElementById('personalInfoBtn').removeClass("active");
-									document.getElementById('profileBtn').removeClass("active");
-									document.getElementById('completedBtn').removeClass("active");
+									document.getElementById('accountInfoBtn').classList.remove("active");
+									document.getElementById('accountInfoBtn').classList.remove("active");
+									document.getElementById('personalInfoBtn').classList.remove("active");
+									document.getElementById('profileBtn').classList.remove("active");
+									document.getElementById('completedBtn').classList.remove("active");
 								};
 							</script>
 							<div class="row">
 								<div class="process-step col-md-3">
-									<button type="button" id="accountInfoBtn" onClick="document.getElementById('accountInfo').scrollIntoView();removeActive();document.getElementById('accountInfoBtn').addClass('active')" class="btn btn-default btn-circle active">
+									<button type="button" id="accountInfoBtn"
+									onClick="document.getElementById('accountInfo').scrollIntoView();
+									var scrolledY = window.scrollY;
+
+									if(scrolledY){
+										window.scroll(0, scrolledY - 250);
+									}
+
+									removeActive();
+									document.getElementById('accountInfoBtn').addClass('active')" class="btn btn-default btn-circle active">
 										<i class="fa fa-info-circle fa-3x"></i></button>
 										<p>Account Info</p>
 									</div>
 									<div class="process-step col-md-3">
-										<button type="button" id="personalInfoBtn" onClick="document.getElementById('personalInfo').scrollIntoView();removeActive();document.getElementById('personalInfoBtn').addClass('active')"  class="btn btn-default btn-circle" >
+										<button type="button" id="personalInfoBtn" onClick="document.getElementById('personalInfo').scrollIntoView();
+										var scrolledY = window.scrollY;
+
+										if(scrolledY){
+											window.scroll(0, scrolledY - 250);
+										}
+
+										removeActive();
+										document.getElementById('personalInfoBtn').addClass('active')"  class="btn btn-default btn-circle" >
 											<i class="fa fa-user fa-3x"></i></button>
 											<p>Personal Info</p>
 										</div>
 										<div class="process-step col-md-3">
-											<button type="button" id="profileBtn" onClick="document.getElementById('profile').scrollIntoView();removeActive();document.getElementById('profileBtn').addClass('active')"class="btn btn-default btn-circle" >
+											<button type="button" id="profileBtn" onClick="document.getElementById('profile').scrollIntoView();
+											var scrolledY = window.scrollY;
+
+											if(scrolledY){
+												window.scroll(0, scrolledY - 250);
+											}
+
+											removeActive();document.getElementById('profileBtn').addClass('active')"class="btn btn-default btn-circle" >
 												<i class="fa fa-picture-o fa-3x"></i></button>
 												<p>Profile Image</p>
 											</div>
 											<div class="process-step col-md-3">
-												<button type="button" id="completedBtn" onClick="document.getElementById('completed').scrollIntoView();removeActive();document.getElementById('completedBtn').addClass('active')" class="btn btn-default btn-circle" >
+												<button type="button" id="completedBtn" onClick="document.getElementById('completed').scrollIntoView();
+												var scrolledY = window.scrollY;
+
+												if(scrolledY){
+													window.scroll(0, scrolledY - 250);
+												}
+
+												removeActive();document.getElementById('completedBtn').addClass('active')" class="btn btn-default btn-circle" >
 													<i class="fa fa-check fa-3x"></i></button>
 													<p>Completed</p>
 												</div>
@@ -332,7 +363,7 @@ span.round-tab:hover {
 
 .wizard .tab-pane {
     position: relative;
-    padding-top: 50px;
+    /*padding-top: 50px;*/
 }
 
 .wizard h3 {
