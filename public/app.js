@@ -200,6 +200,19 @@ myapp.run(function($rootScope,$window,$http){
             })
           }
 
+
+          if($window.localStorage['spProfile']){
+            $http.get('/check_sp_session').success(function(data){
+
+              if(data == false){
+                $window.localStorage.removeItem('spProfile');
+                $window.localStorage.removeItem('userAccount');
+              }
+            })
+          }
+
+
+
     });
   })
 

@@ -99,7 +99,14 @@ let globalCTRL ={
     else {
       res.send(false);
     }
-  }
+  },
+  checkSPSession:function(req,res){
+      if(req.session.serviceProvider)
+        res.send(true);
+      else {
+        res.send(false);
+      }
+    }
 
 }
 

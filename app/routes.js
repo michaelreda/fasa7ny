@@ -22,7 +22,7 @@ Router.get('/',function(req,res){
 
 ///////globalCTRL/////////////
 Router.get('/check_user_session',globalCTRL.checkUserSession);
-
+Router.get('/check_sp_session',globalCTRL.checkSPSession);
 /////// userCTRL /////////////
 
 //2.6 comparison
