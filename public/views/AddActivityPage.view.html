@@ -98,35 +98,6 @@ Theme: <input type="text" ng-model="theme" name="theme">
 <br>
 <br>
 
-<script type="text/javascript">
-function addElement() {
-    var ni = document.getElementById('myDiv');
-
-   var a = '';
- for(var i = 1; i <= 3; i++)
- {
-    a += '<input type="text"  name="TextBox'+i+'" value="TextBox'+i+'" >';
-
-    }
-    ni.innerHTML = a;
-    ni.appendChild(ni);
-}
-</script>
-
-
-<body>
-  <form id="form1" runat="server">
-
-      <div id="myDiv">
-      </div>
-      <input type="button" id="btnOfficial" value="Add Another TextBox" onclick="addElement();" />
-      <input type="hidden" value="1" id="theValue" />
-
-  </form>
-</body>
-
-
-
 <div class="columns">
   <ul class="price" ng-model="prices">
     <li class="header">Prices</li>
@@ -146,12 +117,44 @@ function addElement() {
 <br>
 <br>
 <br>
-<button class="btn btn-success btn-lg" ng-click="addActivity(title,type,durationInMinutes,
-                minClientNumber,maxClientNumber,minAge,maxAge,theme,prices)">Save</button>
-
-
 
 </div>
+
+<script type="text/javascript">
+function addElement() {
+    var ni = document.getElementById('myDiv');
+
+   var a = '';
+   //for(var i = 1; i <= 3; i++)
+   //{
+      a += '<div class="columns">'+'<ul class="price" ng-model="prices">'+'<li class="header">Prices</li>'+'<li>Number Of Clients:<input type="text" name="numberOfClients[]"></li>'
+      +'<li>Price:<input type="text" name="price[]"></li>'+'</ul>'+'</div>';
+
+     //}
+     ni.innerHTML = a;
+     ni.appendChild(ni);
+
+}
+</script>
+
+
+<body>
+  <form id="form1" runat="server">
+
+      <div id="myDiv">
+      </div>
+      <input type="button" id="btnOfficial" value="Add Another Price category" onclick="addElement();" />
+      <input type="hidden" value="1" id="theValue" />
+
+  </form>
+</body>
+
+<div>
+  <button class="btn btn-success btn-lg" ng-click="addActivity(title,type,durationInMinutes,
+                  minClientNumber,maxClientNumber,minAge,maxAge,theme,prices)">Save</button>
+</div>
+
+
  <br>
  <br>
  <br>
