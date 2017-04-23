@@ -332,7 +332,7 @@ viewMyProfile: function(req,res){
 //password to be done later
 updateMyProfile: function(req,res){
   userCTRL.isUser(req,res);
-  User.update({_id:req.session.user._id}).exec(function(err,status){
+  User.update({_id:req.session.user._id},{$set:req.body}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err);
