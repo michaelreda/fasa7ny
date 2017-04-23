@@ -50,6 +50,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'OffersController'
   });
 
+   $stateProvider.state({
+    name:'birthdayClients',
+    url:'/birthdayClients',
+    templateUrl:'views/birthdayClients.view.html',
+    controller:'PromotionsController'
+  });
+
   $urlRouterProvider.when('','/');
  
 }]);
