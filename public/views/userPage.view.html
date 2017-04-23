@@ -4,7 +4,9 @@
 <br>
 
 
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" style="
+    margin-right: 500px;
+" >
 
 
          <div class="panel panel-info">
@@ -52,6 +54,42 @@
                  <a href="#" class="btn btn-primary">Team Sales Performance</a>
                </div>
              </div>
+           </div>
+
+           <div class="panel-footer" style="    height: 40px;">
+           <style>
+           a#dropdown:hover {
+             color: #06d0d8!important;
+           }
+           </style>
+             <ul class="nav navbar-nav">
+                   <li class="dropdown">
+                     <a id="dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="
+                     background: none;
+                     border: none;
+                     font-size: medium;
+                     color: #5e5e5e;
+                     font-family: 'Open Sans', sans-serif;
+                     font-weight: bold;
+                     padding-top: 14px;
+                     -webkit-transition: all 0.5s;
+                     -o-transition: all 0.5s;
+                     transition: all 0.5s;
+                     padding: 0px;
+                     ">Change your profile privacy?
+                     <span class="caret"></span></a>
+                     <ul class="dropdown-menu">
+                       <!--<li><a href="#" ng-click="changePrivacy()">Any Day..</a></li>-->
+                       <li><a href="#/user" ng-click="changePrivacy(0)">public</a></li>
+                       <li><a href="#/user" ng-click="changePrivacy(1)">unprivate information</a></li>
+                       <li><a href="#/user" ng-click="changePrivacy(2)">name only</a></li>
+                    </ul>
+               </li>
+             </ul>
+             <span class="pull-right">
+               <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+               <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+             </span>
            </div>
 
          </div>
@@ -102,12 +140,11 @@
 </style>
 
 
-<h3>user Profile</h3>
 <br>
 <br>
 <ul class="nav navbar-nav">
       <li class="dropdown">
-        <a  class="dropdown-toggle" data-toggle="dropdown">{{$ctrl.privacyLevel==0?"Public" :$ctrl.privacyLevel==1?"unprivate information":"name only"}}<b class="caret"></b></a>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">{{$ctrl.privacyLevel==0?"Public" :$ctrl.privacyLevel==1?"unprivate information":"name only"}}<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <!--<li><a href="#" ng-click="changePrivacy()">Any Day..</a></li>-->
           <li><a href="#/user" ng-click="changePrivacy(0)">public</a></li>
