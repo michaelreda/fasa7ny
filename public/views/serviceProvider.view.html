@@ -9,7 +9,7 @@
 				<div class="col-md-4">
 					<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-circle img-thumbnail" style="margin:auto;display:block;width:200px" />
 					<center><h2>{{serviceProvider.title}}</h2>
-					<span class="label label-primary">{{activity.type}}</span></center>
+					<!--<span class="label label-primary">{{activity.type}}</span></center>-->
 				</div>
 				<div class="col-md-4">
 				</div>
@@ -55,7 +55,8 @@
 							Rating
 						</td>
 						<td>
-							<star-rating-comp rating="serviceProvider.rating" label-text="'Rated by '+serviceProvider.ratingCount+' users'" label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
+							<star-rating-comp rating="serviceProvider.rating" label-text="'Rated by '+serviceProvider.ratingCount+' users'" 
+                            label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
 						</td>
 					</tr>
 					<!--<tr>
@@ -86,15 +87,15 @@
 			      <h2>Contact Mobile(s)</h2>
 			      <h3>no current contact Mobiles for this service provider </h3>
 			    </div>
-
+                
 			  </div>
 			  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.contactMobile.length!=0" >
 			    <div class="client_title" style="padding: 50px 100px 30px 100px">
 			      <hr>
-			      <h2>Reviews</h2>
-			      <h3>Curious what others think? We have verified reviews written by real guests..</h3>
+			      <h2>Contact Mobile(s)</h2>
+			      <h3></h3>
 			    </div>
-			    <review-box data="review" ng-repeat="review in reviews"></review-box>
+			    <a> data="mobile" ng-repeat="mobile in contactMobile"></a>
 			  </div>
 			</div>
 
@@ -102,7 +103,7 @@
 	</div>
 
 </div></center>
-    <a ng-click="subscribe($ctrl.data._id)" class="btn add2cart" >Subscribe</a>
+    <a ng-click="subscribe(data._id)" class="btn add2cart" >Subscribe</a>
     
  </div>
 <br>

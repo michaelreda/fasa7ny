@@ -1,5 +1,14 @@
-myapp.controller('serviceProviderController', function($scope,userSRV,serviceProviderSRV) {
+myapp.controller('serviceProviderController', function($scope,$stateParams,userSRV,serviceProviderSRV) {
 
+  if($stateParams.serviceProviderId != undefined){
+      serviceProviderSRV.viewServiceProvider($stateParams.serviceProviderId)
+      .success(function(data){
+        $scope.serviceProvider=data.serviceProvider;
+        console.log($scope.serviceProvider);
+        $scope.media=data.serviceProvider.media;
+      })
+  }
+  
   $scope.subscribe = function(serviceProviderId){
     userSRV.subscribe(serviceProviderId).success(function(){
       console.log("subscribed to service provider succesfully");
