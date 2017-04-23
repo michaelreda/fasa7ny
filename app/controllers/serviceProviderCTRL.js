@@ -11,7 +11,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
-    if(!req.user.type==1)
+    if(!req.serviceProvider.type==1)
     res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
