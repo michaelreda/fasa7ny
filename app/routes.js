@@ -26,7 +26,7 @@ Router.get('/',function(req,res){
 
 //2.6 comparison
 Router.get('/comparison', userCTRL.getFirstListOfChoices);
-//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove 
+//Router.post('/second_choice', userCTRL.getSecondListOfChoices);//remove
 Router.get('/compare_serviceProviders/:SP1ID/:SP2ID', userCTRL.getServiceProviderToCompare);
 Router.get('/compare_activities/:activity1ID/:activity2ID', userCTRL.getActivitiesToCompare);
 
@@ -82,7 +82,6 @@ Router.get('/view_sp_requests', adminCTRL.viewServiceProviderRequests);
 Router.post('/accept_sp_requests', adminCTRL.acceptServiceProviderRequests);
 Router.post('/reject_sp_requests', adminCTRL.rejectServiceProviderRequests);
 Router.post('/ban_forever', adminCTRL.banForever);
-Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/ban_30_days', adminCTRL.ban30Days);
 Router.post('/update_ban_status', adminCTRL.updateBanStatus);
 Router.get('/view_complains', adminCTRL.viewComplains);

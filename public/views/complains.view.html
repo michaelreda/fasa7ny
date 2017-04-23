@@ -21,10 +21,15 @@
 						<div id="update" ng-click="isSeen($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="change seen status" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 						<!-- delete button -->
-                        
-                            <div ng-if="Complain.isSeen==true" class="yellow btn btn-danger hvr-icon-sink-away" ng-click="delete($index)" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
-                            </div>
-                        
+            <div ng-if="Complain.isSeen==true" class="yellow btn btn-danger hvr-icon-sink-away" ng-click="delete($index)" uib-tooltip="Delete review" style="height: 30px;width: 30px;border-radius: 15px;">
+            </div>
+						<!-- ban forever button -->
+            <div class="yellow btn btn-info hvr-icon-sink-away fa fa- fa-times-circle-o" ng-click="banForever($index)" uib-tooltip="Ban forever" style="height: 30px;width: 30px;border-radius: 15px;">
+            </div>
+						<!-- ban 30 days button -->
+            <div class="yellow btn btn-info hvr-icon-sink-away fa fa-ban" ng-click="ban30($index)" uib-tooltip="Ban 30 days" style="height: 30px;width: 30px;border-radius: 15px;">
+            </div>
+
 				</td>
 			</tr>
 		</tbody>

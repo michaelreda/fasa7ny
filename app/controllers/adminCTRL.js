@@ -25,7 +25,6 @@ let adminCTRL={
   banForever:function(req,res){
     adminCTRL.isAdmin(req,res);
     //validating
-    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
     req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
     var errors = req.validationErrors();
     if (errors) {
@@ -39,10 +38,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('sp not found');
 
       })
     } else {
@@ -50,10 +46,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('user not found');
 
       })
 
@@ -65,7 +58,6 @@ let adminCTRL={
   ban30Days:function(req,res){
     adminCTRL.isAdmin(req,res);
     //validating
-    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
     req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
     var errors = req.validationErrors();
     if (errors) {
@@ -79,10 +71,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('sp not found');
 
       })
     } else {
@@ -90,10 +79,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('user not found');
 
       })
 
@@ -339,7 +325,7 @@ let adminCTRL={
   //tested without exception
 
   viewAllChats:function(req, res){
-   
+
     Message.find(function(err, messages){
       if(err){
         globalCTRL.addErrorLog(err.message);
@@ -348,7 +334,7 @@ let adminCTRL={
         res.send(messages);
       }
     })
-    
+
   },
   //tested without exception
   //admin view a certain chat messages by id
@@ -377,7 +363,7 @@ let adminCTRL={
         res.send({chat,sender:user.firstName});
         }
         })
-      
+
     }
        else{
          ServiceProvider.findOne({_id:chat.fromId},function(err,sp){
@@ -409,11 +395,11 @@ let adminCTRL={
           res.send(err.message)
         }else
         {
-          
+
           Activity.findOne({_id:topBooking},function(err,topActivity){
             if(err)
             {
-              
+
               globalCTRL.addErrorLog(err.message);
               res.send(err.message)
             }
@@ -447,8 +433,8 @@ let adminCTRL={
                                       globalCTRL.addErrorLog(err.message);
                                       res.send(err.message)
                                     }else{
-                                     
-                                      
+
+
                                       User.findOne({numberOfLogins:topUser[0]._id},function(err,topU){
                                         if(err)
                                         {
@@ -459,7 +445,7 @@ let adminCTRL={
                                           res.send({topActivity,topSP,topU});
                                         }
                                       })
-                                     
+
                                     }
 
                                   })
