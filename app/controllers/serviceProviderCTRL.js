@@ -627,6 +627,7 @@ let ServiceProviderCTRL = {
         var count=0;
 
           for(var i=0; i<clients.length; i++){
+         console.log(clients[i]);
           User.findone({_id: clients[i]}, function(err, client){
             if(err){
               res.send(err.message);
