@@ -1,37 +1,31 @@
 <div class="ui container" style="padding-top:100px">
+	<center><div class="panel panel-warning  wow fadeInDown" data-wow-delay="0.2s" data-wow-duration="2s" style="width:500px" ng-if="requests.length == 0">
+    <div class="panel-heading">No requests at the moment..</div>
+  </div></center>
 	<table class="ui selectable sortable celled table">
 		<thead>
 			<tr>
 				<th></th>
-				<th>Name</th>
-				<th>Email</th>
+				<th>Title</th>
 				<th>Description</th>
-				<th>Date</th>
+				<th>Email</th>
+				<th>legalProof</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr id="row_{{$index}}" ng-repeat="review in reviews">
+			<tr id="row_{{$index}}" ng-repeat="request in requests">
 				<td>{{$index + 1}}</td>
-				<td>{{review.activityId.title}}</td>
-				<td>{{email.serviceProviderAccountId.email}}</td>
-				<td style="position:relative;" ><span id="description_{{$index}}" >{{description.description}}</span>
-					<div  style="position:absolute;bottom:0;right:0;" ng-if="reviewEditable[$index]">
-						<div id="done" ng-click="update($index)" class="yellow btn btn-success" uib-tooltip="Done" style="height: 30px;border-radius: 15px;">
-							<i class="fa fa-check" aria-hidden="true"></i>
-						</div>
-						<div id="cancel" ng-click="cancelEditing($index)" class="yellow btn btn-danger" uib-tooltip="Cancel" style="height: 30px;border-radius: 15px;">
-							<i class="fa fa-times" aria-hidden="true"></i>
-						</div>
-					</div>
-				</td>
-				<td style="width: 130px;">{{review.time}} </td>
+				<td>{{request.title}}</td>
+				<td>{{request.description}}</td>
+				<td>{{request.email}}</td>
+				<td><a href="img/{{request.legalProof}}" class="btn btn-primary" target="_blank">view legalProof</a> </td>
 				<td style="width: 120px;">
 						<!-- accept button -->
-						<div  ng-click="accept($index)" class="yellow btn btn-warning hvr-icon-float-away" uib-tooltip="Accept" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div  ng-click="accept($index)" class="green btn btn-warning hvr-icon-float-away" uib-tooltip="Accept" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 						<!-- refuse button -->
-						<div class="yellow btn btn-danger hvr-icon-sink-away" ng-click="refuse($index)" uib-tooltip="rRefuse" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div class="red btn btn-danger hvr-icon-sink-away" ng-click="refuse($index)" uib-tooltip="Reject" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 				</td>
 			</tr>
