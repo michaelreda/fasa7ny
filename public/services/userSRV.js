@@ -25,10 +25,10 @@ myapp.factory('userSRV', function($http) {
     },
     userHistoryBookings:function(){
       return $http.post('/view_history_bookings');
+    },
+    updateProfile:function(mobileNumber,profession){
+      return $http.post('/update_my_profile',{mobileNumber:mobileNumber,profession:profession});
     }
 
   };
 });
-
-
-  
