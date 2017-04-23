@@ -1,7 +1,7 @@
 angular.module('myapp').
   component('map',{
     templateUrl:'components/map/map.template.html',
-    controller: function MapController($scope,$state,geolocation,landingPageSRV){
+    controller: function MapController($scope,$state,geolocation,landingPageSRV,$window){
       var self=this;
 
         geolocation.getLocation().then(
@@ -16,6 +16,8 @@ angular.module('myapp').
 
             lat=data.coords.latitude;
             long=data.coords.longitude;
+            $window.localStorage['lat']=lat ;
+            $window.localStorage['long']=long ;
             console.log(lat+","+long);
 
             var mapOptions = {

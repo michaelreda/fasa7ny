@@ -4,7 +4,7 @@ myapp.factory('activitiesSRV', function($http) {
       return $http.get('/search_for_activities/'+searchInput+'/'+day+'/');
     },
     explore: function(searchInput,day) {
-      return $http.get('/search_for_activities/'+'' +'/'+''+'/');
+      return $http.get('/search_for_activities/'+'_' +'/'+'_'+'/');
     },
 
     filter: function(filter,value){

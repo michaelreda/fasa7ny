@@ -120,13 +120,6 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      controller: 'FAQController'
    });
 
-   $stateProvider.state({
-     name: 'service providers',
-     cache:false,
-     url: '/serviceProviders',
-     templateUrl:'views/serviceProviders.view.html',
-     controller: 'SPsController'
-   });
 
    $stateProvider.state({
      name: 'service provider',
@@ -159,6 +152,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'analysisController'
   });
 
+   $stateProvider.state({
+    name:'chats',
+    url:'/chats',
+    templateUrl:'views/chat.view.html',
+    controller:'ChatController'
+  });
+
     $stateProvider.state({
     name:'filteredActivities',
      cache:false,
@@ -167,10 +167,17 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
-      $stateProvider.state({
+    $stateProvider.state({
+    name: 'service providers',
+    url: '/serviceProviders',
+    templateUrl:'views/serviceProviders.view.html',
+    controller: 'serviceProvidersForUserController'
+  });
+
+  $stateProvider.state({
     name:'compare',
     url:'/comparison',
-     cache:false,
+    cache:false,
     templateUrl:'views/compare.view.html',
     controller:'compareController'
   });
@@ -183,10 +190,90 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'complainsController'
   });
 
+  $stateProvider.state({
+    name:'message',
+    url:'/message/:messageId',
+    templateUrl:'views/message.view.html',
+    controller:'MessageController'
+  });
+
+  $stateProvider.state({
+    name:'offers_form',
+    url:'/offers_form',
+    templateUrl:'views/offers_form.view.html',
+    controller: 'OffersController'
+  });
+
+    $stateProvider.state({
+    name:'offers',
+    url:'/offers/:title/:description/:deadline/:isActive/:activities',
+    templateUrl:'views/offers.view.html',
+    controller:'OffersController'
+  });
+
+   $stateProvider.state({
+    name:'birthdayClients',
+    url:'/birthdayClients',
+    templateUrl:'views/birthdayClients.view.html',
+    controller:'PromotionsController'
+  });
 
   $urlRouterProvider.when('','/');
 
 }]);
+
+myapp.run(function($rootScope,$window,$state,landingPageSRV,$http){
+        $rootScope.$on('$stateChangeSuccess', function() {
+          // validate backend session
+          $http.get('/check_user_session').success(function(data){
+          if(data == false && !($window.localStorage['userAccount']==undefined)){
+          landingPageSRV.validateSession(JSON.parse($window.localStorage['userAccount'])).success(function(data) {
+            if(data!="okk"){
+              landingPageSRV.logout().success(function(data){
+                $window.localStorage.clear();
+                $state.go("home");
+              })
+            }else
+            toastr.success("Welcome back "+ JSON.parse($window.localStorage['userAccount']).userName);
+          })
+        }
+      });
+
+      });
+    })
+
+//           if($window.localStorage['userProfile']){
+//       1      $http.get('/check_user_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('userProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
+//           if($window.localStorage['spProfile']){
+//             $http.get('/check_sp_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('spProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//           if($window.localStorage['adminProfile']){
+//             $http.get('/check_admin_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('adminProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
 
 // myapp.config(function($routeProvider) {
 //   $routeProvider

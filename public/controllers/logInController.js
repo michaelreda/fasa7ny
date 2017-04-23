@@ -44,6 +44,7 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
 
   $scope.login = function () {
     logInSRV.login($scope.username, $scope.password).success(function(data){
+      if(data.banned==0){
       if(!data.userAccount){
         console.log('Not logged in :((  look at logincontroller');
         toastr.error('please try again', {timeOut: 500000});
@@ -65,9 +66,14 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
         }
         $uibModalInstance.close();
     }
-    });
+  }
+else {
+  toastr.error("Account banned for "+data.banned+" days :(");
+  }
+});
+};
 
-  };
+
   $scope.signupStatechange = function(){
     $state.go("signupLocal");
     $uibModalInstance.close();

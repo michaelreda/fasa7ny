@@ -7,6 +7,7 @@ angular.module('myapp').
 
         $scope.dayChosen=function(d){
           self.day=d;
+          $state.go("activities", {searchInput:'_',day:self.day});
         }
 
         $scope.search= function(searchInput){
@@ -22,13 +23,14 @@ angular.module('myapp').
             console.log($scope.filter +" "+value);
              $state.go("filteredActivities",
              {filter:$scope.filter,value:value});
+             clearInterval(timer);
           //self.value=d;
         }
 
-          $scope.filterChosen=function(d){
-          $scope.filter=d;
-          if(d=="offer")
-          $state.go("filteredActivities",{filter:d});
+          $scope.filterChosen=function(filter){
+          $scope.filter=filter;
+          if(filter=="offer")
+          $state.go("filteredActivities",{filter:$scope.filter,value:'_'});
         }
 
     }
