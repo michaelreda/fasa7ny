@@ -152,6 +152,12 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'analysisController'
   });
 
+   $stateProvider.state({
+    name:'chats',
+    url:'/chats',
+    templateUrl:'views/chat.view.html',
+    controller:'ChatController'
+  });
 
     $stateProvider.state({
     name:'filteredActivities',
@@ -185,9 +191,36 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'complainsController'
   });
 
+  $stateProvider.state({
+    name:'message',
+    url:'/message/:messageId',
+    templateUrl:'views/message.view.html',
+    controller:'MessageController'
+  });
+
+  $stateProvider.state({
+    name:'offers_form',
+    url:'/offers_form',
+    templateUrl:'views/offers_form.view.html',
+    controller: 'OffersController'
+  });
+
+    $stateProvider.state({
+    name:'offers',
+    url:'/offers/:title/:description/:deadline/:isActive/:activities',
+    templateUrl:'views/offers.view.html',
+    controller:'OffersController'
+  });
+
+   $stateProvider.state({
+    name:'birthdayClients',
+    url:'/birthdayClients',
+    templateUrl:'views/birthdayClients.view.html',
+    controller:'PromotionsController'
+  });
 
   $urlRouterProvider.when('','/');
-
+ 
 }]);
 
 // myapp.config(function($routeProvider) {

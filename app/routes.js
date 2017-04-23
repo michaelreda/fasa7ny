@@ -151,6 +151,10 @@ Router.get('/holding_reservations', serviceProviderCTRL.viewHoldingReservations)
 Router.post('/submit_sp_complain', serviceProviderCTRL.submitServiceProviderComplain);
 Router.get('/view_provider_bookings', serviceProviderCTRL.viewProviderBookings);
 
+Router.get('/view_birthDay_clients', serviceProviderCTRL.viewBirthDayClients);
+Router.post('/promote_to_clients', serviceProviderCTRL.promoteToHistoryClient);
+
+
 ////////////////////visitorCTRL//////////////////
 
 Router.get('/get_featured_activities',visitorCTRL.getFeaturedActivities);
