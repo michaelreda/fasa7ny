@@ -75,7 +75,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    $stateProvider.state({
      name:'spPage',
      cache:false,
-     url:'/serviceProvider',
+     url:'/service_provider',
      templateUrl:'views/serviceProviderPage.view.html',
      controller:'serviceProviderPageController'
    });
