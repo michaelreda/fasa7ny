@@ -6,6 +6,7 @@ angular.module('myapp').
       this.signupStepTwo = function() {
        signupSRV.sendUserProfileDetails($scope.firstName,$scope.lastName,$scope.bdate,$scope.gender==undefined? true:$scope.gender,$scope.privacy).success(function(data) {
          if(data.stepTwoOK){
+           $window.localStorage['userAccount']=$window.localStorage['tempSignup'];
            $window.localStorage['userProfile'] = angular.toJson(data.userProfile);
            $state.go('home');
        }

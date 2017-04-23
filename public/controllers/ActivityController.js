@@ -1,4 +1,4 @@
-myapp.controller('ActivityController', function($scope,$stateParams,activitySRV) {
+myapp.controller('ActivityController', function($scope,$stateParams,activitySRV,$window) {
   $scope.Math= Math;
 //getting activity
   if($stateParams.activityID != undefined){
@@ -19,8 +19,28 @@ myapp.controller('ActivityController', function($scope,$stateParams,activitySRV)
 
 //rating and reviewing activity
   $scope.rateReviewActivity = function(){
-      console.log($scope.reviewObj);
-      console.log(rate);
+    if($window.localStorage['userProfile'] == undefined){
+      toastr.error("please sign up to review this activity");
+    }else if(rate==0){
+      toastr.error("please give a rating");
+    }
+    else{
+      var review='';
+      if($scope.reviewObj!=undefined)
+          review=$scope.reviewObj.review;
+        console.log(review);
+        console.log(typeof review);
+      activitySRV.rateReviewActivity($stateParams.activityID,review,rate,$scope.activity.rating,$scope.activity.ratingCount).success(function(data){
+        console.log(data);
+        if(data=="review submitted successfully"){
+          toastr.success("review submitted succesfully");
+        }else{
+          toastr.error(data);
+        }
+
+      })
+    }
+
   }
   $scope.rateChanged = function($event){
     rate=$event.rating;

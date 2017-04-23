@@ -67,7 +67,15 @@ let visitorCTRL={
           res.send(err.message);
         }
         else{
-          res.send(activities);
+          Offer.find().exec(function(err,offers){
+            if(err){
+              globalCTRL.addErrorLog(err.message);
+              res.send(err.message);
+            }
+            else{
+              res.send({activities,offers});
+            }
+          })
         }
       })
     },
@@ -82,7 +90,15 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            Offer.find().exec(function(err,offers){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err.message);
+              }
+              else{
+                res.send({activities,offers});
+              }
+            })
           }
         })
       } else 	if(req.params.filter=="offer")
@@ -93,7 +109,15 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            Offer.find().exec(function(err,offers){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err.message);
+              }
+              else{
+                res.send({activities,offers});
+              }
+            })
           }
         })
       }else
@@ -116,7 +140,15 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            Offer.find().exec(function(err,offers){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err.message);
+              }
+              else{
+                res.send({activities,offers});
+              }
+            })
           }
         })
       }
@@ -127,7 +159,15 @@ let visitorCTRL={
             globalCTRL.addErrorLog(err.message);
             res.send(err.message);
           }else {
-            res.send(activities);
+            Offer.find().exec(function(err,offers){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err.message);
+              }
+              else{
+                res.send({activities,offers});
+              }
+            })
           }
         })
       }else {
