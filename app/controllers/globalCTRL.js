@@ -114,28 +114,12 @@ let globalCTRL ={
   }
   ,
     checkUserSession:function(req,res){
-    if(req.session.user)
+    if(req.user)
     res.send(true);
     else {
       res.send(false);
     }
   },
-  checkSPSession:function(req,res){
-    if(req.session.serviceProvider)
-    res.send(true);
-    else {
-      res.send(false);
-    }
-  }
-  ,
-  checkAdminSession:function(req,res){
-    if(req.session.admin)
-    res.send(true);
-    else {
-      res.send(false);
-    }
-  }
-
 
 
 

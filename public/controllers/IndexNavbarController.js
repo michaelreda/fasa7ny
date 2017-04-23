@@ -1,15 +1,6 @@
 myapp.controller('IndexNavbarController',function($window,$scope,$state,landingPageSRV){
 
-    // validate backend session
-    if(!($window.localStorage['userAccount']==undefined)){
-    landingPageSRV.validateSession(JSON.parse($window.localStorage['userAccount'])).success(function(data) {
-      if(data!="okk")
-      $scope.logout();
-      else
-      toastr.success("Welcome back "+ JSON.parse($window.localStorage['userAccount']).userName);
-    });}
-
-
+  
   $scope.logout = function(){
     landingPageSRV.logout().success(function(data){
       $window.localStorage.clear();

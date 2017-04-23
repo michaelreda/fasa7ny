@@ -301,10 +301,10 @@ let ServiceProviderCTRL = {
           else {
             if(thisProvider.banned==0){
               req.session.serviceProvider=thisProvider;
-              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider});
+              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider,'banned':0});
             }
             else{
-              res.send('Account banned! try again in '+thisProvider.banned+' days');
+              res.send({'banned':thisProvider.banned});
             }
           }
 

@@ -166,7 +166,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/activities.view.html',
     controller:'ActivitiesController'
   });
-  
+
     $stateProvider.state({
     name: 'service providers',
     url: '/serviceProviders',
@@ -219,45 +219,61 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $urlRouterProvider.when('','/');
- 
+
 }]);
 
-myapp.run(function($rootScope,$window,$http){
+myapp.run(function($rootScope,$window,$state,landingPageSRV,$http){
         $rootScope.$on('$stateChangeSuccess', function() {
-          if($window.localStorage['userProfile']){
-            $http.get('/check_user_session').success(function(data){
+          // validate backend session
+          $http.get('/check_user_session').success(function(data){
+          if(data == false && !($window.localStorage['userAccount']==undefined)){
+          landingPageSRV.validateSession(JSON.parse($window.localStorage['userAccount'])).success(function(data) {
+            if(data!="okk"){
+              landingPageSRV.logout().success(function(data){
+                $window.localStorage.clear();
+                $state.go("home");
+              })
+            }else
+            toastr.success("Welcome back "+ JSON.parse($window.localStorage['userAccount']).userName);
+          })
+        }
+      });
 
-              if(data == false){
-                $window.localStorage.removeItem('userProfile');
-                $window.localStorage.removeItem('userAccount');
-              }
-            })
-          }
+      });
+    })
 
-
-          if($window.localStorage['spProfile']){
-            $http.get('/check_sp_session').success(function(data){
-
-              if(data == false){
-                $window.localStorage.removeItem('spProfile');
-                $window.localStorage.removeItem('userAccount');
-              }
-            })
-          }
-
-          if($window.localStorage['adminProfile']){
-            $http.get('/check_admin_session').success(function(data){
-
-              if(data == false){
-                $window.localStorage.removeItem('adminProfile');
-                $window.localStorage.removeItem('userAccount');
-              }
-            })
-          }
-
-
-    });
-  })
+//           if($window.localStorage['userProfile']){
+//       1      $http.get('/check_user_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('userProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
+//           if($window.localStorage['spProfile']){
+//             $http.get('/check_sp_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('spProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//           if($window.localStorage['adminProfile']){
+//             $http.get('/check_admin_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('adminProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
 
 // myapp.config(function($routeProvider) {
 //   $routeProvider
