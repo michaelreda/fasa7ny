@@ -224,6 +224,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'PromotionsController'
   });
 
+   $stateProvider.state({
+    name:'holdingReservations',
+    cache:false,
+    url:'/holdingReservations',
+    cache:false,
+    templateUrl:'views/holdingReservations.view.html',
+    controller:'holdingReservationsController'
+  });
   $urlRouterProvider.when('','/');
  
 }]);
