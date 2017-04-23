@@ -27,10 +27,10 @@ angular.module('myapp').
           //self.value=d;
         }
 
-          $scope.filterChosen=function(d){
-          $scope.filter=d;
-          if(d=="offer")
-          $state.go("filteredActivities",{filter:d});
+          $scope.filterChosen=function(filter){
+          $scope.filter=filter;
+          if(filter=="offer")
+          $state.go("filteredActivities",{filter:$scope.filter,value:'_'});
         }
 
     }
