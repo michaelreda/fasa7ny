@@ -1,4 +1,4 @@
-myapp.controller('UserReviewsController', function($scope,userSRV) {
+myapp.controller('UserReviewsController', function($scope,adminSRV) {
   userSRV.viewServiceProviderRequests().success(function(data){
     $scope.reviewEditable= new Array(data.length).fill(false);
     for(var i=0;i<data.length;i++){
