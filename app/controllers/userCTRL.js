@@ -47,7 +47,7 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getServiceProviderToCompare:function(req, res){
-  
+
     ServiceProvider.findOne({_id: req.params.SP1ID},function(err,SP1){
 
       if(err){
@@ -391,10 +391,10 @@ rateReviewActivity: function(req,res){
   userCTRL.isUser(req,res);
   //validating
   req.checkBody('rating','rating is required >1 and <5').isDecimal({min:1,max:5});
-  req.checkBody('inputRating','inputRating is required >1 and <5').isInput({min:1,max:5});
+  req.checkBody('inputRating','inputRating is required >1 and <5').isInt({min:1,max:5});
   req.checkBody('ratingCount','ratingCount is required').isInt();
   req.checkBody('activityId','activityId is required').isMongoId();
-  req.checkBody('review','review is not empty').optional().notEmpty();
+  req.checkBody('review','review is not empty');
   var errors = req.validationErrors();
   if (errors) {
     res.send(errors);
@@ -414,6 +414,7 @@ rateReviewActivity: function(req,res){
       if(req.body.review){
         var review= new Review(req.body);
         review.rate = inputRating;
+        review.userId=req.session.user._id;
         review.save(function(err,review){
           if(err)
           res.send(err);
@@ -602,7 +603,7 @@ deleteReview: function(req,res){
   submitUserComplain:function(req,res){
     userCTRL.isUser(req,res);
     //validating
-   
+
     req.checkBody('complain','complain is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
@@ -779,10 +780,10 @@ deleteReview: function(req,res){
               globalCTRL.addErrorLog(err);
             })
             req.session.user=thisUser;
-            res.send({'type':0,'userProfile':thisUser,'userAccount':req.user});
+            res.send({'type':0,'userProfile':thisUser,'userAccount':req.user,'banned':false});
           }
           else{
-            res.send('Account banned! try again in '+thisUser.banned+' days');
+            res.send({'banned':thisUser.banned});
           }
         }
 

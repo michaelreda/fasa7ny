@@ -1,12 +1,15 @@
 myapp.controller('signupController',function ($window,$scope,signupSRV) {
 
+  
+
+
   $scope.isLoggedIn = function() {
-    return !($window.localStorage['userAccount']==undefined);
+    return !($window.localStorage['tempSignup']==undefined);
   }
 
   $scope.isUser = function() {
-    if(!($window.localStorage['userAccount']==undefined)){
-      return JSON.parse($window.localStorage['userAccount']).type==0;
+    if(!($window.localStorage['tempSignup']==undefined)){
+      return JSON.parse($window.localStorage['tempSignup']).type==0;
 
   }}
 

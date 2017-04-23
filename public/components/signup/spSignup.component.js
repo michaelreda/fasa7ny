@@ -6,6 +6,7 @@ angular.module('myapp').
       this.signupStepTwo = function() {
         signupSRV.sendServiceProviderProfileDetails($scope.title,$scope.description,$scope.legalProof).success(function(data) {
           if(data.stepTwoOK){
+            $window.localStorage['userAccount']=$window.localStorage['tempSignup'];
             $window.localStorage['spProfile'] = angular.toJson(data.spProfile);
             $state.go('home');
         }
