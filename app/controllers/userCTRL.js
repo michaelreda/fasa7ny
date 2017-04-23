@@ -47,7 +47,7 @@ let userCTRL = {
   //2.6 comparing activities or service providers
   //tested
   getServiceProviderToCompare:function(req, res){
-  
+
     ServiceProvider.findOne({_id: req.params.SP1ID},function(err,SP1){
 
       if(err){
@@ -602,7 +602,7 @@ deleteReview: function(req,res){
   submitUserComplain:function(req,res){
     userCTRL.isUser(req,res);
     //validating
-   
+
     req.checkBody('complain','complain is required').notEmpty();
     var errors = req.validationErrors();
     if (errors) {

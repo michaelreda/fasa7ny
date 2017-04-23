@@ -277,6 +277,7 @@ Router.get('/about_uspage',function(req,res){
 });
 
 
+Router.post('/validate', globalCTRL.validateSession);
 
 
 

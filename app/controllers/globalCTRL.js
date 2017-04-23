@@ -92,7 +92,30 @@ let globalCTRL ={
       else
       console.log("log inserted xD");
     });
+  },
+  validateSession : function(req,res) {
+    Account.findOne({'_id':req.body.usr._id,'email':req.body.usr.email,'userName':req.body.usr.userName,'password':req.body.usr.password},function(err,val) {
+      if(err){
+        this.addErrorLog(er);
+        res.send('failed');
+      }
+      else {
+        req.login(val,function(error) {
+          if(error){
+            this.addErrorLog(error);
+            res.send('failed');
+          }else {
+            res.send('okk');
+          }
+        })
+        res.end();
+      }
+    })
   }
+
+
+
+
 
 }
 

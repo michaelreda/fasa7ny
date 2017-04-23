@@ -11,7 +11,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
-    if(!req.session.serviceProvider)
+    if(!req.user.type==1)
     res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
@@ -634,7 +634,7 @@ let ServiceProviderCTRL = {
             else{
               var today=new Date();
               var birthday= new Date(client.birthDate);
-              
+
               var dayToday   = today.getDate();
               var monthToday = today.getMonth();
 
@@ -644,17 +644,17 @@ let ServiceProviderCTRL = {
               if( dayToday==dayBD && monthToday==monthBD ){
                 birthDayClients[count]=client;
                 count++;
-              } 
+              }
           }
           })
         }
         res.send(birthDayClients);
 
       },
-      
+
 
       promoteToHistoryClient:function(req,res){
-        
+
               var nodemailer = require('nodemailer');
               var smtpTransport = require('nodemailer-smtp-transport');
 
@@ -673,7 +673,7 @@ let ServiceProviderCTRL = {
             };
 
               transporter.sendMail(mailOptions, function(error, info){
-              if(error){ 
+              if(error){
                 res.send(error);
               }else{
                  res.send('promoted succesfully successfully');
