@@ -27,6 +27,15 @@ var bookingSchema = mongoose.Schema({
     type:Date,
     required:true
   },
+  Bookingtime:{
+    type:Date,
+    required:true,
+    default: Date.now
+  },
+  charge:{
+    type:Object,
+    required:true
+  },
   isConfirmed:{
     type:Boolean,
     required:true,

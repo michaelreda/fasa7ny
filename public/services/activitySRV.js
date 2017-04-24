@@ -11,6 +11,12 @@ myapp.factory('activitySRV', function($http) {
     },
     rateReviewActivity:function(activityId,review,inputRating,rating,ratingCount){
       return $http.post('/ratereview_activity',{activityId:activityId,inputRating:inputRating,review:review,rating:rating,ratingCount:ratingCount});
+    },
+    processStripe:function(token,amount,desc) {
+      return $http.post('/payment',{'stripeToken':token,'chargeAmount':amount,'describe':desc});
+    },
+    insertBooking:function(charge,activityId,serviceProviderId,time) {
+      return $http.post('/book_Activity',{'charge':charge,'activityId':activityId,'serviceProviderId':serviceProviderId,'price':charge.amount/100,'time':time});
     }
   };
 });

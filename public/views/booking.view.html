@@ -1,4 +1,16 @@
-<div class="ui container" style="padding-top:100px">
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
+<script src="js/checkout.js"></script>
+<!-- <script type="text/javascript" src="https://js.stripe.com/v2/">
+
+$(function(){
+
+  Stripe.setPublishableKey('pk_test_T6W1tIPwdvG4pxxVnYVWeDFt');
+
+}); -->
+
+</script>
+<div id="all" class="ui container" style="padding-top:100px">
 	<!-- steps -->
 	<div class="ui fluid steps">
 	  <div class="{{disabled[0]}} {{active[0]}} {{completed[0]}} step">
@@ -189,6 +201,57 @@ border-color: #269abc;
 			</table>
 			<table class="balance">
 				<tr>
+					<span> Checkout </span>
+					<br><br>
+					<span>
+						<!-- <form class="form" ng-submit="processPayement()">
+						  <script
+						    src="https://checkout.stripe.com/checkout.js"
+						    class="stripe-button"
+						    data-key = "pk_test_T6W1tIPwdvG4pxxVnYVWeDFt"
+						    data-amount = {{plan.numberOfClients*plan.price*100}}
+						    data-name = {{activity.title}}
+						    data-description = "Activity payment"
+						    data-locale = "auto"
+						    data-currency = "egp"
+						    >
+						    </script>
+						    <input type="hidden" name="chargeAmount" value={{plan.numberOfClients*plan.price*100}}>
+						</form> -->
+
+										<button class="btn btn-stripe" id="customButton">Pay now</button>
+										<script>
+                    var $element = $('#all');
+                    var scp = angular.element($element).scope();
+										var handler = StripeCheckout.configure({
+										  key: 'pk_test_T6W1tIPwdvG4pxxVnYVWeDFt',
+										  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+										  locale: 'auto',
+										  token: function(token) {
+										    // You can access the token ID with `token.id`.
+										    // Get the token ID to your server-side code for use.
+                        console.log({"yes":token});
+												scp.processPayement(token);
+										  }
+										});
+
+										document.getElementById('customButton').addEventListener('click', function(e) {
+                      console.log("yoyoyoo");
+										  // Open Checkout with further options:
+										  handler.open({
+										    name: scp.activity.title,
+										    description: "Activity payment",
+										    amount: scp.plan.numberOfClients*scp.plan.price*100
+										  });
+										  e.preventDefault();
+										});
+
+										// Close Checkout on page navigation:
+										window.addEventListener('popstate', function() {
+										  handler.close();
+										});
+										</script>
+					</span>
 					<th><span >Total</span></th>
 					<td><span data-prefix>EGP</span><span>{{plan.numberOfClients*plan.price}}</span></td>
 				</tr>

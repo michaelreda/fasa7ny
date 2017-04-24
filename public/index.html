@@ -53,8 +53,38 @@
 
   <!-- Preloader -->
   <div id="preloader">
-    <div id="status">&nbsp;</div>
+    <div id="status" class="move" style="background-size:50px">&nbsp;</div>
   </div>
+
+<script>
+        $('#status')
+            .css({left:0,top:50%,width:'100px',height:'100px'})
+            .animate({left:'800px',top:50%,width:'100px',height:'100px'},5000)
+            .animate({left:'800px',top:50%,width:'200px',height:'200px',-webkit-transform: scaleX(-1)},20)
+            .animate({left:0,top:50%,width:'200px',height:'200px'},5500);
+
+</script>
+
+  <style>
+  #status .move{
+      -webkit-animation: myanim 5s;
+      animation: myanim 5s;
+  }
+  @-webkit-keyframes myanim
+  {
+  0%   {top:0;left:0; width: 100px; height: 100px;}
+  66%  {top:0;left:800px; width:100px;height:100px;}
+  67%  {top:0;left:800px; width:200px; height: 200px;}
+  100% {top:0; left:0; width: 200px; height:200px;}
+  }
+  @keyframes myanim
+  {
+  0%   {top:0;left:0; width: 100px; height: 100px;}
+  66%  {top:0;left:800px; width:100px;height:100px;}
+  67%  {top:0;left:800px; width:200px; height: 200px;}
+  100% {top:0; left:0; width: 200px; height:200px;}
+  }
+  </style>
 
   <!-- End Preloader -->
   <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
@@ -70,7 +100,16 @@
           <span class="icon-bar"></span>
         </button>
         <!-- <a class="navbar-brand" href="index.html">WpF <span>BGness</span></a> -->
-         <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a> -->
+         <a class="navbar-brand" style="
+         height: 0px;
+         padding: 0px;
+         margin: 0px;
+         " href="/"><img src="img/logo.png" style="
+         height: 80px;
+         width: 80px;
+         padding-top: 0px;
+         margin-top: 0px;
+         " alt="logo"></a>
       </div>
       <div id="navbar" class="navbar-collapse collapse navbar_area">
         <ul class="nav navbar-nav navbar-right custom_nav">
@@ -78,6 +117,8 @@
 
           <!-- home button -->
           <li class="active"><a href="/">Home</a></li>
+          <!-- explore activities button -->
+          <li class="active"><a href="/#/activities/_/_/">Explore Activities</a></li>
       <!-- when logged in -->
           <!-- profile management -->
           <li class="active dropdown"  ng-show = "isLoggedIn() == true"><a href="" >My fasa7ny
@@ -85,15 +126,12 @@
             <!-- go to profile -->
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
             <li ><a href="" ng-click = "myReviews()">My reviews</a></li>
-            <!-- about Us button -->
-            <li  ><a href="/#/aboutUs">About Us</a></li>
           </ul></li>
-          <!-- logout button -->
-          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+
 
 
       <!-- when logged out -->
-          <li class="active dropdown"  ng-show = "isLoggedIn() == false"><a href="" >Fasa7ny
+          <li class="active dropdown" ><a href="" >Fasa7ny services
               <span class="caret"></span></a><ul class="dropdown-menu">
                     <!-- Compare button -->
                       <li ><a href="/#/comparison">Compare</a></li>
@@ -107,8 +145,17 @@
           <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
+          <!-- logout button -->
+          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
         </ul>
       </div><!--/.nav-collapse -->
+
+      <style>
+      .navbar-nav > li > .dropdown-menu {
+        margin-top: 0px;
+        top: 43px;
+      }
+      </style>
 <div>
   <!--<button type="button" class="active" ng-click="switchView">Contact Platform</button>-->
 </div>
@@ -351,7 +398,8 @@ box-shadow: inset 0 0 0px black;
   <script src="controllers/compareController.js"></script>
   <script src="controllers/serviceProvidersForUserController.js"></script>
   <script src="controllers/promotionController.js"></script>
-
+  <script src="controllers/holdingReservationsController.js"></script>
+  <script src="controllers/AdminViewSpRequestsController.js"></script>
   <!-- importing components -->
   <script src="components/slider/slider.component.js"></script>
   <script src="components/topSearchGif/topSearchGif.component.js"></script>
@@ -367,7 +415,7 @@ box-shadow: inset 0 0 0px black;
   <script src="components/signup/userSignup.component.js"></script>
   <script src="components/interests/interests.component.js"></script>
   <script src="components/serviceProviderBox/serviceProviderBox.component.js"></script>
-
+<script src="components/holdingReservation/holdingReservation.component.js"></script>
   <!-- importing services -->
   <script src="services/loaderSRV.js"></script>
   <script src="services/landingPageSRV.js"></script>
@@ -386,11 +434,13 @@ box-shadow: inset 0 0 0px black;
   <script src="services/compareSRV.js"></script>
   <script src="services/serviceProvidersSRV.js"></script>
   <script src="services/promotionSRV.js"></script>
-
+  <script src="services/holdingReservationsSRV.js"></script>
   <script src="services/chatSRV.js"></script>
   <script src="services/messageSRV.js"></script>
   <script src="services/offersSRV.js"></script>
   <script src="services/promotionsSRV.js"></script>
+  <script src="services/adminSRV.js"></script>
+  <script src="services/serviceProviderSRV.js"></script>
 
   <!-- For content animatin  -->
   <script src="js/wow.min.js"></script>
