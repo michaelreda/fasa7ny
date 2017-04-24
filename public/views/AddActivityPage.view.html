@@ -44,8 +44,8 @@ Theme: <input type="text" ng-model="theme" name="theme">
 <div class="columns">
   <ul class="price">
     <li class="header">Prices (default price)</li>
-    <li>Number Of Clients:<input type="text" name="numberOfClients" id="numberOfClients_0"></li>
-    <li>Price:<input type="text" name="price" id="price_0"></li>
+    <li>Number Of Clients:<input type="number" name="numberOfClients" id="numberOfClients_0"></li>
+    <li>Price:<input type="number" name="price" id="price_0"></li>
   </ul>
 </div>
 
@@ -67,8 +67,8 @@ function addElement() {
       a += '<div class="columns">'
       +'<ul class="price">'+
       '<li class="header">Prices</li>'
-      +'<li>Number Of Clients:<input type="text" name="numberOfClients" id="numberOfClients_'+i+'"></li>'
-      +'<li>Price:<input type="text" name="price[]" id="price_'+i+'"></li>'
+      +'<li>Number Of Clients:<input type="number" name="numberOfClients" id="numberOfClients_'+i+'"></li>'
+      +'<li>Price:<input type="number" name="price[]" id="price_'+i+'"></li>'
       +'</ul>'
       +'</div>';
 
@@ -85,6 +85,8 @@ function addElement() {
       <center><input type="button" id="btnOfficial" class="btn btn-primary" value="Add Another Price category" onclick="addElement();" /></center>
       <input type="hidden" value="1" id="theValue" />
 
+
+<!-- <map draggable=""> </map> -->
 
 
 <div>

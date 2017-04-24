@@ -20,7 +20,16 @@ myapp.factory('activitySRV', function($http) {
     },
     addActivity:function(title,type,durationInMinutes,
       minClientNumber,maxClientNumber,minAge,maxAge,theme,prices){
-        return $http.post('/add_activity');
+        return $http.post('/add_activity',{
+          title:title,
+          type:type,
+          durationInMinutes:durationInMinutes,
+          minClientNumber:minClientNumber,
+          maxClientNumber:maxClientNumber,
+          minAge:minAge,
+          theme:theme,
+          prices:prices
+        });
       }
   };
 });
