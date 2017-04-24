@@ -5,7 +5,7 @@ myapp.factory('userSRV', function($http) {
     },
 
     subscribe: function(serviceProviderId){
-      return $http.post('/subscibe', {serviceProviderId:serviceProviderId})
+      return $http.post('/subscribe', {serviceProviderId:serviceProviderId})
     },
 
     changePrivacy: function(privacyLevel){
