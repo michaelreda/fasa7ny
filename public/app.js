@@ -81,6 +81,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    });
 
    $stateProvider.state({
+     name:'Promotion',
+     cache:false,
+     url:'/promotion',
+     templateUrl:'views/promotion.view.html',
+     controller:'promotionController'
+   });
+
+   $stateProvider.state({
      name:'admin',
      cache:false,
      url:'/admin',
