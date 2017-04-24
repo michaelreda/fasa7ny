@@ -6,7 +6,7 @@ let Booking = require('../models/booking.js');
 let Log= require('../models/log.js');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
-
+var stripe = require('stripe')('sk_test_UX1PHHOnv6upLLbo3x8CHfbb');
 
 
 let globalCTRL ={
@@ -84,9 +84,75 @@ let globalCTRL ={
 
   addErrorLog: function(errMsg){
     let log = new Log();
-    log.errorMessage= "Error: "+errMsg;
-    log.save();
+    log.errorMessage= "Errors: "+errMsg.message;
+    log.type= "Name: "+errMsg.name;
+    log.save(function (err) {
+      if(err)
+      console.log(err);
+      else
+      console.log("log inserted xD");
+    });
+  },
+  validateSession : function(req,res) {
+    Account.findOne({'_id':req.body.usr._id,'email':req.body.usr.email,'userName':req.body.usr.userName,'password':req.body.usr.password},function(err,val) {
+      if(err){
+        globalCTRL.addErrorLog(er);
+        res.send('failed');
+      }
+      else {
+        req.login(val,function(error) {
+          if(error){
+            globalCTRL.addErrorLog(error);
+            res.send('failed');
+          }else {
+            res.send('okk');
+          }
+        })
+        res.end();
+      }
+    })
   }
+  ,
+    checkUserSession:function(req,res){
+    if(req.user)
+    res.send(true);
+    else {
+      res.send(false);
+    }
+  },
+
+  stripePayment:function(req, res) {
+    var Token = req.body.stripeToken;
+    var chargeAmount = req.body.chargeAmount;
+    var desc = req.body.describe;
+    console.log({'token':Token,'amt':chargeAmount,'des':desc});
+
+
+    if(!Token||!chargeAmount){
+      console.log({'token':Token,'amount':chargeAmount});
+    }
+    var charge = stripe.charges.create({
+        amount:chargeAmount,
+        currency:"egp",
+        source: Token.id,
+        description: desc,
+    },function(err,charge){
+        if(err){
+          if(err.type === "StripeCardError")
+            console.log("stripeCardError")
+            else
+            console.log(err);
+          globalCTRL.addErrorLog(err);
+          res.send({'ok':0,'error':err})
+        }
+        else {
+          console.log("successfully paid!");
+          res.send({'ok':1,'charge':charge})
+        }
+    });
+}
+
+
 
 }
 

@@ -14,7 +14,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 let adminCTRL={
   //used to test if the user is admin or not
   isAdmin: function(req,res){
-    if(!req.session.admin)
+    if(!req.user.type==3)
     res.send("you are not an admin.. you are not authorized to do this function");
   },
 
@@ -25,7 +25,6 @@ let adminCTRL={
   banForever:function(req,res){
     adminCTRL.isAdmin(req,res);
     //validating
-    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
     req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
     var errors = req.validationErrors();
     if (errors) {
@@ -39,10 +38,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('sp not found');
 
       })
     } else {
@@ -50,10 +46,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('user not found');
 
       })
 
@@ -65,7 +58,6 @@ let adminCTRL={
   ban30Days:function(req,res){
     adminCTRL.isAdmin(req,res);
     //validating
-    req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
     req.checkBody('isUserToProvider','isUserToProvider is required of type boolean').notEmpty().isBoolean();
     var errors = req.validationErrors();
     if (errors) {
@@ -79,10 +71,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('sp not found');
 
       })
     } else {
@@ -90,10 +79,7 @@ let adminCTRL={
         if(err)
         res.send(err.message);
         else
-        if(status.nModified!=0)
         res.send('ban successful');
-        else
-        res.send('user not found');
 
       })
 
@@ -297,7 +283,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send("Admin is logged in");
+            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin,'banned':false});
 
         }
 
@@ -317,7 +303,7 @@ let adminCTRL={
       if(err)
       res.send(err.message); //display messages
       else{
-        res.send(log);
+        res.send({log});
       }
 
     })
@@ -339,11 +325,11 @@ let adminCTRL={
   //tested without exception
 
   viewAllChats:function(req, res){
-    adminCTRL.isAdmin(req,res);
+
     Message.find(function(err, messages){
       if(err){
         globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
+        //res.send(err.message);
       }else{
         res.send(messages);
       }
@@ -353,7 +339,7 @@ let adminCTRL={
   //tested without exception
   //admin view a certain chat messages by id
   viewChatMessages:function(req, res){
-    adminCTRL.isAdmin(req,res);
+  //  adminCTRL.isAdmin(req,res);
     //validating
     req.checkBody('messageId','messageId is required').notEmpty();
     var errors = req.validationErrors();
@@ -367,9 +353,20 @@ let adminCTRL={
       if(err){
         globalCTRL.addErrorLog(err.message);
       }else{
-        if(chat)
-        chat.isSeen=true;
-        res.send(chat);
+
+        User.findOne({_id:chat.fromId},function(err,user){
+
+      if(err){
+        globalCTRL.addErrorLog(err.message);}
+        else{
+          chat.isSeen=true;
+
+        res.send({chat,sender:user.firstName});
+        }
+        })
+
+
+
       }
     })
 
@@ -378,7 +375,7 @@ let adminCTRL={
   //4.8 analytics
   //testing - waiting for bookings to be able to analyze them
   getAnalyticsPage:function(req,res){
-    adminCTRL.isAdmin(req,res);
+  adminCTRL.isAdmin(req,res);
     // finding top activity
     Booking.aggregate(
       {$group : {_id : "$activityId", "count" : {$sum : 1}}},
@@ -390,38 +387,77 @@ let adminCTRL={
           res.send(err.message)
         }else
         {
-          Activity.findOne({_id:topBooking.activityId},function(err,topActivity){
+
+          Activity.findOne({_id:topBooking},function(err,topActivity){
             if(err)
             {
+
               globalCTRL.addErrorLog(err.message);
               res.send(err.message)
             }
             else
             {
-              ServiceProvider.findOne({_id:topBooking.serviceProviderId},function(err,topSP){
-                if(err)
-                {
-                  globalCTRL.addErrorLog(err.message);
-                  res.send(err.message)
-                }
-                else
-                {
-                  User.aggregate(
-                    {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
-                    {$sort : {"count" : -1}},
-                    {$limit : 1},function(err,topUser){
-                      if(err)
-                      {
-                        globalCTRL.addErrorLog(err.message);
-                        res.send(err.message)
-                      }else{
-                        res.send({topActivity,topSP,topUser});
-                      }
+              Booking.aggregate(
+      {$group : {_id : "$serviceProviderId", "count" : {$sum : 1}}},
+      {$sort : {"count" : -1}},
+      {$limit : 1},function(err,topBooking){
+        if(err)
+        {
+          globalCTRL.addErrorLog(err.message);
+          res.send(err.message)
+        }else
+        {
+              console.log(topBooking);
+                            ServiceProvider.findOne({_id:topBooking},function(err,topSP){
+                              if(err)
+                              {
+                                globalCTRL.addErrorLog(err.message);
+                                res.send(err.message)
+                              }
+                              else
+                              {
+                                User.aggregate(
+                                  {$group : {_id : "$numberOfLogins", "count" : {$sum : 1}}},
+                                  {$sort : {"count" : -1}},
+                                  {$limit : 1},function(err,topUser){
+                                    if(err)
+                                    {
+                                      globalCTRL.addErrorLog(err.message);
+                                      res.send(err.message)
+                                    }else{
 
-                    })
-                  }
-                })
-              }
+
+                                      User.findOne({numberOfLogins:topUser[0]._id},function(err,topU){
+                                        if(err)
+                                        {
+                                          res.send(err.message);
+                                        }else
+                                        {
+
+                                  Booking.aggregate(
+                                  {$group : {_id : "$time", "count" : {$sum : 1}}},
+                                  {$sort : {"_id" : 1}},function(err,dates){
+                                        if(err)
+                                        {
+                                          res.send(err.message)
+                                        }else
+                                        {
+                                          res.send({topActivity,topSP,topU,dates});
+                                        }
+
+                                  })
+
+
+
+                                        }
+                                      })
+
+                                    }
+
+                                  })
+                                }
+                              })
+              }})}
             })
           }
         }
@@ -441,7 +477,27 @@ let adminCTRL={
         }
       })
     },
+    updateComplainIsSeen:function(req,res){
+        adminCTRL.isAdmin(req,res);
 
+
+        //validating
+        req.checkBody('complainId','complainId is required').notEmpty();
+        var errors = req.validationErrors();
+        if (errors) {
+          res.send(errors);
+          return;
+        }
+        //end validating
+        Complain.update({_id:req.body.complainId},{$set:{isSeen:true}}).exec(function(err,val){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+          }
+          else{
+            res.send(val);
+          }
+        })
+      },
     adminSignupStep2: function(req,res){
 
       req.checkBody('firstName','first name is required').notEmpty();
