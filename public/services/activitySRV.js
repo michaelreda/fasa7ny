@@ -17,6 +17,19 @@ myapp.factory('activitySRV', function($http) {
     },
     insertBooking:function(charge,activityId,serviceProviderId,time) {
       return $http.post('/book_Activity',{'charge':charge,'activityId':activityId,'serviceProviderId':serviceProviderId,'price':charge.amount/100,'time':time});
-    }
+    },
+    addActivity:function(title,type,durationInMinutes,
+      minClientNumber,maxClientNumber,minAge,maxAge,theme,prices){
+        return $http.post('/add_activity',{
+          title:title,
+          type:type,
+          durationInMinutes:durationInMinutes,
+          minClientNumber:minClientNumber,
+          maxClientNumber:maxClientNumber,
+          minAge:minAge,
+          theme:theme,
+          prices:prices
+        });
+      }
   };
 });

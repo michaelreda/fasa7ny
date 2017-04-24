@@ -29,11 +29,7 @@ angular.module('myapp').
 
             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-            //get coordinates of a click
-            //will be needed when sp chooses activity location
-            // google.maps.event.addListener($scope.map, 'click', function(event) {
-            //   alert(event.latLng);  // in event.latLng  you have the coordinates of click
-            // });
+
 
             //adding home marker
             var marker = new google.maps.Marker({
@@ -89,7 +85,7 @@ angular.module('myapp').
             }
           }
 
-          if(self.activity == undefined && self.activities==undefined){ // if no data entered check DB
+          if(self.activity == undefined && self.activities==undefined && self.dragable == undefined){ // if no data entered check DB
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -107,6 +103,14 @@ angular.module('myapp').
               for (i = 0; i < activities.length; i++){
                   //console.log(activities[i]);
                   createMarker(activities[i]);
+
+                  //get coordinates of a click
+                  //will be needed when sp chooses activity location
+                  google.maps.event.addListener($scope.map, 'click', function(event) {
+                    alert("hi");
+                    $scope.LatLng=event.latLng;
+                    console.log(event.latLng);  // in event.latLng  you have the coordinates of click
+                  });
               }
           })
         }
@@ -124,6 +128,11 @@ angular.module('myapp').
               //console.log(activities[i]);
               createMarker(activities[i]);
           }
+        }
+
+        if(self.dragable != undefined){
+          console.log('hi');
+
         }
 
 
@@ -243,6 +252,7 @@ angular.module('myapp').
     },
     bindings:{
       activities: '=',
-      activity:'='
+      activity:'=',
+      dragable:'='
     }
 });
