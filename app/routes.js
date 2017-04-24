@@ -51,6 +51,7 @@ Router.post('/contact_platform', userCTRL.contactPlatform);
 //2.10 user wishlists
 Router.post('/add_to_wishlist', userCTRL.userAddToWishList);
 Router.post('/drop_from_wishlist', userCTRL.userDropFromWishList);
+Router.get('view_my_wishList',userCTRL.userViewWishList);
 
 Router.post('/change_password', userCTRL.changePassword);
 Router.post('/change_privacy', userCTRL.changePrivacy);
