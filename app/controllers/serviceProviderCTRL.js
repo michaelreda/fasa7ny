@@ -23,7 +23,7 @@ let ServiceProviderCTRL = {
     req.checkBody('title', 'title is required').notEmpty();
     req.checkBody('type', 'type is required').notEmpty();
     req.checkBody('prices', 'prices are required').notEmpty().isArray();
-    req.checkBody('timings', 'timings is required').notEmpty().isArray();
+    // req.checkBody('timings', 'timings is required').notEmpty().isArray();
     req.checkBody('durationInMinutes', 'durationInMinutes is required of type int').notEmpty().isInt({ min: 1 });
     req.checkBody('minClientNumber', 'minClientNumber is a required of positive number').notEmpty().isInt({ min: -1 });
     req.checkBody('maxClientNumber', 'maxClientNumber is a required of positive number').notEmpty().isInt({ min: -1 });
@@ -39,50 +39,57 @@ let ServiceProviderCTRL = {
     }
     //end validating
     else {
-      let newActivity = new Activity(
-        {
-          "title": req.body.title,
-          "type": req.body.type,
-          "serviceProviderId": req.session.serviceProvider._id,
-          "timings": req.body.timings,
-          "durationInMinutes": req.body.durationInMinutes,
-          "minClientNumber": req.body.minClientNumber,
-          "maxClientNumber": req.body.maxClientNumber,
-          "media": [],
-          "prices": [],
-          "location": req.body.location,
-          "theme": req.body.theme,
-          "rating": 0,
-          "ratingCount": 0
+      ServiceProvider.findOne({ serviceProviderAccountId: req.user._id }).exec(function (err, thisProvider) {
+
+
+        let newActivity = new Activity(
+          {
+            "title": req.body.title,
+            "type": req.body.type,
+            "serviceProviderId": thisProvider._id,
+            "timings": req.body.timings,
+            "durationInMinutes": req.body.durationInMinutes,
+            "minClientNumber": req.body.minClientNumber,
+            "maxClientNumber": req.body.maxClientNumber,
+            "media": [],
+            "prices": [],
+            "location": req.body.location,
+            "theme": req.body.theme,
+            "rating": 0,
+            "ratingCount": 0
+          });
+        if (req.files && req.files.length > 0) {
+          for (var i = 0; i < req.files.length; i++) {
+            newActivity.media.push({ "type": req.body.mediaTypes[i], "url": req.files[i].path });
+          }
+        }
+
+        if (req.body.prices && req.body.prices.length > 0) {
+          for (var i = 0; i < req.body.prices.length; i++) {
+            newActivity.prices.push(req.body.prices[i]);
+          }
+        }
+
+        if (req.body.minAge) {
+          newActivity.minAge = req.body.minAge;
+        }
+        if (req.body.maxAge) {
+          newActivity.maxAge = req.body.maxAge;
+        }
+
+        newActivity.save(function (err) {
+          if (err) {
+            res.send(err.message);
+            globalCTRL.addErrorLog(err.message);
+          }
+          else {
+            res.send("activity added succesfully");
+          }
+
         });
-      if (req.files && req.files.length > 0) {
-        for (var i = 0; i < req.files.length; i++) {
-          newActivity.media.push({ "type": req.body.mediaTypes[i], "url": req.files[i].path });
-        }
-      }
-
-      if (req.body.prices && req.body.prices.length > 0) {
-        for (var i = 0; i < req.body.prices.length; i++) {
-          newActivity.prices.push(req.body.prices[i]);
-        }
-      }
-
-      if (req.body.minAge) {
-        newActivity.minAge = req.body.minAge;
-      }
-      if (req.body.maxAge) {
-        newActivity.maxAge = req.body.maxAge;
-      }
-
-      newActivity.save(function (err) {
-        if (err) {
-          globalCTRL.addErrorLog(err.message);
-        }
-        else {
-          res.send("activity added succesfully");
-        }
-
       });
+
+
 
     }
 
@@ -443,7 +450,7 @@ let ServiceProviderCTRL = {
        }
      })
     },
-     
+
      // ServiceProviderCTRL.isServiceProvider(req,res);
 
 
