@@ -80,6 +80,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      controller:'serviceProviderPageController'
    });
 
+
    $stateProvider.state({
      name:'Promotion',
      cache:false,
@@ -245,6 +246,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    url:'/view_sp_requests',
    templateUrl:'views/adminViewSpRequests.view.html',
    controller:'AdminViewSpRequestsController'
+ });
+
+  $stateProvider.state({
+   name:'serverCrash',
+   url:'/404',
+   templateUrl:'servercrash.view.html',
+   controller:'Four04Controller'
  });
 
   $urlRouterProvider.when('','/');

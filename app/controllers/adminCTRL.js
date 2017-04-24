@@ -398,7 +398,7 @@ let adminCTRL={
             else
             {
               Booking.aggregate(
-      {$group : {_id : "$providerId", "count" : {$sum : 1}}},
+      {$group : {_id : "$serviceProviderId", "count" : {$sum : 1}}},
       {$sort : {"count" : -1}},
       {$limit : 1},function(err,topBooking){
         if(err)
@@ -407,7 +407,7 @@ let adminCTRL={
           res.send(err.message)
         }else
         {
-              console.log(topBooking);
+              
                             ServiceProvider.findOne({_id:topBooking},function(err,topSP){
                               if(err)
                               {
@@ -442,6 +442,7 @@ let adminCTRL={
                                           res.send(err.message)
                                         }else
                                         {
+                                          throw new error()
                                           res.send({topActivity,topSP,topU,dates});
                                         }
 

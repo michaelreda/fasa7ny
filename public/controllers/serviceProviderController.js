@@ -23,4 +23,5 @@ myapp.controller('serviceProviderController', function($scope,$stateParams,userS
       console.log("subscribed to service provider succesfully");
     })
   }
+    });
 });

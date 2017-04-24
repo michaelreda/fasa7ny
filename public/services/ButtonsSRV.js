@@ -6,7 +6,9 @@ myapp.factory('ButtonsSRV', function($http) {
 
     getAnalysis: function() {
       return $http.get('/get_analysis')
-    }
+    }.error(function(data, status, headers, config) {
+        $location.url('/404');
+    })
 
 
   };
