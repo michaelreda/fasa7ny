@@ -397,7 +397,7 @@ userAddToWishList:function(req,res){
 userViewWishList:function(req,res){
   userCTRL.isUser(req,res);
 
-  User.findOne({userAccountId: req.user._id}).populate('wishlist').exec(function(err,wishList){
+  User.findOne({userAccountId: req.user._id}).populate({path: 'wishlist'}).exec(function(err,wishList){
     if(err){
       res.send(err);
     }

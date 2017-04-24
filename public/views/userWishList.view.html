@@ -15,13 +15,13 @@
 		<tbody>
 			<tr id="row_{{$index}}" ng-repeat="wish in wishList">
 				<td>{{$index + 1}}</td>
-				<td><a href="/#/activity/{{wish._id}}" /a>{{wish.activityId.title}}</a></td>
+				<td><a href="/#/activity/{{wish._id}}" /a>{{wish.title}}</a></td>
 				<td>{{wish.type}}</td>
-				<td><star-rating-comp rating="wish.rate" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
+				<td><star-rating-comp rating="wish.rating" show-hover-stars="false" read-only="true" size="'med'"></star-rating-comp></td>
 				<td style="width: 120px;">
 						
 						<!-- delete button -->
-						<div class="yellow btn btn-danger hvr-icon-sink-away" ng-click="delete($index)" uib-tooltip="Delete wishList" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div class="yellow btn btn-danger hvr-icon-sink-away" ng-click="dropActivity($index)" uib-tooltip="Delete wishList" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 				</td>
 			</tr>

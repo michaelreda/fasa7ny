@@ -8,6 +8,10 @@ myapp.factory('userSRV', function($http) {
       return $http.get('/view_my_wishList');
     },
 
+    dropActivity:function(id){
+      return $http.post('/drop_from_wishlist',{activity:id});
+    },
+
     subscribe: function(serviceProviderId){
       return $http.post('/subscribe', {serviceProviderId:serviceProviderId})
     },

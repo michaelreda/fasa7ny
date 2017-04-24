@@ -1,11 +1,11 @@
-myapp.controller('UserReviewsController', function($scope,userSRV) {
+myapp.controller('userWishListController', function($scope,userSRV) {
   userSRV.viewWishList().success(function(data){
-    $scope.wishList = data.wishList;
+    $scope.wishList = data.wishlist;
   });
 
-  $scope.delete= function(i){
-    var id= $scope.reviews[i]._id;
-    userSRV.deleteReview(id).success(function(){
+  $scope.dropActivity= function(i){
+    var id= $scope.wishList[i]._id;
+    userSRV.dropActivity(id).success(function(){
       document.getElementById("row_"+i).remove();
       toastr.success('Review deleted succesfully');
     })
