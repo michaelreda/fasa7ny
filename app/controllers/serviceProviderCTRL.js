@@ -79,8 +79,8 @@ let ServiceProviderCTRL = {
 
         newActivity.save(function (err) {
           if (err) {
-            res.send(err.message);
             globalCTRL.addErrorLog(err.message);
+                        res.send(err.message);
           }
           else {
             res.send("activity added succesfully");

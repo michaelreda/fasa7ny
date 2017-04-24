@@ -29,7 +29,11 @@ angular.module('myapp').
 
             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-
+            //get coordinates of a click
+            //will be needed when sp chooses activity location
+            // google.maps.event.addListener($scope.map, 'click', function(event) {
+            //   alert(event.latLng);  // in event.latLng  you have the coordinates of click
+            // });
 
             //adding home marker
             var marker = new google.maps.Marker({
@@ -85,7 +89,7 @@ angular.module('myapp').
             }
           }
 
-          if(self.activity == undefined && self.activities==undefined && self.dragable == undefined){ // if no data entered check DB
+          if(self.activity == undefined && self.activities==undefined &&self.draggable== undefined){ // if no data entered check DB
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -103,14 +107,6 @@ angular.module('myapp').
               for (i = 0; i < activities.length; i++){
                   //console.log(activities[i]);
                   createMarker(activities[i]);
-
-                  //get coordinates of a click
-                  //will be needed when sp chooses activity location
-                  google.maps.event.addListener($scope.map, 'click', function(event) {
-                    alert("hi");
-                    $scope.LatLng=event.latLng;
-                    console.log(event.latLng);  // in event.latLng  you have the coordinates of click
-                  });
               }
           })
         }
@@ -129,9 +125,29 @@ angular.module('myapp').
               createMarker(activities[i]);
           }
         }
+        if(self.draggable !=undefined){
+          //get coordinates of a click
+          //will be needed when sp chooses activity location
+          google.maps.event.addListener($scope.map, 'click', function(event) {
 
-        if(self.dragable != undefined){
-          console.log('hi');
+
+
+
+            $window.localStorage['location']=event.latLng.lat()+","+event.latLng.lng();
+
+
+            var marker = new google.maps.Marker({
+                map: $scope.map,
+                position: new google.maps.LatLng(event.latLng.lat(),event.latLng.lng()),
+                title: "set activity here"
+            });
+            marker.content = '<div class="infoWindowContent">' + "set activity here" + '</div>';
+            google.maps.event.addListener(marker, 'click', function(){
+                infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
+                infoWindow.open($scope.map, marker);
+            });
+            $scope.markers[1]=marker;
+          });
 
         }
 
@@ -253,6 +269,6 @@ angular.module('myapp').
     bindings:{
       activities: '=',
       activity:'=',
-      dragable:'='
+      draggable:'='
     }
 });
