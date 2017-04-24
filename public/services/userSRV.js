@@ -4,8 +4,16 @@ myapp.factory('userSRV', function($http) {
       return $http.post('/add_to_wishList',{activity:activityId});
     },
 
+    viewWishList: function() {
+      return $http.get('/view_my_wishList');
+    },
+
+    dropActivity:function(id){
+      return $http.post('/drop_from_wishlist',{activity:id});
+    },
+
     subscribe: function(serviceProviderId){
-      return $http.post('/subscibe', {serviceProviderId:serviceProviderId})
+      return $http.post('/subscribe', {serviceProviderId:serviceProviderId})
     },
 
     changePrivacy: function(privacyLevel){

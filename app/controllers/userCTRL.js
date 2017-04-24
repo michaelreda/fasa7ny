@@ -208,28 +208,45 @@ changePrivacy: function(req,res){
 subscribe: function(req,res){
   userCTRL.isUser(req,res);
   var serviceProviderID=req.body.serviceProviderId;
-  var loggedInUser= req.session.user._id;
+  //var loggedInUser= req.session.user._id;
 
-
-  ServiceProvider.findOne({ '_id' : serviceProviderID},
-  function(err, providerInstance){
-    if (err){
-      globalCTRL.addErrorLog(err);
-      return (err);
+  User.findOne({userAccountId:req.user._id},function(err2,loggedInUser){
+    if(err2){
+      globalCTRL.addErrorLog(err2);
+      return (err2);
     }
     else{
-      providerInstance.update({_id:req.session.serviceProvider._id},{$push:{'subscribedUsers':loggedInUser}},function(err,change){
-        if(err)
-        {
-          res.send(err)
-        }else{
-          res.send({providerInstance});
+  //       ServiceProvider.findOne({ '_id' : serviceProviderID},function(err, providerInstance){
+  //         if (err){
+  //           globalCTRL.addErrorLog(err);
+  //           return (err);
+  //         }
+  //         else{
+  //           providerInstance.update({_id:serviceProviderID},{$push:{'subscribedUsers':loggedInUser._id}},function(err3,change){
+  //             if(err3)
+  //           {
+  //             res.send(err3)
+  //           }else{
+  //             res.send({providerInstance});
+  //           }
+  //     });
+
+  //   }
+  // })
+      ServiceProvider.update({_id : serviceProviderID},{$push:{'subscribedUsers':loggedInUser._id}},function(err,changed){
+        if(err){
+          cosole.log(err.message);
+          globalCTRL.addErrorLog(err);
+             return (err);
         }
-      });
+        else{
+          res.send({changed});
+        }
+      })
 
     }
-  }
-)
+  })
+
 },
 
 unSubscribe: function(req,res){
@@ -373,6 +390,19 @@ userAddToWishList:function(req,res){
     res.send('user not found');
 
   });
+
+},
+userViewWishList:function(req,res){
+  userCTRL.isUser(req,res);
+
+  User.findOne({userAccountId: req.user._id}).populate({path: 'wishlist'}).exec(function(err,wishList){
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.send(wishList)
+    }
+  })
 
 },
 
