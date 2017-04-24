@@ -24,6 +24,11 @@ myapp.controller('userPageController', function($scope,userSRV,$window,$state) {
 
         userSRV.updateProfile(mobileNumber,profession).success(function(){
           toastr.success('profile updated successfully');
+          $scope.userProfile.mobileNumber=mobileNumber;
+          $scope.userProfile.profession=profession;
+
+          $window.localStorage['userProfile']=angular.toJson($scope.userProfile);
+
           $state.go('userPage');
         })
       }
