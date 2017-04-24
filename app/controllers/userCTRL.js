@@ -570,15 +570,18 @@ deleteReview: function(req,res){
   //view user's bookings' history
   viewHistoryBookings: function(req,res){
     userCTRL.isUser(req,res);
-    Booking.find({userId:req.session.user._id}).exec(function(err,bookings){
-      if(err){
-        globalCTRL.addErrorLog(err);
-        res.send(err);
-      }
-      else {
-        res.render("viewHistoryBookings",bookings);
-      }
+    User.findOne({userAccountId:req.user._id}).exec(function(err,user){
+      Booking.find({userId:user._id}).populate('activityId').populate('serviceProviderId').exec(function(err,bookings){
+        if(err){
+          globalCTRL.addErrorLog(err);
+          res.send(err);
+        }
+        else {
+          res.send(bookings);
+        }
+      })
     })
+
   },
 
 
