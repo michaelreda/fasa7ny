@@ -25,10 +25,22 @@ myapp.controller('addActivityController', function($scope, $state, activitySRV,$
       });
     }
 
+    var timings=new Array();
+    for(var i=0;i<10;i++){
+    if(document.getElementById('day_'+i) ==undefined)
+    return;
+      timings.push({
+        day:document.getElementById('day_'+i).value,
+        startTime: document.getElementById('time_'+i).value
+      });
+
+    }
+    console.log(timings);
+
     // alert($window.localStorage['location']);
 
 
-    activitySRV.addActivity($scope.title, $scope.type, $scope.durationInMinutes,$scope.minClientNumber,$scope.maxClientNumber,$scope.minAge,$scope.maxAge,$scope.theme,prices,$window.localStorage['location']).success(function(){
+    activitySRV.addActivity($scope.title, $scope.type, $scope.durationInMinutes,$scope.minClientNumber,$scope.maxClientNumber,$scope.minAge,$scope.maxAge,$scope.theme,prices,$window.localStorage['location'],timings).success(function(){
       toastr.success('Activity added succcessfully');
     })
   }
