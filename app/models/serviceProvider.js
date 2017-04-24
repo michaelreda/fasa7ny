@@ -37,7 +37,7 @@ var serviceProviderSchema = mongoose.Schema({
   //   type:{type:String},
   //   url:{type:String}
   // }],
-  medua:[{
+  media:[{
     type:String
   }],
   previousClients:[{

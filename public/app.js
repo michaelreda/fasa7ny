@@ -36,7 +36,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'userBookings',
     cache:false,
-    url:'/my_bookings/:userID',
+    url:'/my_bookings',
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
@@ -78,6 +78,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      url:'/service_provider',
      templateUrl:'views/serviceProviderPage.view.html',
      controller:'serviceProviderPageController'
+   });
+
+   $stateProvider.state({
+     name:'Promotion',
+     cache:false,
+     url:'/promotion',
+     templateUrl:'views/promotion.view.html',
+     controller:'promotionController'
    });
 
    $stateProvider.state({
@@ -126,7 +134,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      cache:false,
      url: '/serviceProvider/:serviceProviderId',
      templateUrl:'views/serviceProvider.view.html',
-     controller: 'SPController'
+     controller: 'serviceProviderController'
    });
 
   $stateProvider.state({
@@ -191,6 +199,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'addActivityPage',
+    cache:false,
+    url:'/addActivity',
+    templateUrl:'views/AddActivityPage.view.html',
+    controller:'addActivityController'
+  });
+  $stateProvider.state({
     name:'message',
     url:'/message/:messageId',
     cache:false,
@@ -239,7 +254,6 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    controller:'AdminViewSpRequestsController'
  });
 
-
   $stateProvider.state({
     name:'confirmChekin',
     name:'confirmCheckin',
@@ -249,6 +263,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/confirmCheckin.view.html',
     controller:'confirmCheckinController'
   });
+  
+ $stateProvider.state({
+   name:'user wishList',
+   url:'/userWishList',
+   templateUrl:'views/userWishList.view.html',
+   controller:'userWishListController'
+ });
+
   $urlRouterProvider.when('','/');
 
 }]);

@@ -4,8 +4,16 @@ myapp.factory('userSRV', function($http) {
       return $http.post('/add_to_wishList',{activity:activityId});
     },
 
+    viewWishList: function() {
+      return $http.get('/view_my_wishList');
+    },
+
+    dropActivity:function(id){
+      return $http.post('/drop_from_wishlist',{activity:id});
+    },
+
     subscribe: function(serviceProviderId){
-      return $http.post('/subscibe', {serviceProviderId:serviceProviderId})
+      return $http.post('/subscribe', {serviceProviderId:serviceProviderId})
     },
 
     changePrivacy: function(privacyLevel){
@@ -23,12 +31,12 @@ myapp.factory('userSRV', function($http) {
     deleteReview:function(id){
       return $http.post('/delete_review',{reviewId:id});
     },
-    userHistoryBookings:function(){
-      return $http.post('/view_history_bookings');
+    viewHistoryBookings:function(){
+      return $http.get('/view_history_bookings');
+    },
+    updateProfile:function(mobileNumber,profession){
+      return $http.post('/update_my_profile',{mobileNumber:mobileNumber,profession:profession});
     }
 
   };
 });
-
-
-  

@@ -28,15 +28,15 @@
                    <tbody>
                      <tr>
                        <td>BirthDate:</td>
-                       <td>{{userProfile.birthDate |date:'fullDate' }}</td>
+                       <td>{{userProfile.birthDate |date:'shortDate' }}</td>
                      </tr>
                      <tr>
                        <td>Gender:</td>
-                       <td>{{userProfile.gender}}</td>
+                       <td >{{userProfile.gender?'male':'female'}}</td>
                      </tr>
                      <tr>
                        <td>Mobile Number:</td>
-                       <td>{{userProfile.mobileNumber}}</td>
+                       <td id="mobileNumber">{{userProfile.mobileNumber}}</td>
                      </tr>
                      <tr>
                        <td>Profession:</td>
@@ -51,7 +51,8 @@
                  </table>
                  <a href="#" class="btn btn-primary">My WishList</a>
                  <a href="/#/my_reviews" class="btn btn-primary">My Reviews</a>
-                 <a href="" class="btn btn-warning pull-right">Edit info</a>
+                 <a href="/#/my_bookings" class="btn btn-primary">My Bookings</a>
+                 <a href="" ng-click="editInfo()" class="btn btn-warning pull-right">{{editInfoBtnTxt}}</a>
                </div>
              </div>
            </div>
@@ -79,7 +80,7 @@
                      -o-transition: all 0.5s;
                      transition: all 0.5s;
                      padding: 0px;
-                     ">Change your profile privacy?{{$ctrl.privacyLevel==0?"Public" :$ctrl.privacyLevel==1?"unprivate information":"name only"}}
+                     ">Change your profile privacy? {{privacyLevel==0?"Public" :privacyLevel==1?"unprivate information":$privacyLevel==2?"name only":""}}
                      <span class="caret"></span></a>
                      <ul class="dropdown-menu">
                        <!--<li><a href="#" ng-click="changePrivacy()">Any Day..</a></li>-->
@@ -162,4 +163,3 @@
   </div>
 <br>
 <br>
-

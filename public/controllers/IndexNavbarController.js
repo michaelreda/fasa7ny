@@ -1,15 +1,19 @@
 myapp.controller('IndexNavbarController',function($window,$scope,$state,landingPageSRV){
 
-  
+
   $scope.logout = function(){
     landingPageSRV.logout().success(function(data){
       $window.localStorage.clear();
+      toastr.success("Logged out!");
       $state.go("home");
     })
   }
 
   $scope.isLoggedIn = function() {
     return !($window.localStorage['userAccount']==undefined);
+  }
+  $scope.userType = function() {
+    return JSON.parse($window.localStorage['userAccount']).type;
   }
 
   $scope.signupStatechange = function(){
@@ -32,6 +36,10 @@ myapp.controller('IndexNavbarController',function($window,$scope,$state,landingP
 
   $scope.myReviews= function(){
     $state.go('userReviews');
+  }
+
+  $scope.myWishList= function(){
+    $state.go('user wishList');
   }
 
 });

@@ -1,10 +1,9 @@
-
 <br>
 <br>
 <br>
 <br>
 <br>
-<div ng-if="activity1== undefined && serviceProvider1== undefined " >
+<div ng-if="activity1== undefined && serviceProvider1== undefined ">
   <h1>Choose your First choice from:</h1>
   <div ng-if="selectedActivities== undefined ">
     <select ng-model="$parent.selectedServiceProvider" ng-options="item._id as item.title for item in serviceProviders">
@@ -13,13 +12,13 @@
   </div>
 
 
-  <div ng-if="selectedServiceProvider== undefined && selectedActivities== undefined "  >
+  <div ng-if="selectedServiceProvider== undefined && selectedActivities== undefined ">
     <h1>OR</h1>
   </div>
 
 
-  <div  ng-if="selectedServiceProvider== undefined " >
-    <select ng-model="$parent.selectedActivities"  ng-options="item._id as item.title for item in Activities">
+  <div ng-if="selectedServiceProvider== undefined ">
+    <select ng-model="$parent.selectedActivities" ng-options="item._id as item.title for item in Activities">
       <option value="">Select Activity</option>
     </select>
   </div>
@@ -29,8 +28,8 @@
 
   <div ng-if="selectedServiceProvider!= undefined ">
     <h1>Compare with:</h1>
-    <div >
-      <select ng-model="$parent.selectedServiceProvider2"    ng-options="item._id as item.title for item in serviceProviders">
+    <div>
+      <select ng-model="$parent.selectedServiceProvider2" ng-options="item._id as item.title for item in serviceProviders">
         <option value="">Select Service Provider</option>
       </select>
       <button ng-click="compareServiceProvider(selectedServiceProvider,selectedServiceProvider2)">compare</button>
@@ -41,8 +40,8 @@
   <div ng-if="selectedActivities!= undefined">
     <h1>Compare with:</h1>
 
-    <div >
-      <select ng-model="$parent.selectedActivities2"  ng-options="item._id as item.title for item in Activities">
+    <div>
+      <select ng-model="$parent.selectedActivities2" ng-options="item._id as item.title for item in Activities">
         <option value="">Select Activity</option>
       </select>
       <button ng-click="compareActivities(selectedActivities,selectedActivities2)">compare</button>
@@ -210,10 +209,12 @@
         <div class="col-xs-12 col-sm-8">
           <div class="row">
             <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
-              <star-rating-comp rating="activity1.rating" label-text="'Rated by '+activity1.ratingCount+' users'" label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
+              <star-rating-comp rating="activity1.rating" label-text="'Rated by '+activity1.ratingCount+' users'" label-position="'right'"
+                show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
             </div>
             <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
-              <star-rating-comp rating="activity2.rating" label-text="'Rated by '+activity2.ratingCount+' users'" label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
+              <star-rating-comp rating="activity2.rating" label-text="'Rated by '+activity2.ratingCount+' users'" label-position="'right'"
+                show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
             </div>
           </div>
         </div>
@@ -251,6 +252,155 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!--Service providers-->
+  </div>
+  <div ng-if="serviceProvider1!= undefined">
+    <h2>Service providers</h2>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-offset-4 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 my_planHeader my_plan1">
+              <div class="my_planTitle">{{serviceProvider1.title}}</div>
+            </div>
+            <div class="col-xs-6 my_planHeader my_plan2">
+              <div class="my_planTitle">{{serviceProvider2.title}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Entertainment Type
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider1.entertainmentType[0]}}
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider2.entertainmentType[0]}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Main Branch
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider1.branches[0]}}
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider2.branches[0]}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Mobile Number
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider1.contactMobile[0]}}
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider2.contactMobile[0]}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Golden status
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider1.isGolden}}
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+
+              <div style="display:-webkit-inline-box">
+                {{serviceProvider2.isGolden}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Rating
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              <div ng-if="serviceProvider1.rating== -1"style="display:-webkit-inline-box">
+                No rating available
+              </div>
+              <div ng-if="serviceProvider1.rating!= -1"style="display:-webkit-inline-box">
+                {{serviceProvider1.rating}}
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+
+              <div ng-if="serviceProvider1.rating== -1"style="display:-webkit-inline-box">
+                No rating available
+              </div>
+              <div ng-if="serviceProvider1.rating!= -1"style="display:-webkit-inline-box">
+                {{serviceProvider2.rating}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="row  my_featureRow  hvr-grow">
+        <div class="col-xs-12 col-sm-4 my_feature">
+          Description
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan1">
+              {{serviceProvider1.description}}
+            </div>
+            <div class="col-xs-6 col-sm-6 my_planFeature my_plan2">
+              {{serviceProvider2.description}}
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
@@ -259,23 +409,47 @@
   </div>
 
 
+
+
+
+
 </div>
 
 
 
-<div ng-if="serviceProvider1!= undefined">
-  <h2>Service providers</h2>
+<!--Service Providers -->
 
 
-  <!--First SP -->
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+<br>
+<br>
+
+
+
+
+<!--
+  First SP 
   <div>
     <div>
       <center>
         <ul class="price_nav wow bounceIn">
-          <li >
+          <li>
             <h2 class="price_heading">{{serviceProvider1.title}}</h2>
             <h3>Description: {{serviceProvider1.description}}</h3>
-            <h3>Type of Entertainment: {{serviceProvider1.entertainmentType}}</h3>
+            <h3>Type of Entertainment: {{serviceProvider1.entertainmentType[0]}}</h3>
             <h3>Main Branch: {{serviceProvider1.branches[0]}}</h3>
             <h3>Mobile Number: {{serviceProvider1.contactMobile[0]}}</h3>
             <h3>Golden Status: {{serviceProvider1.isGolden}}</h3>
@@ -285,15 +459,15 @@
         </ul>
       </center>
 
-      <!--Second SP -->
+      Second SP 
 
 
       <center>
         <ul class="price_nav wow bounceIn">
-          <li >
+          <li>
             <h2 class="price_heading">{{serviceProvider2.title}}</h2>
             <h3>Description: {{serviceProvider2.description}}</h3>
-            <h3>Type of Entertainment: {{serviceProvider2.entertainmentType}}</h3>
+            <h3>Type of Entertainment: {{serviceProvider2.entertainmentType[0]}}</h3>
             <h3>Main Branch: {{serviceProvider2.branches[0]}}</h3>
             <h3>Mobile Number: {{serviceProvider2.contactMobile[0]}}</h3>
             <h3>Golden Status: {{serviceProvider2.isGolden}}</h3>
@@ -307,21 +481,7 @@
 
 
     </div>
-  </div>
-</div>
-
-
-
-
-
-</div>
-
-<br>
-<br>
-
-
-
-
+  </div>-->
 
 
 <!--
@@ -352,118 +512,117 @@
 </div>-->
 
 <style>
-
-.dropdown-submenu {
-  position: relative;
-}
-
-.dropdown-submenu .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -1px;
-}
+  .dropdown-submenu {
+    position: relative;
+  }
+  
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+  }
 </style>
 
 
 <style>
-
-/* Use a wide full screen for small screens like tablets. */
-@media (min-width: 768px) and (max-width:992px) {
-  .container {
-    width: initial;
-    padding-left: 2em;
-    padding-right: 2em;
+  /* Use a wide full screen for small screens like tablets. */
+  
+  @media (min-width: 768px) and (max-width:992px) {
+    .container {
+      width: initial;
+      padding-left: 2em;
+      padding-right: 2em;
+    }
   }
-}
-
-/* --- Plans ---------------------------- */
-
-.my_planHeader {
-  text-align: center;
-  color: white;
-  padding-top:0.2em;
-  padding-bottom:0.2em;
-}
-.my_planTitle {
-  font-size:2em;
-  font-weight: bold;
-  margin: 20px;
-  font-family: fantasy;
-}
-.my_planPrice {
-  font-size:1.4em;
-  font-weight: bold;
-  margin: 10px;
-}
-.my_planDuration {
-  margin-top: -0.6em;
-}
-
-@media (max-width: 768px) {
+  /* --- Plans ---------------------------- */
+  
+  .my_planHeader {
+    text-align: center;
+    color: white;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+  }
+  
   .my_planTitle {
-    font-size:small;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px;
+    font-family: fantasy;
   }
-}
-
-/* --- Features ------------------------- */
-
-.my_feature {
-  line-height:2.8em;
-}
-
-@media (max-width: 768px) {
+  
+  .my_planPrice {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 10px;
+  }
+  
+  .my_planDuration {
+    margin-top: -0.6em;
+  }
+  
+  @media (max-width: 768px) {
+    .my_planTitle {
+      font-size: small;
+    }
+  }
+  /* --- Features ------------------------- */
+  
   .my_feature {
-    text-align: center
+    line-height: 2.8em;
   }
-}
-
-.my_featureRow{
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-  border: 0.1em solid rgb(163, 163, 163);
-  display: -webkit-box !important;
-}
-
-/* --- Plan 1 --------------------------- */
-.my_plan1 {
-  background: rgb(224,234,242);
-      min-height: 40px;
-          font-size: large;
-          text-align: center;
-              padding-top: 10px;
-}
-
-.my_planHeader.my_plan1 a {
-  background: rgb(72, 109, 139);
-  color:white;
-}
-
-.my_planHeader.my_plan1 {
-  background: rgb(105, 153, 193);
-  border-bottom: thick solid rgb(72, 109, 139);
-  height: 170px;
-}
-
-/* --- Plan 2 --------------------------- */
-.my_plan2 {
-  background: rgb(230,235,218);
-      min-height: 40px;
-          font-size: large;
-          text-align: center;
-              padding-top: 10px;
-}
-
-.my_planHeader.my_plan2 a {
-  background: rgb(108, 131, 62);
-  color:white;
-}
-
-.my_planHeader.my_plan2 {
-  background: rgb(134, 162, 77);
-  border-bottom: thick solid rgb(108, 131, 62);
-  height: 170px;
-}
-
+  
+  @media (max-width: 768px) {
+    .my_feature {
+      text-align: center
+    }
+  }
+  
+  .my_featureRow {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    border: 0.1em solid rgb(163, 163, 163);
+    display: -webkit-box !important;
+  }
+  /* --- Plan 1 --------------------------- */
+  
+  .my_plan1 {
+    background: rgb(224, 234, 242);
+    min-height: 40px;
+    font-size: large;
+    text-align: center;
+    padding-top: 10px;
+  }
+  
+  .my_planHeader.my_plan1 a {
+    background: rgb(72, 109, 139);
+    color: white;
+  }
+  
+  .my_planHeader.my_plan1 {
+    background: rgb(105, 153, 193);
+    border-bottom: thick solid rgb(72, 109, 139);
+    height: 170px;
+  }
+  /* --- Plan 2 --------------------------- */
+  
+  .my_plan2 {
+    background: rgb(230, 235, 218);
+    min-height: 40px;
+    font-size: large;
+    text-align: center;
+    padding-top: 10px;
+  }
+  
+  .my_planHeader.my_plan2 a {
+    background: rgb(108, 131, 62);
+    color: white;
+  }
+  
+  .my_planHeader.my_plan2 {
+    background: rgb(134, 162, 77);
+    border-bottom: thick solid rgb(108, 131, 62);
+    height: 170px;
+  }
 </style>
 
 <!--<table ng-controller="myCtrl" border="1">

@@ -21,7 +21,7 @@ angular.module('myapp').
             console.log(lat+","+long);
 
             var mapOptions = {
-                zoom: (self.activity)?8:12,
+                zoom: (self.activity||self.activities)?8:12,
                 center: new google.maps.LatLng(lat, long),
                 scrollwheel: false,
                 mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -68,7 +68,28 @@ angular.module('myapp').
               $scope.markers.push(marker);
 
           }
-          if(self.activity == undefined){
+          if(self.activities!=undefined){
+            console.log(self.activities);
+            for(var i=0;i<self.activities.length;i++){
+
+              var lat= parseFloat((self.activities[i].location.split(","))[0]);
+              var long= parseFloat((self.activities[i].location.split(","))[1]);
+              activities.push({
+                title: self.activities[i].title,
+                type: self.activities[i].type,
+                price: self.activities[i].prices[0].price,
+                lat:lat,
+                long:long
+              });
+
+            }
+            for (i = 0; i < activities.length; i++){
+                //console.log(activities[i]);
+                createMarker(activities[i]);
+            }
+          }
+
+          if(self.activity == undefined && self.activities==undefined){ // if no data entered check DB
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -88,7 +109,8 @@ angular.module('myapp').
                   createMarker(activities[i]);
               }
           })
-        }else{
+        }
+        if(self.activity!=undefined){ // if only one activity
           var lat= parseFloat((self.activity.location.split(","))[0]);
           var long= parseFloat((self.activity.location.split(","))[1]);
           activities.push({
@@ -149,7 +171,28 @@ angular.module('myapp').
               $scope.markers.push(marker);
 
           }
-          if(self.activity == undefined){
+          if(self.activities!=undefined){
+            console.log(self.activities);
+            for(var i=0;i<self.activities.length;i++){
+
+              var lat= parseFloat((self.activities[i].location.split(","))[0]);
+              var long= parseFloat((self.activities[i].location.split(","))[1]);
+              activities.push({
+                title: self.activities[i].title,
+                type: self.activities[i].type,
+                price: self.activities[i].prices[0].price,
+                lat:lat,
+                long:long
+              });
+
+            }
+            for (i = 0; i < activities.length; i++){
+                //console.log(activities[i]);
+                createMarker(activities[i]);
+            }
+          }
+
+          if(self.activity == undefined && self.activities==undefined){ // if no data entered check DB
           landingPageSRV.getNearbyActivities(lat,long).success(function(data){
               for(var i=0;i<data.activities.length;i++){
 
@@ -169,8 +212,8 @@ angular.module('myapp').
                   createMarker(activities[i]);
               }
           })
-        }else{
-
+        }
+        if(self.activity!=undefined){ // if only one activity
           var lat= parseFloat((self.activity.location.split(","))[0]);
           var long= parseFloat((self.activity.location.split(","))[1]);
           activities.push({
@@ -199,6 +242,7 @@ angular.module('myapp').
 
     },
     bindings:{
+      activities: '=',
       activity:'='
     }
 });

@@ -8,7 +8,6 @@
 				<th></th>
 				<th>Title</th>
 				<th>Description</th>
-				<th>Email</th>
 				<th>legalProof</th>
 				<th>Actions</th>
 			</tr>
@@ -18,11 +17,10 @@
 				<td>{{$index + 1}}</td>
 				<td>{{request.title}}</td>
 				<td>{{request.description}}</td>
-				<td>{{request.email}}</td>
 				<td><a href="img/{{request.legalProof}}" class="btn btn-primary" target="_blank">view legalProof</a> </td>
 				<td style="width: 120px;">
 						<!-- accept button -->
-						<div  ng-click="accept($index)" class="green btn btn-warning hvr-icon-float-away" uib-tooltip="Accept" style="height: 30px;width: 30px;border-radius: 15px;">
+						<div  ng-click="accept($index)" class="btn btn-success hvr-icon-float-away" uib-tooltip="Accept" style="height: 30px;width: 30px;border-radius: 15px;">
 						</div>
 						<!-- refuse button -->
 						<div class="red btn btn-danger hvr-icon-sink-away" ng-click="refuse($index)" uib-tooltip="Reject" style="height: 30px;width: 30px;border-radius: 15px;">
