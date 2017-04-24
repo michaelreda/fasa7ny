@@ -1,10 +1,14 @@
-myapp.controller('serviceProviderController', function($scope,$stateParams,userSRV,serviceProviderSRV) {
+myapp.controller('serviceProviderController', function($scope,$stateParams,userSRV,serviceProviderSRV,loaderSRV) {
 
+  loaderSRV.start();
   if($stateParams.serviceProviderId != undefined){
       serviceProviderSRV.viewServiceProvider($stateParams.serviceProviderId)
       .success(function(data){
         $scope.serviceProvider=data;
         $scope.media=$scope.serviceProvider.provider.media;
+
+        console.log(data);
+        loaderSRV.end();
       })
   }
 
