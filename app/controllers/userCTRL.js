@@ -189,8 +189,7 @@ changePrivacy: function(req,res){
     return;
   }
   //end validating
-    User.findOne({userAccountId:req.user._id},function(err,user){
-  User.update({_id:user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
+  User.update({_id:req.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err)
@@ -201,7 +200,6 @@ changePrivacy: function(req,res){
       res.send('user not found');
     }
   })
-})
 },
 
 
