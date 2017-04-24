@@ -1,6 +1,5 @@
 myapp.controller('complainsController', function($scope,$state,complainsSRV) {
   complainsSRV.viewComplains().success(function(data){
-      console.log(data);
     $scope.complains= data;
   });
 

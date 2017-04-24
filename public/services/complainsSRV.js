@@ -10,7 +10,6 @@ myapp.factory('complainsSRV', function($http) {
       return $http.post('/update_isSeen',{complainId:id});
     },
     banForever:function (id,isUserToProvider,banned) {
-      console.log({'complainId':id,'isUserToProvider':isUserToProvider, 'banned':banned});
       if(isUserToProvider)
       return $http.post('/ban_forever', {'complainId':id,'isUserToProvider':isUserToProvider, 'serviceProviderId':banned});
       else

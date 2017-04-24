@@ -75,7 +75,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    $stateProvider.state({
      name:'spPage',
      cache:false,
-     url:'/serviceProvider',
+     url:'/service_provider',
      templateUrl:'views/serviceProviderPage.view.html',
      controller:'serviceProviderPageController'
    });
@@ -124,7 +124,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    $stateProvider.state({
      name: 'service provider',
      cache:false,
-     url: '/serviceProvider',
+     url: '/serviceProvider/:serviceProviderId',
      templateUrl:'views/serviceProvider.view.html',
      controller: 'SPController'
    });
@@ -167,7 +167,6 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'ActivitiesController'
   });
 
-
     $stateProvider.state({
     name: 'service providers',
     url: '/serviceProviders',
@@ -175,10 +174,10 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller: 'serviceProvidersForUserController'
   });
 
-      $stateProvider.state({
+  $stateProvider.state({
     name:'compare',
     url:'/comparison',
-     cache:false,
+    cache:false,
     templateUrl:'views/compare.view.html',
     controller:'compareController'
   });
@@ -234,6 +233,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+   name:'viewSPrequests',
+   url:'/view_sp_requests',
+   templateUrl:'views/adminViewSpRequests.view.html',
+   controller:'AdminViewSpRequestsController'
+ });
+
+
+  $stateProvider.state({
     name:'confirmChekin',
     cache:false,
     url:'/confirmChekin',
@@ -242,8 +249,61 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     controller:'confirmChekinController'
   });
   $urlRouterProvider.when('','/');
- 
+
 }]);
+
+myapp.run(function($rootScope,$window,$state,landingPageSRV,$http){
+        $rootScope.$on('$stateChangeSuccess', function() {
+          // validate backend session
+          $http.get('/check_user_session').success(function(data){
+          if(data == false && !($window.localStorage['userAccount']==undefined)){
+          landingPageSRV.validateSession(JSON.parse($window.localStorage['userAccount'])).success(function(data) {
+            if(data!="okk"){
+              landingPageSRV.logout().success(function(data){
+                $window.localStorage.clear();
+                $state.go("home");
+              })
+            }else
+            toastr.success("Welcome back "+ JSON.parse($window.localStorage['userAccount']).userName);
+          })
+        }
+      });
+
+      });
+    })
+
+//           if($window.localStorage['userProfile']){
+//       1      $http.get('/check_user_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('userProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
+//           if($window.localStorage['spProfile']){
+//             $http.get('/check_sp_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('spProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//           if($window.localStorage['adminProfile']){
+//             $http.get('/check_admin_session').success(function(data){
+//
+//               if(data == false){
+//                 $window.localStorage.removeItem('adminProfile');
+//                 $window.localStorage.removeItem('userAccount');
+//               }
+//             })
+//           }
+//
+//
 
 // myapp.config(function($routeProvider) {
 //   $routeProvider

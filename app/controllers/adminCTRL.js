@@ -14,7 +14,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 let adminCTRL={
   //used to test if the user is admin or not
   isAdmin: function(req,res){
-    if(!req.session.admin)
+    if(!req.user.type==3)
     res.send("you are not an admin.. you are not authorized to do this function");
   },
 
@@ -283,7 +283,7 @@ let adminCTRL={
         }
         else {
             req.session.admin=thisAdmin;
-            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin});
+            res.send({'type':3,'userAccount':req.user,'adminProfile':thisAdmin,'banned':false});
 
         }
 

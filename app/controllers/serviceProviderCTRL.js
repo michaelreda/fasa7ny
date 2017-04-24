@@ -11,7 +11,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 let ServiceProviderCTRL = {
   isServiceProvider: function(req,res){
-    if(!req.session.serviceProvider)
+    if(!req.user.type==1)
     res.send("you are not a Service Provier.. you are not authorized to do this function");
   },
 
@@ -301,10 +301,10 @@ let ServiceProviderCTRL = {
           else {
             if(thisProvider.banned==0){
               req.session.serviceProvider=thisProvider;
-              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider});
+              res.send({'type':1,'userAccount':req.user,'spProfile':thisProvider,'banned':0});
             }
             else{
-              res.send('Account banned! try again in '+thisProvider.banned+' days');
+              res.send({'banned':thisProvider.banned});
             }
           }
 
@@ -644,7 +644,7 @@ let ServiceProviderCTRL = {
             else{
               var today=new Date();
               var birthday= new Date(client.birthDate);
-              
+
               var dayToday   = today.getDate();
               var monthToday = today.getMonth();
 
@@ -654,17 +654,17 @@ let ServiceProviderCTRL = {
               if( dayToday==dayBD && monthToday==monthBD ){
                 birthDayClients[count]=client;
                 count++;
-              } 
+              }
           }
           })
         }
         res.send(birthDayClients);
 
       },
-      
+
 
       promoteToHistoryClient:function(req,res){
-        
+
               var nodemailer = require('nodemailer');
               var smtpTransport = require('nodemailer-smtp-transport');
 
@@ -683,7 +683,7 @@ let ServiceProviderCTRL = {
             };
 
               transporter.sendMail(mailOptions, function(error, info){
-              if(error){ 
+              if(error){
                 res.send(error);
               }else{
                  res.send('promoted succesfully successfully');
