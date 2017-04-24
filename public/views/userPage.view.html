@@ -80,7 +80,7 @@
                      -o-transition: all 0.5s;
                      transition: all 0.5s;
                      padding: 0px;
-                     ">Change your profile privacy?{{$ctrl.privacyLevel==0?"Public" :$ctrl.privacyLevel==1?"unprivate information":"name only"}}
+                     ">Change your profile privacy? {{privacyLevel==0?"Public" :privacyLevel==1?"unprivate information":$privacyLevel==2?"name only":""}}
                      <span class="caret"></span></a>
                      <ul class="dropdown-menu">
                        <!--<li><a href="#" ng-click="changePrivacy()">Any Day..</a></li>-->
