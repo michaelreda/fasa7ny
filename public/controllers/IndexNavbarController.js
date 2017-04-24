@@ -12,6 +12,9 @@ myapp.controller('IndexNavbarController',function($window,$scope,$state,landingP
   $scope.isLoggedIn = function() {
     return !($window.localStorage['userAccount']==undefined);
   }
+  $scope.userType = function() {
+    return JSON.parse($window.localStorage['userAccount']).type;
+  }
 
   $scope.signupStatechange = function(){
     $state.go("signupLocal");

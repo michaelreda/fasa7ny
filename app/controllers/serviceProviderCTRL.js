@@ -443,7 +443,7 @@ let ServiceProviderCTRL = {
        }
      })
     },
-     
+
      // ServiceProviderCTRL.isServiceProvider(req,res);
 
 
@@ -547,18 +547,26 @@ let ServiceProviderCTRL = {
       res.send(errors);
       return;
     }
-    //end validating
-    let complain = new Complain(req.body);
-    complain.providerId = req.session.serviceProvider._id;
-    complain.isUserToProvider = false;
-    complain.save(function (err, complain) {
-      if (err) {
-        globalCTRL.addErrorLog(err.message);
-        res.send(err.message);
-      } else {
-        res.send(200)
-      }
+    ServiceProvider.findOne({'serviceProviderAccountId':req.user._id},function(err,sp) {
+      if(err)
+      globalCTRL.addErrorLog(err);
+      if(!sp)
+      console.log('no sp found');
+      else {
+
+        //end validating
+        let complain = new Complain(req.body);
+        complain.providerId = sp._id;
+        complain.isUserToProvider = false;
+        complain.save(function (err, complain) {
+          if (err) {
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
+          } else {
+            res.send(200)
+          }
     })
+  }  })
   },
 
 

@@ -353,20 +353,20 @@ let adminCTRL={
       if(err){
         globalCTRL.addErrorLog(err.message);
       }else{
-        
+
         User.findOne({_id:chat.fromId},function(err,user){
 
       if(err){
         globalCTRL.addErrorLog(err.message);}
         else{
           chat.isSeen=true;
-        
+
         res.send({chat,sender:user.firstName});
         }
         })
 
-    
-       
+
+
       }
     })
 
@@ -375,7 +375,7 @@ let adminCTRL={
   //4.8 analytics
   //testing - waiting for bookings to be able to analyze them
   getAnalyticsPage:function(req,res){
-  //adminCTRL.isAdmin(req,res);
+  adminCTRL.isAdmin(req,res);
     // finding top activity
     Booking.aggregate(
       {$group : {_id : "$activityId", "count" : {$sum : 1}}},
@@ -398,7 +398,7 @@ let adminCTRL={
             else
             {
               Booking.aggregate(
-      {$group : {_id : "$providerId", "count" : {$sum : 1}}},
+      {$group : {_id : "$serviceProviderId", "count" : {$sum : 1}}},
       {$sort : {"count" : -1}},
       {$limit : 1},function(err,topBooking){
         if(err)
@@ -433,7 +433,7 @@ let adminCTRL={
                                           res.send(err.message);
                                         }else
                                         {
-                                          
+
                                   Booking.aggregate(
                                   {$group : {_id : "$time", "count" : {$sum : 1}}},
                                   {$sort : {"_id" : 1}},function(err,dates){
@@ -446,9 +446,9 @@ let adminCTRL={
                                         }
 
                                   })
-                                          
-                                    
-                                          
+
+
+
                                         }
                                       })
 

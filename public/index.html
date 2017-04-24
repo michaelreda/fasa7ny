@@ -116,8 +116,8 @@
              <span class="caret"></span></a><ul class="dropdown-menu">
             <!-- go to profile -->
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
-            <li ><a href="" ng-click = "myReviews()">My reviews</a></li>
-            <li ><a href="" ng-click = "myWishList()">My wish list</a></li>
+            <li ><a href="" ng-show = "userType() == 0" ng-click = "myReviews()">My reviews</a></li>
+            <li ><a href="" ng-show = "userType() == 0" ng-click = "myWishList()">My wish list</a></li>
           </ul></li>
 
 
