@@ -53,8 +53,38 @@
 
   <!-- Preloader -->
   <div id="preloader">
-    <div id="status">&nbsp;</div>
+    <div id="status" class="move" style="background-size:50px">&nbsp;</div>
   </div>
+
+<script>
+        $('#status')
+            .css({left:0,top:50%,width:'100px',height:'100px'})
+            .animate({left:'800px',top:50%,width:'100px',height:'100px'},5000)
+            .animate({left:'800px',top:50%,width:'200px',height:'200px',-webkit-transform: scaleX(-1)},20)
+            .animate({left:0,top:50%,width:'200px',height:'200px'},5500);
+
+</script>
+
+  <style>
+  #status .move{
+      -webkit-animation: myanim 5s;
+      animation: myanim 5s;
+  }
+  @-webkit-keyframes myanim
+  {
+  0%   {top:0;left:0; width: 100px; height: 100px;}
+  66%  {top:0;left:800px; width:100px;height:100px;}
+  67%  {top:0;left:800px; width:200px; height: 200px;}
+  100% {top:0; left:0; width: 200px; height:200px;}
+  }
+  @keyframes myanim
+  {
+  0%   {top:0;left:0; width: 100px; height: 100px;}
+  66%  {top:0;left:800px; width:100px;height:100px;}
+  67%  {top:0;left:800px; width:200px; height: 200px;}
+  100% {top:0; left:0; width: 200px; height:200px;}
+  }
+  </style>
 
   <!-- End Preloader -->
   <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
