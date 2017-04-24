@@ -85,15 +85,12 @@
             <!-- go to profile -->
             <li ><a href="" ng-click = "myFasa7ny(0)">Profile</a></li>
             <li ><a href="" ng-click = "myReviews()">My reviews</a></li>
-            <!-- about Us button -->
-            <li  ><a href="/#/aboutUs">About Us</a></li>
           </ul></li>
-          <!-- logout button -->
-          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
+
 
 
       <!-- when logged out -->
-          <li class="active dropdown"  ng-show = "isLoggedIn() == false"><a href="" >Fasa7ny
+          <li class="active dropdown" ><a href="" >Fasa7ny services
               <span class="caret"></span></a><ul class="dropdown-menu">
                     <!-- Compare button -->
                       <li ><a href="/#/comparison">Compare</a></li>
@@ -107,6 +104,8 @@
           <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
           <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
+          <!-- logout button -->
+          <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
         </ul>
       </div><!--/.nav-collapse -->
 <div>
