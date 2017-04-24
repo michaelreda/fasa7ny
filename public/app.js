@@ -242,11 +242,12 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
 
   $stateProvider.state({
     name:'confirmChekin',
+    name:'confirmCheckin',
     cache:false,
-    url:'/confirmChekin',
+    url:'/confirmCheckin',
     cache:false,
-    templateUrl:'views/confirmChekin.view.html',
-    controller:'confirmChekinController'
+    templateUrl:'views/confirmCheckin.view.html',
+    controller:'confirmCheckinController'
   });
   $urlRouterProvider.when('','/');
 
