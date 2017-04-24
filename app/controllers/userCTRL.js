@@ -331,7 +331,8 @@ viewMyProfile: function(req,res){
 //password to be done later
 updateMyProfile: function(req,res){
   userCTRL.isUser(req,res);
-  User.update({_id:req.session.user._id},{$set:req.body}).exec(function(err,status){
+  User.findOne({userAccountId:req.user._id}).exec(function(err,user){
+  User.update({_id:user._id},{$set:req.body}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err);
@@ -344,7 +345,7 @@ updateMyProfile: function(req,res){
 
     }
   })
-
+})
 },
 //2.2.1 As a logged in user I can delete my account
 //will be tested when all is done
