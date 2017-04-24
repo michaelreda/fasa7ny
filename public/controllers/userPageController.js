@@ -24,15 +24,21 @@ myapp.controller('userPageController', function($scope,userSRV,$window,$state) {
 
         userSRV.updateProfile(mobileNumber,profession).success(function(){
           toastr.success('profile updated successfully');
+          $scope.userProfile.mobileNumber=mobileNumber;
+          $scope.userProfile.profession=profession;
+
+          $window.localStorage['userProfile']=angular.toJson($scope.userProfile);
+
           $state.go('userPage');
         })
       }
     }
 
   $scope.changePrivacy= function(privacyLevel){
-    self.privacyLevel=privacyLevel;
+    $scope.privacyLevel=privacyLevel;
     userSRV.changePrivacy(privacyLevel).success(function(){
         toastr.success('privacy changed');
+        $state.go('userPage');
     })
   }
 });

@@ -36,7 +36,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'userBookings',
     cache:false,
-    url:'/my_bookings/:userID',
+    url:'/my_bookings',
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
@@ -126,7 +126,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      cache:false,
      url: '/serviceProvider/:serviceProviderId',
      templateUrl:'views/serviceProvider.view.html',
-     controller: 'SPController'
+     controller: 'serviceProviderController'
    });
 
   $stateProvider.state({
