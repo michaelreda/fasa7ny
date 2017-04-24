@@ -7,23 +7,52 @@
 				<div class="col-md-4">
 				</div>
 				<div class="col-md-4">
-					<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-circle img-thumbnail" style="margin:auto;display:block;width:200px" />
-					<center><h2>{{serviceProvider.title}}</h2>
-					<!--<span class="label label-primary">{{activity.type}}</span></center>-->
+					<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-circle img-thumbnail" style=
+					"    position: absolute;
+					z-index: 99;
+					left: 133px;
+					top: -58px;
+					margin: auto;
+					display: block;
+					width: 200px;" />
+					<center><h2 style="padding-top:156px">{{serviceProvider.provider.title}}</h2>
+						<star-rating-comp rating="serviceProvider.provider.rating"
+							show-half-stars="true" show-hover-stars="false" read-only="true" size="'large'"></star-rating-comp>
+
+					<span class="label label-primary" style="margin-right:15px" ng-repeat="type in serviceProvider.provider.entertainmentType">{{type}}</span></center>
+					<h4 style="position: absolute;
+					left: -438px;
+					top: -13px;"><i class="fa fa-map-marker" aria-hidden="true"></i>{{serviceProvider.provider.branches[0]}} </h4>
+					<h4 style="position: absolute;
+					left: 450px;
+					width: 131px;
+					top: -13px;"><i class="fa fa-phone" aria-hidden="true"></i>{{serviceProvider.provider.contactMobile[0]}} </h4>
+					<center><a ng-click="subscribe(data._id)" class="btn btn-warning"    style= "margin-top: 20px;">Subscribe</a></center>
 				</div>
 				<div class="col-md-4">
 				</div>
 			</div>
+
+			<div class="contatiner">
+			  <div class="col-lg-12 col-md-12 col-sm-12 wow swing center" data-wow-iteration="1">
+			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+			      <hr>
+			      <h2><span>Activities</span></h2>
+			    </div>
+			    <activities-accordian data="serviceProvider.provider.activities.slice(0,8)" ></activities-accordian>
+			  </div>
+			</div>
+
 			<h1>
 				Service Provider Description:
 			</h1>
 			<dl>
-				{{serviceProvider.description}}
+				{{serviceProvider.provider.description}}
 			</dl>
 			<table class="table table-hover table-striped table-bordered" style="width: auto;margin: auto;">
 
 				<tbody>
-					
+
 					<!--<tr>
 						<td>
 							Minimum age
@@ -51,13 +80,11 @@
 						</td>
 					</tr>
 					<tr>-->
-						<td>
+						<!-- <td>
 							Rating
 						</td>
 						<td>
-							<star-rating-comp rating="serviceProvider.rating" label-text="'Rated by '+serviceProvider.ratingCount+' users'" 
-                            label-position="'right'" show-half-stars="true" show-hover-stars="false" read-only="true" size="'medium'"></star-rating-comp>
-						</td>
+								</td> -->
 					</tr>
 					<!--<tr>
 						<td>
@@ -81,21 +108,25 @@
 			</div>-->
 
 			<div class="contatiner">
-				<div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.contactMobile.length==0" >
-			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+				<div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.provider.contactMobile.length==0" >
+			    <div class="client_title" >
 			      <hr>
 			      <h2>Contact Mobile(s)</h2>
 			      <h3>no current contact Mobiles for this service provider </h3>
 			    </div>
-                
+
 			  </div>
-			  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.contactMobile.length!=0" >
-			    <div class="client_title" style="padding: 50px 100px 30px 100px">
+			  <div class="col-lg-12 col-md-12 col-sm-12 wow bounceInRight" data-wow-duration="1s" ng-if="serviceProvider.provider.contactMobile.length!=0" >
+			    <div class="client_title" >
 			      <hr>
 			      <h2>Contact Mobile(s)</h2>
 			      <h3></h3>
 			    </div>
-			    <a> data="mobile" ng-repeat="mobile in contactMobile"></a>
+			    <center>
+
+						<span class="label label-primary" style="margin-right:15px" ng-repeat="mobile in serviceProvider.provider.contactMobile">{{mobile}}</span>
+
+					</center>
 			  </div>
 			</div>
 
@@ -103,8 +134,8 @@
 	</div>
 
 </div></center>
-    <a ng-click="subscribe(data._id)" class="btn add2cart" >Subscribe</a>
-    
+
+
  </div>
 <br>
 <br>
@@ -116,7 +147,7 @@
             <div class="row" id="post-review-box" >
                 <div class="col-md-12">
                     <form ng-submit="submitComplain()" accept-charset="UTF-8">
-                       
+
                         <textarea class="form-control animated" ng-model="complainBody" cols="50" id="new-complain" name="comment" placeholder="Enter your complain here..." rows="5"></textarea>
 
                         <div class="text-right" style="padding-top: 20px">
@@ -131,5 +162,3 @@
 		</div>
 	</div>
 </div>
-
- 
