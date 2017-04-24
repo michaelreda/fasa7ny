@@ -232,6 +232,15 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/holdingReservations.view.html',
     controller:'holdingReservationsController'
   });
+
+  $stateProvider.state({
+    name:'confirmChekin',
+    cache:false,
+    url:'/confirmChekin',
+    cache:false,
+    templateUrl:'views/confirmChekin.view.html',
+    controller:'confirmChekinController'
+  });
   $urlRouterProvider.when('','/');
  
 }]);
