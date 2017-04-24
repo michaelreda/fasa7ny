@@ -254,6 +254,16 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    controller:'AdminViewSpRequestsController'
  });
 
+  $stateProvider.state({
+    name:'confirmChekin',
+    name:'confirmCheckin',
+    cache:false,
+    url:'/confirmCheckin',
+    cache:false,
+    templateUrl:'views/confirmCheckin.view.html',
+    controller:'confirmCheckinController'
+  });
+  
  $stateProvider.state({
    name:'user wishList',
    url:'/userWishList',

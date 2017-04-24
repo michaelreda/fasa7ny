@@ -425,7 +425,7 @@ let ServiceProviderCTRL = {
     //tested
     //session var to be edited
     viewHoldingReservations:function(req, res){
-     ServiceProvider.findOne({serviceProviderAccountId: req.User._id}, function(err, sp){
+     ServiceProvider.findOne({serviceProviderAccountId: req.user._id}, function(err, sp){
        if(err){
          res.send(err.message);
        }
@@ -437,7 +437,7 @@ let ServiceProviderCTRL = {
           res.send(err.message);
         }else
         {
-          res.send( bookings);
+          res.send(bookings);
         }
       })
        }
