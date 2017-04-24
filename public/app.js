@@ -199,6 +199,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'addActivityPage',
+    cache:false,
+    url:'/addActivity',
+    templateUrl:'views/AddActivityPage.view.html',
+    controller:'addActivityController'
+  });
+  $stateProvider.state({
     name:'message',
     url:'/message/:messageId',
     cache:false,

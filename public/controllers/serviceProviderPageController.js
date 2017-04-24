@@ -1,4 +1,4 @@
-myapp.controller('serviceProviderPageController', function($scope,serviceProviderSRV) {
+myapp.controller('serviceProviderPageController', function($scope,serviceProviderSRV, $state) {
 
   
 });
