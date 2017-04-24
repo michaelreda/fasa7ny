@@ -625,31 +625,39 @@ let ServiceProviderCTRL = {
         var clients=new Array(req.session.serviceProvider.previousClients);
         var birthDayClients= new Array();
         var count=0;
-
+        
           for(var i=0; i<clients.length; i++){
-          User.findone({_id: clients[i]}, function(err, client){
+            
+          User.findOne({_id: clients[i]._id}, function(err, client){
             if(err){
               res.send(err.message);
             }
             else{
-              var today=new Date();
-              var birthday= new Date(client.birthDate);
+              var today=(new Date()).toString();
+              var birthday= Date(client.birthDate);
+              console.log(today)
+              console.log(birthday)
 
-              var dayToday   = today.getDate();
-              var monthToday = today.getMonth();
+              var dayToday   = today.slice(8, 10);
+              var monthToday = today.slice(4, 7);
 
-              var dayBD   = birthday.getDate();
-              var monthBD = birthday.getMonth();
-
+              var dayBD   = birthday.slice(8, 10);
+              var monthBD = birthday.slice(4, 7);
+              console.log(dayBD)
+              console.log(monthBD)
               if( dayToday==dayBD && monthToday==monthBD ){
                 birthDayClients[count]=client;
+                
                 count++;
               }
           }
-          })
+        })
+        
         }
+        console.log("birthDayClients")
+        console.log(birthDayClients)
         res.send(birthDayClients);
-
+        
       },
 
 
