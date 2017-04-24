@@ -13,6 +13,7 @@ let globalCTRL=require('../controllers/globalCTRL.js');
 let userCTRL = {
   //used to test if the user is logged or not
   isUser: function(req,res){
+    console.log({'user':req.user});
     if(!req.user)
     res.send("you are not logged in.. you are not authorized to do this function");
   },
@@ -188,7 +189,8 @@ changePrivacy: function(req,res){
     return;
   }
   //end validating
-  User.update({_id:req.session.user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
+    User.findOne({userAccountId:req.user._id},function(err,user){
+  User.update({_id:user._id},{$set:{privacy:req.body.privacy}}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err)
@@ -199,6 +201,7 @@ changePrivacy: function(req,res){
       res.send('user not found');
     }
   })
+})
 },
 
 
@@ -328,11 +331,10 @@ viewMyProfile: function(req,res){
 
 
 //2.2 As a logged in user I can update my personal info
-//not tested - notes
 //password to be done later
 updateMyProfile: function(req,res){
   userCTRL.isUser(req,res);
-  User.update({_id:req.session.user._id}).exec(function(err,status){
+  User.update({_id:req.session.user._id},{$set:req.body}).exec(function(err,status){
     if(err){
       globalCTRL.addErrorLog(err);
       res.send(err);
@@ -501,32 +503,36 @@ deleteReview: function(req,res){
     req.checkBody('serviceProviderId','serviceProviderId is required').isMongoId();
     req.checkBody('price','price is required').isInt({min:0});
     req.checkBody('time','time is required').notEmpty();
+    req.checkBody('charge','charge is required').notEmpty();
+
     var errors = req.validationErrors();
     if (errors) {
-      res.send(errors);
+      console.log({'validationErrors':errors});
+      res.send({'success':0,'error':errors});
       return;
     }
     //end validating
 
     //req. is of type activity
     let newBooking=new Booking();
-    newBooking.userId=req.session.user._id;
+    newBooking.userId=req.user._id;
     newBooking.serviceProviderId=req.body.serviceProviderId;
     newBooking.activityId=req.body.activityId;
     newBooking.isHolding=true;
     newBooking.price=req.body.price; //chosen act is with price in the req
     newBooking.time=req.body.time; //chosen activity is with time from the req.
+    newBooking.charge=req.body.charge;
 
-    res.redirect("paymentPage", {"booking":newBooking});
+
+    console.log({"booking":newBooking});
     // where payment method will be called
 
     newBooking.save(function(err){
       if(err){
         globalCTRL.addErrorLog(err);
+        res.send({'success':0,'error':err});
       }else {
-        req.session.bookingSession=newBooking;
-        res.send(200);
-
+        res.send({'success':1,"booking":newBooking});
       }
 
 
@@ -800,7 +806,7 @@ deleteReview: function(req,res){
     req.checkBody('lastName','last name is required').notEmpty();
     req.checkBody('birthDate','birth date is required').notEmpty();
     req.checkBody('gender','gender is required of type boolean').notEmpty().isBoolean();
-    req.checkBody('privacy','privacy is required of type integer').notEmpty().isInt({min:1});
+    req.checkBody('privacy','privacy is required of type integer').notEmpty().isInt({min:0,max:2});
     var errors = req.validationErrors();
     if (errors) {
       res.send({'stepTwoOK':0,'validationErrors':errors});

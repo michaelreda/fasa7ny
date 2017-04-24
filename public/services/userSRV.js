@@ -23,12 +23,12 @@ myapp.factory('userSRV', function($http) {
     deleteReview:function(id){
       return $http.post('/delete_review',{reviewId:id});
     },
-    userHistoryBookings:function(){
-      return $http.post('/view_history_bookings');
+    viewHistoryBookings:function(){
+      return $http.get('/view_history_bookings');
+    },
+    updateProfile:function(mobileNumber,profession){
+      return $http.post('/update_my_profile',{mobileNumber:mobileNumber,profession:profession});
     }
 
   };
 });
-
-
-  

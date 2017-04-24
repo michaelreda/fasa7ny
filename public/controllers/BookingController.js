@@ -45,7 +45,7 @@ $scope.today= new Date();
 
 $scope.$watch('activityDate',function(newVal, oldVal, scope){
     if(newVal != oldVal){
-         scope.activityDate = newVal;
+         $scope.activityDate = newVal;
          console.log(newVal.getDay());
      }
 },true);
@@ -82,6 +82,7 @@ $scope.submitPlan = function(plan,planTitle){
   $scope.active[1]="";
   $scope.active[2]="active";
   $scope.disabled[2]="";
+console.log($scope.activity);
 }
 
 
@@ -92,5 +93,52 @@ $scope.submitPlan = function(plan,planTitle){
   //     console.log($scope.dateOptions);
   //     }
   // }, true);
+
+
+//payment
+
+$scope.processPayement = function(token) {
+activitySRV.processStripe(token,$scope.plan.numberOfClients*$scope.plan.price*100,$scope.activity.title+"("+JSON.parse($window.localStorage['userAccount']).userName+")").success(function(data) {
+  if(data.ok){
+    var datetime=new Date($scope.activityDate+" UTC");
+    datetime.setHours($scope.time.startTime/60);
+    datetime.setMinutes($scope.time.startTime%60);
+    console.log(datetime.toString());
+    activitySRV.insertBooking(data.charge,$scope.activity._id,$scope.activity.serviceproviderId,datetime).success(function(data) {
+      if(data.success){
+        console.log(data.booking);
+        toastr.success('Booked successfully :D');
+      }else {
+        console.log(data.error);
+        toastr.error(data.error);
+      }
+    });
+  }
+  else {
+    toastr.error(data.error.message);
+    toastr.error("Paymen failed :(");
+
+  }
+})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });

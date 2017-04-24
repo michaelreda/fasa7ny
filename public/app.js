@@ -36,7 +36,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'userBookings',
     cache:false,
-    url:'/my_bookings/:userID',
+    url:'/my_bookings',
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
@@ -126,7 +126,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      cache:false,
      url: '/serviceProvider/:serviceProviderId',
      templateUrl:'views/serviceProvider.view.html',
-     controller: 'SPController'
+     controller: 'serviceProviderController'
    });
 
   $stateProvider.state({
@@ -193,6 +193,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'message',
     url:'/message/:messageId',
+    cache:false,
     templateUrl:'views/message.view.html',
     controller:'MessageController'
   });
@@ -200,6 +201,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   $stateProvider.state({
     name:'offers_form',
     url:'/offers_form',
+    cache:false,
     templateUrl:'views/offers_form.view.html',
     controller: 'OffersController'
   });
@@ -208,15 +210,34 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     name:'offers',
     url:'/offers/:title/:description/:deadline/:isActive/:activities',
     templateUrl:'views/offers.view.html',
+    cache:false,
     controller:'OffersController'
   });
 
    $stateProvider.state({
     name:'birthdayClients',
+    cache:false,
     url:'/birthdayClients',
+    cache:false,
     templateUrl:'views/birthdayClients.view.html',
     controller:'PromotionsController'
   });
+
+   $stateProvider.state({
+    name:'holdingReservations',
+    cache:false,
+    url:'/holdingReservations',
+    cache:false,
+    templateUrl:'views/holdingReservations.view.html',
+    controller:'holdingReservationsController'
+  });
+
+  $stateProvider.state({
+   name:'viewSPrequests',
+   url:'/view_sp_requests',
+   templateUrl:'views/adminViewSpRequests.view.html',
+   controller:'AdminViewSpRequestsController'
+ });
 
   $urlRouterProvider.when('','/');
 
