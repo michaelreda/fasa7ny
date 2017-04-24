@@ -1,9 +1,10 @@
 myapp.controller('IndexNavbarController',function($window,$scope,$state,landingPageSRV){
 
-  
+
   $scope.logout = function(){
     landingPageSRV.logout().success(function(data){
       $window.localStorage.clear();
+      toastr.success("Logged out!");
       $state.go("home");
     })
   }
