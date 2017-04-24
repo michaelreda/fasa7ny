@@ -126,7 +126,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
      cache:false,
      url: '/serviceProvider/:serviceProviderId',
      templateUrl:'views/serviceProvider.view.html',
-     controller: 'SPController'
+     controller: 'serviceProviderController'
    });
 
   $stateProvider.state({
