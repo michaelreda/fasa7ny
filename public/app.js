@@ -239,6 +239,13 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    controller:'AdminViewSpRequestsController'
  });
 
+ $stateProvider.state({
+   name:'user wishList',
+   url:'/userWishList',
+   templateUrl:'views/userWishList.view.html',
+   controller:'userWishListController'
+ });
+
   $urlRouterProvider.when('','/');
 
 }]);

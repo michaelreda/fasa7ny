@@ -35,4 +35,8 @@ myapp.controller('IndexNavbarController',function($window,$scope,$state,landingP
     $state.go('userReviews');
   }
 
+  $scope.myWishList= function(){
+    $state.go('user wishList');
+  }
+
 });
