@@ -24,7 +24,7 @@ myapp.factory('userSRV', function($http) {
       return $http.post('/delete_review',{reviewId:id});
     },
     viewHistoryBookings:function(){
-      return $http.post('/view_history_bookings');
+      return $http.get('/view_history_bookings');
     },
     updateProfile:function(mobileNumber,profession){
       return $http.post('/update_my_profile',{mobileNumber:mobileNumber,profession:profession});
