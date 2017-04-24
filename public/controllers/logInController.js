@@ -44,6 +44,8 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
 
   $scope.login = function () {
     logInSRV.login($scope.username, $scope.password).success(function(data){
+      if(data=='No User found') return toastr.error("User name not found!");
+      if(data=='invalid password') return toastr.error("Password is incorrect!");
       if(data.banned==0){
       if(!data.userAccount){
         console.log('Not logged in :((  look at logincontroller');
@@ -68,7 +70,10 @@ myapp.controller('logInController', function($window,$scope,logInSRV, $state,$ui
     }
   }
 else {
+  if(data.banned)
   toastr.error("Account banned for "+data.banned+" days :(");
+  else
+  toastr.error(data);
   }
 });
 };

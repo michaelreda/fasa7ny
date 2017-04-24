@@ -206,22 +206,31 @@ Router.get('/login', function(req, res){
   res.send("login page here");
 });
 
-Router.post('/login', passport.authenticate('local-login'),function(req,res){
-  switch (req.user.type) {
-      case 0:
-      userCTRL.userLoginStep2(req,res);
-          break;
-      case 1:
-      serviceProviderCTRL.serviceProviderLoginStep2(req,res);
-          break;
-      case 3:
-          adminCTRL.adminLoginStep2(req,res);
-          break;
-      default:
-          globalCTRL.addErrorLog('login attempt with profile type '+req.body.type);
-          res.redirect('/logout');
-          break;
-    }
+Router.post('/login', function(req, res, next) {
+
+  passport.authenticate('local-login',function(err, user, info){
+    if (err) { return res.send(err); }
+   if (!user) { console.log('failed'); return res.send('failed'); }
+   req.logIn(user, function(err) {
+     if (err) { console.log(22,err);return next(err); }
+     switch (req.user.type) {
+         case 0:
+         userCTRL.userLoginStep2(req,res);
+             break;
+         case 1:
+         serviceProviderCTRL.serviceProviderLoginStep2(req,res);
+             break;
+         case 3:
+             adminCTRL.adminLoginStep2(req,res);
+             break;
+         default:
+             globalCTRL.addErrorLog('login attempt with profile type '+req.body.type);
+             res.redirect('/logout');
+             break;
+       }
+        });
+      })(req, res, next);
+
   });
 
 
