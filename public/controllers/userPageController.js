@@ -35,9 +35,10 @@ myapp.controller('userPageController', function($scope,userSRV,$window,$state) {
     }
 
   $scope.changePrivacy= function(privacyLevel){
-    self.privacyLevel=privacyLevel;
+    $scope.privacyLevel=privacyLevel;
     userSRV.changePrivacy(privacyLevel).success(function(){
         toastr.success('privacy changed');
+        $state.go('userPage');
     })
   }
 });
