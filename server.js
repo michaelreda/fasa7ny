@@ -66,7 +66,7 @@ app.get('/fb_bot', function (req, res) {
 
 
 //start the server
-app.listen(process.env.PORT || 8080,function(){
+app.listen(process.env.PORT ||8080,function(){
   console.log("the app is listening on port 8080");
 });
 
