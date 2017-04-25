@@ -437,7 +437,7 @@ let ServiceProviderCTRL = {
          res.send(err.message);
        }
        else{
- Booking.find({providerId:sp._id, isHolding: true}).populate({path: "userId"}).exec(function(err, bookings){
+ Booking.find({serviceProviderId:sp._id, isHolding: true}).populate({path: "userId"}).exec(function(err, bookings){
         //when a booking is canceled, isHolding is set to false
         if(err){
           globalCTRL.addErrorLog(err.message);

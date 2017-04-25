@@ -281,7 +281,32 @@ Router.get('/logout', function(req, res){
       }
 
 	});
-
+  // Router.post('/login', function(req, res, next) {
+  //
+  //   passport.authenticate('local-login',function(err, user, info){
+  //     if (err) { return res.send(err); }
+  //    if (!user) { console.log('failed'); return res.send('failed'); }
+  //    req.logIn(user, function(err) {
+  //      if (err) { console.log(22,err);return next(err); }
+  //      switch (req.user.type) {
+  //          case 0:
+  //          userCTRL.userLoginStep2(req,res);
+  //              break;
+  //          case 1:
+  //          serviceProviderCTRL.serviceProviderLoginStep2(req,res);
+  //              break;
+  //          case 3:
+  //              adminCTRL.adminLoginStep2(req,res);
+  //              break;
+  //          default:
+  //              globalCTRL.addErrorLog('login attempt with profile type '+req.body.type);
+  //              res.redirect('/logout');
+  //              break;
+  //        }
+  //         });
+  //       })(req, res, next);
+  //
+  //   });
 
 //1.6 read about the platform through the “about us” option
 //tested
