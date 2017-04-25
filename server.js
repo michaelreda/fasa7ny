@@ -59,9 +59,11 @@ app.use(require('./app/routes')(passport));
 
 app.get('/fb_bot', function (req, res) {
     if (req.query['hub.verify_token'] === 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack') {
-        res.send(req.query['hub.challenge'])
+        res.send(req.query['hub.challenge']);
     }
-    res.send('Error, wrong token')
+    else {
+      res.send('Error, wrong token');
+    }
 })
 
 
