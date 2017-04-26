@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node6 server.js",
     "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
+    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node6 server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
