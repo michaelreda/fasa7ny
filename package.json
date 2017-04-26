@@ -4,12 +4,15 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node6 server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "angular-cookies": "^1.6.4",
+    "babel-cli": "^6.24.1",
+    "babel-preset-node6": "^11.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "consolidate": "^0.14.5",
@@ -17,6 +20,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "express-validator": "^3.1.3",
+    "facebook-messenger-bot": "0.2.0",
     "mongoose": "^4.9.2",
     "ng-chatbox": "^1.0.1",
     "node-mailer": "^0.1.1",
@@ -30,5 +34,8 @@
     "randomstring": "^1.1.5",
     "stripe": "^4.18.0",
     "stripe-api": "^0.1.2"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
   }
 }
