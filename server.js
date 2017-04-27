@@ -87,7 +87,7 @@ bot.on('message', async message => {
 })();
 
 //reseting Active users every 15 minutes except users that has just been active last 5 minutes
-var job4 = schedule.scheduleJob('0 */45 * * * *',function(){
+var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
   var d = new Date();
   d.setMinutes(d.getMinutes()-5);
   ActiveUser.find({created_at: {$lt: d}}).remove().exec();
