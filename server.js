@@ -10,9 +10,9 @@ var schedule = require('node-schedule');
 var globalCTRL = require('./app/controllers/globalCTRL');
 var expressValidator = require('express-validator');
 var request = require('request')
-import {Bot, Elements} from 'facebook-messenger-bot';
-const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
-'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
+// import {Bot, Elements} from 'facebook-messenger-bot';
+// const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
+// 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
 //access token
 //EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD
 
@@ -59,39 +59,39 @@ require('./app/config/passport')(passport);
 app.use(require('./app/routes')(passport));
 
 
-app.get('/fb_bot', function (req, res) {
-    if (req.query['hub.verify_token'] === 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack') {
-        res.send(req.query['hub.challenge']);
-    }
-    else {
-      res.send('Error, wrong token');
-    }
-})
-app.use('/fb_bot', bot.router());
-
-bot.on('message', async message => {
-    const {sender} = message;
-    console.log("message----------------------------------------------------" +message);
-    await sender.fetch('first_name');
-    // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
-    const out = new Elements();
-    out.add({text: `hello ${sender.first_name} ${sender.current_location}, how are you!`});
-
-    await bot.send(sender.id, out);
-});
-
-//setting greeting message ..
-(async function () {
-  console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
-  console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
-})();
-
-//reseting Active users every 15 minutes except users that has just been active last 5 minutes
-var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
-  var d = new Date();
-  d.setMinutes(d.getMinutes()-5);
-  ActiveUser.find({created_at: {$lt: d}}).remove().exec();
-});
+// app.get('/fb_bot', function (req, res) {
+//     if (req.query['hub.verify_token'] === 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack') {
+//         res.send(req.query['hub.challenge']);
+//     }
+//     else {
+//       res.send('Error, wrong token');
+//     }
+// })
+// app.use('/fb_bot', bot.router());
+//
+// bot.on('message', async message => {
+//     const {sender} = message;
+//     console.log("message----------------------------------------------------" +message);
+//     await sender.fetch('first_name,current_location');
+//     // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
+//     const out = new Elements();
+//     out.add({text: `hello ${sender.first_name} ${sender.current_location}, how are you!`});
+//
+//     await bot.send(sender.id, out);
+// });
+//
+// //setting greeting message ..
+// (async function () {
+//   console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
+//   console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
+// })();
+//
+// //reseting Active users every 15 minutes except users that has just been active last 5 minutes
+// var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
+//   var d = new Date();
+//   d.setMinutes(d.getMinutes()-5);
+//   ActiveUser.find({created_at: {$lt: d}}).remove().exec();
+// });
 
 //start the server
 app.listen(process.env.PORT ||8080,function(){
