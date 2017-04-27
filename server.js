@@ -71,11 +71,11 @@ app.use('/fb_bot', bot.router());
 
 bot.on('message', async message => {
     const {sender} = message;
-    console.log(message);
-    await sender.fetch('first_name');
+    console.log("message----------------------------------------------------" +message);
+    await sender.fetch('first_name,current_location');
     // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
     const out = new Elements();
-    out.add({text: `hello ${sender.first_name} , how are you!`});
+    out.add({text: `hello ${sender.first_name} ${sender.current_location}, how are you!`});
 
     await bot.send(sender.id, out);
 });
