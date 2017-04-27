@@ -126,7 +126,7 @@ bot.on('message', async message => {
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               Scenario.findOne({title:"welcome"},function(err,scenario){
                   if(scenario.buttons){
-                    buttons = new Buttons();
+                    let buttons = new Buttons();
                     for(var i =0;i<scenario.buttons.length;i++)
                       buttons.add({text: scenario.buttons[0].text, event: scenario.buttons[0].event});
                   }
