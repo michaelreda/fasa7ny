@@ -124,7 +124,7 @@ bot.on('message', async message => {
             //if it's already an active user
             else{
               //first thing update lastresponseAt time to be the current time
-              ActiveUser.update({_id:ActiveUser._id},{$set:{'lastResponseAt':new Date()}});
+              ActiveUser.update({_id:activeUser._id},{$set:{'lastResponseAt':new Date()}});
             }
 
           }
