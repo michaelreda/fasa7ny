@@ -130,7 +130,7 @@ bot.on('message', async message => {
 
                   if(scenario.buttons && scenario.buttons.length !=0){
                      for(var i =0;i<scenario.buttons.length;i++)
-                        replies.add({text: scenario.buttons[i].text,data: cenario.buttons[i].text});
+                        replies.add({text: scenario.buttons[i].text,data: scenario.buttons[i].text});
 
                     out.setQuickReplies(replies);
                     //   buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
