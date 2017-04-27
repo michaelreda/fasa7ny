@@ -78,7 +78,7 @@ bot.on('message', async message => {
     await sender.fetch('first_name,last_name');
     //checking if this user is already in our users database or not;
     let BotUser = require('models/BOT/botUser.js');
-    let ActiveUser = require('models/BOT/botUser.js');
+    let ActiveUser = require('models/BOT/activeUser.js');
     BotUser.findOne({facebookID: sender.id},function(err,user){
       if(err)
         console.log(err)
