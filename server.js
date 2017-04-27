@@ -67,7 +67,12 @@ app.use(require('./app/routes')(passport));
 //       res.send('Error, wrong token');
 //     }
 // })
+
+/////////////////start bot////////////////////////////
 app.use('/fb_bot', bot.router());
+
+let BotUser = require('./app/models/BOT/botUser.js');
+let ActiveUser = require('./app/models/BOT/activeUser.js');
 
 bot.on('message', async message => {
     const {sender} = message;
@@ -77,8 +82,6 @@ bot.on('message', async message => {
 
     await sender.fetch('first_name,last_name');
     //checking if this user is already in our users database or not;
-    let BotUser = require('./app/models/BOT/botUser.js');
-    let ActiveUser = require('./app/models/BOT/activeUser.js');
     BotUser.findOne({facebookID: sender.id},function(err,user){
       if(err)
         console.log(err)
@@ -126,6 +129,9 @@ var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
   d.setMinutes(d.getMinutes()-5);
   ActiveUser.find({created_at: {$lt: d}}).remove().exec();
 });
+
+
+///////////end bot////////////////
 
 //start the server
 app.listen(process.env.PORT ||8080,function(){
