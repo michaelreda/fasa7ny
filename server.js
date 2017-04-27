@@ -108,27 +108,42 @@ bot.on('message', async message => {
         }
 
         //if it was saved as a bot user before check if it's an active user
-        ActiveUser.findOne({botUser:botUser._id}).populate('botUser').exec(function(err,activeUser){
-          if(err)
-            console.log(err);
-          else{
-            if(activeUser == undefined || activeUser == null){//if it's not an active user add it as a new active user;
-              let activeuser = new ActiveUser();
-              activeuser.botUser= botUser._id;
-              activeuser.save(function(err){
-                if(err)
-                console.log(err);
-              });
-            }
+        //if it's not an active user add it as a new active user;
+        //if it's already an active user update lastResponseAt
+        var query = {botUser:botUser._id},
+        update = {botUser:botUser._id , lastResponseAt: new Date() },
+        options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-            //if it's already an active user
-            else{
-              //first thing update lastresponseAt time to be the current time
-              ActiveUser.update({_id:activeUser._id},{$set:{'lastResponseAt':new Date()}});
-            }
+        ActiveUser.findOneAndUpdate(query, update, options, function(error, result) {
+          if (error)
+            console.log(error);
+          else{
 
           }
-        })
+        });
+
+
+        // ActiveUser.findOne({botUser:botUser._id}).populate('botUser').exec(function(err,activeUser){
+        //   if(err)
+        //     console.log(err);
+        //   else{
+        //     if(activeUser == undefined || activeUser == null){//if it's not an active user add it as a new active user;
+        //       let activeuser = new ActiveUser();
+        //       activeuser.botUser= botUser._id;
+        //       activeuser.save(function(err){
+        //         if(err)
+        //         console.log(err);
+        //       });
+        //     }
+        //
+        //     //if it's already an active user
+        //     else{
+        //       //first thing update lastresponseAt time to be the current time
+        //       ActiveUser.update({_id:activeUser._id},{$set:{'lastResponseAt':new Date()}});
+        //     }
+        //
+        //   }
+        // })
 
 
       }
