@@ -14,6 +14,6 @@ var activeUserSchema = mongoose.Schema({
   NextScenarioMessage: {type:Number,default:-1}
 })
 
-var ServiceProvider = mongoose.model("activeUser", activeUserSchema);
+var ActiveUser = mongoose.model("activeUser", activeUserSchema);
 
 module.exports = ActiveUser;

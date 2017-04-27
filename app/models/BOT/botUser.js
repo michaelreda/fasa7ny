@@ -11,6 +11,6 @@ var botUserSchema = mongoose.Schema({
   gender: Boolean //true -> male
 })
 
-var ServiceProvider = mongoose.model("botUser", botUserSchema);
+var BotUser = mongoose.model("botUser", botUserSchema);
 
 module.exports = BotUser;

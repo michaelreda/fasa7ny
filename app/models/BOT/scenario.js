@@ -11,6 +11,6 @@ var scenarioSchema = mongoose.Schema({
   }]
 })
 
-var ServiceProvider = mongoose.model("scenario", scenarioSchema);
+var Scenario = mongoose.model("scenario", scenarioSchema);
 
 module.exports = Scenario;
