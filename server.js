@@ -128,6 +128,7 @@ bot.on('message', async message => {
                   out.add({text: scenario.messages[0] });
 
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
+                  bot.send(sender.id, out);
               })
             }
           }
@@ -139,7 +140,7 @@ bot.on('message', async message => {
 
     // out.add({text: `hello ${sender.first_name} , how are you!`});
     // await bot.send(sender.id, out);
-    await bot.send(sender.id, out);
+
 
 });
 
