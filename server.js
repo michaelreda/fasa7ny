@@ -86,6 +86,13 @@ bot.on('message', async message => {
   console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
 })();
 
+//reseting Active users every 15 minutes except users that has just been active last 5 minutes
+var job4 = schedule.scheduleJob('0 */45 * * * *',function(){
+  var d = new Date();
+  d.setMinutes(d.getMinutes()-5);
+  ActiveUser.find({created_at: {$lt: d}}).remove().exec();
+});
+
 //start the server
 app.listen(process.env.PORT ||8080,function(){
   console.log("the app is listening on port 8080");
