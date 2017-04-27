@@ -10,9 +10,9 @@ var schedule = require('node-schedule');
 var globalCTRL = require('./app/controllers/globalCTRL');
 var expressValidator = require('express-validator');
 var request = require('request')
-import {Bot, Elements} from 'facebook-messenger-bot';
-const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
-'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
+// import {Bot, Elements} from 'facebook-messenger-bot';
+// const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
+// 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
 //access token
 //EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD
 
@@ -79,7 +79,7 @@ app.use(require('./app/routes')(passport));
 //
 //     await bot.send(sender.id, out);
 // });
-// 
+//
 // //setting greeting message ..
 // (async function () {
 //   console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
