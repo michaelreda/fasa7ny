@@ -73,12 +73,20 @@ app.use('/fb_bot', bot.router());
 
 let BotUser = require('./app/models/BOT/botUser.js');
 let ActiveUser = require('./app/models/BOT/activeUser.js');
+let Scenario = require('./app/models/BOT/scenario.js');
+
+let scenario = new Scenario();
+scenario.title="welcome";
+scenario.messages=["Hello, welcome to Fasa7ny.. Are you looking for a specific activity?"];
+scenario.buttons=[];
+scenario.save();
 
 bot.on('message', async message => {
     const {sender} = message;
     console.log("message----------------------------------------------------") ;
     console.log(message);
 
+    const out = new Elements();
 
     await sender.fetch('first_name,last_name');
     //checking if this user is already in our users database or not;
@@ -114,48 +122,29 @@ bot.on('message', async message => {
         update = {botUser:botUser._id , lastResponseAt: new Date() },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-        ActiveUser.findOneAndUpdate(query, update, options, function(error, result) {
+        ActiveUser.findOneAndUpdate(query, update, options, function(error, activeUser) {
           if (error)
             console.log(error);
           else{
+            var i = activeUser.NextScenarioMessage;
+            if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
+              Scenario.findOne({title:"welcome"},function(err,scenario){
+                  out.add({text: `${scenario.messages[0]}`});
 
+                  ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
+              })
+            }
           }
         });
-
-
-        // ActiveUser.findOne({botUser:botUser._id}).populate('botUser').exec(function(err,activeUser){
-        //   if(err)
-        //     console.log(err);
-        //   else{
-        //     if(activeUser == undefined || activeUser == null){//if it's not an active user add it as a new active user;
-        //       let activeuser = new ActiveUser();
-        //       activeuser.botUser= botUser._id;
-        //       activeuser.save(function(err){
-        //         if(err)
-        //         console.log(err);
-        //       });
-        //     }
-        //
-        //     //if it's already an active user
-        //     else{
-        //       //first thing update lastresponseAt time to be the current time
-        //       ActiveUser.update({_id:activeUser._id},{$set:{'lastResponseAt':new Date()}});
-        //     }
-        //
-        //   }
-        // })
-
-
       }
     })
 
 
 
-    // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
-    const out = new Elements();
-    out.add({text: `hello ${sender.first_name} , how are you!`});
-
+    // out.add({text: `hello ${sender.first_name} , how are you!`});
+    // await bot.send(sender.id, out);
     await bot.send(sender.id, out);
+
 });
 
 //setting greeting message ..
