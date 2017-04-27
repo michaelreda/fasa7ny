@@ -71,8 +71,42 @@ app.use('/fb_bot', bot.router());
 
 bot.on('message', async message => {
     const {sender} = message;
-    console.log("message----------------------------------------------------" +message);
-    await sender.fetch('first_name');
+    console.log("message----------------------------------------------------" ;
+    console.log(message);
+
+
+    await sender.fetch('first_name,last_name');
+    //checking if this user is already in our users database or not;
+    let BotUser = require('models/BOT/botUser.js');
+    let ActiveUser = require('models/BOT/botUser.js');
+    BotUser.findOne({facebookID: sender.id},function(err,user){
+      if(err)
+        console.log(err)
+      else{
+        if(user == undefined || user == null){//if not, save it
+          let botuser= new BotUser();
+          botuser.firstName= sender.first_name;
+          botuser.facebookID=sender.id;
+          botuser.lastName= sender.last_name;
+
+          botuser.save(function(err,user){
+            if(err)
+              console.log(err);
+            else{// adding user to active users;
+              let activeuser = new ActiveUser();
+              activeuser.botUser= user.id;
+              activeuser.save(function(err){
+                if(err)
+                  console.log(err);
+              });
+            }
+          });
+        }
+      }
+    })
+
+
+
     // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
     const out = new Elements();
     out.add({text: `hello ${sender.first_name} , how are you!`});
