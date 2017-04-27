@@ -1,6 +1,7 @@
 //add dependencies
 var express= require('express');
 var app=express();
+require('run-middleware')(app)
 var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
 var DB_URI_LOCAL="mongodb://localhost:27017/protoflio";
@@ -160,10 +161,15 @@ bot.on('postback', async (event, message, data) => {
   assert(data === message.data);
   assert(event === message.event);
     const {sender} = message;
+    const {text} = message;
     console.log(event);
     console.log(data);
     console.log(message);
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+    // app.runMiddleware('/search_for_activities/'+text+'/_/',{method:'get'},function(responseCode,body,headers){
+    //
+    // });
     const out = new Elements();
     out.add({text: "please tell us which activity are you looking for.."});
     await bot.send(sender.id, out);
