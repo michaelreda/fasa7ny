@@ -82,12 +82,12 @@ bot.on('message', async message => {
 
     await sender.fetch('first_name,last_name');
     //checking if this user is already in our users database or not;
-    BotUser.findOne({facebookID: sender.id},function(err,user){
+    BotUser.findOne({facebookID: sender.id},function(err,botUser){
       if(err)
         console.log(err)
       else{
         console.log(user);
-        if(user == undefined || user == null){//if not, save it
+        if(botUser == undefined || botUser == null){//if not, save it
           let botuser= new BotUser();
           botuser.firstName= sender.first_name;
           botuser.facebookID=sender.id;
@@ -106,6 +106,31 @@ bot.on('message', async message => {
             }
           });
         }
+
+        //if it was saved as a bot user before check if it's an active user
+        ActiveUser.findOne({botUser:botUser._id}).populate('botUser').exec(function(err,activeUser){
+          if(err)
+            console.log(err);
+          else{
+            if(activeUser == undefined || activeUser == null){//if it's not an active user add it as a new active user;
+              let activeuser = new ActiveUser();
+              activeuser.botUser= botUser._id;
+              activeuser.save(function(err){
+                if(err)
+                console.log(err);
+              });
+            }
+
+            //if it's already an active user
+            else{
+              //first thing update lastresponseAt time to be the current time
+              ActiveUser.update({_id:ActiveUser._id},{$set:{'lastResponseAt':new Date()}});
+            }
+
+          }
+        })
+
+
       }
     })
 
