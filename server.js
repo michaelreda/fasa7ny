@@ -86,7 +86,7 @@ bot.on('message', async message => {
 
     await sender.fetch('first_name,last_name');
     //checking if this user is already in our users database or not;
-    BotUser.findOne({facebookID: sender.id},function(err,botUser){
+    BotUser.findOne({facebookID: sender.id},async function(err,botUser){
       if(err)
         console.log(err)
       else{
@@ -118,21 +118,22 @@ bot.on('message', async message => {
         update = {botUser:botUser._id , lastResponseAt: new Date() },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-        ActiveUser.findOneAndUpdate(query, update, options, function(error, activeUser) {
+        ActiveUser.findOneAndUpdate(query, update, options,async function(error, activeUser) {
           if (error)
             console.log(error);
           else{
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
-              Scenario.findOne({title:"welcome"},function(err,scenario){
+              Scenario.findOne({title:"welcome"},async function(err,scenario){
                   let buttons = new Buttons();
-                  if(scenario.buttons){
+                  if(scenario.buttons ){
                     for(var i =0;i<scenario.buttons.length;i++)
-                      buttons.add({text: scenario.buttons[0].text, event: scenario.buttons[0].event});
+                      buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
+
+                    out.add({text: scenario.messages[0],buttons });
                   }
-                  out.add({text: scenario.messages[0],buttons });
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
-                  bot.send(sender.id, out);
+                  await bot.send(sender.id, out);
               })
             }
           }
