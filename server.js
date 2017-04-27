@@ -125,7 +125,12 @@ bot.on('message', async message => {
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               Scenario.findOne({title:"welcome"},function(err,scenario){
-                  out.add({text: scenario.messages[0] });
+                  if(scenario.buttons){
+                    buttons = new Buttons();
+                    for(var i =0;i<scenario.buttons.length;i++)
+                      buttons.add({text: scenario.buttons[0].text, event: scenario.buttons[0].event});
+                  }
+                  out.add({text: scenario.messages[0],buttons });
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
                   bot.send(sender.id, out);
               })

@@ -7,7 +7,8 @@ var scenarioSchema = mongoose.Schema({
     required:true
   }],
   buttons: [{
-    type: String
+    text: String,
+    event : String
   }]
 })
 
