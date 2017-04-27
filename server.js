@@ -130,7 +130,7 @@ bot.on('message', async message => {
 
                   if(scenario.buttons && scenario.buttons.length !=0){
                      for(var i =0;i<scenario.buttons.length;i++)
-                        replies.add({text: scenario.buttons[i].text,data: scenario.buttons[i].text});
+                        replies.add({text: scenario.buttons[i].text,event: scenario.buttons[i].text});
 
                     out.setQuickReplies(replies);
                     //   buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
@@ -153,6 +153,14 @@ bot.on('message', async message => {
     // await bot.send(sender.id, out);
 
 
+});
+
+
+bot.on('search_for_specific_activity', async (message) => {
+    const {sender} = message;
+    const out = new Elements();
+    out.add({text: "please tell us which activity are you looking for.."});
+    await bot.send(sender.id, out);
 });
 
 //setting greeting message ..
