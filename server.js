@@ -138,7 +138,7 @@ bot.on('message', async message => {
                     // out.add({buttons });
                   }
                   out.add({text: scenario.messages[0]});
-                  ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}});
+                  ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
                   await bot.send(sender.id, out);
               })
             }
