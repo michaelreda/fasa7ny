@@ -75,11 +75,7 @@ let BotUser = require('./app/models/BOT/botUser.js');
 let ActiveUser = require('./app/models/BOT/activeUser.js');
 let Scenario = require('./app/models/BOT/scenario.js');
 
-let scenario = new Scenario();
-scenario.title="welcome";
-scenario.messages=["Hello, welcome to Fasa7ny.. Are you looking for a specific activity?"];
-scenario.buttons=[];
-scenario.save();
+
 
 bot.on('message', async message => {
     const {sender} = message;
@@ -129,7 +125,7 @@ bot.on('message', async message => {
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               Scenario.findOne({title:"welcome"},function(err,scenario){
-                  out.add({text: `${scenario.messages[0]}`});
+                  out.add({text: ${scenario.messages[0]}});
 
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
               })
