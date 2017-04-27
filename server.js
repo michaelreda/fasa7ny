@@ -71,12 +71,26 @@ app.use('/fb_bot', bot.router());
 
 bot.on('message', async message => {
     const {sender} = message;
+    console.log(message);
     await sender.fetch('first_name');
 
     const out = new Elements();
     out.add({text: `hey ${sender.first_name}, how are you!`});
 
     await bot.send(sender.id, out);
+});
+
+//setting greeting message ..
+(async function () {
+  console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
+  console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
+})();
+
+//reseting Active users every 15 minutes except users that has just been active last 5 minutes
+var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
+  var d = new Date();
+  d.setMinutes(d.getMinutes()-5);
+  ActiveUser.find({created_at: {$lt: d}}).remove().exec();
 });
 
 //start the server
