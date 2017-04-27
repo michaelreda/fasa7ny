@@ -10,9 +10,7 @@ var activeUserSchema = mongoose.Schema({
   },
   gender: Boolean, //true -> male
   currentScenario: {type:mongoose.Schema.Types.ObjectId,ref:'scenario'},
-  NextScenarioMessage: {type:Number,default:-1},
-  
-
+  NextScenarioMessage: {type:Number,default:-1}
 })
 
 var ServiceProvider = mongoose.model("activeUser", activeUserSchema);
