@@ -138,7 +138,7 @@ bot.on('message', async message => {
                     // out.add({buttons });
                   }
                   out.add({text: scenario.messages[0]});
-                  ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
+                  ActiveUser.update({_id:activeUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
                   await bot.send(sender.id, out);
               })
             }
@@ -156,8 +156,9 @@ bot.on('message', async message => {
 });
 
 
-bot.on('search_for_specific_activity', async (message) => {
+bot.on('search_for_specific_activity', async (data,message) => {
     const {sender} = message;
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     const out = new Elements();
     out.add({text: "please tell us which activity are you looking for.."});
     await bot.send(sender.id, out);
