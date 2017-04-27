@@ -128,7 +128,7 @@ bot.on('message', async message => {
 var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
   var d = new Date();
   d.setMinutes(d.getMinutes()-5);
-  ActiveUser.find({created_at: {$lt: d}}).remove().exec();
+  ActiveUser.find({lastResponseAt: {$lt: d}}).remove().exec();
 });
 
 

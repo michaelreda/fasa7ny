@@ -11,7 +11,10 @@ var activeUserSchema = mongoose.Schema({
   // gender: Boolean, //true -> male
   botUser: {type:mongoose.Schema.Types.ObjectId,ref:'botUser'},
   currentScenario: {type:mongoose.Schema.Types.ObjectId,ref:'scenario'},
-  NextScenarioMessage: {type:Number,default:-1}
+  NextScenarioMessage: {type:Number,default:-1},
+  lastResponseAt:{type:Date,
+  required:true,
+  default: Date.now}
 })
 
 var ActiveUser = mongoose.model("activeUser", activeUserSchema);
