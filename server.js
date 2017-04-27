@@ -71,8 +71,9 @@ app.use('/fb_bot', bot.router());
 
 bot.on('message', async message => {
     const {sender} = message;
-    await sender.fetch('first_name,last_name,gender,location');
-    console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
+    console.log(message);
+    await sender.fetch('first_name');
+    // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
     const out = new Elements();
     out.add({text: `hello ${sender.first_name} , how are you!`});
 
