@@ -71,7 +71,7 @@ app.use('/fb_bot', bot.router());
 
 bot.on('message', async message => {
     const {sender} = message;
-    console.log("message----------------------------------------------------" ;
+    console.log("message----------------------------------------------------") ;
     console.log(message);
 
 
