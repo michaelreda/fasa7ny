@@ -86,7 +86,7 @@ bot.on('message', async message => {
       if(err)
         console.log(err)
       else{
-        console.log(user);
+
         if(botUser == undefined || botUser == null){//if not, save it
           let botuser= new BotUser();
           botuser.firstName= sender.first_name;
