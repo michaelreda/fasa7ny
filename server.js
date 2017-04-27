@@ -130,7 +130,7 @@ bot.on('message', async message => {
 
                   if(scenario.buttons && scenario.buttons.length !=0){
                      for(var i =0;i<scenario.buttons.length;i++)
-                        replies.add({text: scenario.buttons[i].text,event: scenario.buttons[i].event});
+                        replies.add({text: scenario.buttons[i].text,data: scenario.buttons[i].event});
 
                     out.setQuickReplies(replies);
                     //   buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
@@ -156,8 +156,9 @@ bot.on('message', async message => {
 });
 
 
-bot.on('search_for_specific_activity', async (data,message) => {
+bot.on('postback', async (data,message) => {
     const {sender} = message;
+    console.log(data);
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     const out = new Elements();
     out.add({text: "please tell us which activity are you looking for.."});
@@ -165,10 +166,10 @@ bot.on('search_for_specific_activity', async (data,message) => {
 });
 
 //setting greeting message ..
-(async function () {
-  console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
-  console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
-})();
+// (async function () {
+//   console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
+//   console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
+// })();
 
 //reseting Active users every 15 minutes except users that has just been active last 5 minutes
 var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
