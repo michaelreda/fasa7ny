@@ -7,6 +7,6 @@ var machineLearningSchema = mongoose.Schema({
   outScenario: {type:mongoose.Schema.Types.ObjectId,ref:'scenario'}
 })
 
-var ServiceProvider = mongoose.model("machineLearning", machineLearning);
+var ServiceProvider = mongoose.model("machineLearning", machineLearningSchema);
 
 module.exports = MachineLearning;
