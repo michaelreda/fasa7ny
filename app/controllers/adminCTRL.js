@@ -442,7 +442,7 @@ let adminCTRL={
                                           res.send(err.message)
                                         }else
                                         {
-                                          throw new error()
+                                         
                                           res.send({topActivity,topSP,topU,dates});
                                         }
 
