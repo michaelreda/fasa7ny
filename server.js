@@ -10,7 +10,7 @@ var schedule = require('node-schedule');
 var globalCTRL = require('./app/controllers/globalCTRL');
 var expressValidator = require('express-validator');
 var request = require('request')
-import {Bot, Elements, Buttons} from 'facebook-messenger-bot';
+import {Bot, Elements, Buttons,QuickReplies} from 'facebook-messenger-bot';
 const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
 //access token
@@ -125,12 +125,17 @@ bot.on('message', async message => {
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               Scenario.findOne({title:"welcome"},async function(err,scenario){
-                  let buttons = new Buttons();
-                  if(scenario.buttons && scenario.buttons.length !=0){
-                    for(var i =0;i<scenario.buttons.length;i++)
-                      buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
+                  // let buttons = new Buttons();
+                  let replies = new QuickReplies();
 
-                    out.add({buttons });
+                  if(scenario.buttons && scenario.buttons.length !=0){
+                     for(var i =0;i<scenario.buttons.length;i++)
+                        replies.add({text: scenario.buttons[i].text});
+
+                    out.setQuickReplies(replies);
+                    //   buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
+                    //
+                    // out.add({buttons });
                   }
                   out.add({text: scenario.messages[0]});
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
