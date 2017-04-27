@@ -130,7 +130,7 @@ bot.on('message', async message => {
 
                   if(scenario.buttons && scenario.buttons.length !=0){
                      for(var i =0;i<scenario.buttons.length;i++)
-                        replies.add({text: scenario.buttons[i].text,data: scenario.buttons[i].event});
+                        replies.add({text: scenario.buttons[i].text,event: scenario.buttons[i].event});
 
                     out.setQuickReplies(replies);
                     //   buttons.add({text: scenario.buttons[i].text, event: scenario.buttons[i].event});
@@ -156,9 +156,13 @@ bot.on('message', async message => {
 });
 
 
-bot.on('postback', async (data,message) => {
+bot.on('postback', async (event, message, data) => {
+  assert(data === message.data);
+  assert(event === message.event);
     const {sender} = message;
+    console.log(event);
     console.log(data);
+    console.log(message);
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     const out = new Elements();
     out.add({text: "please tell us which activity are you looking for.."});
