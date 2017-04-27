@@ -126,7 +126,6 @@ bot.on('message', async message => {
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               Scenario.findOne({title:"welcome"},function(err,scenario){
                   out.add({text: scenario.messages[0] });
-
                   ActiveUser.update({botUser:botUser._id},{currentScenario:scenario._id,NextScenarioMessage:1});
                   bot.send(sender.id, out);
               })
