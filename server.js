@@ -80,6 +80,12 @@ bot.on('message', async message => {
     await bot.send(sender.id, out);
 });
 
+//setting greeting message ..
+(async function () {
+  console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
+  console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
+})();
+
 //start the server
 app.listen(process.env.PORT ||8080,function(){
   console.log("the app is listening on port 8080");
