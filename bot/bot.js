@@ -76,20 +76,71 @@ bot.on('message', (payload, chat) => {
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               console.log("if no scenario at all then choose the welcoming scenario");
-              Scenario.findOne({title:"welcome"},function(err,scenario){
-                console.log("fetched welcome scenario");
-                // let buttons = new Buttons();
-                let buttons =[];
 
-                if(scenario.buttons && scenario.buttons.length !=0){
-                  for(var i =0;i<scenario.buttons.length;i++)
-                  buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
+              chat.conversation((convo) => {
+                // askUserSpecificActivityOrNot(convo);
 
-                }
-                chat.say({text: scenario.messages[0],buttons});
-                console.log("updating activity user currentScenario and NextScenarioMessage");
-                ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
-              })
+                //first question
+                convo.ask(question1, answer1, callbacks1);
+
+                const question1 = {
+                  text: `Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`,
+                  buttons: [{type: 'postback',title:'yes',payload: 'search_for_specific_activity'}
+                            , {type: 'postback',title:'no',payload: 'search_for_activities'}]
+                };
+
+                const answer1 = (payload, convo) => {
+                  //const text = payload.message.text;
+                  //convo.say(`Oh, you like ${text}!`);
+                };
+
+                const callbacks1 = [
+                  {
+                    event: 'postback:search_for_specific_activity',
+                    callback: () => { chat.say("ok you are looking for a specific activity.");}
+                  },
+                  {
+                    event: 'postback:search_for_activities',
+                    callback: () => { chat.say("ok you are searching for featured activities");}
+                  }
+                ];
+
+                const options1 = {
+                  typing: true // Send a typing indicator before asking the question
+                };
+                //end first question
+
+
+              });
+
+
+
+
+
+              // const askUserSpecificActivityOrNot = (convo) => {
+              //     convo.ask(`Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`, (payload, convo) => {
+              //     const text = payload.message.text;
+              //     convo.set('name', text);
+              //     convo.say(`Oh, your name is ${text}`).then(() => askFavoriteFood(convo));
+              //   });
+              // };
+
+
+
+              // Scenario.findOne({title:"welcome"},function(err,scenario){
+              //   console.log("fetched welcome scenario");
+              //   // let buttons = new Buttons();
+              //   let buttons =[];
+              //
+              //   if(scenario.buttons && scenario.buttons.length !=0){
+              //     for(var i =0;i<scenario.buttons.length;i++)
+              //     buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
+              //
+              //   }
+              //   chat.say({text: scenario.messages[0],buttons});
+              //   console.log("updating activity user currentScenario and NextScenarioMessage");
+              //   ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
+              // })
             }
           }
         });
