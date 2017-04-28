@@ -33,38 +33,42 @@ bot.on('message', (payload, chat) => {
 
 
     //checking if this user is already in our users database or not;
-    BotUser.findOne({facebookID: payload.sender.id},async function(err,botUser){
-      console.log("checking if this user is already in our users database or not;");
+    var query = {facebookID:payload.sender.id},
+    update = {firstName:chat_user.first_name ,lastName:chat_user.last_name, facebookID: payload.sender.id, },
+    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+    BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+      // console.log("checking if this user is already in our users database or not;");
       if(err)
       console.log(err)
       else{
 
-        if(botUser == undefined || botUser == null){//if not, save it
-          console.log("no");
-          let botuser= new BotUser();
-          botuser.firstName= chat_user.first_name;
-          botuser.facebookID=payload.sender.id;
-          botuser.lastName= chat_user.last_name;
-
-          botuser.save(function(err,user){
-            console.log("saving botUser");
-            if(err)
-            console.log(err);
-            else{// adding user to active users;
-              let activeuser = new ActiveUser();
-              activeuser.botUser= user.id;
-              activeuser.save(function(err){
-                if(err)
-                console.log(err);
-              });
-            }
-          });
-        }
+        // if(botUser == undefined || botUser == null){//if not, save it
+        //   console.log("no");
+        //   let botuser= new BotUser();
+        //   botuser.firstName= chat_user.first_name;
+        //   botuser.facebookID=payload.sender.id;
+        //   botuser.lastName= chat_user.last_name;
+        //
+        //   botuser.save(function(err,user){
+        //     console.log("saving botUser");
+        //     if(err)
+        //     console.log(err);
+        //     else{// adding user to active users;
+        //       let activeuser = new ActiveUser();
+        //       activeuser.botUser= user.id;
+        //       activeuser.save(function(err){
+        //         if(err)
+        //         console.log(err);
+        //       });
+        //     }
+        //   });
+        // }
 
         //if it was saved as a bot user before check if it's an active user
         //if it's not an active user add it as a new active user;
         //if it's already an active user update lastResponseAt
-        await BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
+
         var query = {botUser:botUser._id},
         update = {botUser:botUser._id , lastResponseAt: new Date() },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
