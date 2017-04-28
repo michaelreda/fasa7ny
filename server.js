@@ -181,12 +181,7 @@ app.use(require('./app/routes')(passport));
 //   console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
 // })();
 
-//reseting Active users every 15 minutes except users that has just been active last 5 minutes
-var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
-  var d = new Date();
-  d.setMinutes(d.getMinutes()-5);
-  ActiveUser.find({lastResponseAt: {$lt: d}}).remove().exec();
-});
+
 
 
 ///////////end bot////////////////

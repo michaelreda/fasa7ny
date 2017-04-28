@@ -1,4 +1,8 @@
 const BootBot = require('bootbot');
+var schedule = require('node-schedule');
+let BotUser = require('../app/models/BOT/botUser.js');
+let ActiveUser = require('../app/models/BOT/activeUser.js');
+let Scenario = require('../app/models/BOT/scenario.js');
 const bot = new BootBot({
   accessToken: 'EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
   verifyToken: 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack',
@@ -7,10 +11,89 @@ const bot = new BootBot({
 
 bot.on('message', (payload, chat) => {
   const text = payload.message.text;
-  chat.say(`Echo: ${text}`);
+  var chat_user;
+  chat.getUserProfile().then((user) => {
+    chat_user= user;
+  });
+
+      console.log("message----------------------------------------------------") ;
+      console.log(payload);
+
+      //
+      // //checking if this user is already in our users database or not;
+      // BotUser.findOne({facebookID: sender.id},async function(err,botUser){
+      //   if(err)
+      //     console.log(err)
+      //   else{
+      //
+      //     if(botUser == undefined || botUser == null){//if not, save it
+      //       let botuser= new BotUser();
+      //       botuser.firstName= sender.first_name;
+      //       botuser.facebookID=sender.id;
+      //       botuser.lastName= sender.last_name;
+      //
+      //       botuser.save(function(err,user){
+      //         if(err)
+      //           console.log(err);
+      //         else{// adding user to active users;
+      //           let activeuser = new ActiveUser();
+      //           activeuser.botUser= user.id;
+      //           activeuser.save(function(err){
+      //             if(err)
+      //               console.log(err);
+      //           });
+      //         }
+      //       });
+      //     }
+      //
+      //     //if it was saved as a bot user before check if it's an active user
+      //     //if it's not an active user add it as a new active user;
+      //     //if it's already an active user update lastResponseAt
+      //     var query = {botUser:botUser._id},
+      //     update = {botUser:botUser._id , lastResponseAt: new Date() },
+      //     options = { upsert: true, new: true, setDefaultsOnInsert: true };
+      //
+      //     ActiveUser.findOneAndUpdate(query, update, options,async function(error, activeUser) {
+      //       if (error)
+      //         console.log(error);
+      //       else{
+      //         var i = activeUser.NextScenarioMessage;
+      //         if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
+      //           Scenario.findOne({title:"welcome"},async function(err,scenario){
+      //               // let buttons = new Buttons();
+      //               let buttons =[];
+      //
+      //               if(scenario.buttons && scenario.buttons.length !=0){
+      //                  for(var i =0;i<scenario.buttons.length;i++)
+      //                     buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
+      //
+      //               }
+      //               chat.say({text: scenario.messages[0],buttons});
+      //               ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
+      //               await bot.send(sender.id, out);
+      //           })
+      //         }
+      //       }
+      //     });
+      //   }
+      // })
+
+
+
+      // out.add({text: `hello ${sender.first_name} , how are you!`});
+      // await bot.send(sender.id, out);
+
+
 });
 
 bot.start(process.env.PORT||3000);
+
+//reseting Active users every 15 minutes except users that has just been active last 5 minutes
+var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
+  var d = new Date();
+  d.setMinutes(d.getMinutes()-5);
+  ActiveUser.find({lastResponseAt: {$lt: d}}).remove().exec();
+});
 
 
 // var express = require('express')
