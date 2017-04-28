@@ -90,14 +90,14 @@ bot.on('message', (payload, chat) => {
                 };
 
                 const answer1 = (payload, convo) => {
-                  const text = payload.message.text;
-                  convo.say(`Oh, you like ${text}!`);
+                  // const text = payload.message.text;
+                  // convo.say(`Oh, you like ${text}!`);
                 };
 
                 const callbacks1 = [
                   {
                     event: 'postback:search_for_specific_activity',
-                    callback: () => { askForActivityName();}
+                    callback: () => { convo.ask(questionActivityName, answerActivityName);}
                   },
                   {
                     event: 'postback:search_for_activities',
@@ -123,7 +123,7 @@ bot.on('message', (payload, chat) => {
                   convo.say(`Ok I am searching for you now what i know about ${text}!`);
                 };
 
-                const askForActivityName= convo.ask(questionActivityName, answerActivityName);
+                // const askForActivityName= convo.ask(questionActivityName, answerActivityName);
                 //end if asking for specific activity;
 
 
