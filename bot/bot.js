@@ -101,7 +101,7 @@ bot.on('message', (payload, chat) => {
                   },
                   {
                     event: 'postback:search_for_activities',
-                    callback: () => { chat.say("ok you are searching for featured activities");}
+                    callback: () => { convo.say("ok you are searching for featured activities");}
                   }
                 ];
 
