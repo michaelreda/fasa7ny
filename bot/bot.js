@@ -90,8 +90,8 @@ bot.on('message', (payload, chat) => {
                 };
 
                 const answer1 = (payload, convo) => {
-                  //const text = payload.message.text;
-                  //convo.say(`Oh, you like ${text}!`);
+                  const text = payload.message.text;
+                  convo.say(`Oh, you like ${text}!`);
                 };
 
                 const callbacks1 = [
