@@ -115,7 +115,7 @@ bot.on('message', (payload, chat) => {
                 //end first question
 
 
-                if asking for specific activity;
+                // if asking for specific activity;
                 const questionActivityName = {
                   text: "Ok being a decisive is good, tell us the name of this activity.."
                 };
