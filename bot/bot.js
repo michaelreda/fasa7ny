@@ -6,7 +6,7 @@ var DB_URI =  "mongodb://admin:admin@ds147920.mlab.com:47920/fasa7ny";
 const BootBot = require('bootbot');
 var mongoose = require('mongoose');
 var schedule = require('node-schedule');
-var http = require('http');
+var request = require('request');
 
 
 let BotUser = require('../app/models/BOT/botUser.js');
@@ -107,12 +107,23 @@ bot.on('message', (payload, chat) => {
                   const text = payload.message.text;
                   convo.say(`Ok I am searching for you now what i know about ${text}!`);
 
-                  http.get({
-                    host: 'https://fasa7ny.herokuapp.com',
-                    path: '/search_for_activities/'+text+'/_/'
-                  }, function(response) {
+                  request
+                  .get('https://fasa7ny.herokuapp.com:'+process.env.PORT+'/search_for_activities/'+text+'/_/')
+                  .on('response', function(response) {
+                    console.log(response.statusCode);
+                    console.log(response.body);
                     console.log(response);
-                  });
+                  })
+                  .on('error', function(err) {
+                    console.log(err)
+                  })
+                  // http.get({
+                  //   host: 'https://fasa7ny.herokuapp.com',
+                  //   port: process.env.PORT,
+                  //   path: '/search_for_activities/'+text+'/_/'
+                  // }, function(response) {
+                  //   console.log(response);
+                  // });
                 };
 
                 // const askForActivityName= convo.ask(questionActivityName, answerActivityName);
