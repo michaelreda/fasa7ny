@@ -88,7 +88,7 @@ bot.on('message', (payload, chat) => {
                   },
                   {
                     event: 'postback:search_for_activities',
-                    callback: () => { convo.say("ok you are searching for featured activities");}
+                    callback: () => { convo.ask(questionFilter, answerFilter,callbacksFilter);}
                   }
                 ];
 
@@ -126,8 +126,36 @@ bot.on('message', (payload, chat) => {
                   // });
                 };
 
-                // const askForActivityName= convo.ask(questionActivityName, answerActivityName);
                 //end if asking for specific activity;
+
+
+                // if filtering;
+                const questionFilter = {
+                  text: `Ok Please specify which type of filters do you prefer ..`,
+                  buttons: [{type: 'postback',title:'Day',payload: 'filter_day'},
+                            {type: 'postback',title:'Price',payload: 'filter_price'},
+                            {type: 'postback',title:'Offers',payload: 'filter_offer'},
+                            {type: 'postback',title:'Theme',payload: 'filter_offer'},
+                            {type: 'postback',title:'Rating',payload: 'filter_rating'}
+                          ]
+                };
+
+                const answerFilter = (payload, convo) => {
+
+                };
+
+                const callbacksFilter = [
+                  {
+                    event: 'postback:search_for_specific_activity',
+                    callback: () => {
+                      convo.ask(questionActivityName, answerActivityName);}
+                  },
+                  {
+                    event: 'postback:search_for_activities',
+                    callback: () => { convo.ask(questionFilter, answerFilter,callbacksFilter);}
+                  }
+                ];
+                //end filtering ;
 
 
               });
