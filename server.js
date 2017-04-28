@@ -158,8 +158,6 @@ bot.on('message', async message => {
 
 
 bot.on('postback', async (event, message, data) => {
-  assert(data === message.data);
-  assert(event === message.event);
     const {sender} = message;
     const {text} = message;
     console.log(event);
@@ -171,6 +169,7 @@ bot.on('postback', async (event, message, data) => {
     //
     // });
     const out = new Elements();
+    out.add({text: event});
     out.add({text: "please tell us which activity are you looking for.."});
     await bot.send(sender.id, out);
 });
