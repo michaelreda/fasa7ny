@@ -97,7 +97,7 @@ bot.on('message', (payload, chat) => {
                 const callbacks1 = [
                   {
                     event: 'postback:search_for_specific_activity',
-                    callback: () => { chat.say("ok you are looking for a specific activity.");}
+                    callback: () => { askForActivityName();}
                   },
                   {
                     event: 'postback:search_for_activities',
@@ -110,6 +110,20 @@ bot.on('message', (payload, chat) => {
                 };
 
                 convo.ask(question1, answer1, callbacks1);
+                //end first question
+
+
+                //if asking for specific activity;
+                const questionActivityName = {
+                  text: `Ok being a decisive is good, tell us the name of this activity`
+                };
+
+                const answerActivityName = (payload, convo) => {
+                  const text = payload.message.text;
+                  convo.say(`Ok I am searching for you now what i know about ${text}!`);
+                };
+
+                convo.ask(questionActivityName, answerActivityName);
                 //end first question
 
 
