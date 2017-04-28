@@ -116,9 +116,7 @@ bot.on('message', (payload, chat) => {
 
 
                 // if asking for specific activity;
-                const questionActivityName = {
-                  text: "Ok being a decisive is good, tell us the name of this activity.."
-                };
+                const questionActivityName = "Ok being a decisive is good, tell us the name of this activity..";
 
                 const answerActivityName = (payload, convo) => {
                   const text = payload.message.text;
