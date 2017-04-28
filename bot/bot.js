@@ -14,75 +14,73 @@ bot.on('message', (payload, chat) => {
   var chat_user;
   chat.getUserProfile().then((user) => {
     chat_user= user;
-    console.log(user);
-  });
+    console.log("message----------------------------------------------------") ;
+    console.log(payload);
+    console.log(chat_user);
 
-      console.log("message----------------------------------------------------") ;
-      console.log(payload);
-      console.log(chat_user);
+    
+    //checking if this user is already in our users database or not;
+    BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
+      if(err)
+      console.log(err)
+      else{
 
+        if(botUser == undefined || botUser == null){//if not, save it
+          let botuser= new BotUser();
+          botuser.firstName= chat_user.first_name;
+          botuser.facebookID=chat_user.id;
+          botuser.lastName= chat_user.last_name;
 
-      //checking if this user is already in our users database or not;
-      BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
-        if(err)
-          console.log(err)
-        else{
-
-          if(botUser == undefined || botUser == null){//if not, save it
-            let botuser= new BotUser();
-            botuser.firstName= chat_user.first_name;
-            botuser.facebookID=chat_user.id;
-            botuser.lastName= chat_user.last_name;
-
-            botuser.save(function(err,user){
-              if(err)
+          botuser.save(function(err,user){
+            if(err)
+            console.log(err);
+            else{// adding user to active users;
+              let activeuser = new ActiveUser();
+              activeuser.botUser= user.id;
+              activeuser.save(function(err){
+                if(err)
                 console.log(err);
-              else{// adding user to active users;
-                let activeuser = new ActiveUser();
-                activeuser.botUser= user.id;
-                activeuser.save(function(err){
-                  if(err)
-                    console.log(err);
-                });
-              }
-            });
-          }
-
-          //if it was saved as a bot user before check if it's an active user
-          //if it's not an active user add it as a new active user;
-          //if it's already an active user update lastResponseAt
-          var query = {botUser:botUser._id},
-          update = {botUser:botUser._id , lastResponseAt: new Date() },
-          options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-          ActiveUser.findOneAndUpdate(query, update, options,function(error, activeUser) {
-            if (error)
-              console.log(error);
-            else{
-              var i = activeUser.NextScenarioMessage;
-              if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
-                Scenario.findOne({title:"welcome"},function(err,scenario){
-                    // let buttons = new Buttons();
-                    let buttons =[];
-
-                    if(scenario.buttons && scenario.buttons.length !=0){
-                       for(var i =0;i<scenario.buttons.length;i++)
-                          buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
-
-                    }
-                    chat.say({text: scenario.messages[0],buttons});
-                    ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
-                })
-              }
+              });
             }
           });
         }
-      })
+
+        //if it was saved as a bot user before check if it's an active user
+        //if it's not an active user add it as a new active user;
+        //if it's already an active user update lastResponseAt
+        var query = {botUser:botUser._id},
+        update = {botUser:botUser._id , lastResponseAt: new Date() },
+        options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+        ActiveUser.findOneAndUpdate(query, update, options,function(error, activeUser) {
+          if (error)
+          console.log(error);
+          else{
+            var i = activeUser.NextScenarioMessage;
+            if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
+              Scenario.findOne({title:"welcome"},function(err,scenario){
+                // let buttons = new Buttons();
+                let buttons =[];
+
+                if(scenario.buttons && scenario.buttons.length !=0){
+                  for(var i =0;i<scenario.buttons.length;i++)
+                  buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
+
+                }
+                chat.say({text: scenario.messages[0],buttons});
+                ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
+              })
+            }
+          }
+        });
+      }
+    })
+  });
 
 
 
-      // out.add({text: `hello ${sender.first_name} , how are you!`});
-      // await bot.send(sender.id, out);
+  // out.add({text: `hello ${sender.first_name} , how are you!`});
+  // await bot.send(sender.id, out);
 
 
 });
