@@ -132,12 +132,12 @@ bot.on('message', (payload, chat) => {
                 // if filtering;
                 const questionFilter = {
                   text: `Ok Please specify which type of filters do you prefer ..`,
-                  buttons: [{type: 'postback',title:'Day',payload: 'filter_day'},
-                            {type: 'postback',title:'Price',payload: 'filter_price'},
-                            {type: 'postback',title:'Offers',payload: 'filter_offer'},
-                            {type: 'postback',title:'Theme',payload: 'filter_offer'},
-                            {type: 'postback',title:'Rating',payload: 'filter_rating'}
-                          ]
+                  quickReplies: [{type: 'postback',title:'Day',payload: 'filter_day'},
+                                 {type: 'postback',title:'Price',payload: 'filter_price'},
+                                 {type: 'postback',title:'Offers',payload: 'filter_offer'},
+                                 {type: 'postback',title:'Theme',payload: 'filter_offer'},
+                                 {type: 'postback',title:'Rating',payload: 'filter_rating'}
+                               ]
                 };
 
                 const answerFilter = (payload, convo) => {
