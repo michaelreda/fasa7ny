@@ -81,7 +81,7 @@ bot.on('message', (payload, chat) => {
                 // askUserSpecificActivityOrNot(convo);
 
                 //first question
-                convo.ask(question1, answer1, callbacks1);
+
 
                 const question1 = {
                   text: `Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`,
@@ -108,6 +108,8 @@ bot.on('message', (payload, chat) => {
                 const options1 = {
                   typing: true // Send a typing indicator before asking the question
                 };
+
+                convo.ask(question1, answer1, callbacks1);
                 //end first question
 
 
