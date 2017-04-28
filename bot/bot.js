@@ -16,23 +16,25 @@ bot.on('message', (payload, chat) => {
     chat_user= user;
     console.log("message----------------------------------------------------") ;
     console.log(payload);
-    console.log(payload.sender.id);
     console.log(chat_user);
 
 
     //checking if this user is already in our users database or not;
     BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
+      console.log("checking if this user is already in our users database or not;");
       if(err)
       console.log(err)
       else{
 
         if(botUser == undefined || botUser == null){//if not, save it
+          console.log("no");
           let botuser= new BotUser();
           botuser.firstName= chat_user.first_name;
           botuser.facebookID=payload.sender.id;
           botuser.lastName= chat_user.last_name;
 
           botuser.save(function(err,user){
+            console.log("saving botUser");
             if(err)
             console.log(err);
             else{// adding user to active users;
@@ -54,12 +56,15 @@ bot.on('message', (payload, chat) => {
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
         ActiveUser.findOneAndUpdate(query, update, options,function(error, activeUser) {
+          console.log("check if it's an active user");
           if (error)
           console.log(error);
           else{
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
+              console.log("if no scenario at all then choose the welcoming scenario");
               Scenario.findOne({title:"welcome"},function(err,scenario){
+                console.log("fetched welcome scenario");
                 // let buttons = new Buttons();
                 let buttons =[];
 
@@ -69,6 +74,7 @@ bot.on('message', (payload, chat) => {
 
                 }
                 chat.say({text: scenario.messages[0],buttons});
+                console.log("updating activity user currentScenario and NextScenarioMessage");
                 ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
               })
             }
