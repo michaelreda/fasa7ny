@@ -123,8 +123,8 @@ bot.on('message', (payload, chat) => {
                   convo.say(`Ok I am searching for you now what i know about ${text}!`);
                 };
 
-                convo.ask(questionActivityName, answerActivityName);
-                //end first question
+                askForActivityName= convo.ask(questionActivityName, answerActivityName);
+                //end if asking for specific activity;
 
 
               });
