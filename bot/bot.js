@@ -1,5 +1,6 @@
 var express= require('express');
 var app=express();
+require('run-middleware')(app)
 var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
 var DB_URI =  "mongodb://admin:admin@ds147920.mlab.com:47920/fasa7ny";
@@ -98,8 +99,7 @@ bot.on('message', (payload, chat) => {
                   {
                     event: 'postback:search_for_specific_activity',
                     callback: () => {
-                      convo.say("Ok being a decisive is good, tell us the name of this activity..");
-                      convo.ask("Ok being a decisive is good, tell us the name of this activity..", answerActivityName);}
+                      convo.ask(questionActivityName, answerActivityName);}
                   },
                   {
                     event: 'postback:search_for_activities',
@@ -115,14 +115,19 @@ bot.on('message', (payload, chat) => {
                 //end first question
 
 
-                //if asking for specific activity;
-                // const questionActivityName = {
-                //   text: `Ok being a decisive is good, tell us the name of this activity..`
-                // };
+                if asking for specific activity;
+                const questionActivityName = {
+                  text: "Ok being a decisive is good, tell us the name of this activity.."
+                };
 
                 const answerActivityName = (payload, convo) => {
                   const text = payload.message.text;
                   convo.say(`Ok I am searching for you now what i know about ${text}!`);
+
+                  app.runMiddleware('/search_for_activities/'+text+'/_/',{method:'get'},function(responseCode,body,headers){
+                      convo.say(body);
+                  });
+
                 };
 
                 // const askForActivityName= convo.ask(questionActivityName, answerActivityName);
