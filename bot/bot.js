@@ -152,8 +152,10 @@ bot.on('message', (payload, chat) => {
                     }
                   },
                   {
-                    event: 'postback:search_for_activities',
-                    callback: () => { convo.ask(questionFilter, answerFilter,callbacksFilter);}
+                    event: 'postback:Price',
+                    callback: () => {
+                      convo.say("price");
+                    }
                   }
                 ];
                 //end filtering ;
