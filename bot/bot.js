@@ -1,4 +1,5 @@
 const BootBot = require('bootbot');
+var mongoose = require('mongoose');
 var schedule = require('node-schedule');
 let BotUser = require('../app/models/BOT/botUser.js');
 let ActiveUser = require('../app/models/BOT/activeUser.js');
@@ -18,7 +19,6 @@ bot.on('message', (payload, chat) => {
     console.log(payload);
     console.log(chat_user);
 
-    console.log("Hi ");
 
     //checking if this user is already in our users database or not;
     BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
