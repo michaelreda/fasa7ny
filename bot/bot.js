@@ -146,19 +146,29 @@ bot.on('message', (payload, chat) => {
 
                 const callbacksFilter = [
                   {
-                    event: 'postback:filter_day',
+                    event: 'quick_reply:filter_day',
                     callback: () => {
-                      convo.say("hahaha that's great");
+                      convo.say({
+                        text: `Ok Please specify which day`,
+                        quickReplies: [{title:'Saturday',payload: 'filter_day'},
+                                       {title:'Sunday',payload: 'filter_price'},
+                                       {title:'Monday',payload: 'filter_price'},
+                                       {title:'Tuesday',payload: 'filter_offer'},
+                                       {title:'Wednesday',payload: 'filter_theme'},
+                                       {title:'Thursday',payload: 'filter_rating'},
+                                       {title:'Friday',payload: 'filter_rating'}
+                                     ]
+                      });
                     }
                   },
                   {
-                    event: 'postback:Price',
+                    event: 'quick_reply:filter_price',
                     callback: () => {
                       convo.say("price");
                     }
                   },
                   {
-                    event: 'quick_reply:Offers',
+                    event: 'quick_reply:filter_offer',
                     callback: () => {
                       convo.say("offers");
                     }
@@ -167,6 +177,12 @@ bot.on('message', (payload, chat) => {
                     event: 'quick_reply:filter_theme',
                     callback: () => {
                       convo.say("theme");
+                    }
+                  },
+                  {
+                    event: 'quick_reply:filter_rating',
+                    callback: () => {
+                      convo.say("offers");
                     }
                   }
                 ];
