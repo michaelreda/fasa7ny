@@ -28,9 +28,9 @@ bot.on('message', (payload, chat) => {
 
           if(botUser == undefined || botUser == null){//if not, save it
             let botuser= new BotUser();
-            botuser.firstName= sender.first_name;
-            botuser.facebookID=sender.id;
-            botuser.lastName= sender.last_name;
+            botuser.firstName= chat_user.first_name;
+            botuser.facebookID=chat_user.id;
+            botuser.lastName= chat_user.last_name;
 
             botuser.save(function(err,user){
               if(err)
