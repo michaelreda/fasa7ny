@@ -1,3 +1,18 @@
+const BootBot = require('bootbot');
+const bot = new BootBot({
+  accessToken: 'EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
+  verifyToken: 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack',
+  appSecret:'7adeb0686283b3427bda311cd0eea139'
+});
+
+bot.on('message', (payload, chat) => {
+  const text = payload.message.text;
+  chat.say(`Echo: ${text}`);
+});
+
+bot.start(process.env.PORT||3000);
+
+
 // var express = require('express')
 // var bodyParser = require('body-parser')
 // var request = require('request')

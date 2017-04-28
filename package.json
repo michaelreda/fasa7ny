@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
-    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node6 server.js",
+    "start": "nodemon ./bot/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "babelrc-install": "^2.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "bootbot": "^1.0.12",
     "consolidate": "^0.14.5",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
