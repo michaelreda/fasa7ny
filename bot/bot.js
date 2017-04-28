@@ -33,7 +33,7 @@ bot.on('message', (payload, chat) => {
 
 
     //checking if this user is already in our users database or not;
-    BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
+    BotUser.findOne({facebookID: payload.sender.id},async function(err,botUser){
       console.log("checking if this user is already in our users database or not;");
       if(err)
       console.log(err)
@@ -64,7 +64,7 @@ bot.on('message', (payload, chat) => {
         //if it was saved as a bot user before check if it's an active user
         //if it's not an active user add it as a new active user;
         //if it's already an active user update lastResponseAt
-        BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
+        await BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
         var query = {botUser:botUser._id},
         update = {botUser:botUser._id , lastResponseAt: new Date() },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -163,7 +163,7 @@ bot.on('message', (payload, chat) => {
             }
           }
         });
-      })
+
       }
     })
   });
