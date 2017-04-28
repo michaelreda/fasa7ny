@@ -135,7 +135,7 @@ bot.on('message', (payload, chat) => {
                   quickReplies: [{title:'Day',payload: 'filter_day'},
                                  {title:'Price',payload: 'filter_price'},
                                  {title:'Offers',payload: 'filter_offer'},
-                                 {title:'Theme',payload: 'filter_offer'},
+                                 {title:'Theme',payload: 'filter_theme'},
                                  {title:'Rating',payload: 'filter_rating'}
                                ]
                 };
@@ -155,6 +155,18 @@ bot.on('message', (payload, chat) => {
                     event: 'postback:Price',
                     callback: () => {
                       convo.say("price");
+                    }
+                  },
+                  {
+                    event: 'quick_reply:Offers',
+                    callback: () => {
+                      convo.say("offers");
+                    }
+                  },
+                  {
+                    event: 'quick_reply:filter_theme',
+                    callback: () => {
+                      convo.say("theme");
                     }
                   }
                 ];
