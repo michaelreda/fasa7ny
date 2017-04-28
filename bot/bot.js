@@ -16,9 +16,10 @@ bot.on('message', (payload, chat) => {
     chat_user= user;
     console.log("message----------------------------------------------------") ;
     console.log(payload);
+    console.log(payload.sender.id);
     console.log(chat_user);
 
-    
+
     //checking if this user is already in our users database or not;
     BotUser.findOne({facebookID: payload.sender.id},function(err,botUser){
       if(err)
@@ -28,7 +29,7 @@ bot.on('message', (payload, chat) => {
         if(botUser == undefined || botUser == null){//if not, save it
           let botuser= new BotUser();
           botuser.firstName= chat_user.first_name;
-          botuser.facebookID=chat_user.id;
+          botuser.facebookID=payload.sender.id;
           botuser.lastName= chat_user.last_name;
 
           botuser.save(function(err,user){
