@@ -18,6 +18,7 @@ bot.on('message', (payload, chat) => {
 
       console.log("message----------------------------------------------------") ;
       console.log(payload);
+      console.log(chat_user);
 
 
       //checking if this user is already in our users database or not;
