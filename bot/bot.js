@@ -14,6 +14,7 @@ bot.on('message', (payload, chat) => {
   var chat_user;
   chat.getUserProfile().then((user) => {
     chat_user= user;
+    console.log(user);
   });
 
       console.log("message----------------------------------------------------") ;
