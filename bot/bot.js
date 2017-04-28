@@ -132,7 +132,9 @@ bot.on('message', (payload, chat) => {
                 // if filtering;
                 const questionFilter = {
                   text: `Ok Please specify which type of filters do you prefer..`,
-                  quickReplies: [{title:'Day',payload: 'filter_day'},
+                  quickReplies: [
+                                 {title:'I don\'t care',payload: 'filter_no'},
+                                 {title:'Day',payload: 'filter_day'},
                                  {title:'Price',payload: 'filter_price'},
                                  {title:'Offers',payload: 'filter_offer'},
                                  {title:'Theme',payload: 'filter_theme'},
@@ -146,17 +148,23 @@ bot.on('message', (payload, chat) => {
 
                 const callbacksFilter = [
                   {
+                    event: 'quick_reply:filter_no',
+                    callback: () => {
+                      convo.say("activities should be displayed here")
+                    }
+                  },
+                  {
                     event: 'quick_reply:filter_day',
                     callback: () => {
                       convo.say({
                         text: `Ok Please specify which day`,
-                        quickReplies: [{title:'Saturday',payload: 'filter_day'},
-                                       {title:'Sunday',payload: 'filter_price'},
-                                       {title:'Monday',payload: 'filter_price'},
-                                       {title:'Tuesday',payload: 'filter_offer'},
-                                       {title:'Wednesday',payload: 'filter_theme'},
-                                       {title:'Thursday',payload: 'filter_rating'},
-                                       {title:'Friday',payload: 'filter_rating'}
+                        quickReplies: [{title:'Saturday',payload: 'filter_sat'},
+                                       {title:'Sunday',payload: 'filter_sun'},
+                                       {title:'Monday',payload: 'filter_mon'},
+                                       {title:'Tuesday',payload: 'filter_tue'},
+                                       {title:'Wednesday',payload: 'filter_wed'},
+                                       {title:'Thursday',payload: 'filter_thu'},
+                                       {title:'Friday',payload: 'filter_fri'}
                                      ]
                       });
                     }
@@ -164,25 +172,49 @@ bot.on('message', (payload, chat) => {
                   {
                     event: 'quick_reply:filter_price',
                     callback: () => {
-                      convo.say("price");
+                      convo.say({
+                        text: `Ok Please specify which price category`,
+                        quickReplies: [{title:'-50',payload: 'filter_50'},
+                                       {title:'50-100',payload: 'filter_50_100'},
+                                       {title:'100-200',payload: 'filter_100_200'},
+                                       {title:'200+',payload: 'filter_200'}
+                                     ]
+                      });
                     }
                   },
                   {
                     event: 'quick_reply:filter_offer',
                     callback: () => {
-                      convo.say("offers");
+                      convo.say("offers should be displayed");
                     }
                   },
                   {
                     event: 'quick_reply:filter_theme',
                     callback: () => {
-                      convo.say("theme");
+                      convo.say({
+                        text: `Ok Please select one of the themes`,
+                        quickReplies: [{title:'thriller',payload: 'filter_thriller'},
+                                       {title:'relaxing',payload: 'filter_relaxing'},
+                                       {title:'horror',payload: 'filter_horror'},
+                                       {title:'clubs',payload: 'filter_clubs'},
+                                       {title:'educational',payload: 'filter_educational'},
+                                       {title:'children',payload: 'filter_children'}
+                                     ]
+                      });
                     }
                   },
                   {
                     event: 'quick_reply:filter_rating',
                     callback: () => {
-                      convo.say("offers");
+                      convo.say({
+                        text: `Ok Please specify which rating category`,
+                        quickReplies: [{title:'1+',payload: 'filter_1'},
+                                       {title:'2+',payload: 'filter_2'},
+                                       {title:'3+',payload: 'filter_3'},
+                                       {title:'4+',payload: 'filter_4'},
+                                       {title:'5', payload: 'filter_5'}
+                                     ]
+                      });
                     }
                   }
                 ];
