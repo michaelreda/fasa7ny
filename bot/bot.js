@@ -131,7 +131,7 @@ bot.on('message', (payload, chat) => {
 
                 // if filtering;
                 const questionFilter = {
-                  text: `Ok Please specify which type of filters do you prefer ..`,
+                  text: `Ok Please specify which type of filters do you prefer..`,
                   quickReplies: [{title:'Day',payload: 'filter_day'},
                                  {title:'Price',payload: 'filter_price'},
                                  {title:'Offers',payload: 'filter_offer'},
@@ -146,9 +146,10 @@ bot.on('message', (payload, chat) => {
 
                 const callbacksFilter = [
                   {
-                    event: 'postback:search_for_specific_activity',
+                    event: 'postback:filter_day',
                     callback: () => {
-                      convo.ask(questionActivityName, answerActivityName);}
+                      convo.say("hahaha that's great");
+                    }
                   },
                   {
                     event: 'postback:search_for_activities',
