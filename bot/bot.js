@@ -230,6 +230,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                 ];
                 //end filtering ;
 
+                convo.end();
 
               });
 
