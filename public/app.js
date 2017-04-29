@@ -50,6 +50,14 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
   });
 
   $stateProvider.state({
+    name:'recoverPassword',
+    cache:false,
+    url:'/recover_password',
+    templateUrl:'views/recoverPassword.view.html',
+    controller:'recoverPasswordController'
+  });
+
+  $stateProvider.state({
     name:'booking',
     cache:false,
     url:'/booking/:activityID',

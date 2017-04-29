@@ -503,7 +503,7 @@ let visitorCTRL={
                         }
                         else{
                           if(!user){
-                            res.send("no account with this username");
+                            res.send({'user':404}); //changed
                           }
                           randomPass=randomstring.generate(12);//generating randompass
                           user.password=user.generateHash(randomPass);
@@ -533,6 +533,7 @@ let visitorCTRL={
                                   globalCTRL.addErrorLog(error);
                                   res.send(error);
                                 }else{
+                                  console.log(randomPass);
                                   res.send('Message sent: ' + info.response);
                                 };
                               });
