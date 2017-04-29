@@ -51,7 +51,7 @@ start_chatting = bot.on('message', (payload, chat) => {
       if(err)
       console.log(err)
       else{
-        isEnglish = botUser.language!="arabic"?false:true;
+        isEnglish = botUser.language!="arabic"?true:false;
         //if it was saved as a bot user before check if it's an active user
         //if it's not an active user add it as a new active user;
         //if it's already an active user update lastResponseAt
