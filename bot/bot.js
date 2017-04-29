@@ -305,13 +305,13 @@ start_chatting = bot.on('message', (payload, chat) => {
               });
 
               bot.on('postback:lang_arabic', (payload, chat) => {
-                chat.set(language, "arabic");
+                chat.set("language", "arabic");
                 chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
                 start_chatting;
               });
 
               bot.on('postback:lang_english', (payload, chat) => {
-                chat.set(language, "english");
+                chat.set("language", "english");
                 chat.say("Welcome to Fasa7ny");
                 start_chatting;
               });
