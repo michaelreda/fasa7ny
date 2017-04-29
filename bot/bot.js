@@ -283,7 +283,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                      ]
                       },(payload,convo)=>{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        convo.say(pb_payload.theme);
+                        convo.say(pb_payload.rating);
                       });
                     }
                   }
