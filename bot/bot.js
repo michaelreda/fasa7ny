@@ -64,8 +64,18 @@ start_chatting = bot.on('message', (payload, chat) => {
               console.log("if no scenario at all then choose the welcoming scenario");
 
               chat.conversation((convo) => {
-                // askUserSpecificActivityOrNot(convo);
 
+                convo.on('postback:lang_arabic', (payload, chat) => {
+                  chat.set("language", "arabic");
+                  chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
+                  start_chatting;
+                });
+
+                convo.on('postback:lang_english', (payload, chat) => {
+                  chat.set("language", "english");
+                  chat.say("Welcome to Fasa7ny");
+                  start_chatting;
+                });
 
                 convo.on('postback:about_us', (payload, chat) => {
                   chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
@@ -75,7 +85,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                 });
 
 
-
+                // askUserSpecificActivityOrNot(convo);
                 //first question
 
 
@@ -315,17 +325,17 @@ start_chatting = bot.on('message', (payload, chat) => {
                 chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
               });
 
-              bot.on('postback:lang_arabic', (payload, chat) => {
-                chat.set("language", "arabic");
-                chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-                start_chatting;
-              });
-
-              bot.on('postback:lang_english', (payload, chat) => {
-                chat.set("language", "english");
-                chat.say("Welcome to Fasa7ny");
-                start_chatting;
-              });
+              // bot.on('postback:lang_arabic', (payload, chat) => {
+              //   chat.set("language", "arabic");
+              //   chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
+              //   start_chatting;
+              // });
+              //
+              // bot.on('postback:lang_english', (payload, chat) => {
+              //   chat.set("language", "english");
+              //   chat.say("Welcome to Fasa7ny");
+              //   start_chatting;
+              // });
 
 bot.start(process.env.PORT||3000);
 
