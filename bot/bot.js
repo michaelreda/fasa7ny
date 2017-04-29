@@ -110,11 +110,11 @@ start_chatting = bot.on('message', (payload, chat) => {
 
 
                 // if asking for specific activity;
-                const questionActivityName = "Ok being a decisive is good, tell us the name of this activity..";
+                const questionActivityName = isEnglish?"Ok being a decisive is good, tell us the name of this activity..":"طيب اكتبلى اسمها لوسمحت";
 
                 const answerActivityName = (payload, convo) => {
                   const text = payload.message.text;
-                  convo.say(`Ok I am searching for you now what i know about ${text}!`);
+                  convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
 
                   request
                   .get('https://fasa7ny.herokuapp.com:'+process.env.PORT+'/search_for_activities/'+text+'/_/')
@@ -140,14 +140,14 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                 // if filtering;
                 const questionFilter = {
-                  text: `Ok Please specify which type of filters do you prefer..`,
+                  text: isEnglish?`Ok Please specify which type of filters do you prefer..`:`اختار تحب ندورلك على أساس ايه؟`,
                   quickReplies: [
-                                 {title:'I don\'t care',payload: 'filter_no'},
-                                 {title:'Day',payload: 'filter_day'},
-                                 {title:'Price',payload: 'filter_price'},
-                                 {title:'Offers',payload: 'filter_offer'},
-                                 {title:'Theme',payload: 'filter_theme'},
-                                 {title:'Rating',payload: 'filter_rating'}
+                                 {title:isEnglish?'I don\'t care':'مش فارقة',payload: 'filter_no'},
+                                 {title:isEnglish?'Day':'اليوم',payload: 'filter_day'},
+                                 {title:isEnglish?'Price':'السعر',payload: 'filter_price'},
+                                 {title:isEnglish?'Offers':'العروض',payload: 'filter_offer'},
+                                 {title:isEnglish?'Theme':'النوع',payload: 'filter_theme'},
+                                 {title:isEnglish?'Rating':'التقييم',payload: 'filter_rating'}
                                ]
                 };
 
@@ -166,14 +166,14 @@ start_chatting = bot.on('message', (payload, chat) => {
                     event: 'quick_reply:filter_day',
                     callback: () => {
                       convo.say({
-                        text: `Ok Please specify which day`,
-                        quickReplies: [{title:'Saturday',payload: 'filter_sat'},
-                                       {title:'Sunday',payload: 'filter_sun'},
-                                       {title:'Monday',payload: 'filter_mon'},
-                                       {title:'Tuesday',payload: 'filter_tue'},
-                                       {title:'Wednesday',payload: 'filter_wed'},
-                                       {title:'Thursday',payload: 'filter_thu'},
-                                       {title:'Friday',payload: 'filter_fri'}
+                        text: isEnglish?`Ok Please specify which day`:`طيب اختار اليوم`,
+                        quickReplies: [{title:isEnglish?'Saturday':'سبت',payload: 'filter_sat'},
+                                       {title:isEnglish?'Sunday':'أحد',payload: 'filter_sun'},
+                                       {title:isEnglish?'Monday':'اثنين',payload: 'filter_mon'},
+                                       {title:isEnglish?'Tuesday':'ثلاثاء',payload: 'filter_tue'},
+                                       {title:isEnglish?'Wednesday':'أربعاء',payload: 'filter_wed'},
+                                       {title:isEnglish?'Thursday':'خميس',payload: 'filter_thu'},
+                                       {title:isEnglish?'Friday':'جمعة',payload: 'filter_fri'}
                                      ]
                       });
                     }
@@ -182,7 +182,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     event: 'quick_reply:filter_price',
                     callback: () => {
                       convo.say({
-                        text: `Ok Please specify which price category`,
+                        text: isEnglish?`Ok Please specify which price category`:`اختار أى فئة أسعار`,
                         quickReplies: [{title:'-50',payload: 'filter_50'},
                                        {title:'50-100',payload: 'filter_50_100'},
                                        {title:'100-200',payload: 'filter_100_200'},
@@ -201,13 +201,13 @@ start_chatting = bot.on('message', (payload, chat) => {
                     event: 'quick_reply:filter_theme',
                     callback: () => {
                       convo.say({
-                        text: `Ok Please select one of the themes`,
-                        quickReplies: [{title:'thriller',payload: 'filter_thriller'},
-                                       {title:'relaxing',payload: 'filter_relaxing'},
-                                       {title:'horror',payload: 'filter_horror'},
-                                       {title:'clubs',payload: 'filter_clubs'},
-                                       {title:'educational',payload: 'filter_educational'},
-                                       {title:'children',payload: 'filter_children'}
+                        text: isEnglish?`Ok Please select one of the themes`:`اختار النوع`,
+                        quickReplies: [{title:isEnglish?'thriller':'تشويق وإثارة',payload: 'filter_thriller'},
+                                       {title:isEnglish?'relaxing':'استجمام',payload: 'filter_relaxing'},
+                                       {title:isEnglish?'horror':'رعب',payload: 'filter_horror'},
+                                       {title:isEnglish?'clubs':'أندية',payload: 'filter_clubs'},
+                                       {title:isEnglish?'educational':'تعليمى',payload: 'filter_educational'},
+                                       {title:isEnglish?'children':'أطفال',payload: 'filter_children'}
                                      ]
                       });
                     }
@@ -216,7 +216,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     event: 'quick_reply:filter_rating',
                     callback: () => {
                       convo.say({
-                        text: `Ok Please specify which rating category`,
+                        text: isEnglish?`Ok Please specify which rating category`:`تحب التقييم يبقى أكتر من كام؟`,
                         quickReplies: [{title:'1+',payload: 'filter_1'},
                                        {title:'2+',payload: 'filter_2'},
                                        {title:'3+',payload: 'filter_3'},
