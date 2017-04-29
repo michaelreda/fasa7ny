@@ -309,8 +309,8 @@ bot.setPersistentMenu([
 
 bot.on('postback:about_us', (payload, chat) => {
   chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
-  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
-  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
+  // chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
+  // chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
 });
 
 bot.on('postback:lang_arabic', (payload, chat) => {
@@ -327,7 +327,7 @@ bot.on('postback:lang_english', (payload, chat) => {
   update = {language:"english"},
   options = { upsert: true, new: true, setDefaultsOnInsert: true };
   BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-    chat.say("Welcome to Fasa7ny, Now I can speak English with you ;)");
+    chat.say("Now I can speak English with you ;)");
   });
 });
 
