@@ -71,7 +71,37 @@ start_chatting = bot.on('message', (payload, chat) => {
 
               chat.conversation((convo) => {
 
+                menu_payload = (menu_postback)=>{
+                  if(menu_postback=='about_us'){
+                    convo.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`).then(() => {
+                  		convo.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`).then(() => {
+                    		convo.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`).then(()=>{
+                          convo.end();
+                        });
 
+                    	});
+                  	});
+                  }else if(menu_postback=='lang_arabic'){
+                    var query = {facebookID:payload.sender.id},
+                    update = {language:"arabic"},
+                    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+                    BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+                      convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
+                    		convo.ask(question1, answer1, callbacks1);
+                    	});
+
+                    });
+                  }else if(menu_postback=='lang_english'){
+                    var query = {facebookID:payload.sender.id},
+                    update = {language:"english"},
+                    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+                    BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+                      convo.say("Now I can speak English with you ;)").then(() => {
+                    		convo.ask(question1, answer1, callbacks1);
+                    	});
+                    });
+                  }
+                }
 
 
                 // askUserSpecificActivityOrNot(convo);
@@ -191,8 +221,12 @@ start_chatting = bot.on('message', (payload, chat) => {
                                      ]
                       },(payload,convo)=>{
                         console.log(payload);
+                        if(payload.postback)
+                          menu_payload(payload.postback.payload,convo);
+                        else  {
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
                         convo.say(pb_payload.day);
+                      }
                       });
                     }
                   },
@@ -373,6 +407,8 @@ bot.setPersistentMenu([
   //   url: 'http://purple.com'
   // }
 ], false);
+
+
 
 bot.on('postback:about_us', (payload, chat) => {
   chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`).then(() => {
