@@ -80,8 +80,8 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                 const question1 = {
                   text: isEnglish?`Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`:`أهلا بيك بتدور على حاجة معينة ولا لأ؟`,
-                  buttons: [{type: 'postback',title:isEnglish?'yes':'أه',payload: 'search_for_specific_activity'}
-                            , {type: 'postback',title:isEnglish?'no':'لأ',payload: 'search_for_activities'}]
+                  quickReplies: [{title:isEnglish?'yes':'أه',payload: 'search_for_specific_activity'}
+                            , {title:isEnglish?'no':'لأ',payload: 'search_for_activities'}]
                 };
 
                 const answer1 = (payload, convo) => {
@@ -91,12 +91,12 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                 const callbacks1 = [
                   {
-                    event: 'postback:search_for_specific_activity',
+                    event: 'quick_reply:search_for_specific_activity',
                     callback: () => {
                       convo.ask(questionActivityName, answerActivityName);}
                   },
                   {
-                    event: 'postback:search_for_activities',
+                    event: 'quick_reply:search_for_activities',
                     callback: () => { convo.ask(questionFilter, answerFilter,callbacksFilter);}
                   }
                 ];
