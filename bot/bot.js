@@ -66,6 +66,16 @@ start_chatting = bot.on('message', (payload, chat) => {
               chat.conversation((convo) => {
                 // askUserSpecificActivityOrNot(convo);
 
+
+                bot.on('postback:about_us', (payload, chat) => {
+                  chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
+                  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
+                  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
+                  convo.end();
+                });
+
+
+
                 //first question
 
 
