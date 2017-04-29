@@ -37,19 +37,21 @@ bot.on('postback:lang_arabic', (payload, chat) => {
   options = { upsert: true, new: true, setDefaultsOnInsert: true };
   BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
     chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-    start_chatting("hi");
   });
 });
 
 bot.on('postback:lang_english', (payload, chat) => {
-  var query = {facebookID:payload.sender.id},
+    update_language_english(payload.sender.id,chat);
+});
+
+update_language_english = function(senderID,chat){
+  var query = {facebookID:senderID},
   update = {language:"english"},
   options = { upsert: true, new: true, setDefaultsOnInsert: true };
   BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
     chat.say("Welcome to Fasa7ny, Now I can speak English with you ;)");
-    start_chatting;
   });
-});
+}
 
 start_chatting = bot.on('message', (payload, chat) => {
   const text = payload.message.text;
@@ -113,6 +115,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                 };
 
                 const callbacks1 = [
+                  {
+                    event: 'postback:lang_english',
+                    callback: update_language_english(botUser.facebookID,convo)
+                  },
                   {
                     event: 'postback:search_for_specific_activity',
                     callback: () => {
