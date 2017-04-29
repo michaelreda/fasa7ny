@@ -190,10 +190,9 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                     })},
                                      ]
                       },(payload,convo)=>{
-                        const pb_payload = JSON.parse(payload.postback.payload);
                         console.log(JSON.parse(payload));
                         console.log(JSON.parse(payload.quick_reply));
-                        convo.say(pb_payload.day);
+                        // convo.say(pb_payload.day);
                       });
                     }
                   },
