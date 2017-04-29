@@ -190,6 +190,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                     })},
                                      ]
                       },(payload,convo)=>{
+                        console.log(payload);
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
                         convo.say(pb_payload.day);
                       });
@@ -232,29 +233,57 @@ start_chatting = bot.on('message', (payload, chat) => {
                   {
                     event: 'quick_reply:filter_theme',
                     callback: () => {
-                      convo.say({
+                      convo.ask({
                         text: isEnglish?`Ok Please select one of the themes`:`اختار النوع`,
-                        quickReplies: [{title:isEnglish?'thriller':'تشويق وإثارة',payload: 'filter_thriller'},
-                                       {title:isEnglish?'relaxing':'استجمام',payload: 'filter_relaxing'},
-                                       {title:isEnglish?'horror':'رعب',payload: 'filter_horror'},
-                                       {title:isEnglish?'clubs':'أندية',payload: 'filter_clubs'},
-                                       {title:isEnglish?'educational':'تعليمى',payload: 'filter_educational'},
-                                       {title:isEnglish?'children':'أطفال',payload: 'filter_children'}
+                        quickReplies: [{title:isEnglish?'thriller':'تشويق وإثارة',payload: JSON.stringify({
+                                                                                                  theme:'thriller'
+                                                                                                             })},
+                                       {title:isEnglish?'relaxing':'استجمام',payload: JSON.stringify({
+                                                                                                  theme:'relaxing'
+                                                                                                             })},
+                                       {title:isEnglish?'horror':'رعب',payload: JSON.stringify({
+                                                                                                  theme:'horror'
+                                                                                                             })},
+                                       {title:isEnglish?'clubs':'أندية',payload: JSON.stringify({
+                                                                                                  theme:'clubs'
+                                                                                                             })},
+                                       {title:isEnglish?'educational':'تعليمى',payload: JSON.stringify({
+                                                                                                  theme:'educational'
+                                                                                                             })},
+                                       {title:isEnglish?'children':'أطفال',payload: JSON.stringify({
+                                                                                                  theme:'children'
+                                                                                                             })},
                                      ]
+                      },(payload,convo)=>{
+                        const pb_payload=JSON.parse(payload.message.quick_reply.payload);
+                        convo.say(pb_payload.theme);
                       });
                     }
                   },
                   {
                     event: 'quick_reply:filter_rating',
                     callback: () => {
-                      convo.say({
+                      convo.ask({
                         text: isEnglish?`Ok Please specify which rating category`:`تحب التقييم يبقى أكتر من كام؟`,
-                        quickReplies: [{title:'1+',payload: 'filter_1'},
-                                       {title:'2+',payload: 'filter_2'},
-                                       {title:'3+',payload: 'filter_3'},
-                                       {title:'4+',payload: 'filter_4'},
-                                       {title:'5', payload: 'filter_5'}
+                        quickReplies: [{title:'1+',payload: JSON.stringify({
+                                                                          rating:'1'
+                                                                              })},
+                                       {title:'2+',payload: JSON.stringify({
+                                                                          rating:'2'
+                                                                               })},
+                                       {title:'3+',payload: JSON.stringify({
+                                                                          rating:'3'
+                                                                               })},
+                                       {title:'4+',payload: JSON.stringify({
+                                                                          rating:'4'
+                                                                               })},
+                                       {title:'5',payload: JSON.stringify({
+                                                                          rating:'5'
+                                                                               })},
                                      ]
+                      },(payload,convo)=>{
+                        const pb_payload=JSON.parse(payload.message.quick_reply.payload);
+                        convo.say(pb_payload.theme);
                       });
                     }
                   }
