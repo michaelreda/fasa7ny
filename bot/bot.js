@@ -25,33 +25,8 @@ const bot = new BootBot({
   appSecret:'7adeb0686283b3427bda311cd0eea139'
 });
 
-bot.on('postback:about_us', (payload, chat) => {
-  chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
-  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
-  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
-});
 
-bot.on('postback:lang_arabic', (payload, chat) => {
-  var query = {facebookID:payload.sender.id},
-  update = {language:"arabic"},
-  options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-    chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-  });
-});
 
-bot.on('postback:lang_english', (payload, chat) => {
-    update_language_english(payload.sender.id,chat);
-});
-
-update_language_english = function(senderID,chat){
-  var query = {facebookID:senderID},
-  update = {language:"english"},
-  options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-    chat.say("Welcome to Fasa7ny, Now I can speak English with you ;)");
-  });
-}
 
 start_chatting = bot.on('message', (payload, chat) => {
   const text = payload.message.text;
@@ -76,7 +51,7 @@ start_chatting = bot.on('message', (payload, chat) => {
       if(err)
       console.log(err)
       else{
-
+        isEnglish = botUser.language!="arabic"?false:true;
         //if it was saved as a bot user before check if it's an active user
         //if it's not an active user add it as a new active user;
         //if it's already an active user update lastResponseAt
@@ -104,9 +79,9 @@ start_chatting = bot.on('message', (payload, chat) => {
 
 
                 const question1 = {
-                  text: `Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`,
-                  buttons: [{type: 'postback',title:'yes',payload: 'search_for_specific_activity'}
-                            , {type: 'postback',title:'no',payload: 'search_for_activities'}]
+                  text: isEnglish?`Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`:`أهلا بيك بتدور على حاجة معينة ولا لأ؟`,
+                  buttons: [{type: 'postback',title:isEnglish?'yes':'أه',payload: 'search_for_specific_activity'}
+                            , {type: 'postback',title:isEnglish?'no':'لأ',payload: 'search_for_activities'}]
                 };
 
                 const answer1 = (payload, convo) => {
@@ -115,10 +90,6 @@ start_chatting = bot.on('message', (payload, chat) => {
                 };
 
                 const callbacks1 = [
-                  {
-                    event: 'postback:lang_english',
-                    callback: update_language_english(botUser.facebookID,convo)
-                  },
                   {
                     event: 'postback:search_for_specific_activity',
                     callback: () => {
@@ -336,7 +307,29 @@ bot.setPersistentMenu([
   }
 ], false);
 
+bot.hear('postback:about_us', (payload, chat) => {
+  chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
+  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
+  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
+});
 
+bot.on('postback:lang_arabic', (payload, chat) => {
+  var query = {facebookID:payload.sender.id},
+  update = {language:"arabic"},
+  options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+    chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
+  });
+});
+
+bot.on('postback:lang_english', (payload, chat) => {
+  var query = {facebookID:payload.sender.id},
+  update = {language:"english"},
+  options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+    chat.say("Welcome to Fasa7ny, Now I can speak English with you ;)");
+  });
+});
 
 bot.start(process.env.PORT||3000);
 
