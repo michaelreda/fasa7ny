@@ -28,6 +28,9 @@ const bot = new BootBot({
 start_chatting = bot.on('message', (payload, chat) => {
   const text = payload.message.text;
   var chat_user;
+
+
+
   chat.getUserProfile().then((user) => {
     chat_user= user;
     console.log("message----------------------------------------------------") ;
@@ -65,24 +68,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
               chat.conversation((convo) => {
 
-                convo.on('postback:lang_arabic', (payload, chat) => {
-                  chat.set("language", "arabic");
-                  chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-                  start_chatting;
-                });
 
-                convo.on('postback:lang_english', (payload, chat) => {
-                  chat.set("language", "english");
-                  chat.say("Welcome to Fasa7ny");
-                  start_chatting;
-                });
-
-                convo.on('postback:about_us', (payload, chat) => {
-                  chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
-                  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
-                  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
-                  convo.end();
-                });
 
 
                 // askUserSpecificActivityOrNot(convo);
@@ -240,7 +226,6 @@ start_chatting = bot.on('message', (payload, chat) => {
                 ];
                 //end filtering ;
 
-                convo.end();
 
               });
 
@@ -325,17 +310,21 @@ start_chatting = bot.on('message', (payload, chat) => {
                 chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
               });
 
-              // bot.on('postback:lang_arabic', (payload, chat) => {
-              //   chat.set("language", "arabic");
-              //   chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-              //   start_chatting;
-              // });
-              //
-              // bot.on('postback:lang_english', (payload, chat) => {
-              //   chat.set("language", "english");
-              //   chat.say("Welcome to Fasa7ny");
-              //   start_chatting;
-              // });
+              bot.on('postback:lang_arabic', (payload, chat) => {
+                var query = {facebookID:payload.sender.id},
+                update = {language:"arabic"},
+                options = { upsert: true, new: true, setDefaultsOnInsert: true };
+                BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+                  chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
+                  start_chatting;
+                });
+              });
+
+              bot.on('postback:lang_english', (payload, chat) => {
+
+                chat.say("Welcome to Fasa7ny");
+                start_chatting;
+              });
 
 bot.start(process.env.PORT||3000);
 
