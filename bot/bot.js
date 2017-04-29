@@ -198,13 +198,28 @@ start_chatting = bot.on('message', (payload, chat) => {
                   {
                     event: 'quick_reply:filter_price',
                     callback: () => {
-                      convo.say({
+                      convo.ask({
                         text: isEnglish?`Ok Please specify which price category`:`اختار أى فئة أسعار`,
-                        quickReplies: [{title:'-50',payload: 'filter_50'},
-                                       {title:'50-100',payload: 'filter_50_100'},
-                                       {title:'100-200',payload: 'filter_100_200'},
-                                       {title:'200+',payload: 'filter_200'}
+                        quickReplies: [{title:'-50',payload: JSON.stringify({
+                                                                        low: '0',
+                                                                        high: '50'
+                                                                                    })},
+                                       {title:'50-100',payload: JSON.stringify({
+                                                                        low: '50',
+                                                                        high: '100'
+                                                                                    })},
+                                       {title:'100-200',payload: JSON.stringify({
+                                                                         low: '100',
+                                                                         high: '200'
+                                                                                    })},
+                                       {title:'200+',payload: JSON.stringify({
+                                                                         low:'200',
+                                                                         high: '9999999'
+                                                                                    })},
                                      ]
+                      },(payload,convo)=>{
+                        const pb_payload=JSON.parse(payload.message.quick_reply.payload);
+                        convo.say(pb_payload.low + " "+ pb_payload.high);
                       });
                     }
                   },
