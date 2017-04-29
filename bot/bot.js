@@ -165,16 +165,35 @@ start_chatting = bot.on('message', (payload, chat) => {
                   {
                     event: 'quick_reply:filter_day',
                     callback: () => {
-                      convo.say({
+                      convo.ask({
                         text: isEnglish?`Ok Please specify which day`:`طيب اختار اليوم`,
-                        quickReplies: [{title:isEnglish?'Saturday':'سبت',payload: 'filter_sat'},
-                                       {title:isEnglish?'Sunday':'أحد',payload: 'filter_sun'},
-                                       {title:isEnglish?'Monday':'اثنين',payload: 'filter_mon'},
-                                       {title:isEnglish?'Tuesday':'ثلاثاء',payload: 'filter_tue'},
-                                       {title:isEnglish?'Wednesday':'أربعاء',payload: 'filter_wed'},
-                                       {title:isEnglish?'Thursday':'خميس',payload: 'filter_thu'},
-                                       {title:isEnglish?'Friday':'جمعة',payload: 'filter_fri'}
+                        quickReplies: [{title:isEnglish?'Saturday':'سبت',payload: JSON.stringify({
+                                                                                        day: 'Saturday'
+                                                                                    })},
+                                       {title:isEnglish?'Sunday':'أحد',payload: JSON.stringify({
+                                                                                        day: 'Sunday'
+                                                                                    })},
+                                       {title:isEnglish?'Monday':'اثنين',payload: JSON.stringify({
+                                                                                        day: 'Monday'
+                                                                                    })},
+                                       {title:isEnglish?'Tuesday':'ثلاثاء',payload: JSON.stringify({
+                                                                                        day: 'Tuesday'
+                                                                                    })},
+                                       {title:isEnglish?'Wednesday':'أربعاء',payload: JSON.stringify({
+                                                                                        day: 'Wednesday'
+                                                                                    })},
+                                       {title:isEnglish?'Thursday':'خميس',payload: JSON.stringify({
+                                                                                        day: 'Thursday'
+                                                                                    })},
+                                       {title:isEnglish?'Friday':'جمعة',payload: JSON.stringify({
+                                                                                        day: 'Friday'
+                                                                                    })},
                                      ]
+                      },(payload,convo)=>{
+                        const pb_payload = JSON.parse(payload.postback.payload);
+                        console.log(JSON.parse(payload));
+                        console.log(JSON.parse(payload.quick_reply));
+                        convo.say(pb_payload.day);
                       });
                     }
                   },
@@ -304,11 +323,13 @@ bot.setPersistentMenu([
     title: 'About us مين احنا',
     type: 'postback',
     payload: 'about_us'
-  },{
-    title: 'Want to see your activity here?',
-    type: 'web_url',
-    url: 'http://purple.com'
   }
+  // ,
+  // {
+  //   title: 'Want to see your activity here?',
+  //   type: 'web_url',
+  //   url: 'http://purple.com'
+  // }
 ], false);
 
 bot.on('postback:about_us', (payload, chat) => {
