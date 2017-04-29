@@ -304,6 +304,10 @@ bot.setPersistentMenu([
     title: 'About us مين احنا',
     type: 'postback',
     payload: 'about_us'
+  },{
+    title: 'Want to see your activity here?',
+    type: 'web_url',
+    url: 'http://purple.com'
   }
 ], false);
 
