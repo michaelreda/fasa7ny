@@ -25,6 +25,28 @@ const bot = new BootBot({
   appSecret:'7adeb0686283b3427bda311cd0eea139'
 });
 
+bot.on('postback:about_us', (payload, chat) => {
+  chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
+  chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
+  chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
+});
+
+bot.on('postback:lang_arabic', (payload, chat) => {
+  var query = {facebookID:payload.sender.id},
+  update = {language:"arabic"},
+  options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+    chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
+    start_chatting;
+  });
+});
+
+bot.on('postback:lang_english', (payload, chat) => {
+
+  chat.say("Welcome to Fasa7ny");
+  start_chatting;
+});
+
 start_chatting = bot.on('message', (payload, chat) => {
   const text = payload.message.text;
   var chat_user;
@@ -275,56 +297,36 @@ start_chatting = bot.on('message', (payload, chat) => {
 
 //adding menu buttons
 
-              bot.setPersistentMenu([
-                {
-                  title: 'Language اللغة',
-                  type: 'nested',
-                  call_to_actions: [
-                    {
-                      title: 'العربية',
-                      type: 'postback',
-                      payload: 'lang_arabic'
-                    },
-                    {
-                      title: 'English',
-                      type: 'postback',
-                      payload: 'lang_english'
-                    }
-                  ]
-                },
-                {
-                  title: 'Website الموقع',
-                  type: 'web_url',
-                  url: 'http://purple.com'
-                },
-                {
-                  title: 'About us مين احنا',
-                  type: 'postback',
-                  payload: 'about_us'
-                }
-              ], false);
+bot.setPersistentMenu([
+  {
+    title: 'Language اللغة',
+    type: 'nested',
+    call_to_actions: [
+      {
+        title: 'العربية',
+        type: 'postback',
+        payload: 'lang_arabic'
+      },
+      {
+        title: 'English',
+        type: 'postback',
+        payload: 'lang_english'
+      }
+    ]
+  },
+  {
+    title: 'Website الموقع',
+    type: 'web_url',
+    url: 'http://purple.com'
+  },
+  {
+    title: 'About us مين احنا',
+    type: 'postback',
+    payload: 'about_us'
+  }
+], false);
 
-              bot.on('postback:about_us', (payload, chat) => {
-                chat.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`);
-                chat.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`);
-                chat.say(`Others know about an activity but have no idea how to know more about it, where to find it or check some reviews about it. Some innovative ideas for activities are still ambiguous to many people.`);
-              });
 
-              bot.on('postback:lang_arabic', (payload, chat) => {
-                var query = {facebookID:payload.sender.id},
-                update = {language:"arabic"},
-                options = { upsert: true, new: true, setDefaultsOnInsert: true };
-                BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-                  chat.say("أهلا بك فى فسحنى تم تغيير اللغة");
-                  start_chatting;
-                });
-              });
-
-              bot.on('postback:lang_english', (payload, chat) => {
-
-                chat.say("Welcome to Fasa7ny");
-                start_chatting;
-              });
 
 bot.start(process.env.PORT||3000);
 
