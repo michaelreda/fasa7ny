@@ -1,7 +1,10 @@
+var express= require('express');
+var app=express();
 var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
 var DB_URI =  "mongodb://admin:admin@ds147920.mlab.com:47920/fasa7ny";
 const BootBot = require('bootbot');
+var mongoose = require('mongoose');
 var schedule = require('node-schedule');
 var request = require('request');
 
@@ -10,11 +13,9 @@ let BotUser = require('../app/models/BOT/botUser.js');
 let ActiveUser = require('../app/models/BOT/activeUser.js');
 let Scenario = require('../app/models/BOT/scenario.js');
 
-// app.use(bodyParser.urlencoded({extended:false})); //this line must be on top of app config
-// app.use(bodyParser.json());
-// mongoose.connect(DB_URI,function(err){
-//   console.log("connecting to global db..");
-// });
+app.use(bodyParser.urlencoded({extended:false})); //this line must be on top of app config
+app.use(bodyParser.json());
+
 
 const bot = new BootBot({
   accessToken: 'EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
