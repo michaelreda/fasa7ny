@@ -592,7 +592,76 @@ start_chatting = bot.on('message', (payload, chat) => {
                           menu_payload(payload.postback.payload,convo);
                         else{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        convo.say(pb_payload.rating);}
+                        //convo.say(pb_payload.rating);
+
+                        request
+                        .get('https://glacial-hollows-60845.herokuapp.com/get_filtered_activities/rating/'+pb_payload.rating+'/'
+                        , function(error, response, resbody) {
+
+                          const body=JSON.parse(resbody);
+                          // console.log(body);
+                          if(body.activities!=undefined && body.activities.length!=0){
+                            elements=[];
+                            for(var i=0;i<5 && i<body.activities.length;i++){
+                              var lat= parseFloat((body.activities[i].location.split(","))[0]);
+                              var long= parseFloat((body.activities[i].location.split(","))[1]);
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
+                              "Type: "+body.activities[i].type+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "offers: "+ offers;
+
+                              arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
+                              "النوع: "+body.activities[i].type+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "الخصم: "+ offers;
+
+                              elements.push({
+                                "title":body.activities[i].title,
+                                "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[i].media[0],
+                                "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
+                                "buttons":[
+                                  {
+                                    "type":"web_url",
+                                    "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[i]._id,
+                                    "title":isEnglish?"More info":"المزيد من المعلومات"
+                                  }
+                                  ,{
+                                    "type":"web_url",
+                                    "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                                    "title":isEnglish?"Get directions":"اعرف الطريق"
+                                  }
+                                  ,{
+                                    "type":"web_url",
+                                    "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[i]._id,
+                                    "title":isEnglish?"Book Now":"احجز الأن"
+                                  }
+                                ]
+                              });
+                            }
+                            convo.sendGenericTemplate(elements).then(()=>{
+                              convo.ask({
+                                text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
+                                buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
+                                         {type:'web_url',title: isEnglish?"More Offers?":"فُسح أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/filteredActivities/rating/'+pb_payload.rating+'/'}]
+                              },(payload, convo)=>{},[{
+                                event: 'postback:search_again',
+                                callback: () => {convo.end();start_convo();}
+                              }])
+                              convo.end();
+                            })
+
+                          }else{
+                            convo.say(isEnglish?"sorry, I didn't find this activity, but I'll help you get similar activities":"أسف لم أجدها ولكنى سأساعدك فى الحصول على فسحة مشابهة").then(()=>{
+                              convo.ask(questionFilter, answerFilter,callbacksFilter);
+                            })
+                          }
+                        })
+                        .on('error', function(err) {
+                          console.log(err)
+                        })
+
+                        }
                       });
                     }
                   }
