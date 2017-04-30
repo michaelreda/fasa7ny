@@ -26,7 +26,7 @@ const bot = new BootBot({
 });
 
 
-
+isEnglish = true;
 
 start_chatting = bot.on('message', (payload, chat) => {
   const text = payload.message.text;
@@ -82,22 +82,24 @@ start_chatting = bot.on('message', (payload, chat) => {
                     	});
                   	});
                   }else if(menu_postback=='lang_arabic'){
+                    isEnglish= false;
                     var query = {facebookID:payload.sender.id},
                     update = {language:"arabic"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-                      isEnglish= false;
+
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
                     		convo.ask(question1, answer1, callbacks1);
                     	});
 
                     });
                   }else if(menu_postback=='lang_english'){
+                    isEnglish=true;
                     var query = {facebookID:payload.sender.id},
                     update = {language:"english"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-                      isEnglish=true;
+
                       convo.say("Now I can speak English with you ;)").then(() => {
                     		convo.ask(question1, answer1, callbacks1);
                     	});
