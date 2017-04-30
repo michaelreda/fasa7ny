@@ -86,8 +86,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                     update = {language:"arabic"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+                      isEnglish= false;
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
-                        isEnglish= false;
                     		convo.ask(question1, answer1, callbacks1);
                     	});
 
@@ -97,8 +97,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                     update = {language:"english"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
+                      isEnglish=true;
                       convo.say("Now I can speak English with you ;)").then(() => {
-                        isEnglish=true;
                     		convo.ask(question1, answer1, callbacks1);
                     	});
                     });
@@ -154,7 +154,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com'+'/search_for_activities/'+text+'/_/')
                   .on('response', function(response) {
-                    console.log(response.body);
+                    console.log(response);
                   })
                   .on('error', function(err) {
                     console.log(err)
