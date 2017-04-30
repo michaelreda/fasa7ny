@@ -163,13 +163,16 @@ start_chatting = bot.on('message', (payload, chat) => {
                     const body=JSON.parse(resbody);
                     var lat= parseFloat((body.activities[0].location.split(","))[0]);
                     var long= parseFloat((body.activities[0].location.split(","))[1]);
+                    offers=body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                    englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"<br>"+
+                                "Type: "+body.activities[0].type+"<br>"+
+                                "Price per person: "+body.activities[0].prices[0].prices+"<br>"+
+                                "offers: "+ offers;
+
                     elements.push({
                       "title":body.activities[0].title,
                       "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
-                      "subtitle":"Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"<br>"+
-                                  "Type: "+body.activities[0].type+
-                                  "Price per person: "+body.activities[0].prices[0].prices+
-                                  "offers: "+body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-",
+                      "subtitle": englishSubTitle,
                       "buttons":[
                         {
                           "type":"web_url",
