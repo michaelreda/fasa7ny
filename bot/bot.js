@@ -154,6 +154,9 @@ start_chatting = bot.on('message', (payload, chat) => {
                 const questionActivityName = isEnglish?"Ok being a decisive is good, tell us the name of this activity..":"طيب اكتبلى اسمها لوسمحت";
 
                 const answerActivityName = (payload, convo) => {
+                  if(payload.postback)
+                    menu_payload(payload.postback.payload,convo);
+
                   const text = payload.message.text;
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
                   request
@@ -169,10 +172,15 @@ start_chatting = bot.on('message', (payload, chat) => {
                                 "Price per person: "+body.activities[0].prices[0].prices+"\n"+
                                 "offers: "+ offers;
 
+                    arabicSubTitle="التقييم: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
+                                    "النوع: "+body.activities[0].type+"\n"+
+                                    "السعر للشخص: "+body.activities[0].prices[0].prices+"\n"+
+                                    "الخصم: "+ offers;
+
                     elements.push({
                       "title":body.activities[0].title,
                       "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
-                      "subtitle": englishSubTitle,
+                      "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
                       "buttons":[
                         {
                           "type":"web_url",
@@ -196,6 +204,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                   .on('error', function(err) {
                     console.log(err)
                   })
+                  convo.end();
                 }
 
 
@@ -444,7 +453,7 @@ bot.setPersistentMenu([
   {
     title: 'Website الموقع',
     type: 'web_url',
-    url: 'http://purple.com'
+    url: 'https://glacial-hollows-60845.herokuapp.com'
   },
   {
     title: 'About us مين احنا',
