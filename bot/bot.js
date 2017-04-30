@@ -602,7 +602,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                           // console.log(body);
                           if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
-                            for(var i=0;i<5 && i<body.activities.length;i++){
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            for(var i=rand>=0?rand:0;i<5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
