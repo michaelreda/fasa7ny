@@ -159,8 +159,28 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, body) {
-                    console.log(response);
                     console.log(body);
+                    elements=[];
+
+                    var lat= parseFloat((body.activities[i].location.split(","))[0]);
+                    var long= parseFloat((body.activities[i].location.split(","))[1]);
+                    elements.push({
+                      "title":body.activities[0].title,
+                      "image_url":"https://cdn.pixabay.com/photo/2016/05/17/10/04/boy-1397818_960_720.jpg",
+                      "subtitle":"Rating: "+Math.round( body.acitivities[0].rating * 10 ) / 10,
+                    },
+                    "buttons":[
+                      {
+                        "type":"web_url",
+                        "url":"https://glacial-hollows-60845.herokuapp.com/activity/"+body.activities[0]._id,
+                        "title":"More info"
+                      },{
+                        "type":"web_url",
+                        "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                        "title":"Get directions"
+                      }
+                    ]   );
+                    convo.sendGenericTemplate(elements);
                   })
                   .on('error', function(err) {
                     console.log(err)
