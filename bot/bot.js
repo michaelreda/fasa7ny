@@ -158,8 +158,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
 
                   request
-                  .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/')
-                  .on('response', function(error, response, body) {
+                  .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, body) {
                     console.log(response);
                     console.log(body);
                   })
