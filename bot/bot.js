@@ -87,6 +87,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
+                        isEnglish= false;
                     		convo.ask(question1, answer1, callbacks1);
                     	});
 
@@ -97,6 +98,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
                       convo.say("Now I can speak English with you ;)").then(() => {
+                        isEnglish=true;
                     		convo.ask(question1, answer1, callbacks1);
                     	});
                     });
@@ -115,8 +117,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                 };
 
                 const answer1 = (payload, convo) => {
-                  // const text = payload.message.text;
-                  // convo.say(`Oh, you like ${text}!`);
+                  if(payload.postback)
+                    menu_payload(payload.postback.payload,convo);
                 };
 
                 const callbacks1 = [
@@ -127,7 +129,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                   },
                   {
                     event: 'quick_reply:search_for_activities',
-                    callback: () => { convo.ask(questionFilter, answerFilter,callbacksFilter);}
+                    callback: () => {
+
+                      convo.ask(questionFilter, answerFilter,callbacksFilter);
+                    }
                   }
                 ];
 
@@ -149,9 +154,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com'+'/search_for_activities/'+text+'/_/')
                   .on('response', function(response) {
-                    console.log(response.statusCode);
                     console.log(response.body);
-                    console.log(response);
                   })
                   .on('error', function(err) {
                     console.log(err)
@@ -182,7 +185,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                 };
 
                 const answerFilter = (payload, convo) => {
-
+                  if(payload.postback)
+                    menu_payload(payload.postback.payload,convo);
                 };
 
                 const callbacksFilter = [
@@ -253,15 +257,21 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                     })},
                                      ]
                       },(payload,convo)=>{
+                        if(payload.postback)
+                          menu_payload(payload.postback.payload,convo);
+                          else{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        convo.say(pb_payload.low + " "+ pb_payload.high);
+                        convo.say(pb_payload.low + " "+ pb_payload.high);}
                       });
                     }
                   },
                   {
                     event: 'quick_reply:filter_offer',
                     callback: () => {
-                      convo.say("offers should be displayed");
+                      if(payload.postback)
+                        menu_payload(payload.postback.payload,convo);
+                      else{
+                      convo.say("offers should be displayed");}
                     }
                   },
                   {
@@ -289,8 +299,11 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                                              })},
                                      ]
                       },(payload,convo)=>{
+                        if(payload.postback)
+                          menu_payload(payload.postback.payload,convo);
+                        else{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        convo.say(pb_payload.theme);
+                        convo.say(pb_payload.theme);}
                       });
                     }
                   },
@@ -316,8 +329,11 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                })},
                                      ]
                       },(payload,convo)=>{
+                        if(payload.postback)
+                          menu_payload(payload.postback.payload,convo);
+                        else{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        convo.say(pb_payload.rating);
+                        convo.say(pb_payload.rating);}
                       });
                     }
                   }
