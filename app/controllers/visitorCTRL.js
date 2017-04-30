@@ -503,41 +503,45 @@ let visitorCTRL={
                         }
                         else{
                           if(!user){
-                            res.send("no account with this username");
+                            res.send({'user':null}); //changed
                           }
-                          randomPass=randomstring.generate(12);//generating randompass
-                          user.password=user.generateHash(randomPass);
-                          user.save(function(err){
-                            if(err){
-                              globalCTRL.addErrorLog(err.message);
-                              res.send(err);
-                            }
-                            else{
-                              var transporter = nodemailer.createTransport(smtpTransport({
-                                service: 'Hotmail',
-                                auth: {
-                                  user: 'fasa7ny@outlook.com', // Your email id
-                                  pass: 'ITJumoynyoj1' // Your password
-                                }
-                              }));
+                          else{
+                            randomPass=randomstring.generate(12);//generating randompass
+                            user.password=user.generateHash(randomPass);
+                            user.save(function(err){
+                              if(err){
+                                globalCTRL.addErrorLog(err.message);
+                                res.send(err);
+                              }
+                              else{
+                                var transporter = nodemailer.createTransport(smtpTransport({
+                                  service: 'Hotmail',
+                                  auth: {
+                                    user: 'fasa7ny@outlook.com', // Your email id
+                                    pass: 'ITJumoynyoj1' // Your password
+                                  }
+                                }));
 
-                              var mailOptions = {
-                                from: 'fasa7ny@outlook.com', // sender address
-                                to: user.email, // list of receivers
-                                subject: 'Change Password', // Subject line
-                                //text: text //, // plaintext body
-                                html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
-                              };
-                              transporter.sendMail(mailOptions, function(error, info){
-                                if(error){
-                                  globalCTRL.addErrorLog(error);
-                                  res.send(error);
-                                }else{
-                                  res.send('Message sent: ' + info.response);
+                                var mailOptions = {
+                                  from: 'fasa7ny@outlook.com', // sender address
+                                  to: user.email, // list of receivers
+                                  subject: 'Change Password', // Subject line
+                                  //text: text //, // plaintext body
+                                  html: "Your password for now is "+randomPass// You can choose to send an HTML body instead
                                 };
-                              });
-                            }
-                          })
+                                transporter.sendMail(mailOptions, function(error, info){
+                                  if(error){
+                                    globalCTRL.addErrorLog(error);
+                                    res.send(error);
+                                  }else{
+                                    console.log(randomPass);
+                                    res.send('Message sent: ' + info.response);
+                                  };
+                                });
+                              }
+                            })
+                          }
+
 
 
                         }

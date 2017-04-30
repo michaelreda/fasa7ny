@@ -40,6 +40,23 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/userBookings.view.html',
     controller:'UserBookingsController'
   });
+
+  $stateProvider.state({
+    name:'changePassword',
+    cache:false,
+    url:'/my_password',
+    templateUrl:'views/changePassword.view.html',
+    controller:'changePasswordController'
+  });
+
+  $stateProvider.state({
+    name:'recoverPassword',
+    cache:false,
+    url:'/recover_password',
+    templateUrl:'views/recoverPassword.view.html',
+    controller:'recoverPasswordController'
+  });
+
   $stateProvider.state({
     name:'booking',
     cache:false,
