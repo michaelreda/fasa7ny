@@ -15,7 +15,9 @@ let Scenario = require('../app/models/BOT/scenario.js');
 
 app.use(bodyParser.urlencoded({extended:false})); //this line must be on top of app config
 app.use(bodyParser.json());
-
+mongoose.connect(DB_URI,function(err){
+  console.log("connecting to global db..");
+});
 
 const bot = new BootBot({
   accessToken: 'EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
@@ -436,7 +438,7 @@ bot.on('postback:lang_english', (payload, chat) => {
   });
 });
 
-bot.start(process.env.PORT+10||3000);
+bot.start(process.env.PORT||3000);
 
 //reseting Active users every 15 minutes except users that has just been active last 5 minutes
 var job4 = schedule.scheduleJob('0 */15 * * * *',function(){

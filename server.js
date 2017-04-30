@@ -190,6 +190,3 @@ app.use(require('./app/routes')(passport));
 app.listen(process.env.PORT ||8080,function(){
   console.log("the app is listening on port 8080");
 });
-
-
-require('./bot/bot.js');
