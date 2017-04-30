@@ -203,15 +203,17 @@ start_chatting = bot.on('message', (payload, chat) => {
                           ]
                         });
                       }
-                      convo.sendGenericTemplate(elements);
-                      convo.ask({
-                        buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                 {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/'}]
-                      },(payload, convo)=>{},[{
-                        event: 'postback:search_again',
-                        callback: () => {convo.end();start_convo();}
-                      }])
-                      convo.end();
+                      convo.sendGenericTemplate(elements).then(()=>{
+                        convo.ask({
+                          buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
+                                   {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/'}]
+                        },(payload, convo)=>{},[{
+                          event: 'postback:search_again',
+                          callback: () => {convo.end();start_convo();}
+                        }])
+                        convo.end();
+                      })
+
                     }else{
                       convo.say(isEnglish?"sorry, I didn't find this activity, but I'll help you get similar activities":"أسف لم أجدها ولكنى سأساعدك فى الحصول على فسحة مشابهة").then(()=>{
                         convo.ask(questionFilter, answerFilter,callbacksFilter);
