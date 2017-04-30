@@ -71,7 +71,9 @@ start_chatting = bot.on('message', (payload, chat) => {
 
               start_convo=()=>{ chat.conversation((convo) => {
 
+                //get triggered for menu actions even inside the coversation
                 menu_payload = (menu_postback)=>{
+                  //about us trigger
                   if(menu_postback=='about_us'){
                     convo.say(`Nowadays, people of different ages are keen to search for different activities that are away from traditional ones such as just watching some movies at the cinema or simply hanging out in malls.`).then(() => {
                   		convo.say(`Due to the increasing number of new innovative ideas for entertainment throughout the past century, most people find themselves lost while trying to figure out which activity to go for that suits their age, taste and personality.`).then(() => {
@@ -81,6 +83,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                     	});
                   	});
+                    //arabic language switch trigger
                   }else if(menu_postback=='lang_arabic'){
                     isEnglish= false;
                     var query = {facebookID:payload.sender.id},
@@ -95,6 +98,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     	});
 
                     });
+                    //english language switch trigger
                   }else if(menu_postback=='lang_english'){
                     isEnglish=true;
                     var query = {facebookID:payload.sender.id},
@@ -112,9 +116,9 @@ start_chatting = bot.on('message', (payload, chat) => {
                 }
 
 
-                // askUserSpecificActivityOrNot(convo);
-                //first question
 
+                //first question
+                //welcoming and deciding whether to filter or to take user's input
 
                 const question1 = {
                   text: isEnglish?`Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`:`أهلا بيك بتدور على حاجة معينة ولا لأ؟`,
@@ -159,20 +163,24 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                   const text = payload.message.text;
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
+                  //making request to the server
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, resbody) {
 
                     const body=JSON.parse(resbody);
-                    // console.log(body);
+                    //if results are obtained
                     if(body.activities!=undefined && body.activities.length!=0){
                       elements=[];
                       //getting 5 different activities every time
                       var rand = Math.floor(Math.random() * (body.activities.length-5));
                       var tmpI=rand>=0?rand:0;
                       for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
+                        //get latitude and longitude
                         var lat= parseFloat((body.activities[i].location.split(","))[0]);
                         var long= parseFloat((body.activities[i].location.split(","))[1]);
-                        offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                        //obtaining whether this activity inculdes an offer or not
+                        offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-";
+
                         englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                         "Type: "+body.activities[i].type+"\n"+
                         "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -235,7 +243,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                 //end if asking for specific activity;
 
 
-                // if filtering;
+                // if filtering scenario;
                 const questionFilter = {
                   text: isEnglish?`Please specify which type of filters do you prefer..`:`اختار تحب ندورلك على أساس ايه؟`,
                   quickReplies: [
@@ -264,6 +272,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                         const body=JSON.parse(resbody);
                         // console.log(body);
+                        //if results are obtained
                         if(body.activities!=undefined && body.activities.length!=0){
                           elements=[];
                           //getting 5 different activities every time
@@ -272,7 +281,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                           for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                             var lat= parseFloat((body.activities[i].location.split(","))[0]);
                             var long= parseFloat((body.activities[i].location.split(","))[1]);
-                            offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+    //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                             englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                             "Type: "+body.activities[i].type+"\n"+
                             "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -370,15 +380,18 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                           const body=JSON.parse(resbody);
                           // console.log(body);
-                          if(body.activities!=undefined && body.activities.length!=0){
+                          //if results are obtained
+if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            //getting 5 different activities every time
+var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+      //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -467,20 +480,23 @@ start_chatting = bot.on('message', (payload, chat) => {
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
                         //convo.say(pb_payload.low + " "+ pb_payload.high);
                         request
-                        .get('https://glacial-hollows-60845.herokuapp.com/get_filtered_activities/bounded_price/'+pb_payload.low+'_'+pb_payload.high'/'
+                        .get('https://glacial-hollows-60845.herokuapp.com/get_filtered_activities/bounded_price/'+pb_payload.low+'_'+pb_payload.high+'/'
                         , function(error, response, resbody) {
 
                           const body=JSON.parse(resbody);
                           // console.log(body);
-                          if(body.activities!=undefined && body.activities.length!=0){
+                          //if results are obtained
+if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            //getting 5 different activities every time
+var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+      //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -518,7 +534,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                               convo.ask({
                                 text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
                                 buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                         {type:'web_url',title: isEnglish?"More Offers?":"عروض أكتر" ,url:'https://glacial-hollows-60845.herokuapp.com/#/filteredActivities/bounded_price/'+pb_payload.low+'_'+pb_payload.high'/'}]
+                                         {type:'web_url',title: isEnglish?"More Offers?":"عروض أكتر" ,url:'https://glacial-hollows-60845.herokuapp.com/#/filteredActivities/bounded_price/'+pb_payload.low+'_'+pb_payload.high+'/'}]
                               },(payload, convo)=>{},[{
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
@@ -553,15 +569,18 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                           const body=JSON.parse(resbody);
                           // console.log(body);
-                          if(body.activities!=undefined && body.activities.length!=0){
+                          //if results are obtained
+if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            //getting 5 different activities every time
+var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+      //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -655,15 +674,18 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                           const body=JSON.parse(resbody);
                           // console.log(body);
-                          if(body.activities!=undefined && body.activities.length!=0){
+                          //if results are obtained
+if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            //getting 5 different activities every time
+var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+      //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -753,15 +775,18 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                           const body=JSON.parse(resbody);
                           // console.log(body);
-                          if(body.activities!=undefined && body.activities.length!=0){
+                          //if results are obtained
+if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            //getting 5 different activities every time
+var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+      //obtaining whether this activity inculdes an offer or not
+offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
