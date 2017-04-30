@@ -1,15 +1,21 @@
 myapp.controller('recoverPasswordController', function($scope, recoverPasswordSRV, $state){
   $scope.recover=function(userName){
     if(userName==undefined){
-      recoverPasswordSRV.recover(userName).success(function(){
-        $state.go("recoverPassword");
         toastr.warning('No username is entered');
-      })
     }
     else{
-      recoverPasswordSRV.recover(userName).success(function(){
+      toastr.info('Please wait while sending');
+      recoverPasswordSRV.recover(userName).success(function(data){
         $state.go("home");
-        toastr.success('An e-mail was sent with your new password :)Please log in again');
+        if(data.user=='null')
+        toastr.warning('Incorrect username!');
+        else {
+          if(data.ok)
+          toastr.success('An e-mail was sent with your new password :)');
+          else
+          toastr.error(data);
+        }
+
       })
     }
   }

@@ -163,15 +163,19 @@ let userCTRL = {
         res.send(err? err:'not a user');
       }
       else{
-        if(userInstance.validPassword(req.body.oldPassword))
+        if(userInstance.validPassword(req.body.oldPassword)){
         userInstance.password=userInstance.generateHash(req.body.newPassword);
         userInstance.save(function(err){
           if(err)
           res.send(err);
           else
-          res.send('password change success !');
+          res.send({'ok':'ok'});
         });
       }
+      else
+      res.send({'ok':'bad pass'});
+
+    }
     }
   )
 },
