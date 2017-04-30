@@ -648,7 +648,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
                               }])
-                              convo.end();
+                              //convo.end();
                             })
 
                           }else{
