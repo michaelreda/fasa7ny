@@ -436,7 +436,7 @@ bot.on('postback:lang_english', (payload, chat) => {
   });
 });
 
-bot.start(process.env.PORT||3000);
+bot.start(process.env.PORT+10||3000);
 
 //reseting Active users every 15 minutes except users that has just been active last 5 minutes
 var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
