@@ -170,7 +170,7 @@ let visitorCTRL={
             })
           }
         })
-      }if(req.params.filter=="bounded_price")
+      }else if(req.params.filter=="bounded_price")
       {
         var low = parseInt((req.params.value.split("_"))[0]);
         var high= parseInt((req.params.value.split("_"))[1]);
