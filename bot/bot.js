@@ -163,7 +163,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, resbody) {
 
                     const body=JSON.parse(resbody);
-                    console.log(body);
+                    // console.log(body);
                     if(body.activities!=undefined && body.activities.length!=0){
                       elements=[];
                       for(var i=0;i<5 && i<body.activities.length;i++){
@@ -211,7 +211,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                           event: 'postback:search_again',
                           callback: () => {convo.end();start_convo();}
                         }])
-                        convo.end();
+                        //convo.end();
                       })
 
                     }else{
