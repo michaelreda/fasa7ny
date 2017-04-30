@@ -156,7 +156,6 @@ start_chatting = bot.on('message', (payload, chat) => {
                 const answerActivityName = (payload, convo) => {
                   const text = payload.message.text;
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
-
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, body) {
                     console.log(body);
@@ -168,31 +167,26 @@ start_chatting = bot.on('message', (payload, chat) => {
                       "title":body.activities[0].title,
                       "image_url":"https://cdn.pixabay.com/photo/2016/05/17/10/04/boy-1397818_960_720.jpg",
                       "subtitle":"Rating: "+Math.round( body.acitivities[0].rating * 10 ) / 10,
-                    },
-                    "buttons":[
-                      {
-                        "type":"web_url",
-                        "url":"https://glacial-hollows-60845.herokuapp.com/activity/"+body.activities[0]._id,
-                        "title":"More info"
-                      },{
-                        "type":"web_url",
-                        "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
-                        "title":"Get directions"
-                      }
-                    ]   );
+                      "buttons":[
+                        {
+                          "type":"web_url",
+                          "url":"https://glacial-hollows-60845.herokuapp.com/activity/"+body.activities[0]._id,
+                          "title":"More info"
+                        },{
+                          "type":"web_url",
+                          "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                          "title":"Get directions"
+                        }
+                      ]
+                    });
                     convo.sendGenericTemplate(elements);
                   })
                   .on('error', function(err) {
                     console.log(err)
                   })
-                  // http.get({
-                  //   host: 'https://fasa7ny.herokuapp.com',
-                  //   port: process.env.PORT,
-                  //   path: '/search_for_activities/'+text+'/_/'
-                  // }, function(response) {
-                  //   console.log(response);
-                  // });
-                };
+                }
+
+
 
                 //end if asking for specific activity;
 
