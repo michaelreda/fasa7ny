@@ -60,6 +60,7 @@ mongoose.connect(DB_URI,function(err){
 require('./app/config/passport')(passport);
 app.use(require('./app/routes')(passport));
 
+require('./bot/bot.js');
 
 // app.get('/fb_bot', function (req, res) {
 //     if (req.query['hub.verify_token'] === 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack') {
