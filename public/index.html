@@ -137,7 +137,7 @@
 
           <!-- login and signup -->
           <li class="active"><a  ng-controller="logInController" style="cursor: pointer;" ng-click="loginModal()" ng-show = "isLoggedIn() == false">Log in</a></li>
-          <li class="active"><a href="" ng-click = "signupStatechange()" ng-show = "isLoggedIn() == false" >Signup</a></li>
+          <li class="active"><a href="/#/signup/user" ng-show = "isLoggedIn() == false" >Signup</a></li>
 
           <!-- logout button -->
           <li class="active"><a href="" ng-click = "logout()"  ng-show = "isLoggedIn() == true" >Logout</a></li>
@@ -353,8 +353,11 @@ box-shadow: inset 0 0 0px black;
               <p>All rights reserved </p>
             </div>
             <div class="developer">
-              <p>Designed By Tweety</p>
-              <a href="/#/FAQ" >FAQ</a>
+              <p>Designed By Kotomoto</p>
+              <span><a href="/#/signup/sp">Want to see your activities here?</a></span>
+              &nbsp;&nbsp;
+              <span><a href="/#/FAQ" >  FAQ</a></span>
+
             </div>
           </div>
         </div>

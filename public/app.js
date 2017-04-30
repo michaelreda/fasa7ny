@@ -107,7 +107,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
    $stateProvider.state({
      name:'signupLocal',
      cache:false,
-     url:'/signup',
+     url:'/signup/:type',
      templateUrl:'views/signup.view.html',
      controller:'signupController'
   });
@@ -263,7 +263,7 @@ myapp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$url
     templateUrl:'views/confirmCheckin.view.html',
     controller:'confirmCheckinController'
   });
-  
+
  $stateProvider.state({
    name:'user wishList',
    url:'/userWishList',
