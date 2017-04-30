@@ -85,7 +85,7 @@ let visitorCTRL={
       if(req.params.filter=="price")
       {
         console.log(req.params.value);
-        Activity.$where('this.prices[0].price > parseInt('+req.params.value+')').limit(10).exec(function(err,activities){
+        Activity.$where('this.prices[0].price > parseInt('+req.params.value+')').exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err);
             res.send(err.message);
@@ -104,7 +104,7 @@ let visitorCTRL={
       } else 	if(req.params.filter=="offer")
       {
         console.log("okokokok");
-        Activity.find({isOffer: 1}).limit(10).exec(function(err,activities){
+        Activity.find({isOffer: 1}).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err);
             res.send(err.message);
@@ -135,7 +135,7 @@ let visitorCTRL={
       // else
       	if(req.params.filter=="theme")
       {
-        Activity.find({theme: req.params.value}).limit(10).exec(function(err,activities){
+        Activity.find({type: req.params.value}).exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err);
             res.send(err.message);
@@ -154,7 +154,27 @@ let visitorCTRL={
       }
       else 	if(req.params.filter=="rating")
       {
-        Activity.$where('this.rating >' + req.params.value).limit(10).exec(function(err,activities){
+        Activity.$where('this.rating >' + req.params.value).exec(function(err,activities){
+          if(err){
+            globalCTRL.addErrorLog(err.message);
+            res.send(err.message);
+          }else {
+            Offer.find().exec(function(err,offers){
+              if(err){
+                globalCTRL.addErrorLog(err.message);
+                res.send(err.message);
+              }
+              else{
+                res.send({activities,offers});
+              }
+            })
+          }
+        })
+      }if(req.params.filter=="bounded_price")
+      {
+        var low = parseInt((req.params.value.split("_"))[0]);;
+        var high= parseInt((req.params.value.split("_"))[1]);
+        Activity.$where('this.prices[0].price > pasreInt(' + low+') && this.prices[0].price< parseInt('+high +')').exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err);
             res.send(err.message);
