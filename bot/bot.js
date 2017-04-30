@@ -166,7 +166,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     elements.push({
                       "title":body.activities[0].title,
                       "image_url":"https://cdn.pixabay.com/photo/2016/05/17/10/04/boy-1397818_960_720.jpg",
-                      "subtitle":"Rating: "+Math.round( body.acitivities[0].rating * 10 ) / 10,
+                      "subtitle":"Rating: "+Math.round( body.activities[0].rating * 10 ) / 10,
                       "buttons":[
                         {
                           "type":"web_url",
