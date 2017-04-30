@@ -68,7 +68,7 @@ start_chatting = bot.on('message', (payload, chat) => {
             var i = activeUser.NextScenarioMessage;
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               console.log("if no scenario at all then choose the welcoming scenario");
-
+              start_convo();
               start_convo=()=>{ chat.conversation((convo) => {
 
                 menu_payload = (menu_postback)=>{
@@ -351,8 +351,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
              });
            }
-           console.log('3');
-           start_convo();
+
 
 
 
