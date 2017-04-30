@@ -887,12 +887,13 @@ bot.setPersistentMenu([
     title: 'Website الموقع',
     type: 'web_url',
     url: 'https://glacial-hollows-60845.herokuapp.com'
-  },
-  {
-    title: 'About us مين احنا',
-    type: 'postback',
-    payload: 'about_us'
   }
+  // ,
+  // {
+  //   title: 'About us مين احنا',
+  //   type: 'postback',
+  //   payload: 'about_us'
+  // }
 
 ], false);
 
