@@ -205,6 +205,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                       }
                       convo.sendGenericTemplate(elements).then(()=>{
                         convo.ask({
+                          text:"test",
                           buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
                                    {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/'}]
                         },(payload, convo)=>{},[{
@@ -383,9 +384,6 @@ start_chatting = bot.on('message', (payload, chat) => {
                                                                                })},
                                        {title:'4+',payload: JSON.stringify({
                                                                           rating:'4'
-                                                                               })},
-                                       {title:'5',payload: JSON.stringify({
-                                                                          rating:'5'
                                                                                })},
                                      ]
                       },(payload,convo)=>{
