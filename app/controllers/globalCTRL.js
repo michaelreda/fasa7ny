@@ -29,7 +29,7 @@ let globalCTRL ={
 
   sendNewsletter: function(){
 
-    Account.find({"type":2},'email',function(err, visitorMails){
+    Account.find({"type":2},function(err, visitorMails){
       if(err){
       console.log(err);
     globalCTRL.addErrorLog(err);}
@@ -48,7 +48,7 @@ let globalCTRL ={
             }));
 
             var names = visitorMails.map(function(item) {
-              return ""+item.email;
+              return item.email;
                 });
 
                 console.log(names);

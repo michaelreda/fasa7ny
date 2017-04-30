@@ -212,7 +212,8 @@ Router.post('/login', function(req, res, next) {
     if (err) { return res.send(err); }
    if (!user) { console.log('failed'); return res.send('failed'); }
    req.logIn(user, function(err) {
-     if (err) { console.log(22,err);return next(err); }
+     if (err) { console.log(err);return next(err); }
+     console.log(req.user);
      switch (req.user.type) {
          case 0:
          userCTRL.userLoginStep2(req,res);
@@ -224,7 +225,7 @@ Router.post('/login', function(req, res, next) {
              adminCTRL.adminLoginStep2(req,res);
              break;
          default:
-             globalCTRL.addErrorLog('login attempt with profile type '+req.body.type);
+             globalCTRL.addErrorLog({"message":'login attempt with profile type ','type':req.user.type});
              res.redirect('/logout');
              break;
        }

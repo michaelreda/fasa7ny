@@ -13,10 +13,10 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
 
   $scope.isLoggedIn = function() {
     return !($window.localStorage['tempSignup']==undefined);
-  } 
+  }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@
-
+//account creation
   $scope.signupStepOne = function() {
     console.log("here");
    signupSRV.sendAccountDetails($scope.userName,$scope.password,$scope.email,$state.params.type=='user'? 0:1).success(function(data) {
@@ -37,7 +37,7 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
    });
   }
 
-
+//sp profile creation
   signupStepTwoSP = function() {
     signupSRV.sendServiceProviderProfileDetails($scope.title,$scope.description,$scope.legalProof).success(function(data) {
       if(data.stepTwoOK){
@@ -53,6 +53,8 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
 
 
 ////////,$scope.profilePicture
+
+//user profile creation
    signupStepTwoUSER = function() {
     signupSRV.sendUserProfileDetails($scope.firstName,$scope.lastName,$scope.bdate,$scope.gender==undefined? true:$scope.gender,$scope.privacy,$scope.mobileNumber,$scope.profession).success(function(data) {
       if(data.stepTwoOK){
@@ -61,6 +63,7 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
         $state.go('home');
     }
     else {
+      console.log('hesbhd');
       toastr.error((data.validationErrors)?data.validationErrors:data.errors);
     }
     });

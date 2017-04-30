@@ -399,12 +399,14 @@ userAddToWishList:function(req,res){
 userViewWishList:function(req,res){
   userCTRL.isUser(req,res);
 
-  User.findOne({userAccountId: req.user._id}).populate({path: 'wishlist'}).exec(function(err,wishList){
+  User.findOne({userAccountId: req.user._id}).exec(function(err,userr){
     if(err){
-      res.send(err);
+      globalCTRL.addErrorLog(err);
+      res.send({'error':err});
     }
     else{
-      res.send(wishList)
+      console.log(userr);
+      res.send({'wishlist':userr.wishlist})
     }
   })
 

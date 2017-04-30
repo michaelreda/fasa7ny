@@ -34,7 +34,7 @@ app.use(expressValidator({
 }));
 
 var job1 = schedule.scheduleJob('59 23 * * *', globalCTRL.banDecrement);
-var job2 = schedule.scheduleJob('16 * * * *', globalCTRL.sendNewsletter);
+var job2 = schedule.scheduleJob('59 23 * * 6', globalCTRL.sendNewsletter);
 var job3 = schedule.scheduleJob('59 23 * * *', globalCTRL.overdueBookings);
 // view engine setup
 var cons = require('consolidate');
