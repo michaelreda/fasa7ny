@@ -90,6 +90,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                       convo.end();
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
                     		// convo.ask(question1, answer1, callbacks1);
+                        console.log('1');
                         start_convo();
                     	});
 
@@ -102,6 +103,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
                       convo.end();
                       convo.say("Now I can speak English with you ;)").then(() => {
+                        console.log('2');
                         start_convo();
                     		// convo.ask(question1, answer1, callbacks1);
                     	});
@@ -349,7 +351,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
              });
            }
-
+           console.log('3');
            start_convo();
 
 
