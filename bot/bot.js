@@ -163,7 +163,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, resbody) {
 
                     const body=JSON.parse(resbody);
-                    if(!resbody && !res.body.activities && res.body.activities.length!=0){
+                    console.log(body);
+                    if(true){
                       elements=[];
                       var lat= parseFloat((body.activities[0].location.split(","))[0]);
                       var long= parseFloat((body.activities[0].location.split(","))[1]);
