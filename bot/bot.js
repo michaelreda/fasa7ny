@@ -161,50 +161,57 @@ start_chatting = bot.on('message', (payload, chat) => {
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
                   request
                   .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, resbody) {
-                    console.log(resbody);
-                    elements=[];
+
                     const body=JSON.parse(resbody);
-                    var lat= parseFloat((body.activities[0].location.split(","))[0]);
-                    var long= parseFloat((body.activities[0].location.split(","))[1]);
-                    offers=body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
-                    englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
-                                "Type: "+body.activities[0].type+"\n"+
-                                "Price per person: "+body.activities[0].prices[0].prices+"\n"+
-                                "offers: "+ offers;
+                    if(!resbody && !res.body.activities && res.body.activities.length!=0){
+                      elements=[];
+                      var lat= parseFloat((body.activities[0].location.split(","))[0]);
+                      var long= parseFloat((body.activities[0].location.split(","))[1]);
+                      offers=body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                      englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
+                      "Type: "+body.activities[0].type+"\n"+
+                      "Price per person: "+body.activities[0].prices[0].prices+"\n"+
+                      "offers: "+ offers;
 
-                    arabicSubTitle="التقييم: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
-                                    "النوع: "+body.activities[0].type+"\n"+
-                                    "السعر للشخص: "+body.activities[0].prices[0].prices+"\n"+
-                                    "الخصم: "+ offers;
+                      arabicSubTitle="التقييم: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
+                      "النوع: "+body.activities[0].type+"\n"+
+                      "السعر للشخص: "+body.activities[0].prices[0].prices+"\n"+
+                      "الخصم: "+ offers;
 
-                    elements.push({
-                      "title":body.activities[0].title,
-                      "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
-                      "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
-                      "buttons":[
-                        {
-                          "type":"web_url",
-                          "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[0]._id,
-                          "title":isEnglish?"More info":"المزيد من المعلومات"
-                        }
-                        ,{
-                          "type":"web_url",
-                          "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
-                          "title":isEnglish?"Get directions":"اعرف الطريق"
-                        }
-                        ,{
-                          "type":"web_url",
-                          "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[0]._id,
-                          "title":isEnglish?"Book Now":"احجز الأن"
-                        }
-                      ]
-                    });
-                    convo.sendGenericTemplate(elements);
+                      elements.push({
+                        "title":body.activities[0].title,
+                        "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
+                        "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
+                        "buttons":[
+                          {
+                            "type":"web_url",
+                            "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[0]._id,
+                            "title":isEnglish?"More info":"المزيد من المعلومات"
+                          }
+                          ,{
+                            "type":"web_url",
+                            "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                            "title":isEnglish?"Get directions":"اعرف الطريق"
+                          }
+                          ,{
+                            "type":"web_url",
+                            "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[0]._id,
+                            "title":isEnglish?"Book Now":"احجز الأن"
+                          }
+                        ]
+                      });
+                      convo.sendGenericTemplate(elements);
+                      convo.end();
+                    }else{
+                      convo.say(isEnglish?"sorry, I didn't find this activity, but I'll help you get similar activities":"أسف لم أجدها ولكنى سأساعدك فى الحصول على فسحة مشابهة").then(()=>{
+                        convo.ask(questionFilter, answerFilter,callbacksFilter);
+                      })
+                    }
                   })
                   .on('error', function(err) {
                     console.log(err)
                   })
-                  convo.end();
+
                 }
 
 
@@ -214,7 +221,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                 // if filtering;
                 const questionFilter = {
-                  text: isEnglish?`Ok Please specify which type of filters do you prefer..`:`اختار تحب ندورلك على أساس ايه؟`,
+                  text: isEnglish?`Please specify which type of filters do you prefer..`:`اختار تحب ندورلك على أساس ايه؟`,
                   quickReplies: [
                                  {title:isEnglish?'I don\'t care':'مش فارقة',payload: 'filter_no'},
                                  {title:isEnglish?'Day':'اليوم',payload: 'filter_day'},
