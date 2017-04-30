@@ -60,8 +60,8 @@ let visitorCTRL={
     req.params.searchInput=req.params.searchInput=='_'?'':req.params.searchInput;
     req.params.day=req.params.day=='_'?'':req.params.day;
     //end validating
-    Activity.$where('(this.title.includes("'+req.params.searchInput+'") ||  this.type.includes("'+req.params.searchInput+'")) && (this.timings.filter(function(timing){return timing.day.includes("'+req.params.day+'")}))').exec(
-      function(err, activities){
+    Activity.$where('(this.title.toUpperCase().includes("'+req.params.searchInput.toUpperCase()+'") ||  this.type.toUpperCase().includes("'+req.params.searchInput.toUpperCase()+'")) && (this.timings.filter(function(timing){return timing.day.toUpperCase().includes("'+req.params.day.toUpperCase()+'")}))').exec(
+        function(err, activities){
         if(err){
           globalCTRL.addErrorLog(err);
           res.send(err.message);
