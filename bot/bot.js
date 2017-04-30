@@ -69,7 +69,7 @@ start_chatting = bot.on('message', (payload, chat) => {
             if(activeUser.currentScenario == undefined || activeUser.currentScenario == null){ //if no scenario at all then choose the welcoming scenario
               console.log("if no scenario at all then choose the welcoming scenario");
 
-              chat.conversation((convo) => {
+              start_convo=()=>{ chat.conversation((convo) => {
 
                 menu_payload = (menu_postback)=>{
                   if(menu_postback=='about_us'){
@@ -90,7 +90,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                       convo.end();
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
                     		// convo.ask(question1, answer1, callbacks1);
-
+                        console.log('1');
+                        start_convo();
                     	});
 
                     });
@@ -102,7 +103,8 @@ start_chatting = bot.on('message', (payload, chat) => {
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
                       convo.end();
                       convo.say("Now I can speak English with you ;)").then(() => {
-                        
+                        console.log('2');
+                        start_convo();
                     		// convo.ask(question1, answer1, callbacks1);
                     	});
                     });
@@ -345,9 +347,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                 //end filtering ;
 
 
-               convo.ask(question1, answer1, callbacks1); convo.ask(question1, answer1, callbacks1);
 
              });
+           }
+           start_convo();
 
 
 
