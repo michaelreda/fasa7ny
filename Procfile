@@ -1,1 +1,1 @@
-web: nodemon ./bot/bot.js && node server.js
+web: nodemon server.js
