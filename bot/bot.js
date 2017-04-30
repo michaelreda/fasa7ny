@@ -87,7 +87,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     update = {language:"arabic"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-
+                      convo.end();
                       convo.say("أهلا بك فى فسحنى تم تغيير اللغة").then(() => {
                     		convo.ask(question1, answer1, callbacks1);
                     	});
@@ -99,7 +99,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                     update = {language:"english"},
                     options = { upsert: true, new: true, setDefaultsOnInsert: true };
                     BotUser.findOneAndUpdate(query, update, options,function(err,botUser){
-
+                      convo.end();
                       convo.say("Now I can speak English with you ;)").then(() => {
                     		convo.ask(question1, answer1, callbacks1);
                     	});
