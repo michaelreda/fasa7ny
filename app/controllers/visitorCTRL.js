@@ -172,9 +172,9 @@ let visitorCTRL={
         })
       }if(req.params.filter=="bounded_price")
       {
-        var low = parseInt((req.params.value.split("_"))[0]);;
+        var low = parseInt((req.params.value.split("_"))[0]);
         var high= parseInt((req.params.value.split("_"))[1]);
-        Activity.$where('this.prices[0].price > pasreInt(' + low+') && this.prices[0].price< parseInt('+high +')').exec(function(err,activities){
+        Activity.$where('this.prices[0].price > parseInt(' + low+') && this.prices[0].price< parseInt('+high +')').exec(function(err,activities){
           if(err){
             globalCTRL.addErrorLog(err);
             res.send(err.message);
