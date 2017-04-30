@@ -210,7 +210,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                         convo.ask({
                           text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
                           buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                   {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/search_for_activities/'+text+'/_/'}]
+                                   {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/activities/'+text+'/_/'}]
                         },(payload, convo)=>{},[{
                           event: 'postback:search_again',
                           callback: () => {convo.end();start_convo();}
@@ -310,7 +310,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                             convo.ask({
                               text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
                               buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                       {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/search_for_activities/_/_/'}]
+                                       {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/activities/_/_/'}]
                             },(payload, convo)=>{},[{
                               event: 'postback:search_again',
                               callback: () => {convo.end();start_convo();}
@@ -416,7 +416,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                               convo.ask({
                                 text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
                                 buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                         {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/search_for_activities/_/'+pb_payload.day+'/'}]
+                                         {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/activities/_/'+pb_payload.day+'/'}]
                               },(payload, convo)=>{},[{
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
