@@ -350,6 +350,8 @@ start_chatting = bot.on('message', (payload, chat) => {
              });
            }
 
+           start_convo();
+
 
 
 
