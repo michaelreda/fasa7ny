@@ -169,11 +169,11 @@ start_chatting = bot.on('message', (payload, chat) => {
                       "subtitle":"Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"<br>"+
                                   "Type: "+body.activities[0].type+
                                   "Price per person: "+body.activities[0].prices[0].prices+
-                                  "offers: "+body.activities[0].isOffer?parseFloat(body.activities[0].discount)*100+"%": "-" ,
+                                  "offers: "+body.activities[0].isOffer?parseFloat(body.activities[0].offers[0].discount)*100 +"%": "-"
                       "buttons":[
                         {
                           "type":"web_url",
-                          "url":"https://glacial-hollows-60845.herokuapp.com/activity/#/"+body.activities[0]._id,
+                          "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[0]._id,
                           "title":isEnglish?"More info":"المزيد من المعلومات"
                         }
                         ,{
