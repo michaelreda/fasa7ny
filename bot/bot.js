@@ -157,10 +157,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                   const text = payload.message.text;
                   convo.say(isEnglish?`Ok I am searching for you now what i know about ${text} !`:`${text} طب ثوانى بدورلك على`);
                   request
-                  .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, body) {
-                    console.log(body);
+                  .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/', function(error, response, resbody) {
+                    console.log(resbody);
                     elements=[];
-
+                    const body=JSON.parse(resbody);
                     var lat= parseFloat((body.activities[0].location.split(","))[0]);
                     var long= parseFloat((body.activities[0].location.split(","))[1]);
                     elements.push({
