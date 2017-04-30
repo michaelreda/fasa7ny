@@ -205,14 +205,14 @@ start_chatting = bot.on('message', (payload, chat) => {
                       }
                       convo.sendGenericTemplate(elements).then(()=>{
                         convo.ask({
-                          text:"test",
+                          text:isEnglish?"You can still search again or view more activities":"انت لسة ممكن تدور على فسح أكتر",
                           buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
-                                   {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/'}]
+                                   {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/#/search_for_activities/'+text+'/_/'}]
                         },(payload, convo)=>{},[{
                           event: 'postback:search_again',
                           callback: () => {convo.end();start_convo();}
                         }])
-                        //convo.end();
+                        convo.end();
                       })
 
                     }else{
