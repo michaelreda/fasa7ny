@@ -164,9 +164,9 @@ start_chatting = bot.on('message', (payload, chat) => {
                     var lat= parseFloat((body.activities[0].location.split(","))[0]);
                     var long= parseFloat((body.activities[0].location.split(","))[1]);
                     offers=body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
-                    englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"<br>"+
-                                "Type: "+body.activities[0].type+"<br>"+
-                                "Price per person: "+body.activities[0].prices[0].prices+"<br>"+
+                    englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
+                                "Type: "+body.activities[0].type+"\n"+
+                                "Price per person: "+body.activities[0].prices[0].prices+"\n"+
                                 "offers: "+ offers;
 
                     elements.push({
