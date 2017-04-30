@@ -379,19 +379,19 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                         .get('https://glacial-hollows-60845.herokuapp.com/search_for_activities/_/'+pb_payload.day+'/', function(error, response, resbody) {
 
                           const body=JSON.parse(resbody);
-                          // console.log(body);
+
                           //if results are obtained
-if(body.activities!=undefined && body.activities.length!=0){
+                          if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
+
                             //getting 5 different activities every time
-                            //getting 5 different activities every time
-var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-      //obtaining whether this activity inculdes an offer or not
-offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              //obtaining whether this activity inculdes an offer or not
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -478,25 +478,24 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                           menu_payload(payload.postback.payload,convo);
                           else{
                         const pb_payload=JSON.parse(payload.message.quick_reply.payload);
-                        //convo.say(pb_payload.low + " "+ pb_payload.high);
+
                         request
                         .get('https://glacial-hollows-60845.herokuapp.com/get_filtered_activities/bounded_price/'+pb_payload.low+'_'+pb_payload.high+'/'
                         , function(error, response, resbody) {
 
                           const body=JSON.parse(resbody);
-                          // console.log(body);
                           //if results are obtained
-if(body.activities!=undefined && body.activities.length!=0){
+                          if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
                             //getting 5 different activities every time
-var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-      //obtaining whether this activity inculdes an offer or not
-offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              //obtaining whether this activity inculdes an offer or not
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -570,17 +569,16 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                           const body=JSON.parse(resbody);
                           // console.log(body);
                           //if results are obtained
-if(body.activities!=undefined && body.activities.length!=0){
+                          if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            //getting 5 different activities every time
-var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-      //obtaining whether this activity inculdes an offer or not
-offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              //obtaining whether this activity inculdes an offer or not
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -675,17 +673,16 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                           const body=JSON.parse(resbody);
                           // console.log(body);
                           //if results are obtained
-if(body.activities!=undefined && body.activities.length!=0){
+                          if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            //getting 5 different activities every time
-var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-      //obtaining whether this activity inculdes an offer or not
-offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              //obtaining whether this activity inculdes an offer or not
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -776,17 +773,16 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                           const body=JSON.parse(resbody);
                           // console.log(body);
                           //if results are obtained
-if(body.activities!=undefined && body.activities.length!=0){
+                          if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
                             //getting 5 different activities every time
-                            //getting 5 different activities every time
-var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
-      //obtaining whether this activity inculdes an offer or not
-offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                              //obtaining whether this activity inculdes an offer or not
+                              offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
                               "Price per person: "+body.activities[i].prices[0].prices+"\n"+
@@ -856,33 +852,6 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
            start_convo();
 
 
-
-
-
-              // const askUserSpecificActivityOrNot = (convo) => {
-              //     convo.ask(`Hello, welcome to Fasa7ny.. Are you looking for a specific activity?`, (payload, convo) => {
-              //     const text = payload.message.text;
-              //     convo.set('name', text);
-              //     convo.say(`Oh, your name is ${text}`).then(() => askFavoriteFood(convo));
-              //   });
-              // };
-
-
-
-              // Scenario.findOne({title:"welcome"},function(err,scenario){
-              //   console.log("fetched welcome scenario");
-              //   // let buttons = new Buttons();
-              //   let buttons =[];
-              //
-              //   if(scenario.buttons && scenario.buttons.length !=0){
-              //     for(var i =0;i<scenario.buttons.length;i++)
-              //     buttons.push({type: 'postback',title: scenario.buttons[i].text,payload: scenario.buttons[i].event});
-              //
-              //   }
-              //   chat.say({text: scenario.messages[0],buttons});
-              //   console.log("updating activity user currentScenario and NextScenarioMessage");
-              //   ActiveUser.update({_id:activeUser._id},{$set:{'currentScenario':scenario._id,'NextScenarioMessage':1}}).exec();
-              // })
             }
           }
         });
@@ -891,10 +860,6 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
     })
   });
 
-
-
-  // out.add({text: `hello ${sender.first_name} , how are you!`});
-  // await bot.send(sender.id, out);
 
 
 });
@@ -928,12 +893,7 @@ bot.setPersistentMenu([
     type: 'postback',
     payload: 'about_us'
   }
-  // ,
-  // {
-  //   title: 'Want to see your activity here?',
-  //   type: 'web_url',
-  //   url: 'http://purple.com'
-  // }
+
 ], false);
 
 
@@ -974,198 +934,3 @@ var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
   d.setMinutes(d.getMinutes()-5);
   ActiveUser.find({lastResponseAt: {$lt: d}}).remove().exec();
 });
-
-
-// var express = require('express')
-// var bodyParser = require('body-parser')
-// var request = require('request')
-// var app = express();
-//
-// import {Bot, Elements} from 'facebook-messenger-bot';
-// const bot = new Bot('EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD',
-// 'fasa7ny_kotomoto_se_2017_fb_bot_platform_MEANstack');
-//
-//
-// app.use('/fb_bot', bot.router());
-//
-// bot.on('message', async message => {
-//     const {sender} = message;
-//     console.log("message----------------------------------------------------" +message);
-//     await sender.fetch('first_name');
-//     // console.log(`${sender.first_name} ${sender.last_name} ${sender.gender} ${sender.location}`);
-//     const out = new Elements();
-//     out.add({text: `hello ${sender.first_name} , how are you!`});
-//
-//     await bot.send(sender.id, out);
-// });
-//
-// //setting greeting message ..
-// (async function () {
-//   console.log(await bot.setGreeting('Hi, shaklak 3yz tetfasa7 enahrda... 3amel 7esabak 3ala kam kda ?'));
-//   console.log(await bot.setGetStarted({data: {action: 'GET_STARTED'}}));
-// })();
-//
-// //reseting Active users every 15 minutes except users that has just been active last 5 minutes
-// var job4 = schedule.scheduleJob('0 */15 * * * *',function(){
-//   var d = new Date();
-//   d.setMinutes(d.getMinutes()-5);
-//   ActiveUser.find({created_at: {$lt: d}}).remove().exec();
-// });
-//
-// // //EAAGSyhSPqgYBAHZBt1qMRQheLU8IkKg0wcsswCMz2P3q3iEUZALSs1lWCim9nCiNaycA9YVvmEKVJSFHpgdB2VrUKf9uC35lAt4V5ieLL9tRx1oLaDM17hGhH6N0snExBoIFPdKMV5jKE2uTGq2MZCogCRXaANL2z2vBT2IpQZDZD
-// // app.set('port', (process.env.PORT || 5000))
-// //
-// // // Process application/x-www-form-urlencoded
-// // app.use(bodyParser.urlencoded({extended: false}))
-// //
-// // // Process application/json
-// // app.use(bodyParser.json())
-// //
-// // // Index route
-// // app.get('/', function (req, res) {
-// //     res.send('Hello world, I am a chat bot')
-// // })
-// //
-// // // for Facebook verification
-// // app.get('/webhook/', function (req, res) {
-// //     if (req.query['hub.verify_token'] === 'Aha_Moment_Labs') {
-// //         res.send(req.query['hub.challenge'])
-// //     }
-// //     res.send('Error, wrong token')
-// // })
-// //
-// // // Spin up the server
-// // app.listen(app.get('port'), function() {
-// //     console.log('running on port', app.get('port'))
-// // })
-// //
-// //
-// // // API End Point - added by Stefan
-// //
-// // app.post('/webhook/', function (req, res) {
-// //     messaging_events = req.body.entry[0].messaging
-// //     for (i = 0; i < messaging_events.length; i++) {
-// //         event = req.body.entry[0].messaging[i]
-// //         sender = event.sender.id
-// //         if (event.message && event.message.text) {
-// //             text = event.message.text
-// //             if (text === 'hi') {
-// //                 sendGenericMessage(sender)
-// //                 continue
-// //             }
-// //             sendTextMessage(sender, "parrot: " + text.substring(0, 200))
-// //         }
-// //         if (event.postback) {
-// //             text = JSON.stringify(event.postback)
-// //             sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-// //             continue
-// //         }
-// //     }
-// //     res.sendStatus(200)
-// // })
-// //
-// // var token = " enter token here"
-// //
-// // // function to echo back messages - added by Stefan
-// //
-// // function sendTextMessage(sender, text) {
-// //     messageData = {
-// //         text:text
-// //     }
-// //     request({
-// //         url: 'https://graph.facebook.com/v2.6/me/...',
-// //         qs: {access_token:token},
-// //         method: 'POST',
-// //         json: {
-// //             recipient: {id:sender},
-// //             message: messageData,
-// //         }
-// //     }, function(error, response, body) {
-// //         if (error) {
-// //             console.log('Error sending messages: ', error)
-// //         } else if (response.body.error) {
-// //             console.log('Error: ', response.body.error)
-// //         }
-// //     })
-// // }
-// //
-// //
-// // // Send an test message back as two cards.
-// //
-// // function sendGenericMessage(sender) {
-// //     messageData = {
-// //         "attachment": {
-// //             "type": "template",
-// //             "payload": {
-// //                 "template_type": "generic",
-// //                 "elements": [{
-// //                     "title": "Ai Chat Bot Communities",
-// //                     "subtitle": "Communities to Follow",
-// //                     "image_url": "http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/...",
-// //                     "buttons": [{
-// //                         "type": "web_url",
-// //                         "url": "https://www.facebook.com/groups/aic...",
-// //                         "title": "FB Chatbot Group"
-// //                     }, {
-// //                         "type": "web_url",
-// //                         "url": "https://www.reddit.com/r/Chat_Bots/",
-// //                         "title": "Chatbots on Reddit"
-// //                     },{
-// //                         "type": "web_url",
-// //                         "url": "https://twitter.com/aichatbots",
-// //                         "title": "Chatbots on Twitter"
-// //                     }],
-// //                 }, {
-// //                     "title": "Chatbots FAQ",
-// //                     "subtitle": "Aking the Deep Questions",
-// //                     "image_url": "https://tctechcrunch2011.files.wordpress.com/...",
-// //                     "buttons": [{
-// //                         "type": "postback",
-// //                         "title": "What's the benefit?",
-// //                         "payload": "Chatbots make content interactive instead of static",
-// //                     },{
-// //                         "type": "postback",
-// //                         "title": "What can Chatbots do",
-// //                         "payload": "One day Chatbots will control the Internet of Things! You will be able to control your homes temperature with a text",
-// //                     }, {
-// //                         "type": "postback",
-// //                         "title": "The Future",
-// //                         "payload": "Chatbots are fun! One day your BFF might be a Chatbot",
-// //                     }],
-// //                 },  {
-// //                     "title": "Learning More",
-// //                     "subtitle": "Aking the Deep Questions",
-// //                     "image_url": "http://www.brandknewmag.com/wp-cont...",
-// //                     "buttons": [{
-// //                         "type": "postback",
-// //                         "title": "AIML",
-// //                         "payload": "Checkout Artificial Intelligence Mark Up Language. Its easier than you think!",
-// //                     },{
-// //                         "type": "postback",
-// //                         "title": "Machine Learning",
-// //                         "payload": "Use python to teach your maching in 16D space in 15min",
-// //                     }, {
-// //                         "type": "postback",
-// //                         "title": "Communities",
-// //                         "payload": "Online communities & Meetups are the best way to stay ahead of the curve!",
-// //                     }],
-// //                 }]
-// //             }
-// //         }
-// //     }
-// //     request({
-// //         url: 'https://graph.facebook.com/v2.6/me/...',
-// //         qs: {access_token:token},
-// //         method: 'POST',
-// //         json: {
-// //             recipient: {id:sender},
-// //             message: messageData,
-// //         }
-// //     }, function(error, response, body) {
-// //         if (error) {
-// //             console.log('Error sending messages: ', error)
-// //         } else if (response.body.error) {
-// //             console.log('Error: ', response.body.error)
-// //         }
-// //     })
-// // }
