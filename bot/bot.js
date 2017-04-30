@@ -164,7 +164,7 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                     const body=JSON.parse(resbody);
                     console.log(body);
-                    if(true){
+                    if(body.activities!=undefined && body.activities.length!=0){
                       elements=[];
                       var lat= parseFloat((body.activities[0].location.split(","))[0]);
                       var long= parseFloat((body.activities[0].location.split(","))[1]);
