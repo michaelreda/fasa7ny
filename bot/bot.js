@@ -183,12 +183,12 @@ start_chatting = bot.on('message', (payload, chat) => {
 
                         englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                         "Type: "+body.activities[i].type+"\n"+
-                        "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                        "Price per person: "+body.activities[i].prices[0].price+"\n"+
                         "offers: "+ offers;
 
                         arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                         "النوع: "+body.activities[i].type+"\n"+
-                        "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                        "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                         "الخصم: "+ offers;
 
                         elements.push({
@@ -285,12 +285,12 @@ start_chatting = bot.on('message', (payload, chat) => {
 offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                             englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                             "Type: "+body.activities[i].type+"\n"+
-                            "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                            "Price per person: "+body.activities[i].prices[0].price+"\n"+
                             "offers: "+ offers;
 
                             arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                             "النوع: "+body.activities[i].type+"\n"+
-                            "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                            "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                             "الخصم: "+ offers;
 
                             elements.push({
@@ -394,12 +394,12 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
-                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].price+"\n"+
                               "offers: "+ offers;
 
                               arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "النوع: "+body.activities[i].type+"\n"+
-                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                               "الخصم: "+ offers;
 
                               elements.push({
@@ -498,12 +498,12 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
-                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].price+"\n"+
                               "offers: "+ offers;
 
                               arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "النوع: "+body.activities[i].type+"\n"+
-                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                               "الخصم: "+ offers;
 
                               elements.push({
@@ -581,12 +581,12 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
-                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].price+"\n"+
                               "offers: "+ offers;
 
                               arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "النوع: "+body.activities[i].type+"\n"+
-                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                               "الخصم: "+ offers;
 
                               elements.push({
@@ -685,12 +685,12 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
-                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].price+"\n"+
                               "offers: "+ offers;
 
                               arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "النوع: "+body.activities[i].type+"\n"+
-                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                               "الخصم: "+ offers;
 
                               elements.push({
@@ -785,12 +785,12 @@ offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": 
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
                               englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "Type: "+body.activities[i].type+"\n"+
-                              "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                              "Price per person: "+body.activities[i].prices[0].price+"\n"+
                               "offers: "+ offers;
 
                               arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
                               "النوع: "+body.activities[i].type+"\n"+
-                              "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                              "السعر للشخص: "+body.activities[i].prices[0].price+"\n"+
                               "الخصم: "+ offers;
 
                               elements.push({
