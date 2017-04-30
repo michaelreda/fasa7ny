@@ -166,42 +166,50 @@ start_chatting = bot.on('message', (payload, chat) => {
                     console.log(body);
                     if(body.activities!=undefined && body.activities.length!=0){
                       elements=[];
-                      var lat= parseFloat((body.activities[0].location.split(","))[0]);
-                      var long= parseFloat((body.activities[0].location.split(","))[1]);
-                      offers=body.activities[0].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
-                      englishSubTitle="Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
-                      "Type: "+body.activities[0].type+"\n"+
-                      "Price per person: "+body.activities[0].prices[0].prices+"\n"+
-                      "offers: "+ offers;
+                      for(var i=0;i<5 && i<body.activities;i++){
+                        var lat= parseFloat((body.activities[i].location.split(","))[0]);
+                        var long= parseFloat((body.activities[i].location.split(","))[1]);
+                        offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
+                        englishSubTitle="Rating: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
+                        "Type: "+body.activities[i].type+"\n"+
+                        "Price per person: "+body.activities[i].prices[0].prices+"\n"+
+                        "offers: "+ offers;
 
-                      arabicSubTitle="التقييم: "+Math.round( body.activities[0].rating * 10 ) / 10 +"\n"+
-                      "النوع: "+body.activities[0].type+"\n"+
-                      "السعر للشخص: "+body.activities[0].prices[0].prices+"\n"+
-                      "الخصم: "+ offers;
+                        arabicSubTitle="التقييم: "+Math.round( body.activities[i].rating * 10 ) / 10 +"\n"+
+                        "النوع: "+body.activities[i].type+"\n"+
+                        "السعر للشخص: "+body.activities[i].prices[0].prices+"\n"+
+                        "الخصم: "+ offers;
 
-                      elements.push({
-                        "title":body.activities[0].title,
-                        "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
-                        "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
-                        "buttons":[
-                          {
-                            "type":"web_url",
-                            "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[0]._id,
-                            "title":isEnglish?"More info":"المزيد من المعلومات"
-                          }
-                          ,{
-                            "type":"web_url",
-                            "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
-                            "title":isEnglish?"Get directions":"اعرف الطريق"
-                          }
-                          ,{
-                            "type":"web_url",
-                            "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[0]._id,
-                            "title":isEnglish?"Book Now":"احجز الأن"
-                          }
-                        ]
-                      });
+                        elements.push({
+                          "title":body.activities[i].title,
+                          "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[i].media[0],
+                          "subtitle": isEnglish?englishSubTitle:arabicSubTitle,
+                          "buttons":[
+                            {
+                              "type":"web_url",
+                              "url":"https://glacial-hollows-60845.herokuapp.com/#/activity/"+body.activities[i]._id,
+                              "title":isEnglish?"More info":"المزيد من المعلومات"
+                            }
+                            ,{
+                              "type":"web_url",
+                              "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                              "title":isEnglish?"Get directions":"اعرف الطريق"
+                            }
+                            ,{
+                              "type":"web_url",
+                              "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[i]._id,
+                              "title":isEnglish?"Book Now":"احجز الأن"
+                            }
+                          ]
+                        });
+                      }
                       convo.sendGenericTemplate(elements);
+                      convo.ask({
+                        QuickReplies:[{title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'}]
+                      },(payload, convo)=>{},[{
+                        event: 'quick_reply:search_again',
+                        callback: () => {convo.end();start_convo();}
+                      }])
                       convo.end();
                     }else{
                       convo.say(isEnglish?"sorry, I didn't find this activity, but I'll help you get similar activities":"أسف لم أجدها ولكنى سأساعدك فى الحصول على فسحة مشابهة").then(()=>{
