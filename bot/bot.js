@@ -205,9 +205,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                       }
                       convo.sendGenericTemplate(elements);
                       convo.ask({
-                        QuickReplies:[{title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'}]
+                        buttons:[{type:'postback',title: isEnglish?"Search Again":"اعادة البحث" ,payload:'search_again'},
+                                 {type:'web_url',title: isEnglish?"More Activities?":"فسخ أكتر؟" ,url:'https://glacial-hollows-60845.herokuapp.com/search_for_activities/'+text+'/_/'}]
                       },(payload, convo)=>{},[{
-                        event: 'quick_reply:search_again',
+                        event: 'postback:search_again',
                         callback: () => {convo.end();start_convo();}
                       }])
                       convo.end();
