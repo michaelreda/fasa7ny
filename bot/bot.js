@@ -166,7 +166,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                     // console.log(body);
                     if(body.activities!=undefined && body.activities.length!=0){
                       elements=[];
-                      for(var i=0;i<5 && i<body.activities.length;i++){
+                      //getting 5 different activities every time
+                      var rand = Math.floor(Math.random() * (body.activities.length-5));
+                      var tmpI=rand>=0?rand:0;
+                      for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                         var lat= parseFloat((body.activities[i].location.split(","))[0]);
                         var long= parseFloat((body.activities[i].location.split(","))[1]);
                         offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
@@ -212,7 +215,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                           event: 'postback:search_again',
                           callback: () => {convo.end();start_convo();}
                         }])
-                        convo.end();
+                      //  convo.end();
                       })
 
                     }else{
@@ -299,7 +302,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                           // console.log(body);
                           if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
-                            for(var i=0;i<5 && i<body.activities.length;i++){
+                            //getting 5 different activities every time
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var tmpI=rand>=0?rand:0;
+                            for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
@@ -345,7 +351,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
                               }])
-                              convo.end();
+                              //convo.end();
                             })
 
                           }else{
@@ -408,7 +414,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                           // console.log(body);
                           if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
-                            for(var i=0;i<5 && i<body.activities.length;i++){
+                            //getting 5 different activities every time
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var tmpI=rand>=0?rand:0;
+                            for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
@@ -454,7 +463,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
                               }])
-                              convo.end();
+                            //  convo.end();
                             })
 
                           }else{
@@ -507,7 +516,10 @@ start_chatting = bot.on('message', (payload, chat) => {
                           // console.log(body);
                           if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
-                            for(var i=0;i<5 && i<body.activities.length;i++){
+                            //getting 5 different activities every time
+                            var rand = Math.floor(Math.random() * (body.activities.length-5));
+                            var tmpI=rand>=0?rand:0;
+                            for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
                               var lat= parseFloat((body.activities[i].location.split(","))[0]);
                               var long= parseFloat((body.activities[i].location.split(","))[1]);
                               offers=body.activities[i].isOffer?parseFloat(body.offers[0].discount)*100 +"%": "-"
@@ -553,7 +565,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                                 event: 'postback:search_again',
                                 callback: () => {convo.end();start_convo();}
                               }])
-                              convo.end();
+                              // convo.end();
                             })
 
                           }else{
@@ -602,6 +614,7 @@ start_chatting = bot.on('message', (payload, chat) => {
                           // console.log(body);
                           if(body.activities!=undefined && body.activities.length!=0){
                             elements=[];
+                            //getting 5 different activities every time
                             var rand = Math.floor(Math.random() * (body.activities.length-5));
                             var tmpI=rand>=0?rand:0;
                             for(var i=tmpI;i<tmpI+5 && i<body.activities.length;i++){
