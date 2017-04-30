@@ -165,19 +165,25 @@ start_chatting = bot.on('message', (payload, chat) => {
                     var long= parseFloat((body.activities[0].location.split(","))[1]);
                     elements.push({
                       "title":body.activities[0].title,
-                      "image_url":"https://cdn.pixabay.com/photo/2016/05/17/10/04/boy-1397818_960_720.jpg",
+                      "image_url":"https://glacial-hollows-60845.herokuapp.com/img/"+body.activities[0].media[0],
                       "subtitle":"Rating: "+Math.round( body.activities[0].rating * 10 ) / 10 +"<br>"+
                                   "Type: "+body.activities[0].type+
                                   "Price per person: "+body.activities[0].prices[0].prices+
-                                  "offers: "+body.activities[0].isOffer?body.activities[0].discount*100+"%": "-" ,
+                                  "offers: "+body.activities[0].isOffer?parseFloat(body.activities[0].discount)*100+"%": "-" ,
                       "buttons":[
                         {
                           "type":"web_url",
                           "url":"https://glacial-hollows-60845.herokuapp.com/activity/#/"+body.activities[0]._id,
                           "title":isEnglish?"More info":"المزيد من المعلومات"
-                        },{
+                        }
+                        ,{
                           "type":"web_url",
                           "url":"https://www.google.com.eg/maps/place/"+lat+"+"+long,
+                          "title":isEnglish?"Get directions":"اعرف الطريق"
+                        }
+                        ,{
+                          "type":"web_url",
+                          "url":"https://glacial-hollows-60845.herokuapp.com/#/booking/"+body.activities[0]._id,
                           "title":isEnglish?"Book Now":"احجز الأن"
                         }
                       ]
