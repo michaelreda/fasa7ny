@@ -33,7 +33,7 @@ function checkForm(form)
 </script>
 
 
-<div class="container" style="padding-top: 56px;     width: 100%;">
+<div class="container" ng-show="isSP() == false" style="padding-top: 56px;     width: 100%;">
     <div class="row">
     	<section style="background-color: white;">
         <div class="wizard">
@@ -251,13 +251,98 @@ function checkForm(form)
 
 
 
+<div class="container" ng-show="isSP() == true" style="padding-top: 56px;     width: 100%;">
+    <div class="row">
+    	<section style="background-color: white;">
+        <div class="wizard">
+
+            <form class="g-te" role="form" onsubmit="checkForm(this)" style="width: 70%;margin: auto;padding-top: 185px;">
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="step1">
+                        <div class="step1">
+													<span style="color:red">*Required Fields</span>
+													<!-- <h4 id="accountInfo" class="ui horizontal divider header">
+														<i class="fa fa-id-card-o" aria-hidden="true"></i>
+														Account Info
+													</h4> -->
+                            <div class="row">
+                            <div class="col-md-6">
+                                <label><span style="color:red">*</span>Title</label>
+                                <input type="text" class="form-control"ng-model="title" placeholder="Title" ng-required="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label><span style="color:red">*</span>Username</label>
+                                <input type="text" class="form-control" ng-model="userName" placeholder="Username" ng-required="true">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label><span style="color:red">*</span>Password</label>
+                                <input name="Pass" type="password" class="form-control" ng-model="password" placeholder="Password" ng-required="true">
+                            </div>
+														<div class="col-md-6">
+                                <label><span style="color:red">*</span>Confirm Password</label>
+                                <input name="Pass2" type="password" ng-required="true" class="form-control" placeholder="Confirm Password" >
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                              <label><span style="color:red">*</span>Email address</label>
+                              <input type="email" class="form-control" ng-model="email" placeholder="Email" ng-required="true">
+                          </div>
+                            <div class="col-md-6">
+                                <label><span style="color:red">*</span>Description</label>
+                                <textarea  class="form-control" ng-model="description"> </textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+													<div class="col-md-6">
+															<label><span style="color:red">*</span>Legal Proof</label>
+															<input type="file" accept="image/*" class="form-control" ng-model="profilePicture" placeholder="Profile Picture">
+													</div>
+												</div>
+
+												<div class="clear"></div>
+
+
+
+                        <div class="col-md-6">
+                            <label>Entertainment Type</label>
+                            <input type="text" class="form-control" ng-model="entertainmentType" placeholder="Entertainment Type" >
+                        </div>
+
+
+
+												<div class="clear"></div>
+												<h4 id="completed" class="ui horizontal divider header">
+													<i class="fa fa-check" aria-hidden="true"></i>
+													Completed
+												</h4>
+
+                        </div>
+                        <ul class="list-inline">
+													<center>
+                            <li style="padding:10px;"><button type="submit" style="border-radius: 10px;" class="btn btn-lg btn-success" >SignUp</button></li>
+													</center>
+												</ul>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </section>
+   </div>
+</div>
 
 
 
 
 
 <!-- Basic signup info -->
-<div ng-controller= "signupController" ng-show="isSP()" class="container">
+<div ng-controller= "signupController" ng-if="false" class="container">
 	<div class="row" style="margin-top:40px;">
 		<div class="col-md-6">
     	<div class="well well-sm">
