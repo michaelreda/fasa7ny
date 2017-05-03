@@ -18,7 +18,7 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
 // @@@@@@@@@@@@@@@@@@@@@@@@
 //account creation
   $scope.signupStepOne = function() {
-    console.log("here");
+    console.log($scope.userName,$scope.password,$scope.email,$state.params.type=='user'? 0:1);
    signupSRV.sendAccountDetails($scope.userName,$scope.password,$scope.email,$state.params.type=='user'? 0:1).success(function(data) {
      if(data=='Already a username') return toastr.error("User name taken!");
      if(data=='Duplicate email') return toastr.error("Email already registered!");
@@ -39,7 +39,7 @@ myapp.controller('signupController',function ($window,$scope,$state,signupSRV) {
 
 //sp profile creation
   signupStepTwoSP = function() {
-    signupSRV.sendServiceProviderProfileDetails($scope.title,$scope.description,$scope.legalProof).success(function(data) {
+    signupSRV.sendServiceProviderProfileDetails($scope.title,$scope.description,"$scope.legalProof",$scope.entertainmentType).success(function(data) {
       if(data.stepTwoOK){
         $window.localStorage['userAccount']=$window.localStorage['tempSignup'];
         $window.localStorage['spProfile'] = angular.toJson(data.spProfile);

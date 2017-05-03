@@ -282,7 +282,7 @@ box-shadow: inset 0 0 0px black;
 
 
   <!-- start footer -->
-  <footer id="footer">
+  <footer ng-controller="IndexNavbarController" id="footer">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -354,7 +354,7 @@ box-shadow: inset 0 0 0px black;
             </div>
             <div class="developer">
               <p>Designed By Kotomoto</p>
-              <span><a href="/#/signup/sp">Want to see your activities here?</a></span>
+              <span><a ng-show = "isLoggedIn() == false" href="/#/signup/sp">Want to see your activities here?</a></span>
               &nbsp;&nbsp;
               <span><a href="/#/FAQ" >  FAQ</a></span>
 

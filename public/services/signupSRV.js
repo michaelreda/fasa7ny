@@ -8,8 +8,8 @@ myapp.factory('signupSRV',function ($http) {
       return $http.post('/signup_user',{'firstName':firstName,'lastName':lastName,'birthDate':birthDate,'gender':gender,'privacy':privacy,'mobileNumber':mobileNumber,'profession':profession});
     },
 
-    sendServiceProviderProfileDetails:function(title,description,legalProof) {
-      return $http.post('/signup_sp',{'title':title,'description':description,'legalProof':legalProof,'entertainmentType':['alias'],'branches':['alias2'],'contactMobile':['alias3'],'mediaTypes':['alias4']});
+    sendServiceProviderProfileDetails:function(title,description,legalProof,entertainmentType) {
+      return $http.post('/signup_sp',{'title':title,'description':description,'legalProof':legalProof,'entertainmentType':[entertainmentType],'branches':['alias2'],'contactMobile':['alias3'],'mediaTypes':['alias4']});
     }
 
   }
